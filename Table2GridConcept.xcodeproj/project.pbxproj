@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E020748D1AC041CB00A4F857 /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E020748C1AC041CB00A4F857 /* T2GScrollController.swift */; };
 		E04158411ABC44AF0094EE84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158401ABC44AF0094EE84 /* AppDelegate.swift */; };
-		E04158431ABC44AF0094EE84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158421ABC44AF0094EE84 /* ViewController.swift */; };
+		E04158431ABC44AF0094EE84 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158421ABC44AF0094EE84 /* ExampleViewController.swift */; };
 		E04158461ABC44AF0094EE84 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E04158441ABC44AF0094EE84 /* Main.storyboard */; };
 		E04158481ABC44AF0094EE84 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E04158471ABC44AF0094EE84 /* Images.xcassets */; };
 		E041584B1ABC44AF0094EE84 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E04158491ABC44AF0094EE84 /* LaunchScreen.xib */; };
 		E04158571ABC44AF0094EE84 /* Table2GridConceptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158561ABC44AF0094EE84 /* Table2GridConceptTests.swift */; };
+		E04158611ABC479B0094EE84 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158601ABC479B0094EE84 /* Model.swift */; };
+		E04158631ABC7E5D0094EE84 /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158621ABC7E5D0094EE84 /* T2GCell.swift */; };
+		E0FCE2881AC19E310081D525 /* T2GCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FCE2871AC19E310081D525 /* T2GCellButton.swift */; };
+		E0FCE28A1AC30C4C0081D525 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,16 +31,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E020748C1AC041CB00A4F857 /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollController.swift; sourceTree = "<group>"; };
 		E041583B1ABC44AF0094EE84 /* Table2GridConcept.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Table2GridConcept.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E041583F1ABC44AF0094EE84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E04158401ABC44AF0094EE84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E04158421ABC44AF0094EE84 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E04158421ABC44AF0094EE84 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		E04158451ABC44AF0094EE84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E04158471ABC44AF0094EE84 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E041584A1ABC44AF0094EE84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E04158501ABC44AF0094EE84 /* Table2GridConceptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Table2GridConceptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E04158551ABC44AF0094EE84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E04158561ABC44AF0094EE84 /* Table2GridConceptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table2GridConceptTests.swift; sourceTree = "<group>"; };
+		E04158601ABC479B0094EE84 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		E04158621ABC7E5D0094EE84 /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCell.swift; sourceTree = "<group>"; };
+		E0FCE2871AC19E310081D525 /* T2GCellButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellButton.swift; sourceTree = "<group>"; };
+		E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +88,9 @@
 			isa = PBXGroup;
 			children = (
 				E04158401ABC44AF0094EE84 /* AppDelegate.swift */,
-				E04158421ABC44AF0094EE84 /* ViewController.swift */,
+				E0FCE28B1AC324080081D525 /* T2GFramework */,
+				E04158601ABC479B0094EE84 /* Model.swift */,
+				E04158421ABC44AF0094EE84 /* ExampleViewController.swift */,
 				E04158441ABC44AF0094EE84 /* Main.storyboard */,
 				E04158471ABC44AF0094EE84 /* Images.xcassets */,
 				E04158491ABC44AF0094EE84 /* LaunchScreen.xib */,
@@ -110,6 +122,17 @@
 				E04158551ABC44AF0094EE84 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E0FCE28B1AC324080081D525 /* T2GFramework */ = {
+			isa = PBXGroup;
+			children = (
+				E04158621ABC7E5D0094EE84 /* T2GCell.swift */,
+				E0FCE2871AC19E310081D525 /* T2GCellButton.swift */,
+				E020748C1AC041CB00A4F857 /* T2GScrollController.swift */,
+				E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */,
+			);
+			name = T2GFramework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,7 +235,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E04158431ABC44AF0094EE84 /* ViewController.swift in Sources */,
+				E04158431ABC44AF0094EE84 /* ExampleViewController.swift in Sources */,
+				E04158631ABC7E5D0094EE84 /* T2GCell.swift in Sources */,
+				E020748D1AC041CB00A4F857 /* T2GScrollController.swift in Sources */,
+				E0FCE2881AC19E310081D525 /* T2GCellButton.swift in Sources */,
+				E04158611ABC479B0094EE84 /* Model.swift in Sources */,
+				E0FCE28A1AC30C4C0081D525 /* T2GViewController.swift in Sources */,
 				E04158411ABC44AF0094EE84 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +435,7 @@
 				E041585C1ABC44B00094EE84 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E041585D1ABC44B00094EE84 /* Build configuration list for PBXNativeTarget "Table2GridConceptTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +444,7 @@
 				E041585F1ABC44B00094EE84 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
