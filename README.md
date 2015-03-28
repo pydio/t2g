@@ -1,3 +1,11 @@
-# t2g
+# Table2Grid Concept
 
-readme
+Implementation of table view that is switchable to collection view along with all the goodies known in both - be it obvious things such as standard protocol for populating the view or not so obvious, but still nice thing - dynmic loading and smooth transition animations.
+
+## TODO:
+
+1. CRUD functions
+2. Delete animation
+3. Settable number of buttons under swipe (0-4)
+4. Parametrizing all possible features - hide navbar on swipe, swipe cell function, default layout (T/G)
+5. Proper licence
