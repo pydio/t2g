@@ -7,5 +7,8 @@ Implementation of table view that is switchable to collection view along with al
 1. CRUD functions
 2. Delete animation
 3. Settable number of buttons under swipe (0-4)
-4. Parametrizing all possible features - hide navbar on swipe, swipe cell function, default layout (T/G)
-5. Proper licence
+4. Parametrize all possible features
+    - hide navbar on swipe
+    - swipe cell function
+    - default layout (T/G)
+5. Proper licence (Apache 2.0 / BSD / MIT)
