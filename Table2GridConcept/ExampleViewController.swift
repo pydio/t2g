@@ -61,5 +61,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath) {
         
     }
+    
+    func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
+        self.removeRowAtIndexPath(indexPath)
+    }
 }
 

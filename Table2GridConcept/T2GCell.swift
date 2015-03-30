@@ -13,6 +13,7 @@ protocol T2GCellDelegate {
     func cellStartedSwiping(tag:Int)
     func didCellOpen(tag: Int)
     func didCellClose(tag: Int)
+    func didSelectButton(tag: Int, index: Int)
 }
 
 private enum T2GCellSwipeDirection {
@@ -135,6 +136,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
             view.normalBackgroundColor = .redColor()
             view.highlightedBackgroundColor = .blackColor()
             view.setup()
+            view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)
             self.sendSubviewToBack(view)
         }
@@ -224,6 +226,10 @@ class T2GCell: UIView, UIScrollViewDelegate {
         return (coords, multiplier)
     }
     
+    func buttonSelected(sender: T2GCellButton) {
+        self.delegate?.didSelectButton(self.tag - 333, index: sender.tag - 70)
+    }
+    
     func rearrangeButtons(mode: T2GLayoutMode) {
         let coordinateData = self.coordinatesForButtons(self.buttonCount, mode: mode)
         let origins = coordinateData.origins
@@ -298,6 +304,9 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
+            if scrollView.contentOffset.x != 0 {
+                self.moveButtonsInHierarchy(false)
+            }
             self.handleScrollEnd(scrollView)
         }
     }
