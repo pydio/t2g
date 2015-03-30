@@ -9,7 +9,6 @@
 import UIKit
 
 class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
-    //var model = Model()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +46,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     
     /// View methods
     
-    //func dimensionsForRowAtIndexPath(indexPath: NSIndexPath) -> CGFloat
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
     }
