@@ -28,6 +28,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     func cellForIndexPath(indexPath: NSIndexPath) -> T2GCell {
         let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: indexPath.row)
         let view = T2GCell(header: "R: \(indexPath.row) | T: \(indexPath.row + 333)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+        view.setupButtons(indexPath.row%5, mode: self.layoutMode)
         return view
     }
     

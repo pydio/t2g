@@ -31,27 +31,15 @@ class T2GCell: UIView, UIScrollViewDelegate {
     var headerLabel: UILabel?
     var detailLabel: UILabel?
     
-    private var swipeDirection: T2GCellSwipeDirection = .Left
+    var buttonCount: Int = 0
     
+    private var swipeDirection: T2GCellSwipeDirection = .Left
     var lastContentOffset: CGFloat = 0
     
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
         self.backgroundColor = UIColor.yellowColor()
-        let size = CGFloat(16)
-        let margin = (self.frame.size.width - CGFloat(4 * size)) / 5.0
-        let y = (self.frame.size.height - size) / 2.0
-        
-        for index in 0...3 {
-            let x = margin + (CGFloat(index) * (size + margin))
-            let view = T2GCellButton(frame: CGRectMake(x, y, size, size))
-            view.tag = 70 + index
-            view.normalBackgroundColor = .redColor()
-            view.highlightedBackgroundColor = .blackColor()
-            view.setup()
-            self.addSubview(view)
-        }
         
         self.scrollView = UIScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
         self.scrollView!.backgroundColor = .clearColor()
@@ -62,8 +50,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
         self.backgroundView!.backgroundColor = .grayColor()
         self.scrollView!.addSubview(self.backgroundView!)
-        
-        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * 2, self.frame.size.height)
         
         //let imageFrame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
         let imageFrame = CGRectMake(0, 0, 64 + 2, 64 + 2)
@@ -78,7 +64,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
         self.headerLabel!.textColor = .whiteColor()
-        self.headerLabel!.text = header //"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        self.headerLabel!.text = header
         self.backgroundView!.addSubview(self.headerLabel!)
         
         self.detailLabel = UILabel(frame: dimensions.detail)
@@ -86,7 +72,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.detailLabel!.font = UIFont.systemFontOfSize(11)
         self.detailLabel!.textColor = .whiteColor()
-        self.detailLabel!.text = detail //"Lorem ipsum dolor sit amet."
+        self.detailLabel!.text = detail
         self.backgroundView!.addSubview(self.detailLabel!)
         
         self.addSubview(self.scrollView!)
@@ -96,55 +82,114 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
     }
     
-    func rearrangeButtons(mode: T2GLayoutMode) {
+    func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (origins: [CGRect], offsetMultiplier: CGFloat) {
+        let buttonSize: CGFloat = 16.0
+        var coords: [CGRect] = []
+        var multiplier: CGFloat = 1.0
+        
         if mode == .Table {
-            let size = CGFloat(16)
-            let margin = (self.frame.size.width - CGFloat(4 * size)) / 5.0
-            let y = (self.frame.size.height - size) / 2.0
+            let margin = (self.frame.size.width - CGFloat(4 * buttonSize)) / 5.0
+            let y = (self.frame.size.height - CGFloat(buttonSize)) / 2.0
             
-            for index in 0...3 {
-                let x = margin + (CGFloat(index) * (size + margin))
-                let view = self.viewWithTag(70 + index)! as T2GCellButton
-                view.minOriginCoord = CGPointMake(x, y)
-                view.frame = CGRectMake(x, y, size, size)
+            for index in 0..<count {
+                let x = self.frame.size.width - (CGFloat(index + 1) * (CGFloat(buttonSize) + margin))
+                multiplier = 1 + (1 - ((x - (margin * 0.75))/self.frame.size.width))
+                coords.append(CGRectMake(x, y, buttonSize, buttonSize))
             }
-            
         } else {
-            let coords = self.coordinatesForSquaredLayouts(4)
-            let size = CGFloat(16)
+            let squareSize = CGFloat(self.frame.size.width)
             
-            for index in 0...3 {
-                let origin = coords[index]
-                let view = self.viewWithTag(70 + index)! as T2GCellButton
-                view.minOriginCoord = origin
-                view.frame = CGRectMake(origin.x, origin.y, size, size)
+            switch buttonCount {
+            case 1:
+                let x = (squareSize - buttonSize) / 2
+                let y = x
+                coords.append(CGRectMake(CGFloat(x),CGFloat(y),buttonSize,buttonSize))
+                break
+            case 2:
+                let y = (squareSize - buttonSize) / 2
+                let x1 = (squareSize / 2) - (buttonSize * 2)
+                coords.append(CGRectMake(CGFloat(x1),CGFloat(y),buttonSize,buttonSize))
+                
+                let x2 = squareSize - x1 - buttonSize
+                coords.append(CGRectMake(CGFloat(x2),CGFloat(y),buttonSize,buttonSize))
+                
+                break
+            case 3:
+                let x1 = (squareSize / 2) - (buttonSize * 2)
+                let y1 = x1
+                coords.append(CGRectMake(CGFloat(x1),CGFloat(y1),buttonSize,buttonSize))
+                
+                let x2 = squareSize - x1 - buttonSize
+                let y2 = y1
+                coords.append(CGRectMake(CGFloat(x2),CGFloat(y2),buttonSize,buttonSize))
+                
+                let x3 = (squareSize - buttonSize) / 2
+                let y3 = squareSize - (buttonSize * 2)
+                coords.append(CGRectMake(CGFloat(x3),CGFloat(y3),buttonSize,buttonSize))
+                
+                break
+            case 4:
+                let x1 = (squareSize / 2) - (buttonSize * 2)
+                let y1 = x1
+                coords.append(CGRectMake(CGFloat(x1),CGFloat(y1),buttonSize,buttonSize))
+                
+                let x2 = squareSize - x1 - buttonSize
+                let y2 = y1
+                coords.append(CGRectMake(CGFloat(x2),CGFloat(y2),buttonSize,buttonSize))
+                
+                let x3 = x1
+                let y3 = squareSize - (buttonSize * 2)
+                coords.append(CGRectMake(CGFloat(x3),CGFloat(y3),buttonSize,buttonSize))
+                
+                let x4 = x2
+                let y4 = y3
+                coords.append(CGRectMake(CGFloat(x4),CGFloat(y4),buttonSize,buttonSize))
+                
+                break
+            default:
+                /// suspect that 0 is desired
+                break
             }
+            
+            multiplier = count == 0 ? 1.0 : 2.0
         }
+        
+        return (coords, multiplier)
     }
     
-    func coordinatesForSquaredLayouts(buttonCount: Int) -> [CGPoint] {
-        var coords: [CGPoint] = []
+    func setupButtons(count: Int, mode: T2GLayoutMode) {
+        self.buttonCount = count
         
-        if buttonCount == 4 {
-            let x1 = (50 - 8 - 32) + 8
-            let y1 = x1
-            coords.append(CGPointMake(CGFloat(x1),CGFloat(y1)))
-            
-            let x2 = 100 - x1 - 16
-            let y2 = y1
-            coords.append(CGPointMake(CGFloat(x2),CGFloat(y2)))
-            
-            let x3 = x1
-            let y3 = 100 - 8 - 32 + 8
-            coords.append(CGPointMake(CGFloat(x3),CGFloat(y3)))
-            
-            let x4 = x2
-            let y4 = y3
-            coords.append(CGPointMake(CGFloat(x4),CGFloat(y4)))
-            
+        let coordinateData = self.coordinatesForButtons(count, mode: mode)
+        let origins = coordinateData.origins
+        
+        for index in 0..<count {
+            let point = origins[index]
+            let view = T2GCellButton(frame: point)
+            view.tag = 70 + index
+            view.normalBackgroundColor = .redColor()
+            view.highlightedBackgroundColor = .blackColor()
+            view.setup()
+            self.addSubview(view)
+            self.sendSubviewToBack(view)
         }
         
-        return coords
+        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
+    }
+    
+    func rearrangeButtons(mode: T2GLayoutMode) {
+        let coordinateData = self.coordinatesForButtons(self.buttonCount, mode: mode)
+        let origins = coordinateData.origins
+        
+        for index in 0..<self.buttonCount {
+            if let view = self.viewWithTag(70 + index) as? T2GCellButton {
+                let frame = origins[index]
+                view.minOriginCoord = frame.origin
+                view.frame = frame
+            }
+        }
+        
+        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
     }
     
     func closeCell() {
@@ -218,6 +263,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
     }
     
+    //MARK: - Scroll view delegate methods
+    
     func handleScrollEnd(scrollView: UIScrollView) {
         if self.swipeDirection == .Right {
             scrollView.scrollRectToVisible(CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: true)
@@ -230,11 +277,12 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func moveButtonsInHierarchy(hide: Bool) {
         for index in 0...3 {
-            let view = self.viewWithTag(70 + index)! as T2GCellButton
-            if hide {
-                self.sendSubviewToBack(view)
-            } else {
-                self.bringSubviewToFront(view)
+            if let view = self.viewWithTag(70 + index) as? T2GCellButton {
+                if hide {
+                    self.sendSubviewToBack(view)
+                } else {
+                    self.bringSubviewToFront(view)
+                }
             }
         }
     }
@@ -265,18 +313,11 @@ class T2GCell: UIView, UIScrollViewDelegate {
         let tailPosition = -scrollView.contentOffset.x + self.backgroundView!.frame.size.width
         let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
         
-        let button_1 = self.viewWithTag(70)! as T2GCellButton
-        button_1.resize(tailPosition, sizeDifference: sizeDifference)
-        
-        let button_2 = self.viewWithTag(71)! as T2GCellButton
-        button_2.resize(tailPosition, sizeDifference: sizeDifference)
-        
-        let button_3 = self.viewWithTag(72)! as T2GCellButton
-        button_3.resize(tailPosition, sizeDifference: sizeDifference)
-        
-        let button_4 = self.viewWithTag(73)! as T2GCellButton
-        button_4.resize(tailPosition, sizeDifference: sizeDifference)
-
+        for index in 0..<self.buttonCount {
+            if let button = self.viewWithTag(70 + index) as? T2GCellButton {
+                button.resize(tailPosition, sizeDifference: sizeDifference)
+            }
+        }
         
         if self.lastContentOffset < scrollView.contentOffset.x {
             self.swipeDirection = .Left
