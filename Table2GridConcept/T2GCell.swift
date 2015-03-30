@@ -36,6 +36,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
     private var swipeDirection: T2GCellSwipeDirection = .Left
     var lastContentOffset: CGFloat = 0
     
+    //MARK: - Public API
+    
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
@@ -57,9 +59,9 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.imageView!.backgroundColor = .blackColor()
         self.backgroundView!.addSubview(self.imageView!)
         
-        let dimensions = self.framesForLabels(frame)
+        let labelDimensions = self.framesForLabels(frame)
         
-        self.headerLabel = UILabel(frame: dimensions.header)
+        self.headerLabel = UILabel(frame: labelDimensions.header)
         self.headerLabel!.backgroundColor = .blackColor()
         self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
@@ -67,7 +69,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.headerLabel!.text = header
         self.backgroundView!.addSubview(self.headerLabel!)
         
-        self.detailLabel = UILabel(frame: dimensions.detail)
+        self.detailLabel = UILabel(frame: labelDimensions.detail)
         self.detailLabel!.backgroundColor = .blackColor()
         self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.detailLabel!.font = UIFont.systemFontOfSize(11)
@@ -78,9 +80,75 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.addSubview(self.scrollView!)
         
         if mode == .Collection {
-            self.setFrame2(.Collection, frame: self.frame)
+            self.changeFrameParadigm(.Collection, frame: self.frame)
         }
     }
+    
+    func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
+        if self.scrollView!.contentOffset.x != 0 {
+            self.moveButtonsInHierarchy(true)
+            self.scrollView!.contentOffset.x = 0
+        }
+        
+        self.frame = frame
+        self.scrollView!.frame = CGRectMake(-1, -1, frame.size.width + 2, frame.size.height + 2)
+        self.backgroundView!.frame = CGRectMake(0, 0, frame.size.width + 2, frame.size.height + 2)
+        self.scrollView!.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
+        
+        self.rearrangeButtons(mode)
+        
+        if let image = self.imageView {
+            if mode == .Table {
+                image.frame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
+                
+                let dimensions = self.framesForLabels(frame)
+                
+                self.headerLabel!.frame = dimensions.header
+                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
+                
+                self.detailLabel!.frame = dimensions.detail
+                self.detailLabel!.alpha = 1
+            } else {
+                let x = (self.frame.width - image.frame.width) / 2
+                let y = frame.size.height - image.frame.height - 6
+                image.frame = CGRectMake(x, y, image.frame.width, image.frame.height)
+                
+                let headerFrame = CGRectMake(0, 0, frame.size.width + 2, y - 2)
+                self.headerLabel!.frame = headerFrame
+                self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
+                
+                self.detailLabel!.alpha = 0
+            }
+        }
+    }
+    
+    func setupButtons(count: Int, mode: T2GLayoutMode) {
+        self.buttonCount = count
+        
+        let coordinateData = self.coordinatesForButtons(count, mode: mode)
+        let origins = coordinateData.origins
+        
+        for index in 0..<count {
+            let point = origins[index]
+            let view = T2GCellButton(frame: point)
+            view.tag = 70 + index
+            view.normalBackgroundColor = .redColor()
+            view.highlightedBackgroundColor = .blackColor()
+            view.setup()
+            self.addSubview(view)
+            self.sendSubviewToBack(view)
+        }
+        
+        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
+    }
+    
+    func closeCell() {
+        self.moveButtonsInHierarchy(true)
+        self.swipeDirection = .Right
+        self.handleScrollEnd(self.scrollView!)
+    }
+    
+    //MARK: - Private API
     
     func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (origins: [CGRect], offsetMultiplier: CGFloat) {
         let buttonSize: CGFloat = 16.0
@@ -147,7 +215,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 
                 break
             default:
-                /// suspect that 0 is desired
                 break
             }
             
@@ -155,26 +222,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
         
         return (coords, multiplier)
-    }
-    
-    func setupButtons(count: Int, mode: T2GLayoutMode) {
-        self.buttonCount = count
-        
-        let coordinateData = self.coordinatesForButtons(count, mode: mode)
-        let origins = coordinateData.origins
-        
-        for index in 0..<count {
-            let point = origins[index]
-            let view = T2GCellButton(frame: point)
-            view.tag = 70 + index
-            view.normalBackgroundColor = .redColor()
-            view.highlightedBackgroundColor = .blackColor()
-            view.setup()
-            self.addSubview(view)
-            self.sendSubviewToBack(view)
-        }
-        
-        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
     }
     
     func rearrangeButtons(mode: T2GLayoutMode) {
@@ -190,12 +237,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
         
         self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
-    }
-    
-    func closeCell() {
-        self.moveButtonsInHierarchy(true)
-        self.swipeDirection = .Right
-        self.handleScrollEnd(self.scrollView!)
     }
     
     func fontSize(frame: CGRect) -> CGFloat {
@@ -223,44 +264,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         let detailFrame = CGRectMake(frame.size.height + 10, headerFrame.size.height + (2 * margin), detailWidth, detailHeight)
         
         return (headerFrame, detailFrame)
-    }
-    
-    func setFrame2(mode: T2GLayoutMode, frame: CGRect) {
-        if scrollView!.contentOffset.x != 0 {
-            self.moveButtonsInHierarchy(true)
-            scrollView!.contentOffset.x = 0
-        }
-        
-        self.frame = frame
-        self.scrollView!.frame = CGRectMake(-1, -1, frame.size.width + 2, frame.size.height + 2)
-        self.backgroundView!.frame = CGRectMake(0, 0, frame.size.width + 2, frame.size.height + 2)
-        self.scrollView!.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
-        
-        self.rearrangeButtons(mode)
-        
-        if let image = self.imageView {
-            if mode == .Table {
-                image.frame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
-                
-                let dimensions = self.framesForLabels(frame)
-                
-                self.headerLabel!.frame = dimensions.header
-                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
-                
-                self.detailLabel!.frame = dimensions.detail
-                self.detailLabel!.alpha = 1
-            } else {
-                let x = (self.frame.width - image.frame.width) / 2
-                let y = frame.size.height - image.frame.height - 6
-                image.frame = CGRectMake(x, y, image.frame.width, image.frame.height)
-                
-                let headerFrame = CGRectMake(0, 0, frame.size.width + 2, y - 2)
-                self.headerLabel!.frame = headerFrame
-                self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
-                
-                self.detailLabel!.alpha = 0
-            }
-        }
     }
     
     //MARK: - Scroll view delegate methods

@@ -208,7 +208,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: cell.tag - 333)
-                    cell.setFrame2(self.layoutMode, frame: frame)
+                    cell.changeFrameParadigm(self.layoutMode, frame: frame)
                 }
             }
             
@@ -249,7 +249,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                     }
                     */
                     
-                    cell.setFrame2(mode, frame: frame)
+                    cell.changeFrameParadigm(mode, frame: frame)
                 }
             }
             
