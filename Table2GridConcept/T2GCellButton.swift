@@ -34,7 +34,7 @@ class T2GCellButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.minOriginCoord = CGPointMake(frame.origin.x, frame.origin.y)
+        self.minOriginCoord = frame.origin
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -53,7 +53,7 @@ class T2GCellButton: UIButton {
         self.addTarget(self, action: "didTap", forControlEvents: UIControlEvents.TouchDown)
         self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpInside)
         self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpOutside)
-        self.setTitle("1", forState: UIControlState.Normal)
+        self.setTitle("\(self.tag - 69)", forState: UIControlState.Normal)
     }
     
     func resize(tailPosition: CGFloat, sizeDifference: CGFloat) {
