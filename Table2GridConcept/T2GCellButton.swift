@@ -12,7 +12,14 @@ class T2GCellButton: UIButton {
     var minOriginCoord: CGPoint?
     var maxOriginCoord: CGPoint? {
         get {
-            return CGPointMake(minOriginCoord!.x - 8, minOriginCoord!.y - 8)
+            return CGPointMake(minOriginCoord!.x - (minSize! / 2), minOriginCoord!.y - (minSize! / 2))
+        }
+    }
+    
+    var minSize: CGFloat?
+    var maxSize: CGFloat? {
+        get {
+            return 2 * minSize!
         }
     }
     
@@ -34,6 +41,7 @@ class T2GCellButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.minSize = frame.size.width
         self.minOriginCoord = frame.origin
     }
 
@@ -64,31 +72,31 @@ class T2GCellButton: UIButton {
         
         if didBeginOverlapping && isStillOverlapping {
             var newSize = size + sizeDifference
-            var newX = self.frame.origin.x - (sizeDifference/2)
-            var newY = self.frame.origin.y - (sizeDifference/2)
+            var newX = self.frame.origin.x - (sizeDifference / 2)
+            var newY = self.frame.origin.y - (sizeDifference / 2)
             
-            if newSize > 32 {
+            if newSize > self.maxSize {
                 newX = self.maxOriginCoord!.x
                 newY = self.maxOriginCoord!.y
-                newSize = 32
-            } else if newSize < 16 {
+                newSize = self.maxSize!
+            } else if newSize < self.minSize {
                 newX = self.minOriginCoord!.x
                 newY = self.minOriginCoord!.y
-                newSize = 16
+                newSize = self.minSize!
             }
             
             self.frame = CGRectMake(newX, newY, newSize, newSize)
         } else {
             let isFarOut = tailPosition < self.frame.origin.x
-            if isFarOut && size < 32 {
+            if isFarOut && size < self.maxSize {
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
-                    self.frame = CGRectMake(self.maxOriginCoord!.x, self.maxOriginCoord!.y, 32, 32)
+                    self.frame = CGRectMake(self.maxOriginCoord!.x, self.maxOriginCoord!.y, self.maxSize!, self.maxSize!)
                 })
             }
             
             let isFarOverlapped = tailPosition > self.frame.origin.x + size
-            if isFarOverlapped && size > 16 {
-                self.frame = CGRectMake(self.minOriginCoord!.x, self.minOriginCoord!.y, 16, 16)
+            if isFarOverlapped && size > self.minSize {
+                self.frame = CGRectMake(self.minOriginCoord!.x, self.minOriginCoord!.y, self.minSize!, self.minSize!)
             }
         }
     }
