@@ -11,4 +11,5 @@ Implementation of table view that is switchable to collection view along with al
     - hide navbar on swipe
     - swipe cell function
     - default layout (T/G)
-5. Proper licence (Apache 2.0 / BSD / MIT)
+5. Adjustable icon view depending on width
+6. Proper licence (Apache 2.0 / BSD / MIT)
