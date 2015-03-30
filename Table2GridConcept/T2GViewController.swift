@@ -84,7 +84,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
         
         self.scrollView = UIScrollView()
-        self.scrollView.delegate = self
+        //self.scrollView.delegate = self
         self.scrollView.backgroundColor = UIColor.lightGrayColor()
         self.view.addSubview(scrollView)
         
@@ -100,6 +100,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         
         var rightButton_add: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
         self.navigationItem.rightBarButtonItem = rightButton_add
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.scrollView.delegate = self
     }
     
     override func didReceiveMemoryWarning() {

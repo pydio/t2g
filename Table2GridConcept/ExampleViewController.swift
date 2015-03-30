@@ -15,6 +15,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
         super.viewDidLoad()
         
         self.delegate = self
+        //self.isHidingEnabled = false
     }
 
     override func didReceiveMemoryWarning() {
