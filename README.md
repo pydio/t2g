@@ -6,7 +6,7 @@ Implementation of table view that is switchable to collection view along with al
 
 1. CRUD functions
 2. Delete animation
-3. Settable number of buttons under swipe (0-4)
+3. Assigning functions to buttons
 4. Parametrize all possible features
     - swipe cell function
     - default layout (T/G)
