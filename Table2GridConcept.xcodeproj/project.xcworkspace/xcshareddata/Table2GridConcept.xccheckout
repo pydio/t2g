@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E8229532-E45C-47B0-990D-7E59F4B005F2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Table2GridConcept</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E5DC3647C60EBC32544D14FCF19EA647E3A02107</key>
+		<string>https://github.com/pydio/t2g.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Table2GridConcept.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E5DC3647C60EBC32544D14FCF19EA647E3A02107</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/pydio/t2g.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E5DC3647C60EBC32544D14FCF19EA647E3A02107</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E5DC3647C60EBC32544D14FCF19EA647E3A02107</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Table2GridConcept</string>
+		</dict>
+	</array>
+</dict>
+</plist>

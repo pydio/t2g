@@ -219,10 +219,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     func transformView() {
-        let mode = self.layoutMode == .Collection ? T2GLayoutMode.Table : T2GLayoutMode.Collection
-        //self.isHidingEnabled = false
-        
-        if mode == .Collection {
+        let collectionClosure = {() -> T2GLayoutMode in
             let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
             let from = (indicesExtremes.highest) + 1
             let to = (indicesExtremes.highest) + 10
@@ -230,13 +227,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             for index in from...to {
                 self.insertRowWithTag(index)
             }
+
+            return .Collection
         }
+        
+        let mode = self.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
         
         self.displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
-            //var didAdjustScrollview = false
-            
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let frame = self.frameForCell(mode, yOffset: 12, index: cell.tag - 333)
@@ -254,14 +253,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 }
             }
             
-            
         }) { (Bool) -> Void in
-            //self.displayMissingCells()
-            //self.scrollView.scrollRectToVisible(framez, animated: true)
             self.scrollView.contentSize = self.contentSizeForCurrentMode()
             self.performSubviewCleanup()
-            //self.isHidingEnabled = true
-            //self.showBar(false)
         }
         
         self.layoutMode = mode
