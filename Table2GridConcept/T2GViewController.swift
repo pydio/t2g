@@ -220,6 +220,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     func transformView() {
         let mode = self.layoutMode == .Collection ? T2GLayoutMode.Table : T2GLayoutMode.Collection
+        //self.isHidingEnabled = false
         
         if mode == .Collection {
             let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
@@ -231,18 +232,24 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             }
         }
         
-        
-        //var framez: CGRect = CGRectMake(0, 0, self.scrollView.bounds.width, scrollView.bounds.height)
-        //self.scrollView.scrollRectToVisible(framez, animated: false)
-        
         self.displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
-            var didAdjustScrollview = false
+            //var didAdjustScrollview = false
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let frame = self.frameForCell(mode, yOffset: 12, index: cell.tag - 333)
+                    
+                    /*
+                     * Not really working - TBD
+                     *
+                    if !didAdjustScrollview {
+                        self.scrollView.scrollRectToVisible(CGRectMake(0, frame.origin.y - 12 - 64, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height), animated: false)
+                        didAdjustScrollview = true
+                    }
+                    */
+                    
                     cell.setFrame2(mode, frame: frame)
                 }
             }
@@ -253,6 +260,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             //self.scrollView.scrollRectToVisible(framez, animated: true)
             self.scrollView.contentSize = self.contentSizeForCurrentMode()
             self.performSubviewCleanup()
+            //self.isHidingEnabled = true
+            //self.showBar(false)
         }
         
         self.layoutMode = mode
