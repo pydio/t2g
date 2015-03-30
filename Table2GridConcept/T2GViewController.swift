@@ -23,6 +23,7 @@ protocol T2GViewControllerDelegate {
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
+    func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
 }
 
 enum T2GLayoutMode {
@@ -265,6 +266,22 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.layoutMode = mode
     }
     
+    func removeRowAtIndexPath(indexPath: NSIndexPath) {
+        if let view = self.scrollView!.viewWithTag(indexPath.row + 333) as? T2GCell {
+            view.closeCell()
+            
+            UIView.animateWithDuration(0.6, animations: { () -> Void in
+                view.frame = CGRectMake(view.frame.origin.x - 30, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+            }, completion: { (complete) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    view.frame = CGRectMake(self.scrollView.bounds.width + 20, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                }, completion: { (complete2) -> Void in
+                    println("done")
+                })
+            })
+        }
+    }
+    
     //MARK: - ScrollView delegate
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -438,6 +455,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     func didCellClose(tag: Int) {
         self.openCellTag = -1
+    }
+    
+    func didSelectButton(tag: Int, index: Int) {
+        self.delegate.didSelectDrawerButtonAtIndex(NSIndexPath(forRow: tag, inSection: 0), buttonIndex: index)
     }
 
 }
