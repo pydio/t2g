@@ -5,8 +5,8 @@ Implementation of table view that is switchable to collection view along with al
 ## TODO:
 
 0. Reload function
-1. (C)(R)U(D) functions
-    - Update animation (loading animation)
+1. Loading cell animation
+2. Multiple selection
 3. Assigning functions to buttons
 4. Parametrize all possible features
     - swipe cell function
