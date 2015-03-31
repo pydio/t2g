@@ -19,6 +19,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
             modelArray.append(index)
         }
         
+        var rightButton_add: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
+        self.navigationItem.rightBarButtonItem = rightButton_add
+        
         self.delegate = self
         //self.isHidingEnabled = false
     }
@@ -70,17 +73,19 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath) {
-        
+        //
     }
     
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
         if buttonIndex == 0 {
             self.modelArray.removeAtIndex(indexPath.row)
             self.removeRowAtIndexPath(indexPath)
-        } else {
+        } else if buttonIndex == 1 {
             self.modelArray.insert(42, atIndex: indexPath.row + 1)
             let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
             self.insertRowAtIndexPath(indexPath)
+        } else {
+            self.toggleMultipleChoiceMode(!self.isEditingModeActive)
         }
     }
 }

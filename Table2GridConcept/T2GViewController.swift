@@ -54,6 +54,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     var lastSpeedOffset: CGPoint = CGPointMake(0, 0)
     var lastSpeedOffsetCaptureTime: NSTimeInterval = 0
     
+    var isEditingModeActive: Bool = false
+    var editingModeSelection = [Int : Bool]()
+    
     private var visibleCellCount: Int {
         get {
             if self.layoutMode == .Table {
@@ -99,9 +102,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         
         var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll_view]|", options: .AlignAllCenterX, metrics: nil, views: views)
         view.addConstraints(constW)
-        
-        var rightButton_add: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
-        self.navigationItem.rightBarButtonItem = rightButton_add
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -110,6 +110,28 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func toggleMultipleChoiceMode(flag: Bool) {
+        let completionClosure = { () -> Void in
+            self.isEditingModeActive = flag
+            
+            for view in self.scrollView.subviews {
+                if let cell = view as? T2GCell {
+                    let shift = flag ? CGFloat(50) : CGFloat(-50)
+                    let frame = CGRectMake(cell.frame.origin.x + shift, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        cell.frame = frame
+                    })
+                }
+            }
+        }
+        
+        if self.layoutMode == .Collection {
+            self.transformViewWithCompletion(completionClosure)
+        } else {
+            completionClosure()
+        }
     }
     
     func insertRowAtIndexPath(indexPath: NSIndexPath) {
@@ -139,6 +161,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             return cell.tag
         } else {
             let cellView = self.delegate.cellForIndexPath(NSIndexPath(forRow: tag - 333, inSection: 0))
+            
+            if self.isEditingModeActive {
+                let frame = CGRectMake(cellView.frame.origin.x + 50, cellView.frame.origin.y, cellView.frame.size.width, cellView.frame.size.height)
+                cellView.frame = frame
+            }
+            
             cellView.tag = tag
             cellView.delegate = self
             cellView.alpha = animated ? 0 : 1
@@ -266,6 +294,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     func transformView() {
+        self.transformViewWithCompletion() {()->Void in}
+    }
+    
+    func transformViewWithCompletion(completionClosure:() -> Void) {
         let collectionClosure = {() -> T2GLayoutMode in
             let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
             var from = (indicesExtremes.highest) + 1
@@ -298,11 +330,11 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                     let frame = self.frameForCell(mode, yOffset: 12, index: cell.tag - 333)
                     
                     /*
-                     * Not really working - TBD
-                     *
+                    * Not really working - TBD
+                    *
                     if !didAdjustScrollview {
-                        self.scrollView.scrollRectToVisible(CGRectMake(0, frame.origin.y - 12 - 64, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height), animated: false)
-                        didAdjustScrollview = true
+                    self.scrollView.scrollRectToVisible(CGRectMake(0, frame.origin.y - 12 - 64, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height), animated: false)
+                    didAdjustScrollview = true
                     }
                     */
                     
@@ -310,9 +342,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 }
             }
             
-        }) { (Bool) -> Void in
-            //self.scrollView.contentSize = self.contentSizeForCurrentMode()
-            self.performSubviewCleanup()
+            }) { (Bool) -> Void in
+                //self.scrollView.contentSize = self.contentSizeForCurrentMode()
+                self.performSubviewCleanup()
+                completionClosure()
         }
         
         self.layoutMode = mode
