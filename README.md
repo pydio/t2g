@@ -4,7 +4,6 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-0. Buttons to front and to back on swipe (NASTY!)
 1. CRUD functions
 2. Delete/Add animations
 3. Assigning functions to buttons
