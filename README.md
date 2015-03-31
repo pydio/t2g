@@ -4,10 +4,9 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-1. CRUD functions
-2. Delete/Add animations
-    - Make scrollview shorter
-    - show missing cells
+1. C(R)U(D) functions
+    - Add animation
+    - Update animation (loading animation)
 3. Assigning functions to buttons
 4. Parametrize all possible features
     - swipe cell function
