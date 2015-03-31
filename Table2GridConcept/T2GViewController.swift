@@ -111,7 +111,28 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
+    func insertRowAtIndexPath(indexPath: NSIndexPath) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            for cell in self.scrollView.subviews {
+                if cell.tag >= (indexPath.row + 333) {
+                    if let c = cell as? T2GCell {
+                        let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 + 1)
+                        c.frame = newFrame
+                        c.tag = c.tag + 1
+                    }
+                }
+            }
+        }, completion: { (complete3) -> Void in
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
+            }, completion: { (complete) -> Void in
+                self.insertRowWithTag(indexPath.row + 333, animated: true)
+                return
+            })
+        })
+    }
+    
+    private func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
@@ -295,7 +316,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.layoutMode = mode
     }
     
-    //TODO: Hír
     func removeRowAtIndexPath(indexPath: NSIndexPath) {
         if let view = self.scrollView!.viewWithTag(indexPath.row + 333) as? T2GCell {
             view.closeCell()
@@ -436,33 +456,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     func firstAndLastTags(subviews: [AnyObject]) -> (lowest: Int, highest: Int) {
-        ///
-        //let startDate: NSDate = NSDate()
-        ///
-        
-        //let startValues = (lowest: Int.max, highest: Int.min)
-        
         /*
-        var extremes:(lowest: Int, highest: Int) = subviews.filter({$0 is T2GCell}).reduce(startValues) {
-            (min($0.lowest, $1.tag), max($0.highest, $1.tag))
+        let startValues = (lowest: Int.max, highest: Int.min)
+        var minMax:(lowest: Int, highest: Int) = subviews.reduce(startValues) { prev, next in
+            (next as? T2GCell).map {
+                (min(prev.lowest, $0.tag), max(prev.highest, $0.tag))
+            } ?? prev
         }
         */
-
-        //var extremes2 = reduce(lazy(subviews).filter({$0 is T2GCell}), startValues) {
-        //    (min($0.lowest, $1.tag), max($0.highest, $1.tag))
-        //}
-        
-        /*
-        var minMax = reduce(subviews, startValues) {
-            $1 is T2GCell ? (min($0.lowest, $1.tag), max($0.highest, $1.tag)) : $0
-        }
-        */
-        
-        //var minMax:(lowest: Int, highest: Int) = subviews.reduce(startValues) { prev, next in (next as? T2GCell).map { (min(prev.lowest, $0.tag), max(prev.highest, $0.tag)) } ?? prev }
-        
-        ///
-        //let subDate: NSDate = NSDate()
-        ///
         
         var lowest = Int.max
         var highest = Int.min
@@ -473,17 +474,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 highest = highest < cell.tag ? cell.tag : highest
             }
         }
-        
-        ///
-        //let endDate: NSDate = NSDate()
-        ///
-        
-//        let time1 = subDate.timeIntervalSinceDate(startDate) * 1000
-//        let time2 = endDate.timeIntervalSinceDate(subDate) * 1000
-//        let timeString = String(format: "1: %.5f | 2: %.5f", time1, time2)
-//        println(timeString)
-//        println("MINF: \(minMax.lowest), MAXF: \(minMax.highest) | MIN: \(lowest), MAX: \(highest)")
-        //println("\(lowest) to \(highest)")
         
         return (lowest, highest)
     }

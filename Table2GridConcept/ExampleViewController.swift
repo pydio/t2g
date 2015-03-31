@@ -69,8 +69,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
-        self.modelArray.removeAtIndex(indexPath.row)
-        self.removeRowAtIndexPath(indexPath)
+        
+        self.modelArray.insert(42, atIndex: indexPath.row + 1)
+        let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
+        self.insertRowAtIndexPath(indexPath)
+        
+        
+        //self.modelArray.removeAtIndex(indexPath.row)
+        //self.removeRowAtIndexPath(indexPath)
     }
 }
 
