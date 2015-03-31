@@ -275,21 +275,19 @@ class T2GCell: UIView, UIScrollViewDelegate {
     //MARK: - Scroll view delegate methods
     
     func handleScrollEnd(scrollView: UIScrollView) {
-        if self.swipeDirection == .Right {
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                scrollView.scrollRectToVisible(CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: true)
-            }, completion: { (complete) -> Void in
+        let x = self.swipeDirection == .Right ? 0 : self.frame.size.width
+        let frame = CGRectMake(x, 0, scrollView.frame.size.width, scrollView.frame.size.height)
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            scrollView.scrollRectToVisible(frame, animated: false)
+        }, completion: { (complete) -> Void in
+            if self.swipeDirection == .Right {
                 self.delegate?.didCellClose(self.tag)
-                println()
-            })
-        } else {
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                scrollView.scrollRectToVisible(CGRectMake(self.frame.size.width, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: false)
-            }, completion: { (complete) -> Void in
+            } else {
                 self.delegate?.didCellOpen(self.tag)
                 self.moveButtonsInHierarchy(shouldHide: false)
-            })
-        }
+            }
+        })
     }
     
     func moveButtonsInHierarchy(#shouldHide: Bool) {
