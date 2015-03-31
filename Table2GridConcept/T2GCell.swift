@@ -87,7 +87,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
         if self.scrollView!.contentOffset.x != 0 {
-            self.moveButtonsInHierarchy(true)
+            self.moveButtonsInHierarchy(shouldHide: true)
             self.scrollView!.contentOffset.x = 0
         }
         
@@ -145,7 +145,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     }
     
     func closeCell() {
-        self.moveButtonsInHierarchy(true)
+        self.moveButtonsInHierarchy(shouldHide: true)
         self.swipeDirection = .Right
         self.handleScrollEnd(self.scrollView!)
     }
@@ -276,18 +276,26 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func handleScrollEnd(scrollView: UIScrollView) {
         if self.swipeDirection == .Right {
-            scrollView.scrollRectToVisible(CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: true)
-            self.delegate?.didCellClose(self.tag)
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                scrollView.scrollRectToVisible(CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: true)
+            }, completion: { (complete) -> Void in
+                self.delegate?.didCellClose(self.tag)
+                println()
+            })
         } else {
-            scrollView.scrollRectToVisible(CGRectMake(self.frame.size.width, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: true)
-            self.delegate?.didCellOpen(self.tag)
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                scrollView.scrollRectToVisible(CGRectMake(self.frame.size.width, 0, scrollView.frame.size.width, scrollView.frame.size.height), animated: false)
+            }, completion: { (complete) -> Void in
+                self.delegate?.didCellOpen(self.tag)
+                self.moveButtonsInHierarchy(shouldHide: false)
+            })
         }
     }
     
-    func moveButtonsInHierarchy(hide: Bool) {
+    func moveButtonsInHierarchy(#shouldHide: Bool) {
         for index in 0...3 {
             if let view = self.viewWithTag(70 + index) as? T2GCellButton {
-                if hide {
+                if shouldHide {
                     self.sendSubviewToBack(view)
                 } else {
                     self.bringSubviewToFront(view)
@@ -299,14 +307,16 @@ class T2GCell: UIView, UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.delegate?.cellStartedSwiping(self.tag)
         
-        self.moveButtonsInHierarchy(true)
+        self.moveButtonsInHierarchy(shouldHide: true)
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
+            /*
             if scrollView.contentOffset.x != 0 {
                 self.moveButtonsInHierarchy(false)
             }
+            */
             self.handleScrollEnd(scrollView)
         }
     }
@@ -317,7 +327,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         if self.swipeDirection == .Left {
-            self.moveButtonsInHierarchy(false)
+            self.moveButtonsInHierarchy(shouldHide: false)
         }
     }
     
