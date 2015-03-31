@@ -10,8 +10,14 @@ import UIKit
 
 class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     
+    var modelArray: [Int] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for index in 0...127 {
+            modelArray.append(index)
+        }
         
         self.delegate = self
         //self.isHidingEnabled = false
@@ -27,7 +33,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     
     func cellForIndexPath(indexPath: NSIndexPath) -> T2GCell {
         let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: indexPath.row)
-        let view = T2GCell(header: "R: \(indexPath.row) | T: \(indexPath.row + 333)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+        let view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + 333)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
         view.setupButtons(indexPath.row%5, mode: self.layoutMode)
         return view
     }
@@ -37,7 +43,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func numberOfCellsInSection(section: Int) -> Int {
-        return 1024
+        return self.modelArray.count
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
@@ -63,6 +69,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
+        self.modelArray.removeAtIndex(indexPath.row)
         self.removeRowAtIndexPath(indexPath)
     }
 }
