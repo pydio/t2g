@@ -6,7 +6,6 @@ Implementation of table view that is switchable to collection view along with al
 
 0. Reload function
 1. (C)(R)U(D) functions
-    - Add animation
     - Update animation (loading animation)
 3. Assigning functions to buttons
 4. Parametrize all possible features
