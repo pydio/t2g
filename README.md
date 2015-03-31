@@ -15,4 +15,4 @@ Implementation of table view that is switchable to collection view along with al
 6. API naming cleanup
 7. Proper licence (Apache 2.0 / BSD / MIT)
 8. UISplitViewController implementation
-9. Manual
+9. Manual (+ comments)
