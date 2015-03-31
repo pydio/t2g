@@ -111,14 +111,21 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func insertRowWithTag(tag: Int) -> Int {
+    func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
             let cellView = self.delegate.cellForIndexPath(NSIndexPath(forRow: tag - 333, inSection: 0))
             cellView.tag = tag
             cellView.delegate = self
+            cellView.alpha = animated ? 0 : 1
             self.scrollView.addSubview(cellView)
+            if animated {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    cellView.alpha = 1.0
+                })
+            }
+            
             return cellView.tag
         }
     }
@@ -128,7 +135,19 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         let viewX = (self.view.frame.size.width - viewWidth) / 2
         let viewHeight = self.layoutMode == .Collection ? 100 : 64
         let divisor = self.layoutMode == .Collection ? 3 : 1
-        let lineCount = Int(ceil(Double(self.delegate.numberOfCellsInSection(0) / divisor)))
+        let lineCount = Int(ceil(Double((self.delegate.numberOfCellsInSection(0) - 1) / divisor)))
+        let ypsilon = CGFloat(viewX) + CGFloat(lineCount * (viewHeight + 12))
+        let height = ypsilon + CGFloat(viewHeight) + CGFloat(12.0)
+        
+        return CGSize(width: self.view.frame.size.width, height: height)
+    }
+    
+    func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
+        let viewWidth = self.view.frame.size.width * 0.9
+        let viewX = (self.view.frame.size.width - viewWidth) / 2
+        let viewHeight = mode == .Collection ? 100 : 64
+        let divisor = mode == .Collection ? 3 : 1
+        let lineCount = Int(ceil(Double((self.delegate.numberOfCellsInSection(0) - 1) / divisor)))
         let ypsilon = CGFloat(viewX) + CGFloat(lineCount * (viewHeight + 12))
         let height = ypsilon + CGFloat(viewHeight) + CGFloat(12.0)
         
@@ -226,21 +245,31 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     func transformView() {
         let collectionClosure = {() -> T2GLayoutMode in
             let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
-            let from = (indicesExtremes.highest) + 1
-            let to = (indicesExtremes.highest) + 10
+            var from = (indicesExtremes.highest) + 1
+            if from > self.delegate.numberOfCellsInSection(0) {
+                from = self.delegate.numberOfCellsInSection(0) - 1 + 333
+            }
+            
+            var to = (indicesExtremes.highest) + 10
+            if to > self.delegate.numberOfCellsInSection(0) {
+                to = self.delegate.numberOfCellsInSection(0) - 1 + 333
+            }
+            
             
             for index in from...to {
                 self.insertRowWithTag(index)
             }
-
+            
             return .Collection
         }
         
         let mode = self.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
-        
+        self.scrollView.contentSize = self.contentSizeForMode(mode)
+        self.displayMissingCells(self.layoutMode)
         self.displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
+            
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let frame = self.frameForCell(mode, yOffset: 12, index: cell.tag - 333)
@@ -259,24 +288,43 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             }
             
         }) { (Bool) -> Void in
-            self.scrollView.contentSize = self.contentSizeForCurrentMode()
+            //self.scrollView.contentSize = self.contentSizeForCurrentMode()
             self.performSubviewCleanup()
         }
         
         self.layoutMode = mode
     }
     
+    //TODO: Hír
     func removeRowAtIndexPath(indexPath: NSIndexPath) {
         if let view = self.scrollView!.viewWithTag(indexPath.row + 333) as? T2GCell {
             view.closeCell()
             
             UIView.animateWithDuration(0.6, animations: { () -> Void in
-                view.frame = CGRectMake(view.frame.origin.x - 30, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                view.frame = CGRectMake(view.frame.origin.x - 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
             }, completion: { (complete) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    view.frame = CGRectMake(self.scrollView.bounds.width + 20, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                    view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
                 }, completion: { (complete2) -> Void in
-                    println("done")
+                    view.removeFromSuperview()
+                    
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        for cell in self.scrollView.subviews {
+                            if cell.tag > view.tag {
+                                if let c = cell as? T2GCell {
+                                    let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 - 1)
+                                    c.frame = newFrame
+                                    c.tag = c.tag - 1
+                                }
+                            }
+                        }
+                    }, completion: { (complete3) -> Void in
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
+                        }, completion: { (complete) -> Void in
+                            self.displayMissingCells(self.layoutMode)
+                        })
+                    })
                 })
             })
         }
@@ -330,7 +378,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         let extremes = self.firstAndLastTags(scrollView.subviews)
         let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
         let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
-        let edgeCondition = self.scrollDirection == .Up ? 333 : self.delegate.numberOfCellsInSection(0) + 333
+        let edgeCondition = self.scrollDirection == .Up ? 333 : self.delegate.numberOfCellsInSection(0) + 333 - 1
         
         if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
             if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
@@ -359,7 +407,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     func displayMissingCells(mode: T2GLayoutMode) {
         let indices = self.indicesForVisibleCells(mode, yOffset: 12)
         for index in indices[0]...indices[indices.count - 1] {
-            self.insertRowWithTag(index + 333)
+            self.insertRowWithTag(index + 333, animated: true)
         }
     }
     
