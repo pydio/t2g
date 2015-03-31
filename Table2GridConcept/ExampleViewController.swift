@@ -50,6 +50,11 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
         return ""
     }
     
+    func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
+        cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + 333)"
+        cell.detailLabel?.text = "\(indexPath)"
+    }
+    
     /// View methods
     
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
@@ -69,14 +74,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
-        
-        self.modelArray.insert(42, atIndex: indexPath.row + 1)
-        let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
-        self.insertRowAtIndexPath(indexPath)
-        
-        
-        //self.modelArray.removeAtIndex(indexPath.row)
-        //self.removeRowAtIndexPath(indexPath)
+        if buttonIndex == 0 {
+            self.modelArray.removeAtIndex(indexPath.row)
+            self.removeRowAtIndexPath(indexPath)
+        } else {
+            self.modelArray.insert(42, atIndex: indexPath.row + 1)
+            let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
+            self.insertRowAtIndexPath(indexPath)
+        }
     }
 }
 

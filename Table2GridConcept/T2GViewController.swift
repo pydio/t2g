@@ -15,6 +15,7 @@ protocol T2GViewControllerDelegate {
     func numberOfSectionsInT2GView() -> Int
     func numberOfCellsInSection(section: Int) -> Int
     func titleForHeaderInSection(section: Int) -> String?
+    func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath)
     
     /// View methods
     
@@ -119,6 +120,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                         let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 + 1)
                         c.frame = newFrame
                         c.tag = c.tag + 1
+                        self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - 333, inSection: 0))
                     }
                 }
             }
@@ -335,6 +337,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                                     let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 - 1)
                                     c.frame = newFrame
                                     c.tag = c.tag - 1
+                                    self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - 333, inSection: 0))
                                 }
                             }
                         }
