@@ -126,6 +126,43 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
         
         self.toggleMultipleChoiceMode(!self.isEditingModeActive)
+        self.toggleToolbar()
+    }
+    
+    func moveBarButtonPressed() {
+        println("move")
+    }
+    
+    func deleteBarButtonPressed() {
+        for key in self.editingModeSelection.keys {
+            if self.editingModeSelection[key] == true {
+                self.removeRowAtIndexPath(NSIndexPath(forRow: key, inSection: 0))
+            }
+        }
+    }
+    
+    func toggleToolbar() {
+        if let bar = self.view.viewWithTag(777777) {
+            bar.removeFromSuperview()
+            self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
+        } else {
+            let bar = UIToolbar(frame: CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44))
+            bar.tag = 777777
+            bar.translucent = false
+            
+            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: "moveBarButtonPressed")
+            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: "deleteBarButtonPressed")
+            let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+            bar.items = [leftItem, space, rightItem]
+            
+            self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, self.scrollView.contentSize.height + 44.0)
+            bar.alpha = 0.0
+            self.view.addSubview(bar)
+            
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                bar.alpha = 1.0
+            })
+        }
     }
     
     func toggleMultipleChoiceMode(flag: Bool) {
