@@ -332,6 +332,11 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
+            if let bar = self.view.viewWithTag(777777) as? UIToolbar {
+                let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
+                bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
+            }
+            
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: cell.tag - 333)
