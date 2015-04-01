@@ -55,7 +55,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.backgroundView!.backgroundColor = .lightGrayColor()
         self.scrollView!.addSubview(self.backgroundView!)
         
-        //let imageFrame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
         let imageFrame = CGRectMake(0, 0, 64 + 2, 64 + 2)
         self.imageView = UIView(frame: imageFrame)
         self.imageView!.backgroundColor = .blackColor()
@@ -86,17 +85,91 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
     }
     
-    func moveAllCrap(diff: CGFloat) {
-        self.backgroundColor = .clearColor()
+    
+    func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
+        if self.scrollView!.contentOffset.x != 0 {
+            self.moveButtonsInHierarchy(shouldHide: true)
+            self.scrollView!.contentOffset.x = 0
+        }
         
-        for v in self.subviews {
-            if let v2 = v as? UIView {
-                let frame = CGRectMake(v.frame.origin.x + diff, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
-                v2.frame = frame
+        self.frame = frame
+        self.scrollView!.frame = CGRectMake(-1, -1, frame.size.width + 2, frame.size.height + 2)
+        self.backgroundView!.frame = CGRectMake(0, 0, frame.size.width + 2, frame.size.height + 2)
+        self.scrollView!.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
+        
+        self.rearrangeButtons(mode)
+        
+        if let image = self.imageView {
+            if mode == .Table {
+                image.frame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
+                
+                let dimensions = self.framesForLabels(frame)
+                
+                self.headerLabel!.frame = dimensions.header
+                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
+                
+                self.detailLabel!.frame = dimensions.detail
+                self.detailLabel!.alpha = 1
+            } else {
+                let x = (self.frame.width - image.frame.width) / 2
+                let y = frame.size.height - image.frame.height - 6
+                image.frame = CGRectMake(x, y, image.frame.width, image.frame.height)
+                
+                let headerFrame = CGRectMake(0, 0, frame.size.width + 2, y - 2)
+                self.headerLabel!.frame = headerFrame
+                self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
+                
+                self.detailLabel!.alpha = 0
             }
         }
         
+        /// If in editing mode
+        if let button = self.viewWithTag(100000) {
+            if mode == .Table {
+                for v in self.subviews {
+                    if let v2 = v as? UIView {
+                        if v2.tag != button.tag {
+                            let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                            v2.frame = frame
+                        }
+                    }
+                }
+            }
+        }
     }
+    
+    func setupButtons(count: Int, mode: T2GLayoutMode) {
+        self.buttonCount = count
+        
+        let coordinateData = self.coordinatesForButtons(count, mode: mode)
+        let origins = coordinateData.origins
+        
+        for index in 0..<count {
+            let point = origins[index]
+            let view = T2GCellButton(frame: point)
+            view.tag = 70 + index
+            view.normalBackgroundColor = .blackColor()
+            view.highlightedBackgroundColor = .lightGrayColor()
+            view.setup()
+            view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.addSubview(view)
+            self.sendSubviewToBack(view)
+        }
+        
+        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
+    }
+    
+    func closeCell() {
+        self.moveButtonsInHierarchy(shouldHide: true)
+        self.swipeDirection = .Right
+        self.handleScrollEnd(self.scrollView!)
+    }
+    
+    func buttonSelected(sender: T2GCellButton) {
+        self.delegate?.didSelectButton(self.tag - 333, index: sender.tag - 70)
+    }
+    
+    //MARK: - Multiple choice toggle
     
     func toggleMultipleChoice(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
         if mode == .Collection {
@@ -105,7 +178,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 let whiteOverlay = UIView(frame: frame)
                 whiteOverlay.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.4)
                 whiteOverlay.tag = 22222
-                
                 
                 let size = frame.size.height * 0.35
                 let x = frame.size.width - size - 5.0
@@ -128,12 +200,12 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     whiteOverlay.alpha = 1.0
                     whiteOverlay.addSubview(button)
-                }, completion: { (finished) -> Void in
-                    UIView.animateWithDuration(0.15, animations: { () -> Void in
-                        button.alpha = 1.0
-                        button.setNeedsDisplay()
-                        button.frame = CGRectMake(x, y, size, size)
-                    })
+                    }, completion: { (finished) -> Void in
+                        UIView.animateWithDuration(0.15, animations: { () -> Void in
+                            button.alpha = 1.0
+                            button.setNeedsDisplay()
+                            button.frame = CGRectMake(x, y, size, size)
+                        })
                 })
                 
             } else {
@@ -148,16 +220,16 @@ class T2GCell: UIView, UIScrollViewDelegate {
                             
                             button.frame = CGRectMake(x, y, originSize, originSize)
                         }
-                    }, completion: { (finished) -> Void in
-                        if let button = self.viewWithTag(100000) as? T2GCheckboxButton {
-                            button.removeFromSuperview()
-                        }
-                        
-                        UIView.animateWithDuration(0.2, animations: { () -> Void in
-                            whiteOverlay.alpha = 0.0
                         }, completion: { (finished) -> Void in
-                            whiteOverlay.removeFromSuperview()
-                        })
+                            if let button = self.viewWithTag(100000) as? T2GCheckboxButton {
+                                button.removeFromSuperview()
+                            }
+                            
+                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                whiteOverlay.alpha = 0.0
+                                }, completion: { (finished) -> Void in
+                                    whiteOverlay.removeFromSuperview()
+                            })
                     })
                 }
             }
@@ -219,90 +291,12 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             button.alpha = 1.0
-        }, completion: { (complete) -> Void in
-            self.bringSubviewToFront(button)
+            }, completion: { (complete) -> Void in
+                self.bringSubviewToFront(button)
         })
     }
     
-    func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
-        if self.scrollView!.contentOffset.x != 0 {
-            self.moveButtonsInHierarchy(shouldHide: true)
-            self.scrollView!.contentOffset.x = 0
-        }
-        
-        self.frame = frame
-        self.scrollView!.frame = CGRectMake(-1, -1, frame.size.width + 2, frame.size.height + 2)
-        self.backgroundView!.frame = CGRectMake(0, 0, frame.size.width + 2, frame.size.height + 2)
-        self.scrollView!.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
-        
-        self.rearrangeButtons(mode)
-        
-        if let image = self.imageView {
-            if mode == .Table {
-                image.frame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
-                
-                let dimensions = self.framesForLabels(frame)
-                
-                self.headerLabel!.frame = dimensions.header
-                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
-                
-                self.detailLabel!.frame = dimensions.detail
-                self.detailLabel!.alpha = 1
-            } else {
-                let x = (self.frame.width - image.frame.width) / 2
-                let y = frame.size.height - image.frame.height - 6
-                image.frame = CGRectMake(x, y, image.frame.width, image.frame.height)
-                
-                let headerFrame = CGRectMake(0, 0, frame.size.width + 2, y - 2)
-                self.headerLabel!.frame = headerFrame
-                self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
-                
-                self.detailLabel!.alpha = 0
-            }
-        }
-        
-        if let button = self.viewWithTag(100000) {
-            if mode == .Table {
-                for v in self.subviews {
-                    if let v2 = v as? UIView {
-                        if v2.tag != button.tag {
-                            let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
-                            v2.frame = frame
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func setupButtons(count: Int, mode: T2GLayoutMode) {
-        self.buttonCount = count
-        
-        let coordinateData = self.coordinatesForButtons(count, mode: mode)
-        let origins = coordinateData.origins
-        
-        for index in 0..<count {
-            let point = origins[index]
-            let view = T2GCellButton(frame: point)
-            view.tag = 70 + index
-            view.normalBackgroundColor = .blackColor()
-            view.highlightedBackgroundColor = .lightGrayColor()
-            view.setup()
-            view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
-            self.addSubview(view)
-            self.sendSubviewToBack(view)
-        }
-        
-        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
-    }
-    
-    func closeCell() {
-        self.moveButtonsInHierarchy(shouldHide: true)
-        self.swipeDirection = .Right
-        self.handleScrollEnd(self.scrollView!)
-    }
-    
-    //MARK: - Private API
+    //MARK: - Helper methods
     
     func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (origins: [CGRect], offsetMultiplier: CGFloat) {
         let buttonSize: CGFloat = 16.0
@@ -378,10 +372,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
         return (coords, multiplier)
     }
     
-    func buttonSelected(sender: T2GCellButton) {
-        self.delegate?.didSelectButton(self.tag - 333, index: sender.tag - 70)
-    }
-    
     func rearrangeButtons(mode: T2GLayoutMode) {
         let coordinateData = self.coordinatesForButtons(self.buttonCount, mode: mode)
         let origins = coordinateData.origins
@@ -397,18 +387,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
     }
     
-    func fontSize(frame: CGRect) -> CGFloat {
-        let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        var dummyFont = UIFont.systemFontOfSize(12)
-        
-        let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
-        let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))
-        
-        let pointsPerPixel = dummyFont.pointSize / size.height
-        return frame.size.height * pointsPerPixel
-    }
-    
-    func framesForLabels(frame: CGRect) -> (header: CGRect, detail: CGRect) {
+    private func framesForLabels(frame: CGRect) -> (header: CGRect, detail: CGRect) {
         // Vertical spacing should be like |--H--D--| -> three equal spaces
         
         let headerHeight = frame.size.height * 0.45
@@ -423,6 +402,18 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         return (headerFrame, detailFrame)
     }
+    
+    private func fontSize(frame: CGRect) -> CGFloat {
+        let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        var dummyFont = UIFont.systemFontOfSize(12)
+        
+        let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
+        let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))
+        
+        let pointsPerPixel = dummyFont.pointSize / size.height
+        return frame.size.height * pointsPerPixel
+    }
+    
     
     //MARK: - Scroll view delegate methods
     
