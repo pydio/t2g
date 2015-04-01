@@ -94,5 +94,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
             self.toggleMultipleChoiceMode(!self.isEditingModeActive)
         }
     }
+    
+    func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
+        self.modelArray.removeAtIndex(indexPath.row)
+    }
 }
 

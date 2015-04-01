@@ -25,6 +25,7 @@ protocol T2GViewControllerDelegate {
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
+    func willRemoveCellAtIndexPath(indexPath: NSIndexPath)
 }
 
 enum T2GLayoutMode {
@@ -137,7 +138,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     func deleteBarButtonPressed() {
         for key in self.editingModeSelection.keys {
             if self.editingModeSelection[key] == true {
-                self.removeRowAtIndexPath(NSIndexPath(forRow: key, inSection: 0))
+                self.removeRowAtIndexPath(NSIndexPath(forRow: key, inSection: 0), notifyDelegate: true)
             }
         }
         
@@ -415,8 +416,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.layoutMode = mode
     }
     
-    func removeRowAtIndexPath(indexPath: NSIndexPath) {
+    func removeRowAtIndexPath(indexPath: NSIndexPath, notifyDelegate: Bool = false) {
         if let view = self.scrollView!.viewWithTag(indexPath.row + 333) as? T2GCell {
+            if notifyDelegate {
+               self.delegate.willRemoveCellAtIndexPath(indexPath)
+            }
+            
             view.closeCell()
             
             UIView.animateWithDuration(0.6, animations: { () -> Void in
