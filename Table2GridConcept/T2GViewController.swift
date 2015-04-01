@@ -63,6 +63,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     var editingModeSelection = [Int : Bool]()
     
+    //TODO: Calculate the number based on the screen size
     private var visibleCellCount: Int {
         get {
             if self.layoutMode == .Table {
@@ -174,13 +175,19 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
                     let isSelected = self.editingModeSelection[cell.tag - 333] ?? false
-                    cell.toggleMultipleChoice(flag, selected: isSelected, animated: true)
+                    cell.toggleMultipleChoice(flag, mode: self.layoutMode, selected: isSelected, animated: true)
                 }
             }
         }
         
         if self.layoutMode == .Collection {
-            self.transformViewWithCompletion(completionClosure)
+            //self.transformViewWithCompletion(completionClosure)
+            
+            
+            completionClosure()
+            
+            
+            
         } else {
             completionClosure()
         }
@@ -217,7 +224,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             
             if self.isEditingModeActive {
                 let isSelected = self.editingModeSelection[cellView.tag - 333] ?? false
-                cellView.toggleMultipleChoice(true, selected: isSelected, animated: false)
+                cellView.toggleMultipleChoice(true, mode: self.layoutMode, selected: isSelected, animated: false)
             }
             
             cellView.delegate = self

@@ -98,39 +98,104 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
     }
     
-    func toggleMultipleChoice(flag: Bool, selected: Bool, animated: Bool) {
-        let duration = animated ? 0.3 : 0.0
-        
-        if flag {
-            self.backgroundColor = .clearColor()
-        }
-        
-        UIView.animateWithDuration(duration, animations: { () -> Void in
-            let diff: CGFloat = flag ? 50.0 : -50.0
-            
-            let moveClosure = { () -> Void in
-                for v in self.subviews {
-                    if let v2 = v as? UIView {
-                        let frame = CGRectMake(v.frame.origin.x + diff, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
-                        v2.frame = frame
-                    }
+    func toggleMultipleChoice(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
+        if mode == .Collection {
+            if flag {
+                let frame = CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.width + 2)
+                let whiteOverlay = UIView(frame: frame)
+                whiteOverlay.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.4)
+                whiteOverlay.tag = 22222
+                
+                
+                let size = frame.size.height * 0.35
+                let x = frame.size.width - size - 5.0
+                let y = frame.size.height - size - 5.0
+                
+                let originSize: CGFloat = 2.0
+                let originX = x + CGFloat((size - originSize) / CGFloat(2.0))
+                let originY = y + CGFloat((size - originSize) / CGFloat(2.0))
+                
+                let buttonFrame = CGRectMake(originX, originY, originSize, originSize)
+                
+                let button = T2GCheckboxButton(frame: buttonFrame)
+                button.isSelected = selected
+                button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+                button.tag = 100000
+                
+                whiteOverlay.alpha = 0.0
+                self.addSubview(whiteOverlay)
+                
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    whiteOverlay.alpha = 1.0
+                    whiteOverlay.addSubview(button)
+                }, completion: { (finished) -> Void in
+                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                        button.alpha = 1.0
+                        button.setNeedsDisplay()
+                        button.frame = CGRectMake(x, y, size, size)
+                    })
+                })
+                
+            } else {
+                if let whiteOverlay = self.viewWithTag(22222) {
+                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                        if let button = self.viewWithTag(100000) {
+                            
+                            let size = button.frame.size.width
+                            let originSize: CGFloat = 2.0
+                            let x = button.frame.origin.x + CGFloat((size - originSize) / CGFloat(2.0))
+                            let y = button.frame.origin.y + CGFloat((size - originSize) / CGFloat(2.0))
+                            
+                            button.frame = CGRectMake(x, y, originSize, originSize)
+                        }
+                    }, completion: { (finished) -> Void in
+                        if let button = self.viewWithTag(100000) as? T2GCheckboxButton {
+                            button.removeFromSuperview()
+                        }
+                        
+                        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                            whiteOverlay.alpha = 0.0
+                        }, completion: { (finished) -> Void in
+                            whiteOverlay.removeFromSuperview()
+                        })
+                    })
                 }
             }
+            
+        } else {
+            let duration = animated ? 0.3 : 0.0
             
             if flag {
-                moveClosure()
-                self.addMultipleChoiceButton(selected)
-            } else {
-                if let button = self.viewWithTag(100000) {
-                    button.removeFromSuperview()
+                self.backgroundColor = .clearColor()
+            }
+            
+            UIView.animateWithDuration(duration, animations: { () -> Void in
+                let diff: CGFloat = flag ? 50.0 : -50.0
+                
+                let moveClosure = { () -> Void in
+                    for v in self.subviews {
+                        if let v2 = v as? UIView {
+                            let frame = CGRectMake(v.frame.origin.x + diff, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                            v2.frame = frame
+                        }
+                    }
                 }
-                moveClosure()
-            }
-        }, completion: { (finished: Bool) -> Void in
-            if !flag && self.viewWithTag(100000) == nil {
-                self.backgroundColor = .grayColor()
-            }
-        })
+                
+                if flag {
+                    moveClosure()
+                    self.addMultipleChoiceButton(selected)
+                } else {
+                    if let button = self.viewWithTag(100000) {
+                        button.removeFromSuperview()
+                    }
+                    moveClosure()
+                }
+                }, completion: { (finished: Bool) -> Void in
+                    if !flag && self.viewWithTag(100000) == nil {
+                        self.backgroundColor = .grayColor()
+                    }
+            })
+        }
     }
     
     func multipleChoiceButtonPressed(sender: T2GCheckboxButton) {
@@ -197,11 +262,13 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
         
         if let button = self.viewWithTag(100000) {
-            for v in self.subviews {
-                if let v2 = v as? UIView {
-                    if v2.tag != button.tag {
-                        let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
-                        v2.frame = frame
+            if mode == .Table {
+                for v in self.subviews {
+                    if let v2 = v as? UIView {
+                        if v2.tag != button.tag {
+                            let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                            v2.frame = frame
+                        }
                     }
                 }
             }
