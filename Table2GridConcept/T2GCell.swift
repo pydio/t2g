@@ -14,6 +14,7 @@ protocol T2GCellDelegate {
     func didCellOpen(tag: Int)
     func didCellClose(tag: Int)
     func didSelectButton(tag: Int, index: Int)
+    func didSelectMultipleChoiceButton(tag: Int, selected: Bool)
 }
 
 private enum T2GCellSwipeDirection {
@@ -42,7 +43,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
-        self.backgroundColor = UIColor.yellowColor()
+        self.backgroundColor = UIColor.grayColor()
         
         self.scrollView = UIScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
         self.scrollView!.backgroundColor = .clearColor()
@@ -51,7 +52,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.scrollView!.delegate = self
     
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
-        self.backgroundView!.backgroundColor = .grayColor()
+        self.backgroundView!.backgroundColor = .lightGrayColor()
         self.scrollView!.addSubview(self.backgroundView!)
         
         //let imageFrame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
@@ -83,6 +84,79 @@ class T2GCell: UIView, UIScrollViewDelegate {
         if mode == .Collection {
             self.changeFrameParadigm(.Collection, frame: self.frame)
         }
+    }
+    
+    func moveAllCrap(diff: CGFloat) {
+        self.backgroundColor = .clearColor()
+        
+        for v in self.subviews {
+            if let v2 = v as? UIView {
+                let frame = CGRectMake(v.frame.origin.x + diff, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                v2.frame = frame
+            }
+        }
+        
+    }
+    
+    func toggleMultipleChoice(flag: Bool, selected: Bool, animated: Bool) {
+        let duration = animated ? 0.3 : 0.0
+        
+        if flag {
+            self.backgroundColor = .clearColor()
+        }
+        
+        UIView.animateWithDuration(duration, animations: { () -> Void in
+            let diff: CGFloat = flag ? 50.0 : -50.0
+            
+            let moveClosure = { () -> Void in
+                for v in self.subviews {
+                    if let v2 = v as? UIView {
+                        let frame = CGRectMake(v.frame.origin.x + diff, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                        v2.frame = frame
+                    }
+                }
+            }
+            
+            if flag {
+                moveClosure()
+                self.addMultipleChoiceButton(selected)
+            } else {
+                if let button = self.viewWithTag(100000 + self.tag) {
+                    button.removeFromSuperview()
+                }
+                moveClosure()
+            }
+        }, completion: { (finished: Bool) -> Void in
+            if !flag && self.viewWithTag(100000 + self.tag) == nil {
+                self.backgroundColor = .grayColor()
+            }
+        })
+    }
+    
+    func multipleChoiceButtonPressed(sender: T2GCheckboxButton) {
+        sender.isSelected = !sender.isSelected
+        self.delegate?.didSelectMultipleChoiceButton(self.tag, selected: sender.isSelected)
+    }
+    
+    func addMultipleChoiceButton(selected: Bool) {
+        let size = self.frame.size.height * 0.5
+        let x = CGFloat(0.0) //(-self.frame.origin.x - size) / 2
+        let y = (self.frame.size.height - size) / 2
+        let frame = CGRectMake(x, y, size, size)
+        
+        let button = T2GCheckboxButton(frame: frame)
+        button.isSelected = selected
+        button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.tag = 100000 + self.tag
+        button.alpha = 0.0
+        self.addSubview(button)
+        self.sendSubviewToBack(button)
+        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            button.alpha = 1.0
+        }, completion: { (complete) -> Void in
+            self.bringSubviewToFront(button)
+        })
     }
     
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
@@ -121,6 +195,17 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 self.detailLabel!.alpha = 0
             }
         }
+        
+        if let button = self.viewWithTag(100000 + self.tag) {
+            for v in self.subviews {
+                if let v2 = v as? UIView {
+                    if v2.tag != button.tag {
+                        let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                        v2.frame = frame
+                    }
+                }
+            }
+        }
     }
     
     func setupButtons(count: Int, mode: T2GLayoutMode) {
@@ -133,8 +218,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
             let point = origins[index]
             let view = T2GCellButton(frame: point)
             view.tag = 70 + index
-            view.normalBackgroundColor = .redColor()
-            view.highlightedBackgroundColor = .blackColor()
+            view.normalBackgroundColor = .blackColor()
+            view.highlightedBackgroundColor = .lightGrayColor()
             view.setup()
             view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)

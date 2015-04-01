@@ -16,6 +16,7 @@
 		E04158571ABC44AF0094EE84 /* Table2GridConceptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158561ABC44AF0094EE84 /* Table2GridConceptTests.swift */; };
 		E04158611ABC479B0094EE84 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158601ABC479B0094EE84 /* Model.swift */; };
 		E04158631ABC7E5D0094EE84 /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158621ABC7E5D0094EE84 /* T2GCell.swift */; };
+		E08DB9FA1ACC081100C9EB59 /* T2GCheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08DB9F91ACC081100C9EB59 /* T2GCheckboxButton.swift */; };
 		E0FCE2881AC19E310081D525 /* T2GCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FCE2871AC19E310081D525 /* T2GCellButton.swift */; };
 		E0FCE28A1AC30C4C0081D525 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +45,7 @@
 		E04158561ABC44AF0094EE84 /* Table2GridConceptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table2GridConceptTests.swift; sourceTree = "<group>"; };
 		E04158601ABC479B0094EE84 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		E04158621ABC7E5D0094EE84 /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCell.swift; sourceTree = "<group>"; };
+		E08DB9F91ACC081100C9EB59 /* T2GCheckboxButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCheckboxButton.swift; sourceTree = "<group>"; };
 		E0FCE2871AC19E310081D525 /* T2GCellButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellButton.swift; sourceTree = "<group>"; };
 		E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				E04158621ABC7E5D0094EE84 /* T2GCell.swift */,
+				E08DB9F91ACC081100C9EB59 /* T2GCheckboxButton.swift */,
 				E0FCE2871AC19E310081D525 /* T2GCellButton.swift */,
 				E020748C1AC041CB00A4F857 /* T2GScrollController.swift */,
 				E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */,
@@ -237,6 +240,7 @@
 			files = (
 				E04158431ABC44AF0094EE84 /* ExampleViewController.swift in Sources */,
 				E04158631ABC7E5D0094EE84 /* T2GCell.swift in Sources */,
+				E08DB9FA1ACC081100C9EB59 /* T2GCheckboxButton.swift in Sources */,
 				E020748D1AC041CB00A4F857 /* T2GScrollController.swift in Sources */,
 				E0FCE2881AC19E310081D525 /* T2GCellButton.swift in Sources */,
 				E04158611ABC479B0094EE84 /* Model.swift in Sources */,

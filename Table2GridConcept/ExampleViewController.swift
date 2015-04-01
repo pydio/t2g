@@ -19,8 +19,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
             modelArray.append(index)
         }
         
+        
+        
         var rightButton_add: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
-        self.navigationItem.rightBarButtonItem = rightButton_add
+        var rightButton_toggle: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: self, action: "toggleEdit")
+        
+        //self.navigationItem.rightBarButtonItem = rightButton_add
+        
+        self.navigationItem.rightBarButtonItems = [rightButton_add, rightButton_toggle]
         
         self.delegate = self
         //self.isHidingEnabled = false

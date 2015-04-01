@@ -54,7 +54,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     var lastSpeedOffset: CGPoint = CGPointMake(0, 0)
     var lastSpeedOffsetCaptureTime: NSTimeInterval = 0
     
-    var isEditingModeActive: Bool = false
+    var isEditingModeActive: Bool = false {
+        didSet {
+            if !self.isEditingModeActive {
+                self.editingModeSelection = [Int : Bool]()
+            }
+        }
+    }
     var editingModeSelection = [Int : Bool]()
     
     private var visibleCellCount: Int {
@@ -90,7 +96,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         
         self.scrollView = UIScrollView()
         //self.scrollView.delegate = self
-        self.scrollView.backgroundColor = UIColor.lightGrayColor()
+        self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0) //UIColor.lightGrayColor()
         self.view.addSubview(scrollView)
         
         // View must be added to hierarchy before setting constraints.
@@ -112,17 +118,24 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         super.didReceiveMemoryWarning()
     }
     
+    func toggleEdit() {
+        if self.openCellTag != -1 {
+            if let view = self.scrollView!.viewWithTag(self.openCellTag) as? T2GCell {
+                view.closeCell()
+            }
+        }
+        
+        self.toggleMultipleChoiceMode(!self.isEditingModeActive)
+    }
+    
     func toggleMultipleChoiceMode(flag: Bool) {
         let completionClosure = { () -> Void in
             self.isEditingModeActive = flag
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let shift = flag ? CGFloat(50) : CGFloat(-50)
-                    let frame = CGRectMake(cell.frame.origin.x + shift, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        cell.frame = frame
-                    })
+                    let isSelected = self.editingModeSelection[cell.tag - 333] ?? false
+                    cell.toggleMultipleChoice(flag, selected: isSelected, animated: true)
                 }
             }
         }
@@ -161,13 +174,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             return cell.tag
         } else {
             let cellView = self.delegate.cellForIndexPath(NSIndexPath(forRow: tag - 333, inSection: 0))
+            cellView.tag = tag
             
             if self.isEditingModeActive {
-                let frame = CGRectMake(cellView.frame.origin.x + 50, cellView.frame.origin.y, cellView.frame.size.width, cellView.frame.size.height)
-                cellView.frame = frame
+                let isSelected = self.editingModeSelection[cellView.tag - 333] ?? false
+                cellView.toggleMultipleChoice(true, selected: isSelected, animated: false)
             }
             
-            cellView.tag = tag
             cellView.delegate = self
             cellView.alpha = animated ? 0 : 1
             self.scrollView.addSubview(cellView)
@@ -533,6 +546,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     func didSelectButton(tag: Int, index: Int) {
         self.delegate.didSelectDrawerButtonAtIndex(NSIndexPath(forRow: tag, inSection: 0), buttonIndex: index)
+    }
+    
+    func didSelectMultipleChoiceButton(tag: Int, selected: Bool) {
+        self.editingModeSelection[tag - 333] = selected
     }
 
 }
