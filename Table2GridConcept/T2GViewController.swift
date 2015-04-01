@@ -139,6 +139,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 self.removeRowAtIndexPath(NSIndexPath(forRow: key, inSection: 0))
             }
         }
+        
+        self.editingModeSelection = [Int : Bool]()
     }
     
     func toggleToolbar() {

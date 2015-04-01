@@ -121,13 +121,13 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 moveClosure()
                 self.addMultipleChoiceButton(selected)
             } else {
-                if let button = self.viewWithTag(100000 + self.tag) {
+                if let button = self.viewWithTag(100000) {
                     button.removeFromSuperview()
                 }
                 moveClosure()
             }
         }, completion: { (finished: Bool) -> Void in
-            if !flag && self.viewWithTag(100000 + self.tag) == nil {
+            if !flag && self.viewWithTag(100000) == nil {
                 self.backgroundColor = .grayColor()
             }
         })
@@ -147,7 +147,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         let button = T2GCheckboxButton(frame: frame)
         button.isSelected = selected
         button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.tag = 100000 + self.tag
+        button.tag = 100000
         button.alpha = 0.0
         self.addSubview(button)
         self.sendSubviewToBack(button)
@@ -196,7 +196,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
             }
         }
         
-        if let button = self.viewWithTag(100000 + self.tag) {
+        if let button = self.viewWithTag(100000) {
             for v in self.subviews {
                 if let v2 = v as? UIView {
                     if v2.tag != button.tag {
