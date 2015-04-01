@@ -97,8 +97,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
         
         self.scrollView = UIScrollView()
-        //self.scrollView.delegate = self
-        self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0) //UIColor.lightGrayColor()
+        self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
         self.view.addSubview(scrollView)
         
         // View must be added to hierarchy before setting constraints.
@@ -120,6 +119,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         super.didReceiveMemoryWarning()
     }
     
+    //MARK: - Editing mode
+    
     func toggleEdit() {
         if self.openCellTag != -1 {
             if let view = self.scrollView!.viewWithTag(self.openCellTag) as? T2GCell {
@@ -127,7 +128,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             }
         }
         
-        self.toggleMultipleChoiceMode(!self.isEditingModeActive)
+        self.toggleEditingMode(!self.isEditingModeActive)
         self.toggleToolbar()
     }
     
@@ -169,28 +170,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
     }
     
-    func toggleMultipleChoiceMode(flag: Bool) {
-        let completionClosure = { () -> Void in
-            self.isEditingModeActive = flag
-            
-            for view in self.scrollView.subviews {
-                if let cell = view as? T2GCell {
-                    let isSelected = self.editingModeSelection[cell.tag - 333] ?? false
-                    cell.toggleMultipleChoice(flag, mode: self.layoutMode, selected: isSelected, animated: true)
-                }
-            }
-        }
+    func toggleEditingMode(flag: Bool) {
+        self.isEditingModeActive = flag
         
-        if self.layoutMode == .Collection {
-            //self.transformViewWithCompletion(completionClosure)
-            
-            
-            completionClosure()
-            
-            
-            
-        } else {
-            completionClosure()
+        for view in self.scrollView.subviews {
+            if let cell = view as? T2GCell {
+                let isSelected = self.editingModeSelection[cell.tag - 333] ?? false
+                cell.toggleMultipleChoice(flag, mode: self.layoutMode, selected: isSelected, animated: true)
+            }
         }
     }
     
@@ -249,7 +236,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 self.delegate.willRemoveCellAtIndexPath(indexPath)
             }
             
-            view.closeCell()
+            if self.openCellTag == view.tag {
+                view.closeCell()
+            }
             
             UIView.animateWithDuration(0.6, animations: { () -> Void in
                 view.frame = CGRectMake(view.frame.origin.x - 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
@@ -282,7 +271,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
     }
     
-    //MARK: Helper methods
+    //MARK: - Helper methods
     
     private func contentSizeForCurrentMode() -> CGSize {
         let viewWidth = self.view.frame.size.width * 0.9
@@ -371,7 +360,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         return res
     }
     
-    
+    //MARK: - View transformation (Table <-> Collection)
     
     func transformView() {
         self.transformViewWithCompletion() {()->Void in}

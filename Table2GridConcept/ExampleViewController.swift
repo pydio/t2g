@@ -91,7 +91,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
             let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
             self.insertRowAtIndexPath(indexPath)
         } else {
-            self.toggleMultipleChoiceMode(!self.isEditingModeActive)
+            self.toggleEditingMode(!self.isEditingModeActive)
         }
     }
     
