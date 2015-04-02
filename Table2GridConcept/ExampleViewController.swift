@@ -23,6 +23,11 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
         var rightButton_toggle: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: self, action: "toggleEdit")
         self.navigationItem.rightBarButtonItems = [rightButton_transform, rightButton_toggle]
         
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl!.tag = 987654
+        self.scrollView.addSubview(self.refreshControl!)
+        
         self.delegate = self
         //self.isHidingEnabled = false
     }
@@ -59,6 +64,18 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     /// View methods
+    
+    func cellPadding(mode: T2GLayoutMode) -> CGFloat {
+        return 12.0
+    }
+    
+    func dimensionsForCell(mode: T2GLayoutMode) -> CGSize {
+        if mode == .Collection {
+            return CGSizeMake(100, 100)
+        } else {
+            return CGSizeMake(self.view.frame.size.width * 0.9, 64.0)
+        }
+    }
     
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
