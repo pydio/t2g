@@ -73,8 +73,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                     
                     if (self.scrollDirection == .Down) {
                         // hide
-                        println("hiding")
-                        
+
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame;
                         var blackstripe = self.dummyStripeBar(navigationCtr)
@@ -90,6 +89,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         
                     } else {
                         // show
+                        println("show")
                         
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame
@@ -120,7 +120,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         if (self.lastScrollViewContentOffset > scrollView.contentOffset.y) {
                             self.scrollDirection = .Up
                             
-                            if scrollView.contentSize.height < scrollView.contentOffset.y + scrollView.frame.size.height {
+                            if scrollView.contentSize.height - 1 < scrollView.contentOffset.y + scrollView.frame.size.height {
                                 self.automaticSnapStatus == .WillSnap
                             } else {
                                 // show

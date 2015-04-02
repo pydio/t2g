@@ -5,7 +5,7 @@ Implementation of table view that is switchable to collection view along with al
 ## TODO:
 
 0. Reload function
-1. Pull2refresh
+1. Custom pull2refresh
 2. Loading cell animation
 3. Assigning functions to buttons
 4. Sections division
