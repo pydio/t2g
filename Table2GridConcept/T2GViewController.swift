@@ -11,7 +11,7 @@ import UIKit
 protocol T2GViewControllerDelegate {
     /// Datasource methods
     
-    func cellForIndexPath(indexPath: NSIndexPath) -> T2GCell
+    func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell
     func numberOfSectionsInT2GView() -> Int
     func numberOfCellsInSection(section: Int) -> Int
     func titleForHeaderInSection(section: Int) -> String?
@@ -209,7 +209,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
-            let cellView = self.delegate.cellForIndexPath(NSIndexPath(forRow: tag - 333, inSection: 0))
+            let indexPath = NSIndexPath(forRow: tag - 333, inSection: 0)
+            let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: indexPath.row)
+            let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
             
             if self.isEditingModeActive {
