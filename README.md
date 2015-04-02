@@ -13,6 +13,7 @@ Implementation of table view that is switchable to collection view along with al
     - default layout (T/G)
 5. Adjustable icon view depending on width
 6. API naming cleanup
-7. Proper licence (Apache 2.0 / BSD / MIT)
+7. Selectable rows + delegate calls
 8. UISplitViewController implementation
 9. Manual (+ comments)
+10. Proper licence (Apache 2.0 / BSD / MIT)
