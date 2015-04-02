@@ -19,7 +19,8 @@ protocol T2GViewControllerDelegate {
     
     /// View methods
     
-    //func dimensionsForRowAtIndexPath(indexPath: NSIndexPath) -> CGFloat
+    func cellPadding(mode: T2GLayoutMode) -> CGFloat
+    func dimensionsForCell(mode: T2GLayoutMode) -> CGSize
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
@@ -48,9 +49,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     var openCellTag: Int = -1
     
-    let rowHeight = 64
-    let yOffset = 12
-    let squareSize = 100
+    var refreshControl: UIControl?
     
     var lastSpeedOffset: CGPoint = CGPointMake(0, 0)
     var lastSpeedOffsetCaptureTime: NSTimeInterval = 0
@@ -80,7 +79,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             for index in 0..<self.visibleCellCount {
                 self.insertRowWithTag(index + 333)
             }
-            self.scrollView.contentSize = self.contentSizeForCurrentMode()
+            self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
         }
     }
     
@@ -99,15 +98,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.scrollView = UIScrollView()
         self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
         self.view.addSubview(scrollView)
-        
-        let refresh = UIRefreshControl()
-        let backgroundView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, refresh.frame.size.height))
-        backgroundView.backgroundColor = .greenColor()
-        refresh.addSubview(backgroundView)
-        refresh.sendSubviewToBack(backgroundView)
-        refresh.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        refresh.tag = 987654
-        self.scrollView.addSubview(refresh)
         
         // View must be added to hierarchy before setting constraints.
         self.scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -197,7 +187,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             for cell in self.scrollView.subviews {
                 if cell.tag >= (indexPath.row + 333) {
                     if let c = cell as? T2GCell {
-                        let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 + 1)
+                        let newFrame = self.frameForCell(self.layoutMode, index: c.tag - 333 + 1)
                         c.frame = newFrame
                         c.tag = c.tag + 1
                         self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - 333, inSection: 0))
@@ -219,7 +209,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             return cell.tag
         } else {
             let indexPath = NSIndexPath(forRow: tag - 333, inSection: 0)
-            let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: indexPath.row)
+            let frame = self.frameForCell(self.layoutMode, index: indexPath.row)
             let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
             
@@ -263,7 +253,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                                 for cell in self.scrollView.subviews {
                                     if cell.tag > view.tag {
                                         if let c = cell as? T2GCell {
-                                            let newFrame = self.frameForCell(self.layoutMode, yOffset: 12, index: c.tag - 333 - 1)
+                                            let newFrame = self.frameForCell(self.layoutMode, index: c.tag - 333 - 1)
                                             c.frame = newFrame
                                             c.tag = c.tag - 1
                                             self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - 333, inSection: 0))
@@ -284,62 +274,46 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     //MARK: - Helper methods
     
-    private func contentSizeForCurrentMode() -> CGSize {
-        let viewWidth = self.view.frame.size.width * 0.9
-        let viewX = (self.view.frame.size.width - viewWidth) / 2
-        let viewHeight = self.layoutMode == .Collection ? 100 : 64
-        let divisor = self.layoutMode == .Collection ? 3 : 1
-        let lineCount = Int(ceil(Double((self.delegate.numberOfCellsInSection(0) - 1) / divisor)))
-        let ypsilon = CGFloat(viewX) + CGFloat(lineCount * (viewHeight + 12))
-        let height = ypsilon + CGFloat(viewHeight) + CGFloat(12.0)
-        
-        return CGSize(width: self.view.frame.size.width, height: height)
-    }
-    
-    private func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
-        let viewWidth = self.view.frame.size.width * 0.9
-        let viewX = (self.view.frame.size.width - viewWidth) / 2
-        let viewHeight = mode == .Collection ? 100 : 64
+    func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
+        let dimensions = self.delegate.dimensionsForCell(mode)
+        let viewX = mode == .Collection ? self.delegate.cellPadding(mode) : (self.view.frame.size.width - dimensions.width) / 2
         let divisor = mode == .Collection ? 3 : 1
         let lineCount = Int(ceil(Double((self.delegate.numberOfCellsInSection(0) - 1) / divisor)))
-        let ypsilon = CGFloat(viewX) + CGFloat(lineCount * (viewHeight + 12))
-        let height = ypsilon + CGFloat(viewHeight) + CGFloat(12.0)
+        let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + self.delegate.cellPadding(mode)))
+        let height = ypsilon + dimensions.height + self.delegate.cellPadding(mode)
         
         return CGSize(width: self.view.frame.size.width, height: height)
     }
     
-    func frameForCell(mode: T2GLayoutMode, yOffset: Int = 0, index: Int = 0) -> CGRect {
-        let frame = self.view.frame
+    func frameForCell(mode: T2GLayoutMode, index: Int = 0) -> CGRect {
+        let superviewFrame = self.view.frame
+        let dimensions = self.delegate.dimensionsForCell(mode)
         
         if mode == .Collection {
-            let squareSize = 100
-            
-            let middle = (frame.size.width - CGFloat(squareSize))/2
-            let left = (middle - CGFloat(squareSize))/2
-            let right = middle + CGFloat(squareSize) + left
+            /// Assuming that the collection is square of course
+            let middle = (superviewFrame.size.width - dimensions.width) / 2
+            let left = (middle - dimensions.width) / 2
+            let right = middle + dimensions.width + left
             var xCoords = [left, middle, right]
-            
-            let yCoord = CGFloat(yOffset) + CGFloat(index / xCoords.count * (squareSize + 12))
-            let frame = CGRectMake(CGFloat(xCoords[index % xCoords.count]), yCoord, CGFloat(squareSize), CGFloat(squareSize))
+            let yCoord = self.delegate.cellPadding(mode) + (CGFloat(index / xCoords.count) * (dimensions.height + self.delegate.cellPadding(mode)))
+            let frame = CGRectMake(CGFloat(xCoords[index % xCoords.count]), yCoord, dimensions.width, dimensions.height)
             
             return frame
             
         } else {
-            let viewWidth = frame.size.width * 0.9
-            let viewX = (frame.size.width - viewWidth) / 2
-            let viewHeight = 64
-            let ypsilon = CGFloat(viewX) + CGFloat(index * (viewHeight + yOffset))
-            
-            return CGRectMake(viewX, ypsilon, viewWidth, CGFloat(viewHeight))
+            let viewX = (superviewFrame.size.width - dimensions.width) / 2
+            let ypsilon = viewX + (CGFloat(index) * (dimensions.height + self.delegate.cellPadding(mode)))
+            return CGRectMake(viewX, ypsilon, dimensions.width, dimensions.height)
         }
     }
     
-    private func indicesForVisibleCells(mode: T2GLayoutMode, yOffset: Int = 0) -> [Int] {
+    private func indicesForVisibleCells(mode: T2GLayoutMode) -> [Int] {
         let frame = self.scrollView.bounds
         var res = [Int]()
+        let dimensions = self.delegate.dimensionsForCell(mode)
         
         if mode == .Collection {
-            var firstIndex = Int(floor((frame.origin.y - 100.0) / (100.0 + 12.0))) * 3
+            var firstIndex = Int(floor((frame.origin.y - dimensions.height) / (dimensions.height + self.delegate.cellPadding(mode)))) * 3
             if firstIndex < 0 {
                 firstIndex = 0
             }
@@ -353,7 +327,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
                 res.append(index)
             }
         } else {
-            var firstIndex = Int(floor((frame.origin.y - 64.0) / (64.0 + 12.0)))
+            var firstIndex = Int(floor((frame.origin.y - dimensions.height) / (dimensions.height + self.delegate.cellPadding(mode))))
             if firstIndex < 0 {
                 firstIndex = 0
             }
@@ -408,7 +382,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.frameForCell(mode, yOffset: 12, index: cell.tag - 333)
+                    let frame = self.frameForCell(mode, index: cell.tag - 333)
                     
                     /*
                     * Not really working - TBD
@@ -454,7 +428,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.frameForCell(self.layoutMode, yOffset: 12, index: cell.tag - 333)
+                    let frame = self.frameForCell(self.layoutMode, index: cell.tag - 333)
                     cell.changeFrameParadigm(self.layoutMode, frame: frame)
                 }
             }
@@ -540,7 +514,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     func displayMissingCells(mode: T2GLayoutMode) {
-        let indices = self.indicesForVisibleCells(mode, yOffset: 12)
+        let indices = self.indicesForVisibleCells(mode)
         for index in indices[0]...indices[indices.count - 1] {
             self.insertRowWithTag(index + 333, animated: true)
         }
