@@ -100,6 +100,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
         self.view.addSubview(scrollView)
         
+        let refresh = UIRefreshControl()
+        let backgroundView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, refresh.frame.size.height))
+        backgroundView.backgroundColor = .greenColor()
+        refresh.addSubview(backgroundView)
+        refresh.sendSubviewToBack(backgroundView)
+        refresh.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        refresh.tag = 987654
+        self.scrollView.addSubview(refresh)
+        
         // View must be added to hierarchy before setting constraints.
         self.scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
         let views = ["view": self.view, "scroll_view": scrollView]

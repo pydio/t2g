@@ -50,6 +50,22 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
 
     //MARK: - Scroll view delegate
     
+    func handlePullToRefresh(sender: UIRefreshControl) {
+        //sender.attributedTitle = NSAttributedString(string: "\n Refreshing")
+    
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            NSThread.sleepForTimeInterval(1.5)
+            dispatch_async(dispatch_get_main_queue(), {
+                let formatter = NSDateFormatter()
+                formatter.dateStyle = .MediumStyle
+                let lastUpdate = String(format:"Last updated on %@", formatter.stringFromDate(NSDate()))
+                sender.attributedTitle = NSAttributedString(string: lastUpdate)
+                self.automaticSnapStatus = .WillSnap
+                sender.endRefreshing()
+            });
+        });
+    }
+    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
@@ -57,6 +73,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                     
                     if (self.scrollDirection == .Down) {
                         // hide
+                        println("hiding")
                         
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame;
@@ -143,21 +160,31 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                             // hide
                             // legacy code: && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
                             
-                            if (!(scrollView.contentOffset.y < -64.0)) {
-                                var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
-                                
-                                var barFrame = navigationCtr.navigationBar.frame
-                                if (barFrame.origin.y > -23) {
-                                    let toMove = self.lastScrollViewContentOffset - scrollView.contentOffset.y
-                                    statusBarBackgroundViewFrame?.origin.y += toMove
-                                    barFrame.origin.y += toMove
-                                } else {
-                                    var blackstripe = self.dummyStripeBar(navigationCtr)
-                                    statusBarBackgroundViewFrame?.origin.y = -44;
-                                    barFrame.origin.y = -24;
+                            let scrollHandler = { () -> Void in
+                                if (!(scrollView.contentOffset.y < -64.0)) {
+                                    var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
+                                    
+                                    var barFrame = navigationCtr.navigationBar.frame
+                                    if (barFrame.origin.y > -23) {
+                                        let toMove = self.lastScrollViewContentOffset - scrollView.contentOffset.y
+                                        statusBarBackgroundViewFrame?.origin.y += toMove
+                                        barFrame.origin.y += toMove
+                                    } else {
+                                        var blackstripe = self.dummyStripeBar(navigationCtr)
+                                        statusBarBackgroundViewFrame?.origin.y = -44;
+                                        barFrame.origin.y = -24;
+                                    }
+                                    self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                                    navigationCtr.navigationBar.frame = barFrame
                                 }
-                                self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                                navigationCtr.navigationBar.frame = barFrame
+                            }
+                            
+                            if let ref = scrollView.viewWithTag(987654) {
+                                if !CGRectContainsRect(scrollView.bounds, ref.bounds) {
+                                    scrollHandler()
+                                }
+                            } else {
+                                scrollHandler()
                             }
                         }
                         self.lastScrollViewContentOffset = scrollView.contentOffset.y
