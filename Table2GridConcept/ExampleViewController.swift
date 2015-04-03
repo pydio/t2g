@@ -41,7 +41,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     /// Datasource methods
     
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell {
-        let view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + 333)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+        let view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
         view.setupButtons(indexPath.row%5, mode: self.layoutMode)
         return view
     }
@@ -59,7 +59,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     }
     
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
-        cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + 333)"
+        cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + T2GViewTags.cellConstant.rawValue)"
         cell.detailLabel?.text = "\(indexPath)"
     }
     
