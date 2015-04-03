@@ -89,7 +89,6 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         
                     } else {
                         // show
-                        println("show")
                         
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame
