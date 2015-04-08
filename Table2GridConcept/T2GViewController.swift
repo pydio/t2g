@@ -686,19 +686,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                     })
                 })
             }, failure: { () -> Void in
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animateWithDuration(0.3) {
                     cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
-                }, completion: { (_) -> Void in
-                    // Long press ended without change
-                })
+                }
             })
             
         } else {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animateWithDuration(0.3) {
                 cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
-            }, completion: { (_) -> Void in
-                // Long press ended without change
-            })
+            }
         }
     }
 }
