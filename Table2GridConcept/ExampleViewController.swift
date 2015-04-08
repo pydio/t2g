@@ -43,6 +43,8 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell {
         let view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
         view.setupButtons(indexPath.row%5, mode: self.layoutMode)
+        view.draggable = true
+        view.draggableDelegate = self
         return view
     }
     
