@@ -51,7 +51,7 @@ enum T2GViewTags: Int {
     case cellDrawerButtonConstant = 555555
 }
 
-class T2GViewController: T2GScrollController, T2GCellDelegate {
+class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDropDelegate {
     var scrollView: UIScrollView!
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     var openCellTag: Int = -1
@@ -138,8 +138,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.toggleToolbar()
     }
     
+    //TODO: Move multiple items
     func moveBarButtonPressed() {
-        println("move")
+        println("Not implemented yet.")
     }
     
     func deleteBarButtonPressed() {
@@ -250,31 +251,31 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
             
             UIView.animateWithDuration(0.6, animations: { () -> Void in
                 view.frame = CGRectMake(view.frame.origin.x - 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                }, completion: { (complete) -> Void in
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
-                        view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                        }, completion: { (complete2) -> Void in
-                            view.removeFromSuperview()
-                            
-                            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                for cell in self.scrollView.subviews {
-                                    if cell.tag > view.tag {
-                                        if let c = cell as? T2GCell {
-                                            let newFrame = self.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue - 1)
-                                            c.frame = newFrame
-                                            c.tag = c.tag - 1
-                                            self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
-                                        }
-                                    }
+            }, completion: { (complete) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                }, completion: { (complete2) -> Void in
+                    view.removeFromSuperview()
+                        
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        for cell in self.scrollView.subviews {
+                            if cell.tag > view.tag {
+                                if let c = cell as? T2GCell {
+                                    let newFrame = self.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue - 1)
+                                    c.frame = newFrame
+                                    c.tag = c.tag - 1
+                                    self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
                                 }
-                                }, completion: { (complete3) -> Void in
-                                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                        self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
-                                        }, completion: { (complete) -> Void in
-                                            self.displayMissingCells(self.layoutMode)
-                                    })
-                            })
+                            }
+                        }
+                    }, completion: { (complete3) -> Void in
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
+                        }, completion: { (complete) -> Void in
+                            self.displayMissingCells(self.layoutMode)
+                        })
                     })
+                })
             })
         }
     }
@@ -599,5 +600,90 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool) {
         self.editingModeSelection[tag - T2GViewTags.cellConstant.rawValue] = selected
     }
-
+    
+    //MARK: - T2GCellDragAndDrop delegate
+    
+    func findBiggestOverlappingView(excludedTag: Int, frame: CGRect) -> UIView? {
+        var winningView:UIView?
+        
+        var winningRect:CGRect = CGRectMake(0, 0, 0, 0)
+        
+        for view in self.scrollView.subviews {
+            if let c = view as? T2GCell {
+                if c.tag != excludedTag {
+                    if CGRectIntersectsRect(frame, c.frame) {
+                        if winningView == nil {
+                            winningView = c
+                            winningRect = winningView!.frame
+                        } else {
+                            if (c.frame.size.height * c.frame.size.width) > (winningRect.size.height * winningRect.size.width) {
+                                winningView!.alpha = 1.0
+                                winningView = c
+                                winningRect = winningView!.frame
+                            } else {
+                                c.alpha = 1.0
+                            }
+                        }
+                    } else {
+                        c.alpha = 1.0
+                    }
+                }
+            }
+        }
+        
+        return winningView
+    }
+    
+    func didCellMove(tag: Int, frame: CGRect) {
+        let winningView = self.findBiggestOverlappingView(tag, frame: frame)
+        winningView?.alpha = 0.3
+    }
+    
+    func didDrop(cell: T2GCell) {
+        if let win = self.findBiggestOverlappingView(cell.tag, frame: cell.frame) {
+            win.alpha = 1.0
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                let transform = CGAffineTransformMakeScale(1.07, 1.07)
+                win.transform = transform
+                
+                cell.center = win.center
+                
+                let transform2 = CGAffineTransformMakeScale(0.1, 0.1)
+                cell.transform = transform2
+            }, completion: { (_) -> Void in
+                cell.removeFromSuperview()
+                    
+                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                    let transform = CGAffineTransformMakeScale(1.0, 1.0)
+                    win.transform = transform
+                }, completion: { (_) -> Void in
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        for view in self.scrollView.subviews {
+                            if let c = view as? T2GCell {
+                                if c.tag > cell.tag {
+                                    let newFrame = self.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue - 1)
+                                    c.frame = newFrame
+                                    c.tag = c.tag - 1
+                                    self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
+                                }
+                            }
+                        }
+                    }, completion: { (_) -> Void in
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.scrollView.contentSize = self.contentSizeForMode(self.layoutMode)
+                        }, completion: { (_) -> Void in
+                            self.displayMissingCells(self.layoutMode)
+                        })
+                    })
+                })
+            })
+        } else {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
+            }, completion: { (finished) -> Void in
+                // Long press ended without change
+            })
+        }
+    }
 }
