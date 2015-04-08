@@ -10,11 +10,16 @@ import Foundation
 import UIKit
 
 protocol T2GCellDelegate {
-    func cellStartedSwiping(tag:Int)
+    func cellStartedSwiping(tag: Int)
     func didCellOpen(tag: Int)
     func didCellClose(tag: Int)
     func didSelectButton(tag: Int, index: Int)
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool)
+}
+
+protocol T2GCellDragAndDropDelegate {
+    func didCellMove(tag: Int, frame: CGRect)
+    func didDrop(cell: T2GCell)
 }
 
 private enum T2GCellSwipeDirection {
@@ -28,6 +33,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     var backgroundView: UIView?
     
     var delegate: T2GCellDelegate?
+    var draggableDelegate: T2GCellDragAndDropDelegate?
     
     var imageView: UIView?
     var headerLabel: UILabel?
@@ -37,6 +43,31 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     private var swipeDirection: T2GCellSwipeDirection = .Left
     var lastContentOffset: CGFloat = 0
+    
+    var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
+    var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    var draggable: Bool = false {
+        didSet {
+            if draggable {
+                self.lastDraggedLocation = self.frame.origin
+                
+                if self.longPressGestureRecognizer == nil {
+                    self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+                    self.longPressGestureRecognizer!.minimumPressDuration = 1.5
+                    self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
+                }
+            } else {
+                if let longPress = self.longPressGestureRecognizer {
+                    self.lastDraggedLocation = CGPointMake(0, 0)
+                    
+                    self.removeGestureRecognizer(longPress)
+                    self.longPressGestureRecognizer = nil
+                }
+            }
+        }
+    }
+    
+    var origin:CGPoint = CGPointMake(0, 0)
     
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
@@ -81,8 +112,50 @@ class T2GCell: UIView, UIScrollViewDelegate {
         if mode == .Collection {
             self.changeFrameParadigm(.Collection, frame: self.frame)
         }
+        
     }
     
+    func handleLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            self.superview?.bringSubviewToFront(self)
+            self.origin = self.frame.origin
+            
+            self.lastDraggedLocation = sender.locationInView(self.superview)
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                
+                let transform = CGAffineTransformMakeScale(1.1, 1.1)
+                self.transform = transform
+                
+            }, completion: { (finished) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    
+                    let transform = CGAffineTransformMakeScale(1.0, 1.0)
+                    self.transform = transform
+                    
+                }, completion: { (finished) -> Void in
+                    // Long press activated
+                })
+            })
+        }
+        
+        if sender.state == UIGestureRecognizerState.Changed {
+            
+            let point = sender.locationInView(self.superview)
+            var center = self.center
+            center.x = (center.x + (point.x - self.lastDraggedLocation.x))
+            center.y = (center.y + (point.y - self.lastDraggedLocation.y))
+            self.center = center
+            
+            self.lastDraggedLocation = point
+            
+            self.draggableDelegate?.didCellMove(self.tag, frame: self.frame)
+        }
+        
+        if sender.state == .Ended {
+            self.draggableDelegate?.didDrop(self)
+        }
+    }
     
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
         if self.scrollView!.contentOffset.x != 0 {
