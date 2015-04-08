@@ -127,13 +127,13 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 let transform = CGAffineTransformMakeScale(1.1, 1.1)
                 self.transform = transform
                 
-            }, completion: { (finished) -> Void in
+            }, completion: { (_) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     
                     let transform = CGAffineTransformMakeScale(1.0, 1.0)
                     self.transform = transform
                     
-                }, completion: { (finished) -> Void in
+                }, completion: { (_) -> Void in
                     // Long press activated
                 })
             })
@@ -272,7 +272,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         UIView.animateWithDuration(duration_1, animations: { () -> Void in
             whiteOverlay.alpha = 1.0
             whiteOverlay.addSubview(button)
-        }, completion: { (finished) -> Void in
+        }, completion: { (_) -> Void in
             UIView.animateWithDuration(duration_2, animations: { () -> Void in
                 button.alpha = 1.0
                 button.setNeedsDisplay()
@@ -296,15 +296,15 @@ class T2GCell: UIView, UIScrollViewDelegate {
                     
                     button.frame = CGRectMake(x, y, originSize, originSize)
                 }
-            }, completion: { (finished) -> Void in
+            }, completion: { (_) -> Void in
                 if let button = self.viewWithTag(T2GViewTags.checkboxButton.rawValue) as? T2GCheckboxButton {
                     button.removeFromSuperview()
                 }
                     
                 UIView.animateWithDuration(duration_2, animations: { () -> Void in
                     whiteOverlay.alpha = 0.0
-                    }, completion: { (finished) -> Void in
-                            whiteOverlay.removeFromSuperview()
+                }, completion: { (_) -> Void in
+                    whiteOverlay.removeFromSuperview()
                 })
             })
         }
@@ -338,7 +338,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
                 }
                 moveClosure()
             }
-        }, completion: { (finished: Bool) -> Void in
+        }, completion: { (_) -> Void in
             if !flag && self.viewWithTag(T2GViewTags.checkboxButton.rawValue) == nil {
                 self.backgroundColor = .grayColor()
             }
@@ -379,8 +379,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             button.alpha = 1.0
-            }, completion: { (complete) -> Void in
-                self.bringSubviewToFront(button)
+        }, completion: { (_) -> Void in
+            self.bringSubviewToFront(button)
         })
     }
     
@@ -511,7 +511,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             scrollView.scrollRectToVisible(frame, animated: false)
-        }, completion: { (complete) -> Void in
+        }, completion: { (_) -> Void in
             if self.swipeDirection == .Right {
                 self.delegate?.didCellClose(self.tag)
             } else {
