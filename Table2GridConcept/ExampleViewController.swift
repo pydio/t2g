@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
+class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate {
     
     var modelArray: [Int] = []
     
@@ -29,6 +29,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
         self.scrollView.addSubview(self.refreshControl!)
         
         self.delegate = self
+        self.dropDelegate = self
         //self.isHidingEnabled = false
     }
 
@@ -110,6 +111,16 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate {
     
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
         self.modelArray.removeAtIndex(indexPath.row)
+    }
+    
+    //MARK: T2GDrop delegate methods
+    
+    func didDropCell(cell: T2GCell, onCell: T2GCell, completion: () -> Void, failure: () -> Void) {
+        if onCell.tag % 2 != 0 {
+            failure()
+        } else {
+            completion()
+        }
     }
 }
 
