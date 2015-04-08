@@ -641,6 +641,51 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didCellMove(tag: Int, frame: CGRect) {
+        var frameInView = self.scrollView.convertRect(frame, toView: self.view)
+        let topOrigin = self.scrollView.convertPoint(CGPointMake(0, 0), toView: self.view)
+        let topStrip = CGRectMake(topOrigin.x, topOrigin.y, self.scrollView.frame.size.width, 20)
+        
+        if CGRectIntersectsRect(topStrip, frameInView) {
+            println("Intersects top")
+            println("FIRST: \(topStrip) ||| SECOND: \(frameInView)")
+        }
+        
+        
+        let height: CGFloat = self.scrollView.contentOffset.y == 0 ? 20.0 : 40.0
+        let bottomStrip = CGRectMake(0, self.view.frame.size.height - height, self.scrollView.frame.size.width, height)
+        //let bottom = UIView(frame: bottomStrip)
+        //bottom.backgroundColor = .blueColor()
+        //self.view.addSubview(bottom)
+        
+        if CGRectIntersectsRect(bottomStrip, frameInView) {
+            //frameInView = CGRectMake(frameInView.origin.x, frameInView.origin.y + 35.0, frameInView.size.width, frameInView.size.height)
+            //println("Intersects bottom")
+            //println("FIRST: \(bottomStrip) ||| SECOND: \(frameInView) ||| SIZE: \(CGRectIntersection(bottomStrip, frameInView))")
+            
+            let subview = self.view.viewWithTag(tag)
+            self.view.addSubview(subview!)
+            
+            var animation = {()->Void in}
+            animation = { () -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    let toMove = self.scrollView.contentOffset.y + 6
+                    self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
+                }, completion: { (_) -> Void in
+                    if let movingCell = subview {
+                        let frameInView2 = movingCell.frame
+                        
+                        if CGRectIntersectsRect(bottomStrip, frameInView2) {
+                            animation()
+                        } else {
+                            self.scrollView.addSubview(movingCell)
+                        }
+                    }
+                })
+            }
+            
+            animation()
+        }
+        
         let winningView = self.findBiggestOverlappingView(tag, frame: frame)
         winningView?.alpha = 0.3
     }
