@@ -30,7 +30,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
         self.delegate = self
         self.dropDelegate = self
-        //self.isHidingEnabled = false
+        self.isHidingEnabled = false
     }
 
     override func didReceiveMemoryWarning() {

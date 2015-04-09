@@ -647,7 +647,30 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         if CGRectIntersectsRect(topStrip, frameInView) {
             println("Intersects top")
-            println("FIRST: \(topStrip) ||| SECOND: \(frameInView)")
+            //println("FIRST: \(topStrip) ||| SECOND: \(frameInView)")
+            
+            let subview = self.view.viewWithTag(tag)
+            self.view.addSubview(subview!)
+            
+            var animation = {()->Void in}
+            animation = { () -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    let toMove = self.scrollView.contentOffset.y - 6
+                    self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
+                    }, completion: { (_) -> Void in
+                        if let movingCell = subview {
+                            let frameInView2 = movingCell.frame
+                            
+                            if CGRectIntersectsRect(topStrip, frameInView2) {
+                                animation()
+                            } else {
+                                self.scrollView.addSubview(movingCell)
+                            }
+                        }
+                })
+            }
+            
+            animation()
         }
         
         
