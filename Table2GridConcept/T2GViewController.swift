@@ -644,91 +644,66 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         let height: CGFloat = 30.0
         
         var frameInView = self.scrollView.convertRect(frame, toView: self.view)
+        
         var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
-        let topY = topOrigin.y + self.navigationController!.navigationBar.frame.origin.y + self.navigationController!.navigationBar.frame.size.height
-        let topStrip = CGRectMake(0, topY, self.scrollView.frame.size.width, height)
-        
-        if let v1 = self.view.viewWithTag(12345) {
-            // Ňyc
-        } else {
-            let v1 = UIView(frame: topStrip)
-            v1.backgroundColor = .blueColor()
-            v1.tag = 12345
-            self.view.addSubview(v1)
+        if let navigationBar = self.navigationController {
+            topOrigin.y += navigationBar.navigationBar.frame.origin.y + navigationBar.navigationBar.frame.size.height
         }
-        
-        //println("T: \(topStrip)")
+        let topStrip = CGRectMake(0, topOrigin.y, self.scrollView.frame.size.width, height)
         
         if CGRectIntersectsRect(topStrip, frameInView) {
-            println("Intersects top")
-            //println("FIRST: \(topStrip) ||| SECOND: \(frameInView)")
-            
             let subview = self.view.viewWithTag(tag)
+            let isFirstEncounter = subview?.superview is UIScrollView
             self.view.addSubview(subview!)
             
-            var animation = {()->Void in}
-            animation = { () -> Void in
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    let toMove = self.scrollView.contentOffset.y - 6
-                    self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
-                    }, completion: { (_) -> Void in
-                        if let movingCell = subview {
-                            let frameInView2 = movingCell.frame
-                            
-                            if CGRectIntersectsRect(topStrip, frameInView2) {
-                                animation()
-                            } else {
-                                self.scrollView.addSubview(movingCell)
-                            }
-                        }
-                })
+            if isFirstEncounter {
+                let speedCoefficient = self.coefficientForOverlappingFrames(topStrip, overlapping: frameInView) * -1
+                self.scrollContinously(speedCoefficient, stationaryFrame: topStrip, overlappingView: subview)
             }
-            
-            animation()
         }
-        
         
         let bottomOrigin = self.scrollView.convertPoint(CGPointMake(0, self.scrollView.contentOffset.y + self.scrollView.frame.size.height - height), toView: self.view)
         let bottomStrip = CGRectMake(0, bottomOrigin.y, self.scrollView.frame.size.width, height)
         
-        if let v2 = self.view.viewWithTag(54321) {
-            // Ňyc
-        } else {
-            let v2 = UIView(frame: bottomStrip)
-            v2.backgroundColor = .blueColor()
-            v2.tag = 54321
-            self.view.addSubview(v2)
-        }
-        
-        println("B: \(bottomStrip)")
-        
         if CGRectIntersectsRect(bottomStrip, frameInView) {
             let subview = self.view.viewWithTag(tag)
+            let isFirstEncounter = subview?.superview is UIScrollView
             self.view.addSubview(subview!)
             
-            var animation = {()->Void in}
-            animation = { () -> Void in
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
-                    let toMove = self.scrollView.contentOffset.y + 6
-                    self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
-                }, completion: { (_) -> Void in
-                    if let movingCell = subview {
-                        let frameInView2 = movingCell.frame
-                        
-                        if CGRectIntersectsRect(bottomStrip, frameInView2) {
-                            animation()
-                        } else {
-                            self.scrollView.addSubview(movingCell)
-                        }
-                    }
-                })
+            if isFirstEncounter {
+                let speedCoefficient = self.coefficientForOverlappingFrames(bottomStrip, overlapping: frameInView)
+                self.scrollContinously(speedCoefficient, stationaryFrame: bottomStrip, overlappingView: subview)
             }
-            
-            animation()
         }
         
         let winningView = self.findBiggestOverlappingView(tag, frame: frame)
         winningView?.alpha = 0.3
+    }
+    
+    func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?) {
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            println(speedCoefficient)
+            let toMove = self.scrollView.contentOffset.y + (32.0 * speedCoefficient)
+            self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
+        }, completion: { (_) -> Void in
+            if let overlappingCellView = overlappingView {
+                let newOverlappingViewFrame = overlappingCellView.frame
+                    
+                if CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
+                    let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
+                    self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView)
+                } else {
+                    self.scrollView.addSubview(overlappingCellView)
+                }
+            }
+        })
+    }
+    
+    func coefficientForOverlappingFrames(stationary: CGRect, overlapping: CGRect) -> CGFloat {
+        let stationarySize = stationary.size.width * stationary.size.height
+        let intersection = CGRectIntersection(stationary, overlapping)
+        let intersectionSize = intersection.size.height * intersection.size.width
+        return intersectionSize / stationarySize
     }
     
     func didDrop(cell: T2GCell) {
