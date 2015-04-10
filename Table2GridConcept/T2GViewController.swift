@@ -232,10 +232,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                 cellView.toggleMultipleChoice(true, mode: self.layoutMode, selected: isSelected, animated: false)
             }
             
+            let isDragged = self.view.viewWithTag(tag) != nil
+            
             cellView.delegate = self
-            cellView.alpha = animated ? 0 : 1
+            cellView.alpha = (animated || isDragged) ? 0 : 1
             self.scrollView.addSubview(cellView)
-            if animated {
+            
+            if animated && !isDragged {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     cellView.alpha = 1.0
                 })
