@@ -116,44 +116,42 @@ class T2GCell: UIView, UIScrollViewDelegate {
     }
     
     func handleLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
-            self.superview?.bringSubviewToFront(self)
-            self.origin = self.frame.origin
-            
-            self.lastDraggedLocation = sender.locationInView(self.superview)
-            
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+        if self.viewWithTag(T2GViewTags.checkboxButton.rawValue) == nil {
+            if sender.state == UIGestureRecognizerState.Began {
+                self.superview?.bringSubviewToFront(self)
+                self.origin = self.frame.origin
                 
-                let transform = CGAffineTransformMakeScale(1.1, 1.1)
-                self.transform = transform
+                self.lastDraggedLocation = sender.locationInView(self.superview)
                 
-            }, completion: { (_) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    
-                    let transform = CGAffineTransformMakeScale(1.0, 1.0)
+                    let transform = CGAffineTransformMakeScale(1.1, 1.1)
                     self.transform = transform
-                    
                 }, completion: { (_) -> Void in
-                    // Long press activated
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        let transform = CGAffineTransformMakeScale(1.0, 1.0)
+                        self.transform = transform
+                    }, completion: { (_) -> Void in
+                        // Long press activated
+                    })
                 })
-            })
-        }
-        
-        if sender.state == UIGestureRecognizerState.Changed {
+            }
             
-            let point = sender.locationInView(self.superview)
-            var center = self.center
-            center.x = (center.x + (point.x - self.lastDraggedLocation.x))
-            center.y = (center.y + (point.y - self.lastDraggedLocation.y))
-            self.center = center
+            if sender.state == UIGestureRecognizerState.Changed {
+                
+                let point = sender.locationInView(self.superview)
+                var center = self.center
+                center.x = (center.x + (point.x - self.lastDraggedLocation.x))
+                center.y = (center.y + (point.y - self.lastDraggedLocation.y))
+                self.center = center
+                
+                self.lastDraggedLocation = point
+                
+                self.draggableDelegate?.didCellMove(self.tag, frame: self.frame)
+            }
             
-            self.lastDraggedLocation = point
-            
-            self.draggableDelegate?.didCellMove(self.tag, frame: self.frame)
-        }
-        
-        if sender.state == .Ended {
-            self.draggableDelegate?.didDrop(self)
+            if sender.state == .Ended {
+                self.draggableDelegate?.didDrop(self)
+            }
         }
     }
     
