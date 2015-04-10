@@ -682,14 +682,48 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?) {
         UIView.animateWithDuration(0.1, animations: { () -> Void in
-            println(speedCoefficient)
-            let toMove = self.scrollView.contentOffset.y + (32.0 * speedCoefficient)
+            var toMove = self.scrollView.contentOffset.y + (32.0 * speedCoefficient)
+            
+            if speedCoefficient < 0 {
+                var minContentOffset: CGFloat = 0.0
+                if let navigationBar = self.navigationController?.navigationBar {
+                    minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
+                }
+                
+                if toMove < minContentOffset {
+                    toMove = minContentOffset
+                }
+            } else {
+                let maxContentOffset = self.scrollView.contentSize.height - self.scrollView.frame.size.height
+                if toMove > maxContentOffset {
+                    toMove = maxContentOffset
+                }
+            }
+            
             self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
         }, completion: { (_) -> Void in
             if let overlappingCellView = overlappingView {
+                
+                var shouldContinueScrolling = true
+                if speedCoefficient < 0 {
+                    var minContentOffset: CGFloat = 0.0
+                    if let navigationBar = self.navigationController?.navigationBar {
+                        minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
+                    }
+                    
+                    if self.scrollView.contentOffset.y == minContentOffset {
+                        shouldContinueScrolling = false
+                    }
+                } else {
+                    let maxContentOffset = self.scrollView.contentSize.height - self.scrollView.frame.size.height
+                    if self.scrollView.contentOffset.y == self.scrollView.contentSize.height - self.scrollView.frame.size.height {
+                        shouldContinueScrolling = false
+                    }
+                }
+                
                 let newOverlappingViewFrame = overlappingCellView.frame
                     
-                if CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
+                if shouldContinueScrolling && CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
                     let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
                     self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView)
                 } else {
