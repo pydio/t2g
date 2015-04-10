@@ -641,9 +641,23 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didCellMove(tag: Int, frame: CGRect) {
+        let height: CGFloat = 30.0
+        
         var frameInView = self.scrollView.convertRect(frame, toView: self.view)
-        let topOrigin = self.scrollView.convertPoint(CGPointMake(0, 0), toView: self.view)
-        let topStrip = CGRectMake(topOrigin.x, topOrigin.y, self.scrollView.frame.size.width, 20)
+        var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
+        let topY = topOrigin.y + self.navigationController!.navigationBar.frame.origin.y + self.navigationController!.navigationBar.frame.size.height
+        let topStrip = CGRectMake(0, topY, self.scrollView.frame.size.width, height)
+        
+        if let v1 = self.view.viewWithTag(12345) {
+            // Ňyc
+        } else {
+            let v1 = UIView(frame: topStrip)
+            v1.backgroundColor = .blueColor()
+            v1.tag = 12345
+            self.view.addSubview(v1)
+        }
+        
+        //println("T: \(topStrip)")
         
         if CGRectIntersectsRect(topStrip, frameInView) {
             println("Intersects top")
@@ -674,23 +688,27 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }
         
         
-        let height: CGFloat = self.scrollView.contentOffset.y == 0 ? 20.0 : 40.0
-        let bottomStrip = CGRectMake(0, self.view.frame.size.height - height, self.scrollView.frame.size.width, height)
-        //let bottom = UIView(frame: bottomStrip)
-        //bottom.backgroundColor = .blueColor()
-        //self.view.addSubview(bottom)
+        let bottomOrigin = self.scrollView.convertPoint(CGPointMake(0, self.scrollView.contentOffset.y + self.scrollView.frame.size.height - height), toView: self.view)
+        let bottomStrip = CGRectMake(0, bottomOrigin.y, self.scrollView.frame.size.width, height)
+        
+        if let v2 = self.view.viewWithTag(54321) {
+            // Ňyc
+        } else {
+            let v2 = UIView(frame: bottomStrip)
+            v2.backgroundColor = .blueColor()
+            v2.tag = 54321
+            self.view.addSubview(v2)
+        }
+        
+        println("B: \(bottomStrip)")
         
         if CGRectIntersectsRect(bottomStrip, frameInView) {
-            //frameInView = CGRectMake(frameInView.origin.x, frameInView.origin.y + 35.0, frameInView.size.width, frameInView.size.height)
-            //println("Intersects bottom")
-            //println("FIRST: \(bottomStrip) ||| SECOND: \(frameInView) ||| SIZE: \(CGRectIntersection(bottomStrip, frameInView))")
-            
             let subview = self.view.viewWithTag(tag)
             self.view.addSubview(subview!)
             
             var animation = {()->Void in}
             animation = { () -> Void in
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                UIView.animateWithDuration(0.15, animations: { () -> Void in
                     let toMove = self.scrollView.contentOffset.y + 6
                     self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
                 }, completion: { (_) -> Void in
@@ -718,7 +736,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             win.alpha = 1.0
             
             self.dropDelegate?.didDropCell(cell, onCell: win, completion: { () -> Void in
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
                     let transform = CGAffineTransformMakeScale(1.07, 1.07)
                     win.transform = transform
                     
