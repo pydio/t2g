@@ -473,7 +473,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     private func performSubviewCleanup() {
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
-                if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
+                if !CGRectIntersectsRect(scrollView.bounds, cell.frame) || cell.alpha == 0 {
                     cell.removeFromSuperview()
                 }
             }
@@ -744,6 +744,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didDrop(cell: T2GCell) {
+        self.performSubviewCleanup()
+        
         if let win = self.findBiggestOverlappingView(cell.tag, frame: cell.frame) as? T2GCell {
             win.alpha = 1.0
             

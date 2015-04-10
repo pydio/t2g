@@ -11,14 +11,13 @@ Implementation of table view that is switchable to collection view along with al
 ## TODO:
 
 1. Disable d&d in edit mode
-2. Rolling scrollview
-3. Reload function
-4. Loading cell animation
-5. Selectable rows + delegate calls
-6. Sections division
-7. Parametrize default layout (T/G)
-8. Adjustable icon view depending on width
-9. API naming cleanup 
-10. UISplitViewController implementation
-11. Manual (+ comments)
-12. Proper licence (Apache 2.0 / BSD / MIT)
+2. Reload function
+3. Loading cell animation
+4. Selectable rows + delegate calls
+5. Sections division
+6. Parametrize default layout (T/G)
+7. Adjustable icon view depending on width
+8. API naming cleanup 
+9. UISplitViewController implementation
+10. Manual (+ comments)
+11. Proper licence (Apache 2.0 / BSD / MIT)

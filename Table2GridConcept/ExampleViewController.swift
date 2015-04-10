@@ -15,7 +15,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for index in 0...15 {
+        for index in 0...25 {
             modelArray.append(index)
         }
         
@@ -119,6 +119,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         if onCell.tag % 2 != 0 {
             failure()
         } else {
+            self.modelArray.removeAtIndex(cell.tag - T2GViewTags.cellConstant.rawValue)
             completion()
         }
     }
