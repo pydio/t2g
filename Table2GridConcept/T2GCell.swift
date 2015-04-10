@@ -11,6 +11,7 @@ import UIKit
 
 protocol T2GCellDelegate {
     func cellStartedSwiping(tag: Int)
+    func didSelectCell(tag: Int)
     func didCellOpen(tag: Int)
     func didCellClose(tag: Int)
     func didSelectButton(tag: Int, index: Int)
@@ -44,8 +45,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
     private var swipeDirection: T2GCellSwipeDirection = .Left
     var lastContentOffset: CGFloat = 0
     
-    var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
     var draggable: Bool = false {
         didSet {
             if draggable {
@@ -79,8 +80,27 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.scrollView!.showsHorizontalScrollIndicator = false
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
-    
+        self.scrollView!.canCancelContentTouches = true
+        
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
+        
+        let backgroundViewButton = T2GColoredButton(frame: self.backgroundView!.frame)
+        backgroundViewButton.normalBackgroundColor = .clearColor()
+        backgroundViewButton.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
+        backgroundViewButton.setup()
+        backgroundViewButton.addTarget(self, action: "backgroundViewButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.backgroundView!.addSubview(backgroundViewButton)
+        
+        // View must be added to hierarchy before setting constraints.
+        backgroundViewButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        let views = ["background": self.backgroundView!, "button": backgroundViewButton]
+        
+        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        self.backgroundView!.addConstraints(constH)
+        
+        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        self.backgroundView!.addConstraints(constW)
+        
         self.backgroundView!.backgroundColor = .lightGrayColor()
         self.scrollView!.addSubview(self.backgroundView!)
         
@@ -112,7 +132,10 @@ class T2GCell: UIView, UIScrollViewDelegate {
         if mode == .Collection {
             self.changeFrameParadigm(.Collection, frame: self.frame)
         }
-        
+    }
+    
+    func backgroundViewButtonPressed(sender: UITapGestureRecognizer) {
+        self.delegate?.didSelectCell(self.tag - T2GViewTags.cellConstant.rawValue)
     }
     
     func handleLongPress(sender: UILongPressGestureRecognizer) {
@@ -215,7 +238,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         for index in 0..<count {
             let point = origins[index]
-            let view = T2GCellButton(frame: point)
+            let view = T2GCellDrawerButton(frame: point)
             view.tag = T2GViewTags.cellDrawerButtonConstant.rawValue + index
             view.normalBackgroundColor = .blackColor()
             view.highlightedBackgroundColor = .lightGrayColor()
@@ -234,7 +257,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.handleScrollEnd(self.scrollView!)
     }
     
-    func buttonSelected(sender: T2GCellButton) {
+    func buttonSelected(sender: T2GCellDrawerButton) {
         self.delegate?.didSelectButton(self.tag - T2GViewTags.cellConstant.rawValue, index: sender.tag - T2GViewTags.cellDrawerButtonConstant.rawValue)
     }
     
@@ -463,7 +486,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         let origins = coordinateData.origins
         
         for index in 0..<self.buttonCount {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellButton {
+            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
                 let frame = origins[index]
                 view.minOriginCoord = frame.origin
                 view.frame = frame
@@ -521,7 +544,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func moveButtonsInHierarchy(#shouldHide: Bool) {
         for index in 0...3 {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellButton {
+            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
                 if shouldHide {
                     self.sendSubviewToBack(view)
                 } else {
@@ -563,7 +586,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
         
         for index in 0..<self.buttonCount {
-            if let button = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellButton {
+            if let button = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
                 button.resize(tailPosition, sizeDifference: sizeDifference)
             }
         }
