@@ -10,6 +10,8 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
+-2. Do not duplicate dragged cell
+-1. Disable d&d in edit mode
 0. Rolling scrollview
 1. Reload function
 2. Loading cell animation
