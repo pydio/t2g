@@ -10,7 +10,6 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-0. Do not duplicate dragged cell
 1. Disable d&d in edit mode
 2. Rolling scrollview
 3. Reload function
