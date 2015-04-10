@@ -594,6 +594,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }
     }
     
+    func didSelectCell(tag: Int) {
+        self.delegate.didSelectCellAtIndexPath(NSIndexPath(forRow: tag, inSection: 0))
+    }
+    
     func didCellOpen(tag: Int) {
         self.openCellTag = tag
     }

@@ -85,7 +85,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
-        
+        println(indexPath)
     }
     
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
