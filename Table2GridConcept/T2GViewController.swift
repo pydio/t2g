@@ -56,6 +56,7 @@ enum T2GViewTags: Int {
     case cellDrawerButtonConstant = 555555
     case cellBackgroundButton = 444444
     case statusBarBackgroundView = 333333
+    case refreshControl = 222222
 }
 
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDropDelegate {

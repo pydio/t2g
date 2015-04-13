@@ -31,7 +31,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl!.tag = 987654
+        self.refreshControl!.tag = T2GViewTags.refreshControl.rawValue
         self.scrollView.addSubview(self.refreshControl!)
         
         self.delegate = self
