@@ -122,11 +122,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.modelArray.removeAtIndex(indexPath.row)
     }
     
-    func setupViewForStatusBarBackground(view: UIView) -> UIView? {
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.07)
-        return view
-    }
-    
     //MARK: T2GDrop delegate methods
     
     func didDropCell(cell: T2GCell, onCell: T2GCell, completion: () -> Void, failure: () -> Void) {

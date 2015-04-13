@@ -27,7 +27,6 @@ protocol T2GViewControllerDelegate {
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath)
-    func setupViewForStatusBarBackground(view: UIView) -> UIView?
 }
 
 protocol T2GDropDelegate {
