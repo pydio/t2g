@@ -10,10 +10,10 @@ import UIKit
 
 class T2GNaviViewController: UINavigationController {
     var segueDelay: Double = 0.0
+    var statusBarBackgroundView: UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -22,16 +22,17 @@ class T2GNaviViewController: UINavigationController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func addStatusBarBackgroundView() -> UIView {
+        if let view = self.view.viewWithTag(T2GViewTags.statusBarBackgroundView.rawValue) {
+            return view
+        } else {
+            let view = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
+            view.tag = T2GViewTags.statusBarBackgroundView.rawValue
+            view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.07)
+            self.view.addSubview(view)
+            return view
+        }
     }
-    */
     
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
         var poppedViewController = super.popViewControllerAnimated(animated)

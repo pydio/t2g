@@ -27,6 +27,7 @@ protocol T2GViewControllerDelegate {
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath)
+    func setupViewForStatusBarBackground(view: UIView) -> UIView?
 }
 
 protocol T2GDropDelegate {
@@ -54,6 +55,7 @@ enum T2GViewTags: Int {
     case checkboxButton = 666666
     case cellDrawerButtonConstant = 555555
     case cellBackgroundButton = 444444
+    case statusBarBackgroundView = 333333
 }
 
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDropDelegate {
@@ -101,16 +103,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         super.viewDidLoad()
         
         if let navigationCtr = self.navigationController {
-            self.statusBarBackgroundView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
-            self.statusBarBackgroundView!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.07)
-            navigationCtr.view.addSubview(self.statusBarBackgroundView!)
-            
-            navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
-            navigationCtr.navigationBar.tintColor = .whiteColor()
-            
             if let naviCtr = navigationCtr as? T2GNaviViewController {
                 naviCtr.segueDelay = 0.22
             }
+            
+            navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
+            navigationCtr.navigationBar.tintColor = .whiteColor()
         }
         
         self.scrollView = UIScrollView()
