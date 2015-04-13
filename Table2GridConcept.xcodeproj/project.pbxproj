@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E012E0E71ADBE8FB008FEF94 /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012E0E61ADBE8FB008FEF94 /* T2GNaviViewController.swift */; };
 		E020748D1AC041CB00A4F857 /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E020748C1AC041CB00A4F857 /* T2GScrollController.swift */; };
 		E04158411ABC44AF0094EE84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158401ABC44AF0094EE84 /* AppDelegate.swift */; };
 		E04158431ABC44AF0094EE84 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04158421ABC44AF0094EE84 /* ExampleViewController.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E012E0E61ADBE8FB008FEF94 /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNaviViewController.swift; sourceTree = "<group>"; };
 		E020748C1AC041CB00A4F857 /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollController.swift; sourceTree = "<group>"; };
 		E041583B1ABC44AF0094EE84 /* Table2GridConcept.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Table2GridConcept.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E041583F1ABC44AF0094EE84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -131,12 +133,13 @@
 		E0FCE28B1AC324080081D525 /* T2GFramework */ = {
 			isa = PBXGroup;
 			children = (
+				E012E0E61ADBE8FB008FEF94 /* T2GNaviViewController.swift */,
+				E020748C1AC041CB00A4F857 /* T2GScrollController.swift */,
+				E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */,
+				E04158621ABC7E5D0094EE84 /* T2GCell.swift */,
 				E05679C61AD82DD400BB5D63 /* T2GColoredButton.swift */,
 				E0FCE2871AC19E310081D525 /* T2GCellDrawerButton.swift */,
 				E08DB9F91ACC081100C9EB59 /* T2GCheckboxButton.swift */,
-				E04158621ABC7E5D0094EE84 /* T2GCell.swift */,
-				E020748C1AC041CB00A4F857 /* T2GScrollController.swift */,
-				E0FCE2891AC30C4C0081D525 /* T2GViewController.swift */,
 			);
 			name = T2GFramework;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				E04158611ABC479B0094EE84 /* Model.swift in Sources */,
 				E05679C71AD82DD400BB5D63 /* T2GColoredButton.swift in Sources */,
 				E0FCE28A1AC30C4C0081D525 /* T2GViewController.swift in Sources */,
+				E012E0E71ADBE8FB008FEF94 /* T2GNaviViewController.swift in Sources */,
 				E04158411ABC44AF0094EE84 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
