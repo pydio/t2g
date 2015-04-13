@@ -10,6 +10,7 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
+0. Animation for transition
 1. Reload function
 2. Loading cell animation
 3. Sections division
