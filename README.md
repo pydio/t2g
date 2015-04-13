@@ -10,7 +10,7 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-0. Unhighlight button on scroll + don't show top bar on push
+0. Unhighlight button on scroll
 1. Reload function
 2. Loading cell animation
 3. Sections division
