@@ -92,6 +92,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         backgroundViewButton.addTarget(self, action: "backgroundViewButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         self.backgroundView!.addSubview(backgroundViewButton)
         
+        
         // View must be added to hierarchy before setting constraints.
         backgroundViewButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         let views = ["background": self.backgroundView!, "button": backgroundViewButton]
@@ -127,6 +128,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.detailLabel!.textColor = .whiteColor()
         self.detailLabel!.text = detail
         self.backgroundView!.addSubview(self.detailLabel!)
+        
+        self.backgroundView!.bringSubviewToFront(backgroundViewButton)
         
         self.addSubview(self.scrollView!)
         

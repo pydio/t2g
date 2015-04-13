@@ -10,7 +10,7 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-0. Unhighlight button on scroll + move only moved cells + tap on image to push
+0. Unhighlight button on scroll + tap on image to push
 1. Reload function
 2. Loading cell animation
 3. Sections division
