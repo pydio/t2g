@@ -86,6 +86,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
         println(indexPath)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
+        self.navigationController?.pushViewController(newVC, animated: true)
     }
     
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
