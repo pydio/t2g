@@ -30,8 +30,7 @@ class T2GCellDrawerButton: T2GColoredButton {
         self.minOriginCoord = frame.origin
     }
     
-    override func setup() {
-        super.setup()
+    func setup() {
         self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant.rawValue + 1)", forState: UIControlState.Normal)
     }
     

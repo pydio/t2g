@@ -37,7 +37,7 @@ enum T2GLayoutMode {
     case Table
     case Collection
     
-    init(){
+    init() {
         self = .Table
     }
 }

@@ -14,19 +14,23 @@ class T2GColoredButton: UIButton {
             self.backgroundColor = normalBackgroundColor!
         }
     }
-    var highlightedBackgroundColor: UIColor?
-    
-    func didTap() {
-        self.backgroundColor = self.highlightedBackgroundColor!
+    var highlightedBackgroundColor: UIColor? {
+        didSet {
+            self.setBackgroundImage(self.imageWithColor(self.highlightedBackgroundColor!), forState: UIControlState.Highlighted)
+        }
     }
     
-    func didUntap() {
-        self.backgroundColor = self.normalBackgroundColor!
-    }
+    func imageWithColor(color: UIColor) -> UIImage {
+        let rect: CGRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context: CGContextRef = UIGraphicsGetCurrentContext()
     
-    func setup() {
-        self.addTarget(self, action: "didTap", forControlEvents: UIControlEvents.TouchDown)
-        self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpInside)
-        self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpOutside)
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+    
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    
+        return image
     }
 }
