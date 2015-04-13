@@ -107,6 +107,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             
             navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navigationCtr.navigationBar.tintColor = .whiteColor()
+            
+            if let naviCtr = navigationCtr as? T2GNaviViewController {
+                naviCtr.segueDelay = 0.22
+            }
         }
         
         self.scrollView = UIScrollView()
@@ -126,6 +130,24 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
+    }
+    
+    func animateSubviewCells(destinationScrollView: UIScrollView, isGoingOffscreen: Bool) {
+        var delayCount: Double = 0.0
+        let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
+        
+        var tags = self.scrollView.subviews.map({($0 as UIView).tag})
+        tags.sort(isGoingOffscreen ? {$0 > $1} : {$0 < $1})
+        
+        for tag in tags {
+            if let view = destinationScrollView.viewWithTag(tag) as? T2GCell {
+                delayCount += 1.0
+                let delay: Double = delayCount * 0.02
+                UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
+                    view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                }, completion: nil)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
