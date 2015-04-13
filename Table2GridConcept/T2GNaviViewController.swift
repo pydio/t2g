@@ -37,14 +37,15 @@ class T2GNaviViewController: UINavigationController {
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
+            visibleViewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
             visibleViewController.animateSubviewCells(visibleViewController.scrollView, isGoingOffscreen: false)
         }
         return poppedViewController
     }
     
     override func pushViewController(viewController: UIViewController, animated: Bool) {
-        
         if let viewController = self.visibleViewController as? T2GViewController {
+            viewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
             viewController.animateSubviewCells(viewController.scrollView, isGoingOffscreen: true)
         }
         
