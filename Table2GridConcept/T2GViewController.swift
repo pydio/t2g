@@ -140,11 +140,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         for tag in tags {
             if let view = destinationScrollView.viewWithTag(tag) as? T2GCell {
-                delayCount += 1.0
-                let delay: Double = delayCount * 0.02
-                UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
-                    view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                }, completion: nil)
+                let frame = self.frameForCell(self.layoutMode, index: view.tag - T2GViewTags.cellConstant.rawValue)
+                
+                if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
+                    delayCount += 1.0
+                    let delay: Double = delayCount * 0.02
+                    UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
+                        view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                    }, completion: nil)
+                }
             }
         }
     }
