@@ -28,6 +28,5 @@ class T2GColoredButton: UIButton {
         self.addTarget(self, action: "didTap", forControlEvents: UIControlEvents.TouchDown)
         self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpInside)
         self.addTarget(self, action: "didUntap", forControlEvents: UIControlEvents.TouchUpOutside)
-        //self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant.rawValue + 1)", forState: UIControlState.Normal)
     }
 }
