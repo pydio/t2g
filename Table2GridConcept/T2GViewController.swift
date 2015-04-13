@@ -53,6 +53,7 @@ enum T2GViewTags: Int {
     case editingModeToolbar = 777777
     case checkboxButton = 666666
     case cellDrawerButtonConstant = 555555
+    case cellBackgroundButton = 444444
 }
 
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDropDelegate {
@@ -792,6 +793,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             }, failure: { () -> Void in
                 UIView.animateWithDuration(0.3) {
                     cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
+                    
                 }
             })
             

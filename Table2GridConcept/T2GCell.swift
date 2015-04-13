@@ -85,6 +85,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
         
         let backgroundViewButton = T2GColoredButton(frame: self.backgroundView!.frame)
+        backgroundViewButton.tag = T2GViewTags.cellBackgroundButton.rawValue
         backgroundViewButton.normalBackgroundColor = .clearColor()
         backgroundViewButton.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
         backgroundViewButton.setup()
@@ -174,6 +175,10 @@ class T2GCell: UIView, UIScrollViewDelegate {
             
             if sender.state == .Ended {
                 self.draggableDelegate?.didDrop(self)
+                
+                if let backgroundButton = self.viewWithTag(T2GViewTags.cellBackgroundButton.rawValue) as? T2GColoredButton {
+                    backgroundButton.didUntap()
+                }
             }
         }
     }
