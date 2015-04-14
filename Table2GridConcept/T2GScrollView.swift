@@ -83,6 +83,40 @@ class T2GScrollView: UIScrollView {
     
     //MARK: - Helper methods
     
+    func performSubviewCleanup() {
+        for view in self.subviews {
+            if let cell = view as? T2GCell {
+                if !CGRectIntersectsRect(self.bounds, cell.frame) || cell.alpha == 0 {
+                    cell.removeFromSuperview()
+                }
+            }
+        }
+    }
+    
+    //TODO: Functional approach or for cycle?
+    func firstAndLastTags() -> (lowest: Int, highest: Int) {
+        /*
+        let startValues = (lowest: Int.max, highest: Int.min)
+        var minMax:(lowest: Int, highest: Int) = subviews.reduce(startValues) { prev, next in
+        (next as? T2GCell).map {
+        (min(prev.lowest, $0.tag), max(prev.highest, $0.tag))
+        } ?? prev
+        }
+        */
+        
+        var lowest = Int.max
+        var highest = Int.min
+        
+        for view in self.subviews {
+            if let cell = view as? T2GCell {
+                lowest = lowest > cell.tag ? cell.tag : lowest
+                highest = highest < cell.tag ? cell.tag : highest
+            }
+        }
+        
+        return (lowest, highest)
+    }
+    
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
         let dimensions = self.viewDelegate!.cellDimensions(mode)
         let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2

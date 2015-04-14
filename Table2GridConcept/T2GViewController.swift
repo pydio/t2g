@@ -302,7 +302,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     //TODO: Rearranging items when deep in view
     private func transformViewWithCompletion(completionClosure:() -> Void) {
         let collectionClosure = {() -> T2GLayoutMode in
-            let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
+            let indicesExtremes = self.scrollView.firstAndLastTags()
             var from = (indicesExtremes.highest) + 1
             if from > self.delegate.numberOfCellsInSection(0) {
                 from = self.delegate.numberOfCellsInSection(0) - 1 + T2GViewTags.cellConstant.rawValue
@@ -347,7 +347,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             
             }) { (Bool) -> Void in
                 //self.scrollView.contentSize = self.contentSizeForCurrentMode()
-                self.performSubviewCleanup()
+                self.scrollView.performSubviewCleanup()
                 completionClosure()
         }
         
@@ -359,7 +359,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         
-        let indicesExtremes = self.firstAndLastTags(self.scrollView.subviews)
+        let indicesExtremes = self.scrollView.firstAndLastTags()
         let from = (indicesExtremes.highest) + 1
         var to = (indicesExtremes.highest) + 10
         if (to - T2GViewTags.cellConstant.rawValue) < self.delegate.numberOfCellsInSection(0) {
@@ -383,31 +383,21 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             
             }) { (Bool) -> Void in
                 self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
-                self.performSubviewCleanup()
+                self.scrollView.performSubviewCleanup()
         }
     }
     
     //MARK: - ScrollView delegate
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.performSubviewCleanup()
+        self.scrollView.performSubviewCleanup()
     }
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         super.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
         
         if !decelerate {
-            self.performSubviewCleanup()
-        }
-    }
-    
-    private func performSubviewCleanup() {
-        for view in self.scrollView.subviews {
-            if let cell = view as? T2GCell {
-                if !CGRectIntersectsRect(scrollView.bounds, cell.frame) || cell.alpha == 0 {
-                    cell.removeFromSuperview()
-                }
-            }
+            self.scrollView.performSubviewCleanup()
         }
     }
     
@@ -432,7 +422,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             self.lastSpeedOffsetCaptureTime = currentTime
         }
         
-        let extremes = self.firstAndLastTags(scrollView.subviews)
+        let extremes = self.scrollView.firstAndLastTags()
         let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
         let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
         let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant.rawValue : self.delegate.numberOfCellsInSection(0) + T2GViewTags.cellConstant.rawValue - 1
@@ -490,30 +480,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }
         
         return lastTag
-    }
-    
-    //TODO: Functional approach or for cycle?
-    func firstAndLastTags(subviews: [AnyObject]) -> (lowest: Int, highest: Int) {
-        /*
-        let startValues = (lowest: Int.max, highest: Int.min)
-        var minMax:(lowest: Int, highest: Int) = subviews.reduce(startValues) { prev, next in
-            (next as? T2GCell).map {
-                (min(prev.lowest, $0.tag), max(prev.highest, $0.tag))
-            } ?? prev
-        }
-        */
-        
-        var lowest = Int.max
-        var highest = Int.min
-        
-        for view in subviews {
-            if let cell = view as? T2GCell {
-                lowest = lowest > cell.tag ? cell.tag : lowest
-                highest = highest < cell.tag ? cell.tag : highest
-            }
-        }
-        
-        return (lowest, highest)
     }
     
     //MARK: - T2GCell delegate
@@ -679,7 +645,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didDrop(cell: T2GCell) {
-        self.performSubviewCleanup()
+        self.scrollView.performSubviewCleanup()
         
         if let win = self.findBiggestOverlappingView(cell.tag, frame: cell.frame) as? T2GCell {
             win.alpha = 1.0
