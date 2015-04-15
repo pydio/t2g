@@ -333,7 +333,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                 }
             }
             
-            }) { (Bool) -> Void in
+            }) { (_) -> Void in
                 //self.scrollView.contentSize = self.contentSizeForCurrentMode()
                 self.scrollView.performSubviewCleanup()
                 completionClosure()
@@ -369,7 +369,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                 }
             }
             
-            }) { (Bool) -> Void in
+            }) { (_) -> Void in
                 self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
                 self.scrollView.performSubviewCleanup()
         }
