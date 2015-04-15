@@ -29,6 +29,15 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    func itemCountPerLine(mode: T2GLayoutMode) -> Int {
+        if mode == .Collection {
+            let dimensions = self.viewDelegate!.cellDimensions(.Collection)
+            return Int(floor(self.frame.size.width / dimensions.width))
+        } else {
+            return 1
+        }
+    }
+    
     func animateSubviewCells(isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
@@ -57,10 +66,20 @@ class T2GScrollView: UIScrollView {
         
         if mode == .Collection {
             /// Assuming that the collection is square of course
-            let middle = (superviewFrame.size.width - dimensions.width) / 2
-            let left = (middle - dimensions.width) / 2
-            let right = middle + dimensions.width + left
-            var xCoords = [left, middle, right]
+            let count = self.itemCountPerLine(.Collection)
+            let gap = (self.frame.size.width - (CGFloat(count) * dimensions.width)) / CGFloat(count + 1)
+            
+            var xCoords: [CGFloat] = []
+            for index in 0..<count {
+                let x = CGFloat(index) * (gap + dimensions.width) + gap
+                xCoords.append(x)
+            }
+            
+//            let middle = (superviewFrame.size.width - dimensions.width) / 2
+//            let left = (middle - dimensions.width) / 2
+//            let right = middle + dimensions.width + left
+//            var xCoords = [left, middle, right]
+            
             let yCoord = dimensions.padding + (CGFloat(index / xCoords.count) * (dimensions.height + dimensions.padding))
             let frame = CGRectMake(CGFloat(xCoords[index % xCoords.count]), yCoord, dimensions.width, dimensions.height)
             
@@ -113,7 +132,7 @@ class T2GScrollView: UIScrollView {
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
         let dimensions = self.viewDelegate!.cellDimensions(mode)
         let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
-        let divisor = mode == .Collection ? 3 : 1
+        let divisor = self.itemCountPerLine(mode)
         let lineCount = Int(ceil(Double((self.viewDelegate!.cellCount(0) - 1) / divisor)))
         let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
         let height = ypsilon + dimensions.height + dimensions.padding
