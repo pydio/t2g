@@ -78,7 +78,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     //TODO: Calculate the number based on the screen size + possible error if insufficient number o items in model
     var delegate: T2GViewControllerDelegate! {
         didSet {
-            for index in 0..<self.scrollView.visibleCellCount {
+            for index in 0..<self.scrollView.visibleCellCount2(self.layoutMode) {
                 self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
             }
             self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
@@ -397,10 +397,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                 }
             }
             
-            }) { (_) -> Void in
-                self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
-                self.scrollView.performSubviewCleanup()
+        }) { (_) -> Void in
+            self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+            self.scrollView.performSubviewCleanup()
+            //self.displayMissingCells(self.layoutMode)
         }
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.displayMissingCells(self.layoutMode)
     }
     
     //MARK: - ScrollView delegate
@@ -474,6 +479,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func displayMissingCells(mode: T2GLayoutMode) {
+        println("caled")
         let indices = self.scrollView.indicesForVisibleCells(mode)
         for index in indices[0]...indices[indices.count - 1] {
             self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue, animated: true)
