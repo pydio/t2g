@@ -20,16 +20,17 @@ class T2GScrollView: UIScrollView {
     
     func visibleCellCount(mode: T2GLayoutMode) -> Int {
         let dimensions = self.viewDelegate!.cellDimensions(self.viewDelegate!.currentLayout())
+        var count = 0
         
         if mode == .Table {
-            let count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
-            println("Fitting in table: \(count)")
-            return 10
+            count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
+            count = count == 0 ? 10 : count
         } else {
-            let count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
-            println("Fitting in collection: \(count)")
-            return 20
+            count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
+            count = count == 0 ? 20 : count
         }
+        
+        return count
     }
     
     func itemCountPerLine(mode: T2GLayoutMode) -> Int {
@@ -133,7 +134,8 @@ class T2GScrollView: UIScrollView {
         let divisor = self.itemCountPerLine(mode)
         let lineCount = Int(ceil(Double((self.viewDelegate!.cellCount(0) - 1) / divisor)))
         let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-        let height = ypsilon + dimensions.height + dimensions.padding
+        var height = ypsilon + dimensions.height + dimensions.padding
+        height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         
         return CGSize(width: self.superview!.frame.size.width, height: height)
     }

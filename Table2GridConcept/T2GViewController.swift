@@ -78,13 +78,17 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     //TODO: Possible error if insufficient number o items in model
     var delegate: T2GViewControllerDelegate! {
         didSet {
-            for index in 0..<self.scrollView.visibleCellCount(self.layoutMode) {
+            var count = self.scrollView.visibleCellCount(self.layoutMode)
+            let totalCells = self.delegate.numberOfCellsInSection(0)
+            count = count > totalCells ? totalCells : count
+            
+            for index in 0..<count {
                 self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
             }
             self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
         }
     }
-    
+
     var dropDelegate: T2GDropDelegate?
     
     override func viewDidLoad() {
@@ -117,6 +121,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
+        self.displayMissingCells(self.layoutMode)
+        self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
     }
     
     override func didReceiveMemoryWarning() {
@@ -479,7 +485,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func displayMissingCells(mode: T2GLayoutMode) {
-        println("caled")
         let indices = self.scrollView.indicesForVisibleCells(mode)
         for index in indices[0]...indices[indices.count - 1] {
             self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue, animated: true)

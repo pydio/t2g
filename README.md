@@ -10,6 +10,7 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
+0. Pull2ref less items + less items in model
 1. Loading cell animation
 2. Sections division
 3. Adjustable icon view depending on width
