@@ -63,8 +63,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     var openCellTag: Int = -1
     
-    var refreshControl: UIControl?
-    
     var lastSpeedOffset: CGPoint = CGPointMake(0, 0)
     var lastSpeedOffsetCaptureTime: NSTimeInterval = 0
     
@@ -77,20 +75,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     var editingModeSelection = [Int : Bool]()
     
-    //TODO: Calculate the number based on the screen size
-    private var visibleCellCount: Int {
-        get {
-            if self.layoutMode == .Table {
-                return 10
-            } else {
-                return 20
-            }
-        }
-    }
-    
+    //TODO: Calculate the number based on the screen size + possible error if insufficient number o items in model
     var delegate: T2GViewControllerDelegate! {
         didSet {
-            for index in 0..<self.visibleCellCount {
+            for index in 0..<self.scrollView.visibleCellCount {
                 self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
             }
             self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
@@ -104,7 +92,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         if let navigationCtr = self.navigationController {
             if let naviCtr = navigationCtr as? T2GNaviViewController {
-                naviCtr.segueDelay = 0.22
+                naviCtr.segueDelay = 0.16
             }
             
             navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
@@ -561,8 +549,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             self.view.addSubview(subview!)
             
             if isFirstEncounter {
-                let speedCoefficient = self.coefficientForOverlappingFrames(topStrip, overlapping: frameInView) * -1
-                self.scrollContinously(speedCoefficient, stationaryFrame: topStrip, overlappingView: subview)
+                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(topStrip, overlapping: frameInView) * -1
+                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: topStrip, overlappingView: subview, navigationController: self.navigationController)
             }
         }
         
@@ -575,73 +563,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             self.view.addSubview(subview!)
             
             if isFirstEncounter {
-                let speedCoefficient = self.coefficientForOverlappingFrames(bottomStrip, overlapping: frameInView)
-                self.scrollContinously(speedCoefficient, stationaryFrame: bottomStrip, overlappingView: subview)
+                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(bottomStrip, overlapping: frameInView)
+                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: bottomStrip, overlappingView: subview, navigationController: self.navigationController)
             }
         }
         
         let winningView = self.findBiggestOverlappingView(tag, frame: frame)
         winningView?.alpha = 0.3
-    }
-    
-    func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?) {
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-            var toMove = self.scrollView.contentOffset.y + (32.0 * speedCoefficient)
-            
-            if speedCoefficient < 0 {
-                var minContentOffset: CGFloat = 0.0
-                if let navigationBar = self.navigationController?.navigationBar {
-                    minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
-                }
-                
-                if toMove < minContentOffset {
-                    toMove = minContentOffset
-                }
-            } else {
-                let maxContentOffset = self.scrollView.contentSize.height - self.scrollView.frame.size.height
-                if toMove > maxContentOffset {
-                    toMove = maxContentOffset
-                }
-            }
-            
-            self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, toMove)
-        }, completion: { (_) -> Void in
-            if let overlappingCellView = overlappingView {
-                
-                var shouldContinueScrolling = true
-                if speedCoefficient < 0 {
-                    var minContentOffset: CGFloat = 0.0
-                    if let navigationBar = self.navigationController?.navigationBar {
-                        minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
-                    }
-                    
-                    if self.scrollView.contentOffset.y == minContentOffset {
-                        shouldContinueScrolling = false
-                    }
-                } else {
-                    let maxContentOffset = self.scrollView.contentSize.height - self.scrollView.frame.size.height
-                    if self.scrollView.contentOffset.y == self.scrollView.contentSize.height - self.scrollView.frame.size.height {
-                        shouldContinueScrolling = false
-                    }
-                }
-                
-                let newOverlappingViewFrame = overlappingCellView.frame
-                    
-                if shouldContinueScrolling && CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
-                    let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
-                    self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView)
-                } else {
-                    self.scrollView.addSubview(overlappingCellView)
-                }
-            }
-        })
-    }
-    
-    func coefficientForOverlappingFrames(stationary: CGRect, overlapping: CGRect) -> CGFloat {
-        let stationarySize = stationary.size.width * stationary.size.height
-        let intersection = CGRectIntersection(stationary, overlapping)
-        let intersectionSize = intersection.size.height * intersection.size.width
-        return intersectionSize / stationarySize
     }
     
     func didDrop(cell: T2GCell) {

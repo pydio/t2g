@@ -16,9 +16,10 @@ protocol T2GScrollViewDelegate {
 
 class T2GScrollView: UIScrollView {
     var viewDelegate: T2GScrollViewDelegate?
+    var refreshControl: UIControl?
 
     //TODO: Calculate the number based on the screen size
-    private var visibleCellCount: Int {
+    var visibleCellCount: Int {
         get {
             if self.viewDelegate!.currentLayout() == .Table {
                 return 10
@@ -164,6 +165,66 @@ class T2GScrollView: UIScrollView {
         }
         
         return res
+    }
+    
+    func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?, navigationController: UINavigationController?) {
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            var toMove = self.contentOffset.y + (32.0 * speedCoefficient)
+            
+            if speedCoefficient < 0 {
+                var minContentOffset: CGFloat = 0.0
+                if let navigationBar = navigationController?.navigationBar {
+                    minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
+                }
+                
+                if toMove < minContentOffset {
+                    toMove = minContentOffset
+                }
+            } else {
+                let maxContentOffset = self.contentSize.height - self.frame.size.height
+                if toMove > maxContentOffset {
+                    toMove = maxContentOffset
+                }
+            }
+            
+            self.contentOffset = CGPointMake(self.contentOffset.x, toMove)
+            }, completion: { (_) -> Void in
+                if let overlappingCellView = overlappingView {
+                    
+                    var shouldContinueScrolling = true
+                    if speedCoefficient < 0 {
+                        var minContentOffset: CGFloat = 0.0
+                        if let navigationBar = navigationController?.navigationBar {
+                            minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
+                        }
+                        
+                        if self.contentOffset.y == minContentOffset {
+                            shouldContinueScrolling = false
+                        }
+                    } else {
+                        let maxContentOffset = self.contentSize.height - self.frame.size.height
+                        if self.contentOffset.y == self.contentSize.height - self.frame.size.height {
+                            shouldContinueScrolling = false
+                        }
+                    }
+                    
+                    let newOverlappingViewFrame = overlappingCellView.frame
+                    
+                    if shouldContinueScrolling && CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
+                        let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
+                        self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView, navigationController: navigationController)
+                    } else {
+                        self.addSubview(overlappingCellView)
+                    }
+                }
+        })
+    }
+    
+    func coefficientForOverlappingFrames(stationary: CGRect, overlapping: CGRect) -> CGFloat {
+        let stationarySize = stationary.size.width * stationary.size.height
+        let intersection = CGRectIntersection(stationary, overlapping)
+        let intersectionSize = intersection.size.height * intersection.size.width
+        return intersectionSize / stationarySize
     }
 
 }

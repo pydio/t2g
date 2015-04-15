@@ -29,10 +29,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             self.statusBarBackgroundView = navCtr.addStatusBarBackgroundView()
         }
         
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl!.tag = T2GViewTags.refreshControl.rawValue
-        self.scrollView.addSubview(self.refreshControl!)
+        self.scrollView.refreshControl = UIRefreshControl()
+        self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl.rawValue
+        self.scrollView.addSubview(self.scrollView.refreshControl!)
         
         self.delegate = self
         self.dropDelegate = self
