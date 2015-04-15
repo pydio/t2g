@@ -7,13 +7,9 @@ Implementation of table view that is switchable to collection view along with al
 1. Custom pull2refresh
 2. Assigning functions to buttons
 
-
 ## TODO:
 
-1. Loading cell animation
-2. Sections division
-3. Adjustable icon view depending on width
-4. API naming cleanup 
-5. UISplitViewController implementation
-6. Manual (+ comments)
-7. Proper licence (Apache 2.0 / BSD / MIT)
+1. Sections division
+2. UISplitViewController implementation
+3. API naming cleanup + Manual (+ comments)
+4. Proper licence (Apache 2.0 / BSD / MIT)
