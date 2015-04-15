@@ -75,10 +75,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     var editingModeSelection = [Int : Bool]()
     
-    //TODO: Calculate the number based on the screen size + possible error if insufficient number o items in model
+    //TODO: Possible error if insufficient number o items in model
     var delegate: T2GViewControllerDelegate! {
         didSet {
-            for index in 0..<self.scrollView.visibleCellCount2(self.layoutMode) {
+            for index in 0..<self.scrollView.visibleCellCount(self.layoutMode) {
                 self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
             }
             self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)

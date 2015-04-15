@@ -17,25 +17,8 @@ protocol T2GScrollViewDelegate {
 class T2GScrollView: UIScrollView {
     var viewDelegate: T2GScrollViewDelegate?
     var refreshControl: UIControl?
-
-    //TODO: Calculate the number based on the screen size
-//    var visibleCellCount: Int {
-//        get {
-//            let dimensions = self.viewDelegate!.cellDimensions(self.viewDelegate!.currentLayout())
-//            
-//            if self.viewDelegate!.currentLayout() == .Table {
-//                let count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
-//                println("Fitting in table: \(count)")
-//                return 10
-//            } else {
-//                let count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
-//                println("Fitting in collection: \(count)")
-//                return 20
-//            }
-//        }
-//    }
     
-    func visibleCellCount2(mode: T2GLayoutMode) -> Int {
+    func visibleCellCount(mode: T2GLayoutMode) -> Int {
         let dimensions = self.viewDelegate!.cellDimensions(self.viewDelegate!.currentLayout())
         
         if mode == .Table {
@@ -94,11 +77,6 @@ class T2GScrollView: UIScrollView {
                 let x = CGFloat(index) * (gap + dimensions.width) + gap
                 xCoords.append(x)
             }
-            
-//            let middle = (superviewFrame.size.width - dimensions.width) / 2
-//            let left = (middle - dimensions.width) / 2
-//            let right = middle + dimensions.width + left
-//            var xCoords = [left, middle, right]
             
             let yCoord = dimensions.padding + (CGFloat(index / xCoords.count) * (dimensions.height + dimensions.padding))
             let frame = CGRectMake(CGFloat(xCoords[index % xCoords.count]), yCoord, dimensions.width, dimensions.height)
@@ -171,7 +149,7 @@ class T2GScrollView: UIScrollView {
                 firstIndex = 0
             }
             
-            var lastIndex = firstIndex + 2 * self.visibleCellCount2(.Collection)
+            var lastIndex = firstIndex + 2 * self.visibleCellCount(.Collection)
             if self.viewDelegate!.cellCount(0) - 1 < lastIndex {
                 lastIndex = self.viewDelegate!.cellCount(0) - 1
             }
@@ -185,7 +163,7 @@ class T2GScrollView: UIScrollView {
                 firstIndex = 0
             }
             
-            var lastIndex = firstIndex + self.visibleCellCount2(.Table)
+            var lastIndex = firstIndex + self.visibleCellCount(.Table)
             if self.viewDelegate!.cellCount(0) - 1 < lastIndex {
                 lastIndex = self.viewDelegate!.cellCount(0) - 1
             }
