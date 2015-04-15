@@ -50,22 +50,6 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
 
     //MARK: - Scroll view delegate
     
-    func handlePullToRefresh(sender: UIRefreshControl) {
-        //sender.attributedTitle = NSAttributedString(string: "\n Refreshing")
-    
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            NSThread.sleepForTimeInterval(1.5)
-            dispatch_async(dispatch_get_main_queue(), {
-                let formatter = NSDateFormatter()
-                formatter.dateStyle = .MediumStyle
-                let lastUpdate = String(format:"Last updated on %@", formatter.stringFromDate(NSDate()))
-                sender.attributedTitle = NSAttributedString(string: lastUpdate)
-                self.automaticSnapStatus = .WillSnap
-                sender.endRefreshing()
-            });
-        });
-    }
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
@@ -193,6 +177,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                                 self.automaticSnapStatus = .DidSnap
                             } else {
                                 self.automaticSnapStatus = .None
+                                self.handleSnapBack()
                             }
                         }
                     }
@@ -205,6 +190,10 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
             self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .Up : .Down
             self.lastScrollViewContentOffset = scrollView.contentOffset.y
         }
+    }
+    
+    func handleSnapBack() {
+        // meant to be overridden
     }
     
     func dummyStripeBar(navigationCtr: UINavigationController) -> UIView {

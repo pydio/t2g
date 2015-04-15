@@ -10,11 +10,10 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-1. Reload function
-2. Loading cell animation
-3. Sections division
-4. Adjustable icon view depending on width
-5. API naming cleanup 
-6. UISplitViewController implementation
-7. Manual (+ comments)
-8. Proper licence (Apache 2.0 / BSD / MIT)
+1. Loading cell animation
+2. Sections division
+3. Adjustable icon view depending on width
+4. API naming cleanup 
+5. UISplitViewController implementation
+6. Manual (+ comments)
+7. Proper licence (Apache 2.0 / BSD / MIT)

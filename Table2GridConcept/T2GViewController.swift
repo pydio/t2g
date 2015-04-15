@@ -123,6 +123,34 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         super.didReceiveMemoryWarning()
     }
     
+    func handlePullToRefresh(sender: UIRefreshControl) {
+        //sender.attributedTitle = NSAttributedString(string: "\n Refreshing")
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            NSThread.sleepForTimeInterval(1.5)
+            dispatch_async(dispatch_get_main_queue(), {
+                let formatter = NSDateFormatter()
+                formatter.dateStyle = .MediumStyle
+                let lastUpdate = String(format:"Last updated on %@", formatter.stringFromDate(NSDate()))
+                sender.attributedTitle = NSAttributedString(string: lastUpdate)
+                self.automaticSnapStatus = .WillSnap
+                
+                self.reloadScrollView()
+                sender.endRefreshing()
+            });
+        });
+    }
+    
+    func reloadScrollView() {
+        for view in self.scrollView.subviews {
+            if let cell = view as? T2GCell {
+                self.delegate.updateCellForIndexPath(cell, indexPath: NSIndexPath(forRow: cell.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
+            }
+        }
+        
+        self.displayMissingCells(self.layoutMode)
+    }
+    
     //MARK: - Editing mode
     
     func toggleEdit() {
@@ -377,8 +405,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     //MARK: - ScrollView delegate
     
+    override func handleSnapBack() {
+        self.displayMissingCells(self.layoutMode)
+    }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.scrollView.performSubviewCleanup()
+        //self.displayMissingCells(self.layoutMode)
     }
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -386,6 +419,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         if !decelerate {
             self.scrollView.performSubviewCleanup()
+            //self.displayMissingCells(self.layoutMode)
         }
     }
     
