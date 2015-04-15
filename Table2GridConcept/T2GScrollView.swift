@@ -29,14 +29,6 @@ class T2GScrollView: UIScrollView {
         }
     }
     
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
     func animateSubviewCells(isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
