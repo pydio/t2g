@@ -42,28 +42,6 @@ class T2GScrollView: UIScrollView {
         }
     }
     
-    func animateSubviewCells(isGoingOffscreen: Bool) {
-        var delayCount: Double = 0.0
-        let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
-        
-        var tags = self.subviews.map({($0 as UIView).tag})
-        tags.sort(isGoingOffscreen ? {$0 > $1} : {$0 < $1})
-        
-        for tag in tags {
-            if let view = self.viewWithTag(tag) as? T2GCell {
-                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: view.tag - T2GViewTags.cellConstant.rawValue)
-                
-                if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
-                    delayCount += 1.0
-                    let delay: Double = delayCount * 0.02
-                    UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
-                        view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                    }, completion: nil)
-                }
-            }
-        }
-    }
-    
     func frameForCell(mode: T2GLayoutMode, index: Int = 0) -> CGRect {
         let superviewFrame = self.superview!.frame
         let dimensions = self.viewDelegate!.cellDimensions(mode)
@@ -91,8 +69,29 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    //MARK: - Animation methods
     
-    //MARK: - Helper methods
+    func animateSubviewCells(isGoingOffscreen: Bool) {
+        var delayCount: Double = 0.0
+        let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
+        
+        var tags = self.subviews.map({($0 as UIView).tag})
+        tags.sort(isGoingOffscreen ? {$0 > $1} : {$0 < $1})
+        
+        for tag in tags {
+            if let view = self.viewWithTag(tag) as? T2GCell {
+                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: view.tag - T2GViewTags.cellConstant.rawValue)
+                
+                if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
+                    delayCount += 1.0
+                    let delay: Double = delayCount * 0.02
+                    UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
+                        view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
+                    }, completion: nil)
+                }
+            }
+        }
+    }
     
     func performSubviewCleanup() {
         for view in self.subviews {
@@ -104,8 +103,23 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    
+    //MARK: - Helper methods
+
+    func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
+        let dimensions = self.viewDelegate!.cellDimensions(mode)
+        let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
+        let divisor = self.itemCountPerLine(mode)
+        let lineCount = Int(ceil(Double((self.viewDelegate!.cellCount(0) - 1) / divisor)))
+        let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
+        var height = ypsilon + dimensions.height + dimensions.padding
+        height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
+        
+        return CGSize(width: self.superview!.frame.size.width, height: height)
+    }
+    
     //TODO: Functional approach or for cycle?
-    func firstAndLastTags() -> (lowest: Int, highest: Int) {
+    func firstAndLastVisibleTags() -> (lowest: Int, highest: Int) {
         /*
         let startValues = (lowest: Int.max, highest: Int.min)
         var minMax:(lowest: Int, highest: Int) = subviews.reduce(startValues) { prev, next in
@@ -126,18 +140,6 @@ class T2GScrollView: UIScrollView {
         }
         
         return (lowest, highest)
-    }
-    
-    func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
-        let dimensions = self.viewDelegate!.cellDimensions(mode)
-        let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
-        let divisor = self.itemCountPerLine(mode)
-        let lineCount = Int(ceil(Double((self.viewDelegate!.cellCount(0) - 1) / divisor)))
-        let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-        var height = ypsilon + dimensions.height + dimensions.padding
-        height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
-        
-        return CGSize(width: self.superview!.frame.size.width, height: height)
     }
     
     func indicesForVisibleCells(mode: T2GLayoutMode) -> [Int] {
@@ -170,13 +172,17 @@ class T2GScrollView: UIScrollView {
                 lastIndex = self.viewDelegate!.cellCount(0) - 1
             }
             
-            for index in firstIndex...lastIndex {
-                res.append(index)
+            if lastIndex != -1 {
+                for index in firstIndex...lastIndex {
+                    res.append(index)
+                }
             }
         }
         
         return res
     }
+    
+    //MARK: Continuous scroll
     
     func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?, navigationController: UINavigationController?) {
         UIView.animateWithDuration(0.1, animations: { () -> Void in
