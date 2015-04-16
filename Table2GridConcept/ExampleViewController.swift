@@ -108,7 +108,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
         if buttonIndex == 0 {
             self.modelArray.removeAtIndex(indexPath.row)
-            self.removeRowAtIndexPath(indexPath)
+            self.removeRowsAtIndexPaths([indexPath])
         } else if buttonIndex == 1 {
             self.modelArray.insert(42, atIndex: indexPath.row + 1)
             let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
@@ -119,7 +119,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
+        println(self.modelArray)
         self.modelArray.removeAtIndex(indexPath.row)
+        println(self.modelArray)
     }
     
     //MARK: T2GDrop delegate methods
