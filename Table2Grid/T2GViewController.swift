@@ -75,7 +75,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     var editingModeSelection = [Int : Bool]()
     
-    //TODO: Possible error if insufficient number o items in model
     var delegate: T2GViewControllerDelegate! {
         didSet {
             var count = self.scrollView.visibleCellCount(self.layoutMode)
@@ -98,9 +97,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             if let naviCtr = navigationCtr as? T2GNaviViewController {
                 naviCtr.segueDelay = 0.16
             }
-            
-            navigationCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
-            navigationCtr.navigationBar.tintColor = .whiteColor()
         }
         
         self.scrollView = T2GScrollView()
