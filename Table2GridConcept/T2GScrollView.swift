@@ -69,6 +69,14 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    func alignVisibleCells() {
+        for view in self.subviews {
+            if let cell = view as? T2GCell {
+                cell.frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: cell.tag - T2GViewTags.cellConstant.rawValue)
+            }
+        }
+    }
+    
     //MARK: - Animation methods
     
     func animateSubviewCells(isGoingOffscreen: Bool) {
