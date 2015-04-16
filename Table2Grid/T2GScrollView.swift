@@ -16,15 +16,28 @@ protocol T2GScrollViewDelegate {
 
 class T2GScrollView: UIScrollView {
     var viewDelegate: T2GScrollViewDelegate?
-    var refreshControl: UIControl?
+    var refreshControl: UIControl? {
+        didSet {
+            self.addSubview(self.refreshControl!)
+        }
+    }
     
     func visibleCellCount(mode: T2GLayoutMode) -> Int {
         let dimensions = self.viewDelegate!.cellDimensions(self.viewDelegate!.currentLayout())
         var count = 0
         
         if mode == .Table {
+            
+            println(self.superview?.frame)
+            
             count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
-            count = count == 0 ? 10 : count
+            if count == 0 {
+                if let superframe = self.superview?.frame {
+                    count = Int(ceil(superframe.size.height / (dimensions.height + dimensions.padding)))
+                }
+                
+                count = count == 0 ? 10 : count
+            }
         } else {
             count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
             count = count == 0 ? 20 : count
