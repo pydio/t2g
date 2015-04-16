@@ -445,6 +445,7 @@
 				E012857F1ADFF345007EA890 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E01285801ADFF345007EA890 /* Build configuration list for PBXNativeTarget "SingleViewTests" */ = {
 			isa = XCConfigurationList;
@@ -453,6 +454,7 @@
 				E01285821ADFF345007EA890 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
