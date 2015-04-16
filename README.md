@@ -10,6 +10,5 @@ Implementation of table view that is switchable to collection view along with al
 ## TODO:
 
 1. Sections division
-2. UISplitViewController implementation
-3. API naming cleanup + Manual (+ comments)
-4. Proper licence (Apache 2.0 / BSD / MIT)
+2. API naming cleanup + Manual (+ comments)
+3. Proper licence (Apache 2.0 / BSD / MIT)
