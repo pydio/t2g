@@ -72,7 +72,10 @@ class T2GScrollView: UIScrollView {
     func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
-                cell.frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: cell.tag - T2GViewTags.cellConstant.rawValue)
+                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: cell.tag - T2GViewTags.cellConstant.rawValue)
+                if cell.frame.origin.x != frame.origin.x || cell.frame.origin.y != frame.origin.y || cell.frame.size.width != frame.size.width || cell.frame.size.height != frame.size.height {
+                    cell.changeFrameParadigm(self.viewDelegate!.currentLayout(), frame: frame)
+                }
             }
         }
     }
