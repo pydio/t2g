@@ -4,11 +4,13 @@ Implementation of table view that is switchable to collection view along with al
 
 ## Nice-to-have (Custom implementation responsibility)
 
-1. Custom pull2refresh
-2. Assigning functions to buttons
+1. Sections division
+2. Custom pull2refresh
+3. Assigning functions to buttons
 
 ## TODO:
 
-1. Sections division
-2. API naming cleanup + Manual (+ comments)
-3. Proper licence (Apache 2.0 / BSD / MIT)
+1. API naming cleanup
+2. Comment code
+3. Manual
+4. Proper licence (Apache 2.0 / BSD / MIT)
