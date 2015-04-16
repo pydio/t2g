@@ -33,7 +33,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.isHidingEnabled = false
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            self.statusBarBackgroundView = navCtr.addStatusBarBackgroundView()
+            //self.statusBarBackgroundView = navCtr.addStatusBarBackgroundView()
         }
         
         self.scrollView.refreshControl = UIRefreshControl()
@@ -152,20 +152,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            
             let controller = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
             controller.detailItem = NSDate()
             controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
             controller.navigationItem.leftItemsSupplementBackButton = true
-            
-            
-//            if let indexPath = self.tableView.indexPathForSelectedRow() {
-//                let object = objects[indexPath.row] as NSDate
-//                let controller = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
-//                controller.detailItem = object
-//                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-//                controller.navigationItem.leftItemsSupplementBackButton = true
-//            }
         }
     }
 }

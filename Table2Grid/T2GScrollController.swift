@@ -45,7 +45,9 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     }
     
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        self.showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+        if self.isHidingEnabled {
+            self.showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+        }
     }
 
     //MARK: - Scroll view delegate

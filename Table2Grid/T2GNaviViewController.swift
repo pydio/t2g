@@ -14,7 +14,6 @@ class T2GNaviViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,7 +36,10 @@ class T2GNaviViewController: UINavigationController {
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
-            visibleViewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+            if visibleViewController.isHidingEnabled {
+                visibleViewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+            }
+            
             visibleViewController.scrollView.animateSubviewCells(false)
         }
         return poppedViewController
@@ -45,7 +47,10 @@ class T2GNaviViewController: UINavigationController {
     
     override func pushViewController(viewController: UIViewController, animated: Bool) {
         if let viewController = self.visibleViewController as? T2GViewController {
-            viewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+            if viewController.isHidingEnabled {
+                viewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+            }
+            
             viewController.scrollView.animateSubviewCells(true)
         }
         
