@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Table2GridConcept.xcodeproj">
+      location = "self:SingleView.xcodeproj">
    </FileRef>
 </Workspace>

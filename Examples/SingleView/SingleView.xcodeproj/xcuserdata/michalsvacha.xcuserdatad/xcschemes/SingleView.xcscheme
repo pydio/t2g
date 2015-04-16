@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E041583A1ABC44AF0094EE84"
-               BuildableName = "Table2GridConcept.app"
-               BlueprintName = "Table2GridConcept"
-               ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+               BlueprintIdentifier = "E012855D1ADFF345007EA890"
+               BuildableName = "SingleView.app"
+               BlueprintName = "SingleView"
+               ReferencedContainer = "container:SingleView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E041584F1ABC44AF0094EE84"
-               BuildableName = "Table2GridConceptTests.xctest"
-               BlueprintName = "Table2GridConceptTests"
-               ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+               BlueprintIdentifier = "E01285721ADFF345007EA890"
+               BuildableName = "SingleViewTests.xctest"
+               BlueprintName = "SingleViewTests"
+               ReferencedContainer = "container:SingleView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E041584F1ABC44AF0094EE84"
-               BuildableName = "Table2GridConceptTests.xctest"
-               BlueprintName = "Table2GridConceptTests"
-               ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+               BlueprintIdentifier = "E01285721ADFF345007EA890"
+               BuildableName = "SingleViewTests.xctest"
+               BlueprintName = "SingleViewTests"
+               ReferencedContainer = "container:SingleView.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E041583A1ABC44AF0094EE84"
-            BuildableName = "Table2GridConcept.app"
-            BlueprintName = "Table2GridConcept"
-            ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+            BlueprintIdentifier = "E012855D1ADFF345007EA890"
+            BuildableName = "SingleView.app"
+            BlueprintName = "SingleView"
+            ReferencedContainer = "container:SingleView.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -76,10 +76,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E041583A1ABC44AF0094EE84"
-            BuildableName = "Table2GridConcept.app"
-            BlueprintName = "Table2GridConcept"
-            ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+            BlueprintIdentifier = "E012855D1ADFF345007EA890"
+            BuildableName = "SingleView.app"
+            BlueprintName = "SingleView"
+            ReferencedContainer = "container:SingleView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,10 +95,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E041583A1ABC44AF0094EE84"
-            BuildableName = "Table2GridConcept.app"
-            BlueprintName = "Table2GridConcept"
-            ReferencedContainer = "container:Table2GridConcept.xcodeproj">
+            BlueprintIdentifier = "E012855D1ADFF345007EA890"
+            BuildableName = "SingleView.app"
+            BlueprintName = "SingleView"
+            ReferencedContainer = "container:SingleView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,15 +1,15 @@
 //
-//  Table2GridConceptTests.swift
-//  Table2GridConceptTests
+//  SingleViewTests.swift
+//  SingleViewTests
 //
-//  Created by Michal Švácha on 20/03/15.
+//  Created by Michal Švácha on 16/04/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
 //
 
 import UIKit
 import XCTest
 
-class Table2GridConceptTests: XCTestCase {
+class SingleViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
