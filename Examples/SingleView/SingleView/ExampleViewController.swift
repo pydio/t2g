@@ -92,8 +92,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
-        println(indexPath)
-        
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
         self.navigationController?.pushViewController(newVC, animated: true)
@@ -121,9 +119,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
-        println(self.modelArray)
         self.modelArray.removeAtIndex(indexPath.row)
-        println(self.modelArray)
     }
     
     //MARK: T2GDrop delegate methods

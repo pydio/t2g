@@ -27,9 +27,6 @@ class T2GScrollView: UIScrollView {
         var count = 0
         
         if mode == .Table {
-            
-            println(self.superview?.frame)
-            
             count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
             if count == 0 {
                 if let superframe = self.superview?.frame {
