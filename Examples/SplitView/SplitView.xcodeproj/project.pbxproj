@@ -1,0 +1,470 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E01285E41ADFF53D007EA890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E31ADFF53D007EA890 /* AppDelegate.swift */; };
+		E01285E61ADFF53D007EA890 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E51ADFF53D007EA890 /* MasterViewController.swift */; };
+		E01285E81ADFF53D007EA890 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E71ADFF53D007EA890 /* DetailViewController.swift */; };
+		E01285EB1ADFF53D007EA890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E01285E91ADFF53D007EA890 /* Main.storyboard */; };
+		E01285ED1ADFF53D007EA890 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E01285EC1ADFF53D007EA890 /* Images.xcassets */; };
+		E01285F01ADFF53D007EA890 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E01285EE1ADFF53D007EA890 /* LaunchScreen.xib */; };
+		E01285FC1ADFF53D007EA890 /* SplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285FB1ADFF53D007EA890 /* SplitViewTests.swift */; };
+		E012860E1ADFF563007EA890 /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286061ADFF563007EA890 /* T2GCell.swift */; };
+		E012860F1ADFF563007EA890 /* T2GCellDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286071ADFF563007EA890 /* T2GCellDrawerButton.swift */; };
+		E01286101ADFF563007EA890 /* T2GCheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */; };
+		E01286111ADFF563007EA890 /* T2GColoredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286091ADFF563007EA890 /* T2GColoredButton.swift */; };
+		E01286121ADFF563007EA890 /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860A1ADFF563007EA890 /* T2GNaviViewController.swift */; };
+		E01286131ADFF563007EA890 /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860B1ADFF563007EA890 /* T2GScrollController.swift */; };
+		E01286141ADFF563007EA890 /* T2GScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860C1ADFF563007EA890 /* T2GScrollView.swift */; };
+		E01286151ADFF563007EA890 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860D1ADFF563007EA890 /* T2GViewController.swift */; };
+		E01286171ADFF5BF007EA890 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286161ADFF5BF007EA890 /* ExampleViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E01285F61ADFF53D007EA890 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E01285D61ADFF53D007EA890 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E01285DD1ADFF53D007EA890;
+			remoteInfo = SplitView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E01285DE1ADFF53D007EA890 /* SplitView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E01285E21ADFF53D007EA890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E01285E31ADFF53D007EA890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E01285E51ADFF53D007EA890 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		E01285E71ADFF53D007EA890 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E01285EA1ADFF53D007EA890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E01285EC1ADFF53D007EA890 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E01285EF1ADFF53D007EA890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		E01285F51ADFF53D007EA890 /* SplitViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SplitViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E01285FA1ADFF53D007EA890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E01285FB1ADFF53D007EA890 /* SplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewTests.swift; sourceTree = "<group>"; };
+		E01286061ADFF563007EA890 /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCell.swift; path = ../../../Table2Grid/T2GCell.swift; sourceTree = "<group>"; };
+		E01286071ADFF563007EA890 /* T2GCellDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCellDrawerButton.swift; path = ../../../Table2Grid/T2GCellDrawerButton.swift; sourceTree = "<group>"; };
+		E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCheckboxButton.swift; path = ../../../Table2Grid/T2GCheckboxButton.swift; sourceTree = "<group>"; };
+		E01286091ADFF563007EA890 /* T2GColoredButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GColoredButton.swift; path = ../../../Table2Grid/T2GColoredButton.swift; sourceTree = "<group>"; };
+		E012860A1ADFF563007EA890 /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNaviViewController.swift; path = ../../../Table2Grid/T2GNaviViewController.swift; sourceTree = "<group>"; };
+		E012860B1ADFF563007EA890 /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GScrollController.swift; path = ../../../Table2Grid/T2GScrollController.swift; sourceTree = "<group>"; };
+		E012860C1ADFF563007EA890 /* T2GScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GScrollView.swift; path = ../../../Table2Grid/T2GScrollView.swift; sourceTree = "<group>"; };
+		E012860D1ADFF563007EA890 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GViewController.swift; path = ../../../Table2Grid/T2GViewController.swift; sourceTree = "<group>"; };
+		E01286161ADFF5BF007EA890 /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E01285DB1ADFF53D007EA890 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E01285F21ADFF53D007EA890 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E01285D51ADFF53D007EA890 = {
+			isa = PBXGroup;
+			children = (
+				E01285E01ADFF53D007EA890 /* SplitView */,
+				E01285F81ADFF53D007EA890 /* SplitViewTests */,
+				E01285DF1ADFF53D007EA890 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E01285DF1ADFF53D007EA890 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E01285DE1ADFF53D007EA890 /* SplitView.app */,
+				E01285F51ADFF53D007EA890 /* SplitViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E01285E01ADFF53D007EA890 /* SplitView */ = {
+			isa = PBXGroup;
+			children = (
+				E01286051ADFF548007EA890 /* Table2Grid */,
+				E01285E31ADFF53D007EA890 /* AppDelegate.swift */,
+				E01286161ADFF5BF007EA890 /* ExampleViewController.swift */,
+				E01285E51ADFF53D007EA890 /* MasterViewController.swift */,
+				E01285E71ADFF53D007EA890 /* DetailViewController.swift */,
+				E01285E91ADFF53D007EA890 /* Main.storyboard */,
+				E01285EC1ADFF53D007EA890 /* Images.xcassets */,
+				E01285EE1ADFF53D007EA890 /* LaunchScreen.xib */,
+				E01285E11ADFF53D007EA890 /* Supporting Files */,
+			);
+			path = SplitView;
+			sourceTree = "<group>";
+		};
+		E01285E11ADFF53D007EA890 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E01285E21ADFF53D007EA890 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E01285F81ADFF53D007EA890 /* SplitViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				E01285FB1ADFF53D007EA890 /* SplitViewTests.swift */,
+				E01285F91ADFF53D007EA890 /* Supporting Files */,
+			);
+			path = SplitViewTests;
+			sourceTree = "<group>";
+		};
+		E01285F91ADFF53D007EA890 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E01285FA1ADFF53D007EA890 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E01286051ADFF548007EA890 /* Table2Grid */ = {
+			isa = PBXGroup;
+			children = (
+				E01286061ADFF563007EA890 /* T2GCell.swift */,
+				E01286071ADFF563007EA890 /* T2GCellDrawerButton.swift */,
+				E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */,
+				E01286091ADFF563007EA890 /* T2GColoredButton.swift */,
+				E012860A1ADFF563007EA890 /* T2GNaviViewController.swift */,
+				E012860B1ADFF563007EA890 /* T2GScrollController.swift */,
+				E012860C1ADFF563007EA890 /* T2GScrollView.swift */,
+				E012860D1ADFF563007EA890 /* T2GViewController.swift */,
+			);
+			name = Table2Grid;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E01285DD1ADFF53D007EA890 /* SplitView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E01285FF1ADFF53D007EA890 /* Build configuration list for PBXNativeTarget "SplitView" */;
+			buildPhases = (
+				E01285DA1ADFF53D007EA890 /* Sources */,
+				E01285DB1ADFF53D007EA890 /* Frameworks */,
+				E01285DC1ADFF53D007EA890 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SplitView;
+			productName = SplitView;
+			productReference = E01285DE1ADFF53D007EA890 /* SplitView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E01285F41ADFF53D007EA890 /* SplitViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E01286021ADFF53D007EA890 /* Build configuration list for PBXNativeTarget "SplitViewTests" */;
+			buildPhases = (
+				E01285F11ADFF53D007EA890 /* Sources */,
+				E01285F21ADFF53D007EA890 /* Frameworks */,
+				E01285F31ADFF53D007EA890 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E01285F71ADFF53D007EA890 /* PBXTargetDependency */,
+			);
+			name = SplitViewTests;
+			productName = SplitViewTests;
+			productReference = E01285F51ADFF53D007EA890 /* SplitViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E01285D61ADFF53D007EA890 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Michal Švácha";
+				TargetAttributes = {
+					E01285DD1ADFF53D007EA890 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					E01285F41ADFF53D007EA890 = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = E01285DD1ADFF53D007EA890;
+					};
+				};
+			};
+			buildConfigurationList = E01285D91ADFF53D007EA890 /* Build configuration list for PBXProject "SplitView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E01285D51ADFF53D007EA890;
+			productRefGroup = E01285DF1ADFF53D007EA890 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E01285DD1ADFF53D007EA890 /* SplitView */,
+				E01285F41ADFF53D007EA890 /* SplitViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E01285DC1ADFF53D007EA890 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01285EB1ADFF53D007EA890 /* Main.storyboard in Resources */,
+				E01285F01ADFF53D007EA890 /* LaunchScreen.xib in Resources */,
+				E01285ED1ADFF53D007EA890 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E01285F31ADFF53D007EA890 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E01285DA1ADFF53D007EA890 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01286121ADFF563007EA890 /* T2GNaviViewController.swift in Sources */,
+				E01286141ADFF563007EA890 /* T2GScrollView.swift in Sources */,
+				E01285E81ADFF53D007EA890 /* DetailViewController.swift in Sources */,
+				E01286151ADFF563007EA890 /* T2GViewController.swift in Sources */,
+				E01286111ADFF563007EA890 /* T2GColoredButton.swift in Sources */,
+				E01286171ADFF5BF007EA890 /* ExampleViewController.swift in Sources */,
+				E012860E1ADFF563007EA890 /* T2GCell.swift in Sources */,
+				E01285E61ADFF53D007EA890 /* MasterViewController.swift in Sources */,
+				E012860F1ADFF563007EA890 /* T2GCellDrawerButton.swift in Sources */,
+				E01286131ADFF563007EA890 /* T2GScrollController.swift in Sources */,
+				E01286101ADFF563007EA890 /* T2GCheckboxButton.swift in Sources */,
+				E01285E41ADFF53D007EA890 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E01285F11ADFF53D007EA890 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01285FC1ADFF53D007EA890 /* SplitViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E01285F71ADFF53D007EA890 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E01285DD1ADFF53D007EA890 /* SplitView */;
+			targetProxy = E01285F61ADFF53D007EA890 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E01285E91ADFF53D007EA890 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E01285EA1ADFF53D007EA890 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E01285EE1ADFF53D007EA890 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E01285EF1ADFF53D007EA890 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E01285FD1ADFF53D007EA890 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E01285FE1ADFF53D007EA890 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E01286001ADFF53D007EA890 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SplitView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E01286011ADFF53D007EA890 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SplitView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E01286031ADFF53D007EA890 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SplitViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SplitView.app/SplitView";
+			};
+			name = Debug;
+		};
+		E01286041ADFF53D007EA890 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SplitViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SplitView.app/SplitView";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E01285D91ADFF53D007EA890 /* Build configuration list for PBXProject "SplitView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E01285FD1ADFF53D007EA890 /* Debug */,
+				E01285FE1ADFF53D007EA890 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E01285FF1ADFF53D007EA890 /* Build configuration list for PBXNativeTarget "SplitView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E01286001ADFF53D007EA890 /* Debug */,
+				E01286011ADFF53D007EA890 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E01286021ADFF53D007EA890 /* Build configuration list for PBXNativeTarget "SplitViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E01286031ADFF53D007EA890 /* Debug */,
+				E01286041ADFF53D007EA890 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E01285D61ADFF53D007EA890 /* Project object */;
+}
