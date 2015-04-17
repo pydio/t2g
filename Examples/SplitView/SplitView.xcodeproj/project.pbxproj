@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E01285E41ADFF53D007EA890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E31ADFF53D007EA890 /* AppDelegate.swift */; };
-		E01285E61ADFF53D007EA890 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E51ADFF53D007EA890 /* MasterViewController.swift */; };
 		E01285E81ADFF53D007EA890 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E71ADFF53D007EA890 /* DetailViewController.swift */; };
 		E01285EB1ADFF53D007EA890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E01285E91ADFF53D007EA890 /* Main.storyboard */; };
 		E01285ED1ADFF53D007EA890 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E01285EC1ADFF53D007EA890 /* Images.xcassets */; };
@@ -40,7 +39,6 @@
 		E01285DE1ADFF53D007EA890 /* SplitView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E01285E21ADFF53D007EA890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E01285E31ADFF53D007EA890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E01285E51ADFF53D007EA890 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		E01285E71ADFF53D007EA890 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		E01285EA1ADFF53D007EA890 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E01285EC1ADFF53D007EA890 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 				E01285E31ADFF53D007EA890 /* AppDelegate.swift */,
 				E01286481ADFFBD4007EA890 /* SplitViewController.swift */,
 				E01286161ADFF5BF007EA890 /* ExampleViewController.swift */,
-				E01285E51ADFF53D007EA890 /* MasterViewController.swift */,
 				E01285E71ADFF53D007EA890 /* DetailViewController.swift */,
 				E01285E91ADFF53D007EA890 /* Main.storyboard */,
 				E01285EC1ADFF53D007EA890 /* Images.xcassets */,
@@ -260,7 +257,6 @@
 				E01286111ADFF563007EA890 /* T2GColoredButton.swift in Sources */,
 				E01286171ADFF5BF007EA890 /* ExampleViewController.swift in Sources */,
 				E012860E1ADFF563007EA890 /* T2GCell.swift in Sources */,
-				E01285E61ADFF53D007EA890 /* MasterViewController.swift in Sources */,
 				E012860F1ADFF563007EA890 /* T2GCellDrawerButton.swift in Sources */,
 				E01286491ADFFBD4007EA890 /* SplitViewController.swift in Sources */,
 				E01286131ADFF563007EA890 /* T2GScrollController.swift in Sources */,

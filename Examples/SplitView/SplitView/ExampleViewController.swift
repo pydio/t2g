@@ -10,6 +10,7 @@ import UIKit
 
 class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate {
     
+    var detailViewController: DetailViewController? = nil
     var modelArray: [Int] = []
     
     override func awakeFromNib() {
@@ -21,6 +22,11 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let split = self.splitViewController {
+            let controllers = split.viewControllers
+            self.detailViewController = controllers[controllers.count - 1].topViewController as? DetailViewController
+        }
         
         for index in 0...32 {
             modelArray.append(index)
