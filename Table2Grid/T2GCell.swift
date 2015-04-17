@@ -30,6 +30,14 @@ private enum T2GCellSwipeDirection {
 
 class T2GCell: UIView, UIScrollViewDelegate {
     
+    var highlighted: Bool = false {
+        didSet {
+            if let backgroundButton = self.backgroundView?.viewWithTag(T2GViewTags.cellBackgroundButton.rawValue) as? UIButton {
+                backgroundButton.highlighted = self.highlighted
+            }
+        }
+    }
+    
     var scrollView: UIScrollView?
     var backgroundView: UIView?
     
