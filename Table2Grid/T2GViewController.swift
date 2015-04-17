@@ -143,10 +143,30 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         });
     }
     
+    func indexPathForCell(tag: Int) -> NSIndexPath {
+        let index = tag - T2GViewTags.cellConstant.rawValue
+        
+        var row = 0
+        var section = 0
+        
+        var currentMax = 0
+        for sectionIndex in 0..<self.delegate.numberOfSectionsInT2GView() {
+            let cellsInSection = self.delegate.numberOfCellsInSection(sectionIndex)
+            currentMax += cellsInSection
+            if currentMax > sectionIndex {
+                row = index - (currentMax - cellsInSection)
+                section = sectionIndex
+                break
+            }
+        }
+        
+        return NSIndexPath(forRow: row, inSection: section)
+    }
+    
     func reloadScrollView() {
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
-                self.delegate.updateCellForIndexPath(cell, indexPath: NSIndexPath(forRow: cell.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
+                self.delegate.updateCellForIndexPath(cell, indexPath: self.indexPathForCell(cell.tag))
             }
         }
         
@@ -176,7 +196,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         for key in self.editingModeSelection.keys {
             if self.editingModeSelection[key] == true {
-                indexPaths.append(NSIndexPath(forRow: key, inSection: 0))
+                indexPaths.append(self.indexPathForCell(key + T2GViewTags.cellConstant.rawValue))
             }
         }
         
@@ -229,7 +249,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                         let newFrame = self.scrollView.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue + 1)
                         c.frame = newFrame
                         c.tag = c.tag + 1
-                        self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
+                        self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(c.tag))
                     }
                 }
             }
@@ -247,7 +267,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
-            let indexPath = NSIndexPath(forRow: tag - T2GViewTags.cellConstant.rawValue, inSection: 0)
+            let indexPath = self.indexPathForCell(tag)
             let frame = self.scrollView.frameForCell(self.layoutMode, index: indexPath.row)
             let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
@@ -279,7 +299,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             for indexPath in indexPaths {
                 if let view = self.scrollView!.viewWithTag(indexPath.row + T2GViewTags.cellConstant.rawValue) as? T2GCell {
                     if notifyDelegate {
-                        self.delegate.willRemoveCellAtIndexPath(NSIndexPath(forRow: indexPath.row - removedCount, inSection: 0))
+                        self.delegate.willRemoveCellAtIndexPath(self.indexPathForCell(indexPath.row - removedCount + T2GViewTags.cellConstant.rawValue))
                     }
                     
                     if self.openCellTag == view.tag {
@@ -318,7 +338,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                                 let newFrame = self.scrollView.frameForCell(self.layoutMode, index: newRowNum)
                                 c.frame = newFrame
                                 c.tag = newRowNum + T2GViewTags.cellConstant.rawValue
-                                self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: newRowNum, inSection: 0))
+                                self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
                                         
                                 changedCount += 1
                             }
@@ -545,7 +565,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didSelectCell(tag: Int) {
-        self.delegate.didSelectCellAtIndexPath(NSIndexPath(forRow: tag, inSection: 0))
+        self.delegate.didSelectCellAtIndexPath(self.indexPathForCell(tag))
     }
     
     func didCellOpen(tag: Int) {
@@ -557,7 +577,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     }
     
     func didSelectButton(tag: Int, index: Int) {
-        self.delegate.didSelectDrawerButtonAtIndex(NSIndexPath(forRow: tag, inSection: 0), buttonIndex: index)
+        self.delegate.didSelectDrawerButtonAtIndex(self.indexPathForCell(tag), buttonIndex: index)
     }
     
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool) {
@@ -666,7 +686,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                                         let newFrame = self.scrollView.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue - 1)
                                         c.frame = newFrame
                                         c.tag = c.tag - 1
-                                        self.delegate.updateCellForIndexPath(c, indexPath: NSIndexPath(forRow: c.tag - T2GViewTags.cellConstant.rawValue, inSection: 0))
+                                        self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(c.tag))
                                     }
                                 }
                             }

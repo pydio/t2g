@@ -146,7 +146,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     }
     
     func backgroundViewButtonPressed(sender: UITapGestureRecognizer) {
-        self.delegate?.didSelectCell(self.tag - T2GViewTags.cellConstant.rawValue)
+        self.delegate?.didSelectCell(self.tag)
     }
     
     func handleLongPress(sender: UILongPressGestureRecognizer) {
@@ -269,7 +269,7 @@ class T2GCell: UIView, UIScrollViewDelegate {
     }
     
     func buttonSelected(sender: T2GCellDrawerButton) {
-        self.delegate?.didSelectButton(self.tag - T2GViewTags.cellConstant.rawValue, index: sender.tag - T2GViewTags.cellDrawerButtonConstant.rawValue)
+        self.delegate?.didSelectButton(self.tag, index: sender.tag - T2GViewTags.cellDrawerButtonConstant.rawValue)
     }
     
     //MARK: - Multiple choice toggle

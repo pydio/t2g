@@ -15,7 +15,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for index in 0...32 {
+        for index in 0...10 {
             modelArray.append(index)
         }
         
@@ -81,7 +81,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func dimensionsForCell(mode: T2GLayoutMode) -> CGSize {
         if mode == .Collection {
-            return CGSizeMake(100, 100)
+            return CGSizeMake(98, 98)
         } else {
             return CGSizeMake(self.view.frame.size.width * 0.9, 64.0)
         }
