@@ -11,7 +11,10 @@ import UIKit
 class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate {
     
     var detailViewController: DetailViewController? = nil
+    
     var modelArray: [Int] = []
+    var modelArray2: [Int] = []
+    var modelArray3: [Int] = []
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,8 +31,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             self.detailViewController = controllers[controllers.count - 1].topViewController as? DetailViewController
         }
         
-        for index in 0...32 {
+        for index in 0..<10 {
             modelArray.append(index)
+            modelArray2.append(index)
+            modelArray3.append(index)
         }
         
         var rightButton_transform: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
@@ -64,19 +69,52 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     /// Datasource methods
     
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell {
-        let view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
-        view.setupButtons(indexPath.row%5, mode: self.layoutMode)
-        view.draggable = true
-        view.draggableDelegate = self
-        return view
+        var view: T2GCell?
+        switch(indexPath.section) {
+        case 0:
+            view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
+            view!.draggable = true
+            view!.draggableDelegate = self
+            break
+        case 1:
+            view = T2GCell(header: "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
+            view!.draggable = true
+            view!.draggableDelegate = self
+            break
+        case 2:
+            view = T2GCell(header: "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
+            view!.draggable = true
+            view!.draggableDelegate = self
+            break
+        default:
+            view = T2GCell(header: "", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
+            view!.draggable = true
+            view!.draggableDelegate = self
+            break
+        }
+        
+        return view!
     }
     
     func numberOfSectionsInT2GView() -> Int {
-        return 1
+        return 3
     }
     
     func numberOfCellsInSection(section: Int) -> Int {
-        return self.modelArray.count
+        switch(section) {
+        case 0:
+            return self.modelArray.count
+        case 1:
+            return self.modelArray2.count
+        case 2:
+            return self.modelArray3.count
+        default:
+            return 0
+        }
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
@@ -84,8 +122,22 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
-        cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | T: \(indexPath.row + T2GViewTags.cellConstant.rawValue)"
-        cell.detailLabel?.text = "\(indexPath)"
+        switch(indexPath.section) {
+        case 0:
+            cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.detailLabel?.text = "\(indexPath)"
+            break
+        case 1:
+            cell.headerLabel?.text = "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.detailLabel?.text = "\(indexPath)"
+            break
+        case 2:
+            cell.headerLabel?.text = "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.detailLabel?.text = "\(indexPath)"
+            break
+        default:
+            break
+        }
     }
     
     /// View methods
@@ -96,10 +148,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func dimensionsForCell(mode: T2GLayoutMode) -> CGSize {
         if mode == .Collection {
-            return CGSizeMake(100, 100)
+            return CGSizeMake(94, 94)
         } else {
             return CGSizeMake(self.navigationController!.view.frame.size.width * 0.9, 64.0)
         }
+    }
+    
+    func dimensionsForSectionHeader() -> CGSize {
+        return CGSize(width: 0.0, height: 32.0)
     }
     
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
@@ -128,11 +184,37 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
         if buttonIndex == 0 {
-            self.modelArray.removeAtIndex(indexPath.row)
+            switch(indexPath.section) {
+            case 0:
+                self.modelArray.removeAtIndex(indexPath.row)
+                break
+            case 1:
+                self.modelArray2.removeAtIndex(indexPath.row)
+                break
+            case 2:
+                self.modelArray3.removeAtIndex(indexPath.row)
+                break
+            default:
+                break
+            }
+            
             self.removeRowsAtIndexPaths([indexPath])
         } else if buttonIndex == 1 {
-            self.modelArray.insert(42, atIndex: indexPath.row + 1)
-            let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: 0)
+            switch(indexPath.section) {
+            case 0:
+                self.modelArray.insert(42, atIndex: indexPath.row + 1)
+                break
+            case 1:
+                self.modelArray2.insert(42, atIndex: indexPath.row + 1)
+                break
+            case 2:
+                self.modelArray3.insert(42, atIndex: indexPath.row + 1)
+                break
+            default:
+                break
+            }
+            
+            let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
             self.insertRowAtIndexPath(indexPath)
         } else {
             self.toggleEditingMode(!self.isEditingModeActive)

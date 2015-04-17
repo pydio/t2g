@@ -17,7 +17,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for index in 0...9 {
+        for index in 0..<10 {
             modelArray.append(index)
             modelArray2.append(index)
             modelArray3.append(index)
