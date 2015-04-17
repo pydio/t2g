@@ -21,6 +21,7 @@ protocol T2GViewControllerDelegate {
     
     func cellPadding(mode: T2GLayoutMode) -> CGFloat
     func dimensionsForCell(mode: T2GLayoutMode) -> CGSize
+    func dimensionsForSectionHeader() -> CGSize
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
@@ -78,7 +79,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     var delegate: T2GViewControllerDelegate! {
         didSet {
             var count = self.scrollView.visibleCellCount(self.layoutMode)
-            let totalCells = self.delegate.numberOfCellsInSection(0)
+            let totalCells = self.totalCellCount()
             count = count > totalCells ? totalCells : count
             
             for index in 0..<count {
@@ -153,7 +154,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         for sectionIndex in 0..<self.delegate.numberOfSectionsInT2GView() {
             let cellsInSection = self.delegate.numberOfCellsInSection(sectionIndex)
             currentMax += cellsInSection
-            if currentMax > sectionIndex {
+            
+            if currentMax > index {
                 row = index - (currentMax - cellsInSection)
                 section = sectionIndex
                 break
@@ -161,6 +163,24 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }
         
         return NSIndexPath(forRow: row, inSection: section)
+    }
+    
+    func indexForIndexPath(indexPath: NSIndexPath) -> Int {
+        var totalIndex = indexPath.row
+        for section in 0..<indexPath.section {
+            totalIndex += self.delegate.numberOfCellsInSection(section)
+        }
+        
+        return totalIndex
+    }
+    
+    func totalCellCount() -> Int {
+        var total = 0
+        for section in 0..<self.delegate.numberOfSectionsInT2GView() {
+            total += self.delegate.numberOfCellsInSection(section)
+        }
+        
+        return total
     }
     
     func reloadScrollView() {
@@ -246,7 +266,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             for cell in self.scrollView.subviews {
                 if cell.tag >= (indexPath.row + T2GViewTags.cellConstant.rawValue) {
                     if let c = cell as? T2GCell {
-                        let newFrame = self.scrollView.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue + 1)
+                        let newFrame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(c.tag + 1))
                         c.frame = newFrame
                         c.tag = c.tag + 1
                         self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(c.tag))
@@ -268,7 +288,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             return cell.tag
         } else {
             let indexPath = self.indexPathForCell(tag)
-            let frame = self.scrollView.frameForCell(self.layoutMode, index: indexPath.row)
+            let frame = self.scrollView.frameForCell(self.layoutMode, indexPath: indexPath)
             let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
             
@@ -297,9 +317,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         UIView.animateWithDuration(0.6, animations: { () -> Void in
             var removedCount = 0
             for indexPath in indexPaths {
-                if let view = self.scrollView!.viewWithTag(indexPath.row + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                let idx = self.indexForIndexPath(indexPath)
+                if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
                     if notifyDelegate {
-                        self.delegate.willRemoveCellAtIndexPath(self.indexPathForCell(indexPath.row - removedCount + T2GViewTags.cellConstant.rawValue))
+                        self.delegate.willRemoveCellAtIndexPath(self.indexPathForCell(idx - removedCount + T2GViewTags.cellConstant.rawValue))
                     }
                     
                     if self.openCellTag == view.tag {
@@ -313,14 +334,16 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }, completion: { (_) -> Void in
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 for indexPath in indexPaths {
-                    if let view = self.scrollView!.viewWithTag(indexPath.row + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                    let idx = self.indexForIndexPath(indexPath)
+                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
                         view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
                     }
                 }
                     
             }, completion: { (_) -> Void in
                 for indexPath in indexPaths {
-                    if let view = self.scrollView!.viewWithTag(indexPath.row + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                    let idx = self.indexForIndexPath(indexPath)
+                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
                         view.removeFromSuperview()
                     }
                 }
@@ -328,17 +351,16 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     var changedCount = 0
                     for cell in self.scrollView.subviews {
-                                
-                        if cell.tag > (indexPaths.first!.row + T2GViewTags.cellConstant.rawValue) {
+                        let firstIP = indexPaths.first!
+                        let idx = self.indexForIndexPath(firstIP)
+                        
+                        if cell.tag > (idx + T2GViewTags.cellConstant.rawValue) {
                             if let c = cell as? T2GCell {
-                                        
-                                let newRowNum = indexPaths.first!.row + changedCount
-                                        
-                                        
-                                let newFrame = self.scrollView.frameForCell(self.layoutMode, index: newRowNum)
+                                let newRowNum = idx + changedCount
+                                let newFrame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
                                 c.frame = newFrame
                                 c.tag = newRowNum + T2GViewTags.cellConstant.rawValue
-                                self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
+                                self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(c.tag))
                                         
                                 changedCount += 1
                             }
@@ -366,13 +388,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         let collectionClosure = {() -> T2GLayoutMode in
             let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
             var from = (indicesExtremes.highest) + 1
-            if from > self.delegate.numberOfCellsInSection(0) {
-                from = self.delegate.numberOfCellsInSection(0) - 1 + T2GViewTags.cellConstant.rawValue
+            
+            if from > self.totalCellCount() {
+                from = self.totalCellCount() - 1 + T2GViewTags.cellConstant.rawValue
             }
             
             var to = (indicesExtremes.highest) + 10
-            if to > self.delegate.numberOfCellsInSection(0) {
-                to = self.delegate.numberOfCellsInSection(0) - 1 + T2GViewTags.cellConstant.rawValue
+            if to > self.totalCellCount() {
+                to = self.totalCellCount() - 1 + T2GViewTags.cellConstant.rawValue
             }
             
             
@@ -392,7 +415,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(mode, index: cell.tag - T2GViewTags.cellConstant.rawValue)
+                    let frame = self.scrollView.frameForCell(mode, indexPath: self.indexPathForCell(cell.tag))
                     
                     /*
                     * Not really working - TBD
@@ -424,7 +447,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
         let from = (indicesExtremes.highest) + 1
         var to = (indicesExtremes.highest) + 10
-        if (to - T2GViewTags.cellConstant.rawValue) < self.delegate.numberOfCellsInSection(0) {
+        if (to - T2GViewTags.cellConstant.rawValue) < self.totalCellCount() {
             for index in from...to {
                 self.insertRowWithTag(index)
             }
@@ -438,7 +461,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(self.layoutMode, index: cell.tag - T2GViewTags.cellConstant.rawValue)
+                    let frame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(cell.tag))
                     cell.changeFrameParadigm(self.layoutMode, frame: frame)
                 }
             }
@@ -498,7 +521,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         let extremes = self.scrollView.firstAndLastVisibleTags()
         let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
         let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
-        let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant.rawValue : self.delegate.numberOfCellsInSection(0) + T2GViewTags.cellConstant.rawValue - 1
+        let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant.rawValue : self.totalCellCount() + T2GViewTags.cellConstant.rawValue - 1
         
         if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
             if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
@@ -537,8 +560,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         var secondTag = startTag + (2 * multiplier)
         var thirdTag = startTag + (3 * multiplier)
         
-        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant.rawValue > 0 : secondTag - T2GViewTags.cellConstant.rawValue < (self.delegate.numberOfCellsInSection(0) - 1)
-        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant.rawValue > 0 : thirdTag - T2GViewTags.cellConstant.rawValue < (self.delegate.numberOfCellsInSection(0) - 1)
+        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant.rawValue > 0 : secondTag - T2GViewTags.cellConstant.rawValue < (self.totalCellCount() - 1)
+        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant.rawValue > 0 : thirdTag - T2GViewTags.cellConstant.rawValue < (self.totalCellCount() - 1)
         
         var lastTag = self.insertRowWithTag(firstTag)
         
@@ -683,7 +706,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
                             for view in self.scrollView.subviews {
                                 if let c = view as? T2GCell {
                                     if c.tag > cell.tag {
-                                        let newFrame = self.scrollView.frameForCell(self.layoutMode, index: c.tag - T2GViewTags.cellConstant.rawValue - 1)
+                                        let newFrame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(c.tag - 1))
                                         c.frame = newFrame
                                         c.tag = c.tag - 1
                                         self.delegate.updateCellForIndexPath(c, indexPath: self.indexPathForCell(c.tag))
@@ -719,6 +742,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         return self.layoutMode
     }
     
+    func delimiterDimensions() -> CGSize {
+        return self.delegate.dimensionsForSectionHeader()
+    }
+    
     func cellDimensions(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat) {
         let dimensions = self.delegate.dimensionsForCell(mode)
         return (dimensions.width, dimensions.height, self.delegate.cellPadding(mode))
@@ -726,5 +753,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     func cellCount(inSection: Int) -> Int {
         return self.delegate.numberOfCellsInSection(inSection)
+    }
+    
+    func sectionCount() -> Int {
+        return self.delegate.numberOfSectionsInT2GView()
     }
 }

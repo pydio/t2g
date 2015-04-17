@@ -10,8 +10,10 @@ import UIKit
 
 protocol T2GScrollViewDelegate {
     func currentLayout() -> T2GLayoutMode
+    func delimiterDimensions() -> CGSize
     func cellDimensions(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
     func cellCount(inSection: Int) -> Int
+    func sectionCount() -> Int
 }
 
 class T2GScrollView: UIScrollView {
@@ -52,7 +54,7 @@ class T2GScrollView: UIScrollView {
         }
     }
     
-    func frameForCell(mode: T2GLayoutMode, index: Int = 0) -> CGRect {
+    func frameForCell(mode: T2GLayoutMode, indexPath: NSIndexPath) -> CGRect {
         let superviewFrame = self.superview!.frame
         let dimensions = self.viewDelegate!.cellDimensions(mode)
         
@@ -67,14 +69,24 @@ class T2GScrollView: UIScrollView {
                 xCoords.append(x)
             }
             
-            let yCoord = dimensions.padding + (CGFloat(index / xCoords.count) * (dimensions.height + dimensions.padding))
-            let frame = CGRectMake(CGFloat(xCoords[index % xCoords.count]), yCoord, dimensions.width, dimensions.height)
+            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + self.viewDelegate!.delimiterDimensions().height
+            for section in 0..<indexPath.section {
+                yCoord += (self.viewDelegate!.delimiterDimensions().height + (CGFloat(ceil(CGFloat(self.viewDelegate!.cellCount(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
+            }
+            
+            let frame = CGRectMake(CGFloat(xCoords[indexPath.row % xCoords.count]), yCoord, dimensions.width, dimensions.height)
             
             return frame
             
         } else {
             let viewX = (superviewFrame.size.width - dimensions.width) / 2
-            let ypsilon = viewX + (CGFloat(index) * (dimensions.height + dimensions.padding))
+            
+            var ypsilon = viewX + (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.viewDelegate!.delimiterDimensions().height
+            
+            for section in 0..<indexPath.section {
+                ypsilon += (self.viewDelegate!.delimiterDimensions().height + (CGFloat(self.viewDelegate!.cellCount(section)) * (dimensions.height + dimensions.padding)))
+            }
+            
             return CGRectMake(viewX, ypsilon, dimensions.width, dimensions.height)
         }
     }
@@ -82,7 +94,7 @@ class T2GScrollView: UIScrollView {
     func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
-                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: cell.tag - T2GViewTags.cellConstant.rawValue)
+                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), indexPath: self.indexPathForCell(cell.tag))
                 if cell.frame.origin.x != frame.origin.x || cell.frame.origin.y != frame.origin.y || cell.frame.size.width != frame.size.width || cell.frame.size.height != frame.size.height {
                     cell.changeFrameParadigm(self.viewDelegate!.currentLayout(), frame: frame)
                 }
@@ -101,7 +113,7 @@ class T2GScrollView: UIScrollView {
         
         for tag in tags {
             if let view = self.viewWithTag(tag) as? T2GCell {
-                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), index: view.tag - T2GViewTags.cellConstant.rawValue)
+                let frame = self.frameForCell(self.viewDelegate!.currentLayout(), indexPath: self.indexPathForCell(view.tag))
                 
                 if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
                     delayCount += 1.0
@@ -126,14 +138,49 @@ class T2GScrollView: UIScrollView {
     
     
     //MARK: - Helper methods
+    
+    func indexPathForCell(tag: Int) -> NSIndexPath {
+        let index = tag - T2GViewTags.cellConstant.rawValue
+        
+        var row = 0
+        var section = 0
+        
+        var currentMax = 0
+        for sectionIndex in 0..<self.viewDelegate!.sectionCount() {
+            let cellsInSection = self.viewDelegate!.cellCount(sectionIndex)
+            currentMax += cellsInSection
+            if currentMax > index {
+                row = index - (currentMax - cellsInSection)
+                section = sectionIndex
+                break
+            }
+        }
+        
+        return NSIndexPath(forRow: row, inSection: section)
+    }
+    
+    func totalCellCount() -> Int {
+        var total = 0
+        for section in 0..<self.viewDelegate!.sectionCount() {
+            total += self.viewDelegate!.cellCount(section)
+        }
+        
+        return total
+    }
 
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
         let dimensions = self.viewDelegate!.cellDimensions(mode)
         let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
         let divisor = self.itemCountPerLine(mode)
-        let lineCount = Int(ceil(Double((self.viewDelegate!.cellCount(0) - 1) / divisor)))
+        
+        var lineCount = 0
+        for section in 0..<self.viewDelegate!.sectionCount() {
+            lineCount += (Int(ceil(Double((self.viewDelegate!.cellCount(section) - 1) / divisor))) + 1)
+        }
+        lineCount -= 1
+
         let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-        var height = ypsilon + dimensions.height + dimensions.padding
+        var height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.viewDelegate!.sectionCount()) * self.viewDelegate!.delimiterDimensions().height)
         height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         
         return CGSize(width: self.superview!.frame.size.width, height: height)
@@ -169,28 +216,28 @@ class T2GScrollView: UIScrollView {
         let dimensions = self.viewDelegate!.cellDimensions(mode)
         
         if mode == .Collection {
-            var firstIndex = Int(floor((frame.origin.y - dimensions.height) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
+            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.viewDelegate!.sectionCount()) * self.viewDelegate!.delimiterDimensions().height)) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
             if firstIndex < 0 {
                 firstIndex = 0
             }
             
             var lastIndex = firstIndex + 2 * self.visibleCellCount(.Collection)
-            if self.viewDelegate!.cellCount(0) - 1 < lastIndex {
-                lastIndex = self.viewDelegate!.cellCount(0) - 1
+            if self.totalCellCount() - 1 < lastIndex {
+                lastIndex = self.totalCellCount() - 1
             }
             
             for index in firstIndex...lastIndex {
                 res.append(index)
             }
         } else {
-            var firstIndex = Int(floor((frame.origin.y - dimensions.height) / (dimensions.height + dimensions.padding)))
+            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.viewDelegate!.sectionCount()) * self.viewDelegate!.delimiterDimensions().height)) / (dimensions.height + dimensions.padding)))
             if firstIndex < 0 {
                 firstIndex = 0
             }
             
             var lastIndex = firstIndex + self.visibleCellCount(.Table)
-            if self.viewDelegate!.cellCount(0) - 1 < lastIndex {
-                lastIndex = self.viewDelegate!.cellCount(0) - 1
+            if self.totalCellCount() - 1 < lastIndex {
+                lastIndex = self.totalCellCount() - 1
             }
             
             if lastIndex != -1 {
