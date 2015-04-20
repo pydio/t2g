@@ -209,7 +209,8 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         if onCell.tag % 2 != 0 {
             failure()
         } else {
-            self.modelArray.removeAtIndex(cell.tag - T2GViewTags.cellConstant.rawValue)
+            let indexPath = self.scrollView.indexPathForCell(cell.tag)
+            self.modelArray.removeAtIndex(indexPath.row)
             completion()
         }
     }
