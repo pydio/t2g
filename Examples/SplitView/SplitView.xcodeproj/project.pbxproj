@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00C88561AE52BCE00862938 /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00C88551AE52BCE00862938 /* T2GDragAndDropView.swift */; };
 		E01285E41ADFF53D007EA890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E31ADFF53D007EA890 /* AppDelegate.swift */; };
 		E01285E81ADFF53D007EA890 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285E71ADFF53D007EA890 /* DetailViewController.swift */; };
 		E01285EB1ADFF53D007EA890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E01285E91ADFF53D007EA890 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E00C88551AE52BCE00862938 /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDragAndDropView.swift; path = ../../../Table2Grid/T2GDragAndDropView.swift; sourceTree = "<group>"; };
 		E01285DE1ADFF53D007EA890 /* SplitView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E01285E21ADFF53D007EA890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E01285E31ADFF53D007EA890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		E01286051ADFF548007EA890 /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
+				E00C88551AE52BCE00862938 /* T2GDragAndDropView.swift */,
 				E01286061ADFF563007EA890 /* T2GCell.swift */,
 				E01286071ADFF563007EA890 /* T2GCellDrawerButton.swift */,
 				E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */,
@@ -251,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E01286121ADFF563007EA890 /* T2GNaviViewController.swift in Sources */,
+				E00C88561AE52BCE00862938 /* T2GDragAndDropView.swift in Sources */,
 				E01286141ADFF563007EA890 /* T2GScrollView.swift in Sources */,
 				E01285E81ADFF53D007EA890 /* DetailViewController.swift in Sources */,
 				E01286151ADFF563007EA890 /* T2GViewController.swift in Sources */,
@@ -455,6 +459,7 @@
 				E01286011ADFF53D007EA890 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E01286021ADFF53D007EA890 /* Build configuration list for PBXNativeTarget "SplitViewTests" */ = {
 			isa = XCConfigurationList;
@@ -463,6 +468,7 @@
 				E01286041ADFF53D007EA890 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

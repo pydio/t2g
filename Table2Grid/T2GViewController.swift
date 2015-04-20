@@ -59,7 +59,7 @@ enum T2GViewTags: Int {
     case refreshControl = 222222
 }
 
-class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDropDelegate, T2GScrollViewDataDelegate {
+class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDelegate, T2GScrollViewDataDelegate {
     var scrollView: T2GScrollView!
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     var openCellTag: Int = -1
@@ -125,15 +125,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-//    func indexForIndexPath(indexPath: NSIndexPath) -> Int {
-//        var totalIndex = indexPath.row
-//        for section in 0..<indexPath.section {
-//            totalIndex += self.delegate.numberOfCellsInSection(section)
-//        }
-//        
-//        return totalIndex
-//    }
     
     func reloadScrollView() {
         for view in self.scrollView.subviews {
@@ -428,7 +419,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         }) { (_) -> Void in
             self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
             self.scrollView.performSubviewCleanup()
-            //self.displayMissingCells(self.layoutMode)
         }
     }
     
@@ -444,7 +434,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.scrollView.performSubviewCleanup()
-        //self.displayMissingCells(self.layoutMode)
     }
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -452,7 +441,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         
         if !decelerate {
             self.scrollView.performSubviewCleanup()
-            //self.displayMissingCells(self.layoutMode)
         }
     }
     
@@ -599,7 +587,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         return winningView
     }
     
-    func didCellMove(tag: Int, frame: CGRect) {
+    func didMove(tag: Int, frame: CGRect) {
         let height: CGFloat = 30.0
         
         var frameInView = self.scrollView.convertRect(frame, toView: self.view)
@@ -639,13 +627,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCellDragAndDro
         winningView?.alpha = 0.3
     }
     
-    func didDrop(cell: T2GCell) {
+    func didDrop(cell: T2GDragAndDropView) {
         self.scrollView.performSubviewCleanup()
         
         if let win = self.findBiggestOverlappingView(cell.tag, frame: cell.frame) as? T2GCell {
             win.alpha = 1.0
             
-            self.dropDelegate?.didDropCell(cell, onCell: win, completion: { () -> Void in
+            self.dropDelegate?.didDropCell(cell as T2GCell, onCell: win, completion: { () -> Void in
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                     let transform = CGAffineTransformMakeScale(1.07, 1.07)
                     win.transform = transform

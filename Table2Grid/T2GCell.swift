@@ -18,17 +18,12 @@ protocol T2GCellDelegate {
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool)
 }
 
-protocol T2GCellDragAndDropDelegate {
-    func didCellMove(tag: Int, frame: CGRect)
-    func didDrop(cell: T2GCell)
-}
-
 private enum T2GCellSwipeDirection {
     case Right
     case Left
 }
 
-class T2GCell: UIView, UIScrollViewDelegate {
+class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDelegate {
     
     var highlighted: Bool = false {
         didSet {
@@ -42,7 +37,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
     var backgroundView: UIView?
     
     var delegate: T2GCellDelegate?
-    var draggableDelegate: T2GCellDragAndDropDelegate?
     
     var imageView: UIView?
     var headerLabel: UILabel?
@@ -52,31 +46,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     private var swipeDirection: T2GCellSwipeDirection = .Left
     var lastContentOffset: CGFloat = 0
-    
-    var longPressGestureRecognizer: UILongPressGestureRecognizer?
-    var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
-    var draggable: Bool = false {
-        didSet {
-            if draggable {
-                self.lastDraggedLocation = self.frame.origin
-                
-                if self.longPressGestureRecognizer == nil {
-                    self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-                    self.longPressGestureRecognizer!.minimumPressDuration = 1.5
-                    self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
-                }
-            } else {
-                if let longPress = self.longPressGestureRecognizer {
-                    self.lastDraggedLocation = CGPointMake(0, 0)
-                    
-                    self.removeGestureRecognizer(longPress)
-                    self.longPressGestureRecognizer = nil
-                }
-            }
-        }
-    }
-    
-    var origin:CGPoint = CGPointMake(0, 0)
     
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
@@ -140,6 +109,8 @@ class T2GCell: UIView, UIScrollViewDelegate {
         
         self.addSubview(self.scrollView!)
         
+        self.ownerDelegate = self
+        
         if mode == .Collection {
             self.changeFrameParadigm(.Collection, frame: self.frame)
         }
@@ -147,46 +118,6 @@ class T2GCell: UIView, UIScrollViewDelegate {
     
     func backgroundViewButtonPressed(sender: UITapGestureRecognizer) {
         self.delegate?.didSelectCell(self.tag)
-    }
-    
-    func handleLongPress(sender: UILongPressGestureRecognizer) {
-        if self.viewWithTag(T2GViewTags.checkboxButton.rawValue) == nil {
-            if sender.state == UIGestureRecognizerState.Began {
-                self.superview?.bringSubviewToFront(self)
-                self.origin = self.frame.origin
-                
-                self.lastDraggedLocation = sender.locationInView(self.superview)
-                
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    let transform = CGAffineTransformMakeScale(1.1, 1.1)
-                    self.transform = transform
-                }, completion: { (_) -> Void in
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
-                        let transform = CGAffineTransformMakeScale(1.0, 1.0)
-                        self.transform = transform
-                    }, completion: { (_) -> Void in
-                        // Long press activated
-                    })
-                })
-            }
-            
-            if sender.state == UIGestureRecognizerState.Changed {
-                
-                let point = sender.locationInView(self.superview)
-                var center = self.center
-                center.x = (center.x + (point.x - self.lastDraggedLocation.x))
-                center.y = (center.y + (point.y - self.lastDraggedLocation.y))
-                self.center = center
-                
-                self.lastDraggedLocation = point
-                
-                self.draggableDelegate?.didCellMove(self.tag, frame: self.frame)
-            }
-            
-            if sender.state == .Ended {
-                self.draggableDelegate?.didDrop(self)
-            }
-        }
     }
     
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
@@ -609,5 +540,9 @@ class T2GCell: UIView, UIScrollViewDelegate {
         }
         
         self.lastContentOffset = scrollView.contentOffset.x
+    }
+    
+    func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
+        self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
 }

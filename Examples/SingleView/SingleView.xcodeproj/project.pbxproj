@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00C88581AE5303000862938 /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00C88571AE5303000862938 /* T2GDragAndDropView.swift */; };
 		E01285641ADFF345007EA890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285631ADFF345007EA890 /* AppDelegate.swift */; };
 		E01285661ADFF345007EA890 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01285651ADFF345007EA890 /* ExampleViewController.swift */; };
 		E01285691ADFF345007EA890 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E01285671ADFF345007EA890 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E00C88571AE5303000862938 /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDragAndDropView.swift; path = ../../../Table2Grid/T2GDragAndDropView.swift; sourceTree = "<group>"; };
 		E012855E1ADFF345007EA890 /* SingleView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SingleView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E01285621ADFF345007EA890 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E01285631ADFF345007EA890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		E01285831ADFF357007EA890 /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
+				E00C88571AE5303000862938 /* T2GDragAndDropView.swift */,
 				E01285841ADFF368007EA890 /* T2GCell.swift */,
 				E01285851ADFF368007EA890 /* T2GCellDrawerButton.swift */,
 				E01285861ADFF368007EA890 /* T2GCheckboxButton.swift */,
@@ -252,6 +255,7 @@
 				E01285911ADFF368007EA890 /* T2GScrollController.swift in Sources */,
 				E01285931ADFF368007EA890 /* T2GViewController.swift in Sources */,
 				E012858D1ADFF368007EA890 /* T2GCellDrawerButton.swift in Sources */,
+				E00C88581AE5303000862938 /* T2GDragAndDropView.swift in Sources */,
 				E01285901ADFF368007EA890 /* T2GNaviViewController.swift in Sources */,
 				E012858C1ADFF368007EA890 /* T2GCell.swift in Sources */,
 			);
