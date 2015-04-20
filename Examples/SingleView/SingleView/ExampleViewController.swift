@@ -56,19 +56,19 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         var view: T2GCell?
         switch(indexPath.section) {
         case 0:
-            view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
             view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
         case 1:
-            view = T2GCell(header: "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view = T2GCell(header: "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
             view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
         case 2:
-            view = T2GCell(header: "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
+            view = T2GCell(header: "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)", detail: "\(indexPath)", frame: frame, mode: self.layoutMode)
             view!.setupButtons(indexPath.row%5, mode: self.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
@@ -108,15 +108,15 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
         switch(indexPath.section) {
         case 0:
-            cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.headerLabel?.text = "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
             cell.detailLabel?.text = "\(indexPath)"
             break
         case 1:
-            cell.headerLabel?.text = "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.headerLabel?.text = "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
             cell.detailLabel?.text = "\(indexPath)"
             break
         case 2:
-            cell.headerLabel?.text = "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
+            cell.headerLabel?.text = "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant.rawValue)"
             cell.detailLabel?.text = "\(indexPath)"
             break
         default:
