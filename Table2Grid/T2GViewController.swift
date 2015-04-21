@@ -686,6 +686,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                                         c.tag = c.tag - 1
                                         self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
                                     }
+                                } else if let delimiter = v as? T2GDelimiterView {
+                                    let frame = self.scrollView.frameForDelimiter(self.currentLayout(), section: delimiter.tag - 1)
+                                    delimiter.frame = frame
                                 }
                             }
                         }, completion: { (_) -> Void in
@@ -700,7 +703,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }, failure: { () -> Void in
                 UIView.animateWithDuration(0.3) {
                     view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
-                    
                 }
             })
             
