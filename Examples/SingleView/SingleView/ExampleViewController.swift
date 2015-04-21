@@ -200,7 +200,19 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
-        self.modelArray.removeAtIndex(indexPath.row)
+        switch(indexPath.section) {
+        case 0:
+            self.modelArray.removeAtIndex(indexPath.row)
+            break
+        case 1:
+            self.modelArray2.removeAtIndex(indexPath.row)
+            break
+        case 2:
+            self.modelArray3.removeAtIndex(indexPath.row)
+            break
+        default:
+            break
+        }
     }
     
     //MARK: T2GDrop delegate methods

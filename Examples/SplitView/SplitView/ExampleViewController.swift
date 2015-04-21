@@ -51,9 +51,15 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl.rawValue
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        self.delegate = self
-        self.dropDelegate = self
+        if self.delegate == nil {
+            self.delegate = self
+            self.dropDelegate = self
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -136,7 +142,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
-        return ""
+        return "Section #\(section + 1)"
     }
     
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
@@ -168,12 +174,12 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         if mode == .Collection {
             return CGSizeMake(94, 94)
         } else {
-            return CGSizeMake(self.navigationController!.view.frame.size.width * 0.9, 64.0)
+            return CGSizeMake(self.scrollView.frame.size.width * 0.9, 64.0)
         }
     }
     
     func dimensionsForSectionHeader() -> CGSize {
-        return CGSize(width: 0.0, height: 32.0)
+        return CGSize(width: 300, height: 32.0)
     }
     
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
@@ -240,7 +246,19 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
-        self.modelArray.removeAtIndex(indexPath.row)
+        switch(indexPath.section) {
+        case 0:
+            self.modelArray.removeAtIndex(indexPath.row)
+            break
+        case 1:
+            self.modelArray2.removeAtIndex(indexPath.row)
+            break
+        case 2:
+            self.modelArray3.removeAtIndex(indexPath.row)
+            break
+        default:
+            break
+        }
     }
     
     //MARK: T2GDrop delegate methods
