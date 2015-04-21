@@ -39,13 +39,37 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl.rawValue
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        self.delegate = self
-        self.dropDelegate = self
+        if self.delegate == nil {
+            self.delegate = self
+            self.dropDelegate = self
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func handlePullToRefresh(sender: UIRefreshControl) {
+        //sender.attributedTitle = NSAttributedString(string: "\n Refreshing")
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            NSThread.sleepForTimeInterval(1.5)
+            dispatch_async(dispatch_get_main_queue(), {
+                let formatter = NSDateFormatter()
+                formatter.dateStyle = .MediumStyle
+                let lastUpdate = String(format:"Last updated on %@", formatter.stringFromDate(NSDate()))
+                sender.attributedTitle = NSAttributedString(string: lastUpdate)
+                self.automaticSnapStatus = .WillSnap
+                
+                self.reloadScrollView()
+                sender.endRefreshing()
+            });
+        });
     }
     
     //MARK: T2GViewController delegate methods
@@ -102,7 +126,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
-        return ""
+        return "Section #\(section + 1)"
     }
     
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
@@ -139,7 +163,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     func dimensionsForSectionHeader() -> CGSize {
-        return CGSize(width: 0.0, height: 32.0)
+        return CGSize(width: 300, height: 32.0)
     }
     
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
