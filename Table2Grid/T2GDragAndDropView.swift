@@ -9,9 +9,14 @@
 import UIKit
 
 /**
-Protocol to add the long gesture recognizer to whoever owns this view. Could be even this object, depends on custom needs.
+Protocol to add the long press gesture recognizer to whoever owns this view. Could be even this object, depends on custom needs.
 */
 protocol T2GDragAndDropOwnerDelegate {
+    /**
+    Gets called when draggable boolean variable is set to true. Passes long press gesture recognizer to be added to the drop owner delegate.
+    
+    :param: recognizer Long press gesture created when draggable flag is set to true. Should be added to the owner of this view.
+    */
     func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer)
 }
 
@@ -19,8 +24,20 @@ protocol T2GDragAndDropOwnerDelegate {
 Protocol for drag and drop delegate to inform that item has been moved or dropped.
 */
 protocol T2GDragAndDropDelegate {
+    /**
+    Informs delegate that frame has been changed while being dragged.
+    
+    :param: tag Tag of the dragged view.
+    :param: frame Frame of the dragged view (for potential overlapping detection).
+    */
     func didMove(tag: Int, frame: CGRect)
-    func didDrop(cell: T2GDragAndDropView)
+    
+    /**
+    Informs delegate that the view has been dropped - the long press gesture (followed by swiping movement has come to an end).
+    
+    :param: cell The whole view in case the delegte wants to modify or remove it.
+    */
+    func didDrop(view: T2GDragAndDropView)
 }
 
 /**
