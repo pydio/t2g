@@ -9,21 +9,68 @@
 import Foundation
 import UIKit
 
+/**
+Protocol for handling the events of cell - selection, swiping the cell to open drawer or button press.
+*/
 protocol T2GCellDelegate {
+    /**
+    Gets called when swiping gesture began.
+    
+    :param: tag The tag of the swiped cell.
+    */
     func cellStartedSwiping(tag: Int)
+    
+    /**
+    Gets called when cell was selected.
+    
+    :param: tag The tag of the swiped cell.
+    */
     func didSelectCell(tag: Int)
+    
+    /**
+    Gets called when cell was opened.
+    
+    :param: tag The tag of the swiped cell.
+    */
     func didCellOpen(tag: Int)
+    
+    /**
+    Gets called when cell was closed.
+    
+    :param: tag The tag of the swiped cell.
+    */
     func didCellClose(tag: Int)
+    
+    /**
+    Gets called when drawer button has been pressed.
+    
+    :param: tag The tag of the swiped cell.
+    :param: index Index of the button - indexed from right to left starting with 0.
+    */
     func didSelectButton(tag: Int, index: Int)
+    
+    /**
+    Gets called when the cells are in edit mode (multiple selection with checkboxes) and the checkbox's state changes.
+    
+    :param: tag The tag of the swiped cell.
+    :param: selected Flag indicating if the checkbox is selected or not.
+    */
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool)
 }
 
+/**
+Enum defining scrolling direction. Used for recognizing whether the cell should be closed or opened after the swiping gesture has ended half way through.
+*/
 private enum T2GCellSwipeDirection {
     case Right
     case Left
 }
 
+/**
+Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
+*/
 class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDelegate {
+    var delegate: T2GCellDelegate?
     
     var highlighted: Bool = false {
         didSet {
@@ -35,9 +82,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     var scrollView: UIScrollView?
     var backgroundView: UIView?
-    
-    var delegate: T2GCellDelegate?
-    
     var imageView: UIView?
     var headerLabel: UILabel?
     var detailLabel: UILabel?
@@ -45,8 +89,18 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     var buttonCount: Int = 0
     
     private var swipeDirection: T2GCellSwipeDirection = .Left
-    var lastContentOffset: CGFloat = 0
+    private var lastContentOffset: CGFloat = 0
     
+    /**
+    Convenience initializer to initialize the cell with given parameters.
+    
+    - WARNING! To change the frame, do not use direct access to frame property. Use changeFrameParadigm instead (for rearranging all subviews).
+    
+    :param: header Main text line.
+    :param: detail Detail text line.
+    :param: frame Frame for the cell.
+    :param: mode Which mode the cell is in (T2GLayoutMode).
+    */
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
@@ -116,10 +170,21 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
-    func backgroundViewButtonPressed(sender: UITapGestureRecognizer) {
+    /**
+    Gets called when the cell has been pressed (standard tap gesture). Forwards the action to the delegate.
+    
+    :param: sender The button that initiated the action (that is a subview of backgroundView property).
+    */
+    func backgroundViewButtonPressed(sender: UIButton) {
         self.delegate?.didSelectCell(self.tag)
     }
     
+    /**
+    Changes frame of the cell. Should be used for any resizing or transforming of the cell. Handles resizing of all the subviews.
+    
+    :param: mode T2GLayoutMode in which the T2GScrollView is.
+    :param: frame Frame to which the cell should resize.
+    */
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
         if self.scrollView!.contentOffset.x != 0 {
             self.moveButtonsInHierarchy(shouldHide: true)
@@ -172,11 +237,17 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
+    /**
+    Sets up buttons in drawer.
+    
+    :param: count How many buttons should be added to the drawer.
+    :param: mode T2GLayoutMode in which the T2GScrollView is.
+    */
     func setupButtons(count: Int, mode: T2GLayoutMode) {
         self.buttonCount = count
         
         let coordinateData = self.coordinatesForButtons(count, mode: mode)
-        let origins = coordinateData.origins
+        let origins = coordinateData.frames
         
         for index in 0..<count {
             let point = origins[index]
@@ -193,18 +264,53 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
     }
     
+    /**
+    Closes the drawer if it's opened.
+    */
     func closeCell() {
         self.moveButtonsInHierarchy(shouldHide: true)
         self.swipeDirection = .Right
         self.handleScrollEnd(self.scrollView!)
     }
     
+    /**
+    Gets called when T2GCellDrawerButton has been pressed. Redirects the action to the delegate.
+    
+    :param: sender T2GCellDrawerButton that has been pressed.
+    */
     func buttonSelected(sender: T2GCellDrawerButton) {
         self.delegate?.didSelectButton(self.tag, index: sender.tag - T2GViewTags.cellDrawerButtonConstant.rawValue)
     }
     
     //MARK: - Multiple choice toggle
     
+    /**
+    Transforms the view to edit mode - adds checkbox for multiple selection.
+    
+    :param: flag Flag indicating whether it is TO (true) or FROM (false).
+    :param: mode T2GLayoutMode in which the T2GScrollView is.
+    :param: selected Flag indicating if created checkbox should be selected.
+    :param: animated Flag indicating if the whole transformation process should be animated (desired for initial transformation, but maybe not so much while scrolling).
+    */
+    func toggleMultipleChoice(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
+        if mode == .Collection {
+            if flag {
+                self.buildLayoutForEditInCollection(selected, animated: animated)
+            } else {
+                self.clearLayoutForEditInCollection(animated)
+            }
+            
+        } else {
+            self.layoutForEditInTable(flag, selected: selected, animated: animated)
+        }
+    }
+    
+    /**
+    Helper method for transforming the view to edit mode - when T2GLayoutMode is set to Collection.
+    
+    :param: selected Flag indicating if created checkbox should be selected.
+    :param: animated Flag indicating if the whole transformation process should be animated.
+    */
     func buildLayoutForEditInCollection(selected: Bool, animated: Bool) {
         let duration_1 = animated ? 0.2 : 0.0
         let duration_2 = animated ? 0.15 : 0.0
@@ -244,6 +350,11 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         })
     }
     
+    /**
+    Helper method for transforming the view to normal from edit mode - when T2GLayoutMode is set to Collection.
+    
+    :param: animated Flag indicating if the whole transformation process should be animated.
+    */
     func clearLayoutForEditInCollection(animated: Bool) {
         let duration_1 = animated ? 0.15 : 0.0
         let duration_2 = animated ? 0.2 : 0.0
@@ -273,6 +384,13 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
+    /**
+    Helper method for transforming the view from/to edit mode - when T2GLayoutMode is set to Table.
+    
+    :param: flag Flag indicating whether it is TO (true) or FROM (false).
+    :param: selected Flag indicating if created checkbox should be selected.
+    :param: animated Flag indicating if the whole transformation process should be animated.
+    */
     func layoutForEditInTable(flag: Bool, selected: Bool, animated: Bool) {
         let duration = animated ? 0.3 : 0.0
         
@@ -308,27 +426,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         })
     }
     
-    func toggleMultipleChoice(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
-        if mode == .Collection {
-            if flag {
-                self.buildLayoutForEditInCollection(selected, animated: animated)
-            } else {
-                self.clearLayoutForEditInCollection(animated)
-            }
-            
-        } else {
-            self.layoutForEditInTable(flag, selected: selected, animated: animated)
-        }
-    }
+    /**
+    Adds checkbox (T2GCheckboxButton) when going to edit mode.
     
-    func multipleChoiceButtonPressed(sender: T2GCheckboxButton) {
-        sender.isSelected = !sender.isSelected
-        self.delegate?.didSelectMultipleChoiceButton(self.tag, selected: sender.isSelected)
-    }
-    
+    :param: selected Flag indicating if created checkbox should be selected.
+    */
     func addMultipleChoiceButton(selected: Bool) {
         let size = self.frame.size.height * 0.5
-        let x = CGFloat(0.0) //(-self.frame.origin.x - size) / 2
+        let x = CGFloat(0.0)
         let y = (self.frame.size.height - size) / 2
         let frame = CGRectMake(x, y, size, size)
         
@@ -342,14 +447,31 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             button.alpha = 1.0
-        }, completion: { (_) -> Void in
-            self.bringSubviewToFront(button)
+            }, completion: { (_) -> Void in
+                self.bringSubviewToFront(button)
         })
+    }
+    
+    /**
+    Gets called when checkbox (T2GCheckboxButton) is pressed in edit mode. Marks the checkbox accordingly and redirects the action to the delegate.
+    
+    :param: sender T2GCheckboxButton that has been pressed.
+    */
+    func multipleChoiceButtonPressed(sender: T2GCheckboxButton) {
+        sender.isSelected = !sender.isSelected
+        self.delegate?.didSelectMultipleChoiceButton(self.tag, selected: sender.isSelected)
     }
     
     //MARK: - Helper methods
     
-    func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (origins: [CGRect], offsetMultiplier: CGFloat) {
+    /**
+    Calculates coordinates for buttons in the drawer.
+    
+    :param: count Number of buttons.
+    :param: mode T2GLayoutMode in which the T2GScrollView is.
+    :returns: Tuple (frames: [CGRect], offsetMultiplier: CGFloat) - array of frames for the buttons and multipler for how wide the content view of the scrollView needs to be to open as far as it is necessary.
+    */
+    func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (frames: [CGRect], offsetMultiplier: CGFloat) {
         let buttonSize: CGFloat = 16.0
         var coords: [CGRect] = []
         var multiplier: CGFloat = 1.0
@@ -370,47 +492,47 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             case 1:
                 let x = (squareSize - buttonSize) / 2
                 let y = x
-                coords.append(CGRectMake(CGFloat(x),CGFloat(y),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x), CGFloat(y), buttonSize, buttonSize))
                 break
             case 2:
                 let y = (squareSize - buttonSize) / 2
                 let x1 = (squareSize / 2) - (buttonSize * 2)
-                coords.append(CGRectMake(CGFloat(x1),CGFloat(y),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x1), CGFloat(y), buttonSize, buttonSize))
                 
                 let x2 = squareSize - x1 - buttonSize
-                coords.append(CGRectMake(CGFloat(x2),CGFloat(y),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x2), CGFloat(y), buttonSize, buttonSize))
                 
                 break
             case 3:
                 let x1 = (squareSize / 2) - (buttonSize * 2)
                 let y1 = x1
-                coords.append(CGRectMake(CGFloat(x1),CGFloat(y1),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x1), CGFloat(y1), buttonSize, buttonSize))
                 
                 let x2 = squareSize - x1 - buttonSize
                 let y2 = y1
-                coords.append(CGRectMake(CGFloat(x2),CGFloat(y2),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x2), CGFloat(y2), buttonSize, buttonSize))
                 
                 let x3 = (squareSize - buttonSize) / 2
                 let y3 = squareSize - (buttonSize * 2)
-                coords.append(CGRectMake(CGFloat(x3),CGFloat(y3),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x3), CGFloat(y3), buttonSize, buttonSize))
                 
                 break
             case 4:
                 let x1 = (squareSize / 2) - (buttonSize * 2)
                 let y1 = x1
-                coords.append(CGRectMake(CGFloat(x1),CGFloat(y1),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x1), CGFloat(y1), buttonSize, buttonSize))
                 
                 let x2 = squareSize - x1 - buttonSize
                 let y2 = y1
-                coords.append(CGRectMake(CGFloat(x2),CGFloat(y2),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x2), CGFloat(y2), buttonSize, buttonSize))
                 
                 let x3 = x1
                 let y3 = squareSize - (buttonSize * 2)
-                coords.append(CGRectMake(CGFloat(x3),CGFloat(y3),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x3), CGFloat(y3), buttonSize, buttonSize))
                 
                 let x4 = x2
                 let y4 = y3
-                coords.append(CGRectMake(CGFloat(x4),CGFloat(y4),buttonSize,buttonSize))
+                coords.append(CGRectMake(CGFloat(x4), CGFloat(y4), buttonSize, buttonSize))
                 
                 break
             default:
@@ -423,9 +545,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         return (coords, multiplier)
     }
     
+    /**
+    Helper method to rearrange buttons when changeFrameParadigm method gets called.
+    
+    :param: mode T2GLayoutMode in which the T2GScrollView is.
+    */
     func rearrangeButtons(mode: T2GLayoutMode) {
         let coordinateData = self.coordinatesForButtons(self.buttonCount, mode: mode)
-        let origins = coordinateData.origins
+        let origins = coordinateData.frames
         
         for index in 0..<self.buttonCount {
             if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
@@ -438,6 +565,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
     }
     
+    /**
+    Proportionally calculates the frames of main title and detail title.
+    
+    :param: frame The frame to use for the calculations.
+    :returns: Tuple (header: CGRect, detail: CGRect) - header for main title frame and detail for detail frame.
+    */
     private func framesForLabels(frame: CGRect) -> (header: CGRect, detail: CGRect) {
         // Vertical spacing should be like |--H--D--| -> three equal spaces
         
@@ -457,6 +590,11 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     //MARK: - Scroll view delegate methods
     
+    /**
+    Helper method that handles the end of scroll motion - closes or opens the drawer.
+    
+    :param: scrollView The UIScrollView where scrolling motion happened.
+    */
     func handleScrollEnd(scrollView: UIScrollView) {
         let x = self.swipeDirection == .Right ? 0 : self.frame.size.width
         let frame = CGRectMake(x, 0, scrollView.frame.size.width, scrollView.frame.size.height)
@@ -473,6 +611,11 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         })
     }
     
+    /**
+    Helper method that sends drawer buttons to front/back in the view hierarchy while the scrollView gets scrolled.
+    
+    :param: shouldHide Flag determining whether the scrollView is getting closed or opened.
+    */
     func moveButtonsInHierarchy(#shouldHide: Bool) {
         for index in 0...3 {
             if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
@@ -485,33 +628,63 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
+    /**
+    Default Cocoa API - Tells the delegate when the scroll view is about to start scrolling the content.
+    
+    Informs the delegate that swiping motion began and moves buttons in hierarchy so they can be tapped.
+    
+    :param: scrollView The scroll-view object that is about to scroll the content view.
+    */
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.delegate?.cellStartedSwiping(self.tag)
-        
         self.moveButtonsInHierarchy(shouldHide: true)
     }
     
+    /**
+    Default Cocoa API - Tells the delegate when dragging ended in the scroll view.
+    
+    If dragging stopped by user (= no deceleration), handleScrollEnd gets called (open/close so it doesn't stay half-way open).
+    
+    :param: scrollView The scroll-view object that finished scrolling the content view.
+    :param: decelerate True if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
+    */
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            /*
-            if scrollView.contentOffset.x != 0 {
-                self.moveButtonsInHierarchy(false)
-            }
-            */
             self.handleScrollEnd(scrollView)
         }
     }
     
+    /**
+    Default Cocoa API - Tells the delegate that the scroll view is starting to decelerate the scrolling movement.
+    
+    Method handleScrollEnd gets called (open/close so it doesn't stay half-way open).
+    
+    :param: scrollView The scroll-view object that is decelerating the scrolling of the content view.
+    */
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
         self.handleScrollEnd(scrollView)
     }
     
+    /**
+    Default Cocoa API - Tells the delegate when a scrolling animation in the scroll view concludes.
+    
+    Shows buttons if the drawer was opened.
+    
+    :param: scrollView The scroll-view object that is performing the scrolling animation.
+    */
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         if self.swipeDirection == .Left {
             self.moveButtonsInHierarchy(shouldHide: false)
         }
     }
     
+    /**
+    Default Cocoa API - Tells the delegate when the user scrolls the content view within the receiver.
+    
+    Animates buttons while scrollView gets scrolled (bigger while opening, smaller while closing). Also determines direction of the swipe.
+    
+    :param: scrollView The scroll-view object in which the scrolling occurred.
+    */
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let tailPosition = -scrollView.contentOffset.x + self.backgroundView!.frame.size.width
         let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
@@ -531,6 +704,13 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.lastContentOffset = scrollView.contentOffset.x
     }
     
+    //MARK: - T2GDragAndDropOwner delegate methods
+    
+    /**
+    Adds long press gesture to the scrollView of the cell. It has to be done this way, because swiping is superior to long press. By this, the swiping gesture is always performed when user wants it to be performed.
+    
+    :param: recognizer Long press gesture created when draggable flag is set to true.
+    */
     func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
         self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
