@@ -655,32 +655,32 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         winningView?.alpha = 0.3
     }
     
-    func didDrop(cell: T2GDragAndDropView) {
+    func didDrop(view: T2GDragAndDropView) {
         self.scrollView.performSubviewCleanup()
         
-        if let win = self.findBiggestOverlappingView(cell.tag, frame: cell.frame) as? T2GCell {
+        if let win = self.findBiggestOverlappingView(view.tag, frame: view.frame) as? T2GCell {
             win.alpha = 1.0
             
-            self.dropDelegate?.didDropCell(cell as T2GCell, onCell: win, completion: { () -> Void in
+            self.dropDelegate?.didDropCell(view as T2GCell, onCell: win, completion: { () -> Void in
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                     let transform = CGAffineTransformMakeScale(1.07, 1.07)
                     win.transform = transform
                     
-                    cell.center = win.center
+                    view.center = win.center
                     
                     let transform2 = CGAffineTransformMakeScale(0.1, 0.1)
-                    cell.transform = transform2
+                    view.transform = transform2
                 }, completion: { (_) -> Void in
-                    cell.removeFromSuperview()
+                    view.removeFromSuperview()
                         
                     UIView.animateWithDuration(0.15, animations: { () -> Void in
                         let transform = CGAffineTransformMakeScale(1.0, 1.0)
                         win.transform = transform
                     }, completion: { (_) -> Void in
                         UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            for view in self.scrollView.subviews {
-                                if let c = view as? T2GCell {
-                                    if c.tag > cell.tag {
+                            for v in self.scrollView.subviews {
+                                if let c = v as? T2GCell {
+                                    if c.tag > view.tag {
                                         let newFrame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.scrollView.indexPathForCell(c.tag - 1))
                                         c.frame = newFrame
                                         c.tag = c.tag - 1
@@ -699,14 +699,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 })
             }, failure: { () -> Void in
                 UIView.animateWithDuration(0.3) {
-                    cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
+                    view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
                     
                 }
             })
             
         } else {
             UIView.animateWithDuration(0.3) {
-                cell.frame = CGRectMake(cell.origin.x, cell.origin.y, cell.frame.size.width, cell.frame.size.height)
+                view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
             }
         }
     }
