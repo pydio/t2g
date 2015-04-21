@@ -168,7 +168,7 @@ class T2GScrollView: UIScrollView {
                     cell.removeFromSuperview()
                 }
             } else if let delimiter = view as? T2GDelimiterView {
-                if !CGRectIntersectsRect(self.bounds, delimiter.frame) || delimiter.alpha == 0 {
+                if !CGRectIntersectsRect(self.bounds, delimiter.frame) {
                     delimiter.removeFromSuperview()
                 }
             }

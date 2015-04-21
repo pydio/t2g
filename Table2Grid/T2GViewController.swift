@@ -204,6 +204,17 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     //MARK: - CRUD methods
     
+    func insertDelimiterForSection(mode: T2GLayoutMode, section: Int) {
+        if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
+            let name = self.delegate.titleForHeaderInSection(section)
+            
+            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode, section: section), title: name!)
+            delimiter.tag = section + 1
+            
+            self.scrollView.addSubview(delimiter)
+        }
+    }
+    
     func insertRowAtIndexPath(indexPath: NSIndexPath) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             for cell in self.scrollView.subviews {
@@ -227,25 +238,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     }
     
     private func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
+        let indexPath = self.scrollView.indexPathForCell(tag)
+        
+        if indexPath.row == 0 {
+            self.insertDelimiterForSection(self.currentLayout(), section: indexPath.section)
+        }
+        
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
-            let indexPath = self.scrollView.indexPathForCell(tag)
-            
-            if indexPath.row == 0 {
-                if self.scrollView.viewWithTag(indexPath.section + 1) as? T2GDelimiterView == nil {
-                    let name = self.delegate.titleForHeaderInSection(indexPath.section)
-                    
-                    let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(self.currentLayout(), section: indexPath.section), title: name!)
-                    delimiter.tag = indexPath.section + 1
-                    
-                    self.scrollView.addSubview(delimiter)
-                } else {
-                    println("Tag \(indexPath.section + 1) is already here.")
-                    //println(self.scrollView.viewWithTag(indexPath.section + 1) as? T2GDelimiterView)
-                }
-            }
-            
             let frame = self.scrollView.frameForCell(self.layoutMode, indexPath: indexPath)
             let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
@@ -490,6 +491,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
         let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
         let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant.rawValue : self.scrollView.totalCellCount() + T2GViewTags.cellConstant.rawValue - 1
+        
+        let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
+        let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
+        
+        self.insertDelimiterForSection(self.currentLayout(), section: startingPointIndexPath.section)
+        self.insertDelimiterForSection(self.currentLayout(), section: endingPointIndexPath.section)
         
         if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
             if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
