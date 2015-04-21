@@ -9,7 +9,6 @@ Implementation of table view that is switchable to collection view along with al
 
 ## TODO:
 
-0. Section headers when array is empty
 1. API naming cleanup
 2. Comment code
 3. Manual
