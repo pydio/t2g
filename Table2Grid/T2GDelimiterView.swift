@@ -8,9 +8,18 @@
 
 import UIKit
 
+/**
+Base class for delimiters in T2GScrollView (can be overriden).
+*/
 class T2GDelimiterView: UIView {
     var titleLabel: UILabel?
     
+    /**
+    Convenience initializer to initialize the delimiter with given parameters.
+    
+    :param: title Text line.
+    :param: frame Frame for the delimiter.
+    */
     convenience init(frame: CGRect, title: String) {
         self.init(frame: frame)
         
@@ -32,6 +41,12 @@ class T2GDelimiterView: UIView {
         self.addConstraints(constW)
     }
     
+    /**
+    Calculates proportional max size of font for a label in given frame.
+    
+    :param: frame Bounds for the text used for the calculation.
+    :returns: Max size of system font.
+    */
     private func fontSize(frame: CGRect) -> CGFloat {
         let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         var dummyFont = UIFont.systemFontOfSize(12)
