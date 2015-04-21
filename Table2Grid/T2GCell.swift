@@ -454,17 +454,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         return (headerFrame, detailFrame)
     }
     
-    private func fontSize(frame: CGRect) -> CGFloat {
-        let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        var dummyFont = UIFont.systemFontOfSize(12)
-        
-        let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
-        let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))
-        
-        let pointsPerPixel = dummyFont.pointSize / size.height
-        return frame.size.height * pointsPerPixel
-    }
-    
     
     //MARK: - Scroll view delegate methods
     
