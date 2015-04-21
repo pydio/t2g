@@ -91,12 +91,47 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    func frameForDelimiter(mode: T2GLayoutMode, section: Int) -> CGRect {
+        var x: CGFloat = 0.0
+        var y: CGFloat = 0.0
+        
+        let dimensions = self.dataDelegate!.delimiterDimensions()
+        var height: CGFloat = dimensions.height
+        var width: CGFloat = self.frame.size.width
+        
+        let cellDimensions = self.dataDelegate!.cellDimensions(mode)
+        
+        if section != 0 {
+            let count = self.itemCountPerLine(mode)
+            
+            if mode == .Collection {
+                y = cellDimensions.padding
+            } else {
+                y = (self.superview!.frame.size.width - cellDimensions.width) / 2
+            }
+            
+            for idx in 0..<section {
+                let lineCount = CGFloat(ceil(CGFloat(self.dataDelegate!.cellCount(idx)) / CGFloat(count)))
+                y += (height + (lineCount * (cellDimensions.height + cellDimensions.padding)))
+            }
+            
+            y -= (CGFloat(cellDimensions.padding / 2.0))
+        }
+
+        return CGRectMake(x, y, width, height)
+    }
+    
     func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
                 let frame = self.frameForCell(self.dataDelegate!.currentLayout(), indexPath: self.indexPathForCell(cell.tag))
                 if cell.frame.origin.x != frame.origin.x || cell.frame.origin.y != frame.origin.y || cell.frame.size.width != frame.size.width || cell.frame.size.height != frame.size.height {
                     cell.changeFrameParadigm(self.dataDelegate!.currentLayout(), frame: frame)
+                }
+            } else {
+                if let delimiter = view as? T2GDelimiterView {
+                    let frame = self.frameForDelimiter(self.dataDelegate!.currentLayout(), section: delimiter.tag - 1)
+                    delimiter.frame = frame
                 }
             }
         }
@@ -131,6 +166,10 @@ class T2GScrollView: UIScrollView {
             if let cell = view as? T2GCell {
                 if !CGRectIntersectsRect(self.bounds, cell.frame) || cell.alpha == 0 {
                     cell.removeFromSuperview()
+                }
+            } else if let delimiter = view as? T2GDelimiterView {
+                if !CGRectIntersectsRect(self.bounds, delimiter.frame) || delimiter.alpha == 0 {
+                    delimiter.removeFromSuperview()
                 }
             }
         }
