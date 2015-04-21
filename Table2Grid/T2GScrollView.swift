@@ -139,7 +139,7 @@ class T2GScrollView: UIScrollView {
     
     //MARK: - Animation methods
     
-    func animateSubviewCells(isGoingOffscreen: Bool) {
+    func animateSubviewCells(#isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
         
