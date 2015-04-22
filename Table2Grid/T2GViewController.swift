@@ -9,25 +9,21 @@
 import UIKit
 
 protocol T2GViewControllerDelegate {
-    /// Datasource methods
+    /// View methods
     
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell
-    func numberOfSectionsInT2GView() -> Int
-    func numberOfCellsInSection(section: Int) -> Int
     func titleForHeaderInSection(section: Int) -> String?
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath)
     
-    /// View methods
+    /// Action methods
     
-    func cellPadding(mode: T2GLayoutMode) -> CGFloat
-    func dimensionsForCell(mode: T2GLayoutMode) -> CGSize
-    func dimensionsForSectionHeader() -> CGSize
-    func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
-    func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
-    func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath)
+    // unused now
+    func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
+    func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath?
+    func didDeselectCellAtIndexPath(indexPath: NSIndexPath)
 }
 
 protocol T2GDropDelegate {
@@ -59,7 +55,7 @@ enum T2GViewTags: Int {
     case refreshControl = 222222
 }
 
-class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDelegate, T2GScrollViewDataDelegate {
+class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDelegate {
     var scrollView: T2GScrollView!
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     var openCellTag: Int = -1
@@ -101,7 +97,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         self.scrollView = T2GScrollView()
-        self.scrollView.dataDelegate = self
+        //self.scrollView.dataDelegate = self
         self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
         self.view.addSubview(scrollView)
         
@@ -438,6 +434,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 if let cell = view as? T2GCell {
                     let frame = self.scrollView.frameForCell(self.layoutMode, indexPath: self.scrollView.indexPathForCell(cell.tag))
                     cell.changeFrameParadigm(self.layoutMode, frame: frame)
+                } else if let delimiter = view as? T2GDelimiterView {
+                    let frame = self.scrollView.frameForDelimiter(self.currentLayout(), section: delimiter.tag - 1)
+                    delimiter.frame = frame
                 }
             }
             
@@ -716,26 +715,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
     }
     
-    //MARK: T2GScrollView delegate methods
+    //MARK: T2GScrollView delegate internal method
     
-    func currentLayout() -> T2GLayoutMode {
+    internal func currentLayout() -> T2GLayoutMode {
         return self.layoutMode
-    }
-    
-    func delimiterDimensions() -> CGSize {
-        return self.delegate.dimensionsForSectionHeader()
-    }
-    
-    func cellDimensions(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat) {
-        let dimensions = self.delegate.dimensionsForCell(mode)
-        return (dimensions.width, dimensions.height, self.delegate.cellPadding(mode))
-    }
-    
-    func cellCount(inSection: Int) -> Int {
-        return self.delegate.numberOfCellsInSection(inSection)
-    }
-    
-    func sectionCount() -> Int {
-        return self.delegate.numberOfSectionsInT2GView()
     }
 }

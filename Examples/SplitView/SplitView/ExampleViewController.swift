@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate {
+class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate, T2GScrollViewDataDelegate {
     
     var detailViewController: DetailViewController? = nil
     
@@ -57,6 +57,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         super.viewDidLayoutSubviews()
         
         if self.delegate == nil {
+            self.scrollView.dataDelegate = self
             self.delegate = self
             self.dropDelegate = self
         }
@@ -124,7 +125,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return view!
     }
     
-    func numberOfSectionsInT2GView() -> Int {
+    func numberOfSections() -> Int {
         return 3
     }
     
@@ -166,16 +167,19 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     /// View methods
     
-    func cellPadding(mode: T2GLayoutMode) -> CGFloat {
-        return 12.0
-    }
-    
-    func dimensionsForCell(mode: T2GLayoutMode) -> CGSize {
+    func dimensionsForCell(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat) {
+        var width: CGFloat = 0.0
+        var height: CGFloat = 0.0
+        
         if mode == .Collection {
-            return CGSizeMake(94, 94)
+            width = 94.0
+            height = 94.0
         } else {
-            return CGSizeMake(self.scrollView.frame.size.width * 0.9, 64.0)
+            width = self.scrollView.frame.size.width * 0.9
+            height = 64.0
         }
+        
+        return (width, height, 12.0)
     }
     
     func dimensionsForSectionHeader() -> CGSize {
