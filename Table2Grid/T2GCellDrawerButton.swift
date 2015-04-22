@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+Base class for drawer buttons (can be overriden). Implements resizing based on how much the scrollView in T2GCell is opened.
+*/
 class T2GCellDrawerButton: T2GColoredButton {
     var minOriginCoord: CGPoint?
     var maxOriginCoord: CGPoint? {
@@ -23,6 +26,11 @@ class T2GCellDrawerButton: T2GColoredButton {
         }
     }
     
+    /**
+    Overriden initializer that serves for setting up initial values of minSize and minOriginCoord (that serves for calculated property maxOriginCoord).
+    
+    :param: frame Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
+    */
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -30,13 +38,22 @@ class T2GCellDrawerButton: T2GColoredButton {
         self.minOriginCoord = frame.origin
     }
     
+    /**
+    */
     func setup() {
         self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant.rawValue + 1)", forState: UIControlState.Normal)
     }
     
+    /**
+    Resizes the button while scrollView is scrolling. Increases size while going left on the X axis and decreases while going right.
+    
+    :param: tailPosition The X coordinate of the tip of the tail of the T2GCell that is being scrolled.
+    :param: sizeDifference The difference of how much it moved since this method has been called last time. The method automatically adjusts if the value is out of bounds.
+    */
     func resize(tailPosition: CGFloat, sizeDifference: CGFloat) {
         let size = self.frame.size.width
         
+        /// The '+ (size - 4)' is there because in case the tail is moving left, then the button is smaller and we want it to start getting bigger a brief moment before it actually appears.
         let didBeginOverlapping = tailPosition < self.frame.origin.x + (size - 4)
         let isStillOverlapping = tailPosition > self.frame.origin.x
         
