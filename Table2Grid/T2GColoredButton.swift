@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+Custom implementation of button that changes its background color on tap rather than just the title color.
+*/
 class T2GColoredButton: UIButton {
     var normalBackgroundColor: UIColor? {
         didSet {
@@ -20,6 +23,14 @@ class T2GColoredButton: UIButton {
         }
     }
     
+    /**
+    Creates background image to be set as a background for highlighted state.
+    
+    - DISCUSSION: This class used to be implemented with three listeners on TouchUpInside, TouchUpOutside and TouchDown that would change the background color. The problem was that it wasn't fast enough (slight, but still noticeable delay). This implementation may not be "standard" but it sure solves the whole issue very well.
+    
+    :param: color Color to be used to fill the image with.
+    :returns: UIImage with the same dimensions as this view filled with given color.
+    */
     func imageWithColor(color: UIColor) -> UIImage {
         let rect: CGRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
