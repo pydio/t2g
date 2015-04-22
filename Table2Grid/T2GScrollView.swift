@@ -8,14 +8,55 @@
 
 import UIKit
 
+/**
+Protocol for scrollView delegate defining all key dimensional methods to be able to render all the cells precisely.
+*/
 protocol T2GScrollViewDataDelegate {
+    /**
+    Returns current layout of the cells
+    
+    - DISCUSSION: Still deciding whether or not to move this parameter to the T2GScrollView class. It is highly used in T2GViewController, but it wouldn't hurt to move it, I suppose (--MS).
+    
+    :returns: T2GLayoutMode in which the T2GScrollView is.
+    */
     func currentLayout() -> T2GLayoutMode
-    func delimiterDimensions() -> CGSize
-    func cellDimensions(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
-    func cellCount(inSection: Int) -> Int
-    func sectionCount() -> Int
+    
+    /**
+    Returns the number of sections in the datasource.
+    
+    :returns: Integer value defining number of sections.
+    */
+    func numberOfSections() -> Int
+    
+    /**
+    Returns the number of cells in given section.
+    
+    :param: section Integer value representing the section, indexed from 0.
+    :returns: Integer value defining number of cells in given section.
+    */
+    func numberOfCellsInSection(section: Int) -> Int
+    
+    /**
+    Returns the dimensions for the cell in given layout mode.
+    
+    :param: mode T2GLayoutMode for which dimensions should be calculated.
+    :returns: Tuple of width, height and padding for the cell.
+    */
+    func dimensionsForCell(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
+    
+    /**
+    Returns the dimensions for the section header.
+    
+    - DISCUSSION: Will be most likely renamed to heightForSectionHeader, because the width is left out and is stretched to the full width.
+    
+    :returns: CGSize object defining width and height.
+    */
+    func dimensionsForSectionHeader() -> CGSize
 }
 
+/**
+Custom UIScrollView class that takes care of all the T2GCell objects and displays them.
+*/
 class T2GScrollView: UIScrollView {
     var dataDelegate: T2GScrollViewDataDelegate?
     var refreshControl: UIControl? {
@@ -24,8 +65,29 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    /**
+    Returns the number of cells per line in given mode.
+    
+    :param: mode T2GLayoutMode for which the line cell count should be calculated.
+    :returns: Integer value representing the number of cells for given mode.
+    */
+    func itemCountPerLine(mode: T2GLayoutMode) -> Int {
+        if mode == .Collection {
+            let dimensions = self.dataDelegate!.dimensionsForCell(.Collection)
+            return Int(floor(self.frame.size.width / dimensions.width))
+        } else {
+            return 1
+        }
+    }
+    
+    /**
+    Returns the number of cells that SHOULD be visible at the moment for the given mode.
+    
+    :param: mode T2GLayoutMode for which the count should be calculated.
+    :returns:
+    */
     func visibleCellCount(mode: T2GLayoutMode) -> Int {
-        let dimensions = self.dataDelegate!.cellDimensions(self.dataDelegate!.currentLayout())
+        let dimensions = self.dataDelegate!.dimensionsForCell(self.dataDelegate!.currentLayout())
         var count = 0
         
         if mode == .Table {
@@ -45,18 +107,16 @@ class T2GScrollView: UIScrollView {
         return count
     }
     
-    func itemCountPerLine(mode: T2GLayoutMode) -> Int {
-        if mode == .Collection {
-            let dimensions = self.dataDelegate!.cellDimensions(.Collection)
-            return Int(floor(self.frame.size.width / dimensions.width))
-        } else {
-            return 1
-        }
-    }
+    /**
+    Returns the exact frame for cell at given indexPath.
     
+    :param: mode T2GLayoutMode for which the cell frame should be calculated.
+    :param: indexPath NSIndexPath object for the given cell.
+    :returns: CGRect object with origin and size parameters filled and ready to be used on the T2GCell view.
+    */
     func frameForCell(mode: T2GLayoutMode, indexPath: NSIndexPath) -> CGRect {
         let superviewFrame = self.superview!.frame
-        let dimensions = self.dataDelegate!.cellDimensions(mode)
+        let dimensions = self.dataDelegate!.dimensionsForCell(mode)
         
         if mode == .Collection {
             /// Assuming that the collection is square of course
@@ -69,9 +129,9 @@ class T2GScrollView: UIScrollView {
                 xCoords.append(x)
             }
             
-            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.delimiterDimensions().height
+            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.dimensionsForSectionHeader().height
             for section in 0..<indexPath.section {
-                yCoord += (self.dataDelegate!.delimiterDimensions().height + (CGFloat(ceil(CGFloat(self.dataDelegate!.cellCount(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
+                yCoord += (self.dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(ceil(CGFloat(self.dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
             }
             
             let frame = CGRectMake(CGFloat(xCoords[indexPath.row % xCoords.count]), yCoord, dimensions.width, dimensions.height)
@@ -81,25 +141,32 @@ class T2GScrollView: UIScrollView {
         } else {
             let viewX = (superviewFrame.size.width - dimensions.width) / 2
             
-            var ypsilon = viewX + (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.delimiterDimensions().height
+            var ypsilon = viewX + (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.dimensionsForSectionHeader().height
             
             for section in 0..<indexPath.section {
-                ypsilon += (self.dataDelegate!.delimiterDimensions().height + (CGFloat(self.dataDelegate!.cellCount(section)) * (dimensions.height + dimensions.padding)))
+                ypsilon += (self.dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(self.dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
             }
             
             return CGRectMake(viewX, ypsilon, dimensions.width, dimensions.height)
         }
     }
     
+    /**
+    Returns the exact frame for delimiter for given section.
+    
+    :param: mode T2GLayoutMode for which the delimiter frame should be calculated.
+    :param: section Integer value representing the section.
+    :returns: CGRect object with origin and size parameters filled and ready to be used on the T2GDelimiter view.
+    */
     func frameForDelimiter(mode: T2GLayoutMode, section: Int) -> CGRect {
         var x: CGFloat = 0.0
         var y: CGFloat = 0.0
         
-        let dimensions = self.dataDelegate!.delimiterDimensions()
+        let dimensions = self.dataDelegate!.dimensionsForSectionHeader()
         var height: CGFloat = dimensions.height
         var width: CGFloat = self.frame.size.width
         
-        let cellDimensions = self.dataDelegate!.cellDimensions(mode)
+        let cellDimensions = self.dataDelegate!.dimensionsForCell(mode)
         
         if section != 0 {
             let count = self.itemCountPerLine(mode)
@@ -111,7 +178,7 @@ class T2GScrollView: UIScrollView {
             }
             
             for idx in 0..<section {
-                let lineCount = CGFloat(ceil(CGFloat(self.dataDelegate!.cellCount(idx)) / CGFloat(count)))
+                let lineCount = CGFloat(ceil(CGFloat(self.dataDelegate!.numberOfCellsInSection(idx)) / CGFloat(count)))
                 y += (height + (lineCount * (cellDimensions.height + cellDimensions.padding)))
             }
             
@@ -121,6 +188,9 @@ class T2GScrollView: UIScrollView {
         return CGRectMake(x, y, width, height)
     }
     
+    /**
+    Aligns all the visible cells to make them be where they are (useful after rotation).
+    */
     func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
@@ -139,6 +209,11 @@ class T2GScrollView: UIScrollView {
     
     //MARK: - Animation methods
     
+    /**
+    Animates cells when the view controller owning the scrollView is going on/off screen.
+    
+    :params: isGoingOffscreen Boolean value defining whether the view is going offscreen or not.
+    */
     func animateSubviewCells(#isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
@@ -161,6 +236,9 @@ class T2GScrollView: UIScrollView {
         }
     }
     
+    /**
+    Removes all the views that are not currently visible.
+    */
     func performSubviewCleanup() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
@@ -178,15 +256,29 @@ class T2GScrollView: UIScrollView {
     
     //MARK: - Helper methods
     
+    /**
+    Calculates the total index for given index path.
+    
+    :param: indexPath NSIndexPath object of the given cell.
+    :returns: Integer value representing the total index.
+    */
     func indexForIndexPath(indexPath: NSIndexPath) -> Int {
         var totalIndex = indexPath.row
         for section in 0..<indexPath.section {
-            totalIndex += self.dataDelegate!.cellCount(section)
+            totalIndex += self.dataDelegate!.numberOfCellsInSection(section)
         }
         
         return totalIndex
     }
     
+    /**
+    Calculates the index path for given TAG of a cell.
+    
+    - DISCUSSION: Maybe it would be cleaner to already send an index instead of a TAG, but it is not anything that would be of a concern.
+    
+    :param: tag Integer value of the given cell.
+    :returns: NSIndexPath object will full description (row and section) of the placement of the cell.
+    */
     func indexPathForCell(tag: Int) -> NSIndexPath {
         let index = tag - T2GViewTags.cellConstant.rawValue
         
@@ -194,8 +286,8 @@ class T2GScrollView: UIScrollView {
         var section = 0
         
         var currentMax = 0
-        for sectionIndex in 0..<self.dataDelegate!.sectionCount() {
-            let cellsInSection = self.dataDelegate!.cellCount(sectionIndex)
+        for sectionIndex in 0..<self.dataDelegate!.numberOfSections() {
+            let cellsInSection = self.dataDelegate!.numberOfCellsInSection(sectionIndex)
             currentMax += cellsInSection
             if currentMax > index {
                 row = index - (currentMax - cellsInSection)
@@ -207,34 +299,51 @@ class T2GScrollView: UIScrollView {
         return NSIndexPath(forRow: row, inSection: section)
     }
     
+    /**
+    Returns total count of all the cells in all the sections from the datasource.
+    
+    :returns: Integer value representing the number of cells.
+    */
     func totalCellCount() -> Int {
         var total = 0
-        for section in 0..<self.dataDelegate!.sectionCount() {
-            total += self.dataDelegate!.cellCount(section)
+        for section in 0..<self.dataDelegate!.numberOfSections() {
+            total += self.dataDelegate!.numberOfCellsInSection(section)
         }
         
         return total
     }
 
+    /**
+    Calculates the content size of the scrollView for the given mode based on current datasource status.
+    
+    :param: mode T2GLayoutMode for which the content size should be calculated.
+    :returns: CGSize object to be set as the scrollView's contentSize.
+    */
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
-        let dimensions = self.dataDelegate!.cellDimensions(mode)
+        let dimensions = self.dataDelegate!.dimensionsForCell(mode)
         let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
         let divisor = self.itemCountPerLine(mode)
         
         var lineCount = 0
-        for section in 0..<self.dataDelegate!.sectionCount() {
-            lineCount += (Int(ceil(Double((self.dataDelegate!.cellCount(section) - 1) / divisor))) + 1)
+        for section in 0..<self.dataDelegate!.numberOfSections() {
+            lineCount += (Int(ceil(Double((self.dataDelegate!.numberOfCellsInSection(section) - 1) / divisor))) + 1)
         }
         lineCount -= 1
 
         let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-        var height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.sectionCount()) * self.dataDelegate!.delimiterDimensions().height)
+        var height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
         height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         
         return CGSize(width: self.superview!.frame.size.width, height: height)
     }
     
-    //TODO: Functional approach or for cycle?
+    /**
+    Returns the highest and lowest tags of the visible cells.
+    
+    - DISCUSSION: Functional approach or for cycle?
+    
+    :returns: Tuple with two integer values representing the TAGs.
+    */
     func firstAndLastVisibleTags() -> (lowest: Int, highest: Int) {
         /*
         let startValues = (lowest: Int.max, highest: Int.min)
@@ -258,13 +367,19 @@ class T2GScrollView: UIScrollView {
         return (lowest, highest)
     }
     
+    /**
+    Returns the indices of all the cells that SHOULD be visible for the given mode at the given contentOffset (self.bounds).
+    
+    :param: mode T2GLayoutMode for which the indices should be calculated.
+    :returns: Array of integer values representing the total indices of the cells.
+    */
     func indicesForVisibleCells(mode: T2GLayoutMode) -> [Int] {
         let frame = self.bounds
         var res = [Int]()
-        let dimensions = self.dataDelegate!.cellDimensions(mode)
+        let dimensions = self.dataDelegate!.dimensionsForCell(mode)
         
         if mode == .Collection {
-            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.sectionCount()) * self.dataDelegate!.delimiterDimensions().height)) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
+            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
             if firstIndex < 0 {
                 firstIndex = 0
             }
@@ -278,7 +393,7 @@ class T2GScrollView: UIScrollView {
                 res.append(index)
             }
         } else {
-            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.sectionCount()) * self.dataDelegate!.delimiterDimensions().height)) / (dimensions.height + dimensions.padding)))
+            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)))
             if firstIndex < 0 {
                 firstIndex = 0
             }
@@ -300,6 +415,14 @@ class T2GScrollView: UIScrollView {
     
     //MARK: Continuous scroll
     
+    /**
+    Gets called when dragged view gets dragged to the bottom/top of the scrollView. This method then decides how and where should it scroll.
+    
+    :param: speedCoefficient CGFloat value defining how fast should the continuous scroll be.
+    :param: stationaryFrame CGRect object defining top/bottom of the scrollView towards which the overlap is calculated.
+    :param: overlappingView UIView being measured with the stationaryFrame, most likely a T2GDragAndDropView object.
+    :param: navigationController Optional object that makes sure the stationaryFrame gets pulled lower in case navigation bar is present.
+    */
     func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?, navigationController: UINavigationController?) {
         UIView.animateWithDuration(0.1, animations: { () -> Void in
             var toMove = self.contentOffset.y + (32.0 * speedCoefficient)
@@ -321,38 +444,45 @@ class T2GScrollView: UIScrollView {
             }
             
             self.contentOffset = CGPointMake(self.contentOffset.x, toMove)
-            }, completion: { (_) -> Void in
-                if let overlappingCellView = overlappingView {
+        }, completion: { (_) -> Void in
+            if let overlappingCellView = overlappingView {
                     
-                    var shouldContinueScrolling = true
-                    if speedCoefficient < 0 {
-                        var minContentOffset: CGFloat = 0.0
-                        if let navigationBar = navigationController?.navigationBar {
-                            minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
-                        }
-                        
-                        if self.contentOffset.y == minContentOffset {
-                            shouldContinueScrolling = false
-                        }
-                    } else {
-                        let maxContentOffset = self.contentSize.height - self.frame.size.height
-                        if self.contentOffset.y == self.contentSize.height - self.frame.size.height {
-                            shouldContinueScrolling = false
-                        }
+                var shouldContinueScrolling = true
+                if speedCoefficient < 0 {
+                    var minContentOffset: CGFloat = 0.0
+                    if let navigationBar = navigationController?.navigationBar {
+                        minContentOffset -= (navigationBar.frame.origin.y + navigationBar.frame.size.height)
                     }
-                    
-                    let newOverlappingViewFrame = overlappingCellView.frame
-                    
-                    if shouldContinueScrolling && CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
-                        let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
-                        self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView, navigationController: navigationController)
-                    } else {
-                        self.addSubview(overlappingCellView)
+                        
+                    if self.contentOffset.y == minContentOffset {
+                        shouldContinueScrolling = false
+                    }
+                } else {
+                    let maxContentOffset = self.contentSize.height - self.frame.size.height
+                    if self.contentOffset.y == self.contentSize.height - self.frame.size.height {
+                        shouldContinueScrolling = false
                     }
                 }
+                    
+                let newOverlappingViewFrame = overlappingCellView.frame
+                    
+                if shouldContinueScrolling && CGRectIntersectsRect(stationaryFrame, newOverlappingViewFrame) {
+                    let speedCoefficient2 = self.coefficientForOverlappingFrames(stationaryFrame, overlapping: newOverlappingViewFrame) * (speedCoefficient < 0 ? -1 : 1)
+                    self.scrollContinously(speedCoefficient2, stationaryFrame: stationaryFrame, overlappingView: overlappingView, navigationController: navigationController)
+                } else {
+                    self.addSubview(overlappingCellView)
+                }
+            }
         })
     }
     
+    /**
+    Helper method calculating the speed of the continuous scroll. Calculates the ratio of overlapping of two frames.
+    
+    :param: stationary CGRect defining the stationary view.
+    :param: overlapping CGRect defining the moving view.
+    :returns: CGFloat with the value defining the speed.
+    */
     func coefficientForOverlappingFrames(stationary: CGRect, overlapping: CGRect) -> CGFloat {
         let stationarySize = stationary.size.width * stationary.size.height
         let intersection = CGRectIntersection(stationary, overlapping)
