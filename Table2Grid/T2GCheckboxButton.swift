@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+Base class for checkbox in editing mode (can be overriden).
+*/
 class T2GCheckboxButton: UIButton {
     let strokeColor = UIColor(red: CGFloat(252.0/255.0), green: CGFloat(112.0/255.0), blue: CGFloat(87.0/255.0), alpha: 1.0)
     var isSelected: Bool = false {
@@ -16,6 +19,11 @@ class T2GCheckboxButton: UIButton {
         }
     }
     
+    /**
+    Custom draws the button based on property isSelected.
+    
+    :param: rect Default Cocoa API - The portion of the view’s bounds that needs to be updated.
+    */
     override func drawRect(rect: CGRect) {
         let lineWidth: CGFloat = self.isSelected ? 4.0 : 3.0
         let fillColor = self.isSelected ? UIColor.blackColor().CGColor : UIColor.clearColor().CGColor
@@ -28,6 +36,11 @@ class T2GCheckboxButton: UIButton {
         CGContextDrawPath(context, kCGPathFillStroke)
     }
     
+    /**
+    Overriden initializer that serves for setting up initial background color.
+    
+    :param: frame Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
+    */
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
