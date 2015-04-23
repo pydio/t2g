@@ -36,16 +36,6 @@ private enum T2GScrollingSpeed {
     case Fast
 }
 
-enum T2GViewTags: Int {
-    case cellConstant = 333
-    case editingModeToolbar = 777777
-    case checkboxButton = 666666
-    case cellDrawerButtonConstant = 555555
-    case cellBackgroundButton = 444444
-    case statusBarBackgroundView = 333333
-    case refreshControl = 222222
-}
-
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDelegate {
     var scrollView: T2GScrollView!
     var openCellTag: Int = -1

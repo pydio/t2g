@@ -25,6 +25,7 @@
 		E01286151ADFF563007EA890 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860D1ADFF563007EA890 /* T2GViewController.swift */; };
 		E01286171ADFF5BF007EA890 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286161ADFF5BF007EA890 /* ExampleViewController.swift */; };
 		E01286491ADFFBD4007EA890 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286481ADFFBD4007EA890 /* SplitViewController.swift */; };
+		E0AA5C561AE9195A005ABFAA /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		E012860D1ADFF563007EA890 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GViewController.swift; path = ../../../Table2Grid/T2GViewController.swift; sourceTree = "<group>"; };
 		E01286161ADFF5BF007EA890 /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		E01286481ADFFBD4007EA890 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
+		E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = ../../../Table2Grid/T2GConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 		E01286051ADFF548007EA890 /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
+				E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */,
 				E00C88551AE52BCE00862938 /* T2GDragAndDropView.swift */,
 				E01286061ADFF563007EA890 /* T2GCell.swift */,
 				E00C88591AE5424400862938 /* T2GDelimiterView.swift */,
@@ -268,6 +271,7 @@
 				E012860F1ADFF563007EA890 /* T2GCellDrawerButton.swift in Sources */,
 				E01286491ADFFBD4007EA890 /* SplitViewController.swift in Sources */,
 				E01286131ADFF563007EA890 /* T2GScrollController.swift in Sources */,
+				E0AA5C561AE9195A005ABFAA /* T2GConstants.swift in Sources */,
 				E01286101ADFF563007EA890 /* T2GCheckboxButton.swift in Sources */,
 				E01285E41ADFF53D007EA890 /* AppDelegate.swift in Sources */,
 			);
