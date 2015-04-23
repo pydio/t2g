@@ -64,7 +64,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     var delegate: T2GViewControllerDelegate! {
         didSet {
-            var count = self.scrollView.visibleCellCount(self.scrollView.layoutMode)
+            var count = self.scrollView.visibleCellCount()
             let totalCells = self.scrollView.totalCellCount()
             count = count > totalCells ? totalCells : count
             
@@ -193,7 +193,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
             let name = self.delegate.titleForHeaderInSection(section)
             
-            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode, section: section), title: name!)
+            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode: mode, section: section), title: name!)
             delimiter.tag = section + 1
             
             self.scrollView.addSubview(delimiter)
@@ -205,13 +205,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             for cell in self.scrollView.subviews {
                 if cell.tag >= (indexPath.row + T2GViewTags.cellConstant.rawValue) {
                     if let c = cell as? T2GCell {
-                        let newFrame = self.scrollView.frameForCell(self.scrollView.layoutMode, indexPath: self.scrollView.indexPathForCell(c.tag + 1))
+                        let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(c.tag + 1))
                         c.frame = newFrame
                         c.tag = c.tag + 1
                         self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
                     }
                 } else if let delimiter = cell as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(self.scrollView.layoutMode, section: delimiter.tag - 1)
+                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
@@ -235,7 +235,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         if let cell = self.scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
-            let frame = self.scrollView.frameForCell(self.scrollView.layoutMode, indexPath: indexPath)
+            let frame = self.scrollView.frameForCell(indexPath: indexPath)
             let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
             
@@ -310,7 +310,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                             if cell.tag > (idx + T2GViewTags.cellConstant.rawValue) {
                                 if let c = cell as? T2GCell {
                                     let newRowNum = idx + changedCount
-                                    let newFrame = self.scrollView.frameForCell(self.scrollView.layoutMode, indexPath: self.scrollView.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
+                                    let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
                                     c.frame = newFrame
                                     c.tag = newRowNum + T2GViewTags.cellConstant.rawValue
                                     self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
@@ -318,7 +318,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                                     changedCount += 1
                                 }
                             } else if let delimiter = cell as? T2GDelimiterView {
-                                let frame = self.scrollView.frameForDelimiter(self.scrollView.layoutMode, section: delimiter.tag - 1)
+                                let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
                                 delimiter.frame = frame
                             }
                         }
@@ -372,7 +372,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                    let frame = self.scrollView.frameForCell(mode: mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
                     
                     /*
                     * Not really working - TBD
@@ -385,14 +385,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     
                     cell.changeFrameParadigm(mode, frame: frame)
                 } else if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(mode, section: delimiter.tag - 1)
+                    let frame = self.scrollView.frameForDelimiter(mode: mode, section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
             
             }) { (_) -> Void in
-                //self.scrollView.contentSize = self.contentSizeForCurrentMode()
                 self.scrollView.performSubviewCleanup()
+                self.displayMissingCells(self.scrollView.layoutMode)
                 completionClosure()
         }
         
@@ -421,10 +421,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(self.scrollView.layoutMode, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                    let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
                     cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
                 } else if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(self.scrollView.layoutMode, section: delimiter.tag - 1)
+                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
@@ -672,13 +672,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                             for v in self.scrollView.subviews {
                                 if let c = v as? T2GCell {
                                     if c.tag > view.tag {
-                                        let newFrame = self.scrollView.frameForCell(self.scrollView.layoutMode, indexPath: self.scrollView.indexPathForCell(c.tag - 1))
+                                        let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(c.tag - 1))
                                         c.frame = newFrame
                                         c.tag = c.tag - 1
                                         self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
                                     }
                                 } else if let delimiter = v as? T2GDelimiterView {
-                                    let frame = self.scrollView.frameForDelimiter(self.scrollView.layoutMode, section: delimiter.tag - 1)
+                                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
                                     delimiter.frame = frame
                                 }
                             }
