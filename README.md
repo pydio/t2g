@@ -47,11 +47,11 @@ $ brew install carthage
 To integrate Table2Grid into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "pydio/Table2Grid" >= 1.0
+github "pydio/t2g" >= 1.0
 ```
 
 ### Manually
-TBD
+If you prefer not to use neither CocoaPods, nor Carthage, you can simply drag and drop all files in your project and start using it.
 
 ## Usage
 
