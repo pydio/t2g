@@ -4,6 +4,11 @@ Implementation of table view that is switchable to collection view along with al
 
 ## Installation
 
+> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.**
+>
+> To use Table2Grid with a project targeting iOS 7, you must include all source files directly in your project.
+
+
 ### CocoaPods
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
 
