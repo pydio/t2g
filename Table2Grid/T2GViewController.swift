@@ -93,7 +93,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
-        self.displayMissingCells(self.scrollView.layoutMode)
+        self.displayMissingCells()
         self.scrollView.adjustContentSize()
     }
     
@@ -108,7 +108,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }
         }
         
-        self.displayMissingCells(self.scrollView.layoutMode)
+        self.displayMissingCells()
     }
     
     //MARK: - Editing mode
@@ -317,7 +317,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
                         self.scrollView.adjustContentSize()
                     }, completion: { (_) -> Void in
-                        self.displayMissingCells(self.scrollView.layoutMode)
+                        self.displayMissingCells()
                     })
                 })
             })
@@ -355,8 +355,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         let mode = self.scrollView.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
         self.scrollView.adjustContentSize(mode: mode)
-        self.displayMissingCells(self.scrollView.layoutMode)
-        self.displayMissingCells(mode)
+        self.displayMissingCells()
+        self.displayMissingCells(mode: mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
             
@@ -382,7 +382,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             
             }) { (_) -> Void in
                 self.scrollView.performSubviewCleanup()
-                self.displayMissingCells(self.scrollView.layoutMode)
+                self.displayMissingCells()
                 completionClosure()
         }
         
@@ -426,13 +426,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.displayMissingCells(self.scrollView.layoutMode)
+        self.displayMissingCells()
     }
     
     //MARK: - ScrollView delegate
     
     override func handleSnapBack() {
-        self.displayMissingCells(self.scrollView.layoutMode)
+        self.displayMissingCells()
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -499,12 +499,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 }
             }
         } else {
-            self.displayMissingCells(self.scrollView.layoutMode)
+            self.displayMissingCells()
         }
     }
     
-    func displayMissingCells(mode: T2GLayoutMode) {
-        let indices = self.scrollView.indicesForVisibleCells(mode)
+    func displayMissingCells(mode: T2GLayoutMode? = nil) {
+        let m = mode ?? self.scrollView.layoutMode
+        
+        let indices = self.scrollView.indicesForVisibleCells(m)
         for index in indices {
             self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue, animated: true)
         }
@@ -676,7 +678,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                             UIView.animateWithDuration(0.3, animations: { () -> Void in
                                 self.scrollView.adjustContentSize()
                             }, completion: { (_) -> Void in
-                                self.displayMissingCells(self.scrollView.layoutMode)
+                                self.displayMissingCells()
                             })
                         })
                     })
