@@ -64,6 +64,7 @@ class T2GScrollView: UIScrollView {
             self.addSubview(self.refreshControl!)
         }
     }
+    var yolo: T2GLayoutMode = T2GLayoutMode()
     
     /**
     Returns the number of cells per line in given mode.
@@ -186,6 +187,19 @@ class T2GScrollView: UIScrollView {
         }
 
         return CGRectMake(x, y, width, height)
+    }
+    
+    /**
+    Adjusts the content size of the scrollView depending on the number of cells.
+    
+    :param: mode T2GLayoutMode for which the content size should be calculated.
+    */
+    func adjustContentSize(mode: T2GLayoutMode? = nil) {
+        if let m = mode {
+            self.contentSize = self.contentSizeForMode(m)
+        } else {
+            self.contentSize = self.contentSizeForMode(self.dataDelegate!.currentLayout())
+        }
     }
     
     /**

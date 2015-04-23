@@ -81,7 +81,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             for index in 0..<count {
                 self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
             }
-            self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+            self.scrollView.adjustContentSize()
         }
     }
 
@@ -115,7 +115,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
         self.displayMissingCells(self.layoutMode)
-        self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+        self.scrollView.adjustContentSize()
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,7 +166,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     func toggleToolbar() {
         if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar.rawValue) {
             bar.removeFromSuperview()
-            self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+            self.scrollView.adjustContentSize()
         } else {
             let bar = UIToolbar(frame: CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44))
             bar.tag = T2GViewTags.editingModeToolbar.rawValue
@@ -228,7 +228,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }
         }, completion: { (_) -> Void in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+                self.scrollView.adjustContentSize()
             }, completion: { (_) -> Void in
                 self.insertRowWithTag(indexPath.row + T2GViewTags.cellConstant.rawValue, animated: true)
                 return
@@ -336,7 +336,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     }
                 }, completion: { (_) -> Void in
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+                        self.scrollView.adjustContentSize()
                     }, completion: { (_) -> Void in
                         self.displayMissingCells(self.layoutMode)
                     })
@@ -375,7 +375,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         let mode = self.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
-        self.scrollView.contentSize = self.scrollView.contentSizeForMode(mode)
+        self.scrollView.adjustContentSize(mode: mode)
         self.displayMissingCells(self.layoutMode)
         self.displayMissingCells(mode)
         
@@ -441,7 +441,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }
             
         }) { (_) -> Void in
-            self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+            self.scrollView.adjustContentSize()
             self.scrollView.performSubviewCleanup()
         }
     }
@@ -695,7 +695,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                             }
                         }, completion: { (_) -> Void in
                             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                self.scrollView.contentSize = self.scrollView.contentSizeForMode(self.layoutMode)
+                                self.scrollView.adjustContentSize()
                             }, completion: { (_) -> Void in
                                 self.displayMissingCells(self.layoutMode)
                             })
