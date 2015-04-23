@@ -245,7 +245,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             let indexPath = NSIndexPath(forRow: indexPath.row + 1, inSection: indexPath.section)
             self.insertRowAtIndexPath(indexPath)
         } else {
-            self.toggleEditingMode(!self.isEditingModeActive)
+            self.toggleEdit()
         }
     }
     
