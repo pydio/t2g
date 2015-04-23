@@ -1,15 +1,27 @@
-# Table2Grid Concept
+# Table2Grid
 
 Implementation of table view that is switchable to collection view along with all the goodies known in both - be it obvious things such as standard protocol for populating the view or not so obvious, but still nice thing - dynamic loading and smooth transition animations.
 
-## Nice-to-have (Custom implementation responsibility)
+## Installation
 
-1. Custom pull2refresh
-2. Assigning functions to buttons
+### Carthage
+TBD
+
+### CocoaPods
+TBD
+
+### Manually
+TBD
+
+## Usage
 
 ## TODO:
 
-1. API naming cleanup
-2. Comment code
-3. Manual
-4. Proper licence (Apache 2.0 / BSD / MIT)
+1. Full manual
+2. Proper licence (Apache 2.0 / BSD / MIT)
+
+## Contributing
+TBD
+
+## License
+TBD
