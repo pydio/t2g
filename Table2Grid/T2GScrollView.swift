@@ -9,18 +9,21 @@
 import UIKit
 
 /**
+Enum defining the state of the T2GScrollView. Table by default if not stated otherwise.
+*/
+enum T2GLayoutMode {
+    case Table
+    case Collection
+    
+    init() {
+        self = .Table
+    }
+}
+
+/**
 Protocol for scrollView delegate defining all key dimensional methods to be able to render all the cells precisely.
 */
 protocol T2GScrollViewDataDelegate {
-    /**
-    Returns current layout of the cells
-    
-    - DISCUSSION: Still deciding whether or not to move this parameter to the T2GScrollView class. It is highly used in T2GViewController, but it wouldn't hurt to move it, I suppose (--MS).
-    
-    :returns: T2GLayoutMode in which the T2GScrollView is.
-    */
-    func currentLayout() -> T2GLayoutMode
-    
     /**
     Returns the number of sections in the datasource.
     
@@ -64,7 +67,7 @@ class T2GScrollView: UIScrollView {
             self.addSubview(self.refreshControl!)
         }
     }
-    var yolo: T2GLayoutMode = T2GLayoutMode()
+    var layoutMode: T2GLayoutMode = T2GLayoutMode()
     
     /**
     Returns the number of cells per line in given mode.
@@ -88,7 +91,7 @@ class T2GScrollView: UIScrollView {
     :returns:
     */
     func visibleCellCount(mode: T2GLayoutMode) -> Int {
-        let dimensions = self.dataDelegate!.dimensionsForCell(self.dataDelegate!.currentLayout())
+        let dimensions = self.dataDelegate!.dimensionsForCell(self.layoutMode)
         var count = 0
         
         if mode == .Table {
@@ -198,7 +201,7 @@ class T2GScrollView: UIScrollView {
         if let m = mode {
             self.contentSize = self.contentSizeForMode(m)
         } else {
-            self.contentSize = self.contentSizeForMode(self.dataDelegate!.currentLayout())
+            self.contentSize = self.contentSizeForMode(self.layoutMode)
         }
     }
     
@@ -208,13 +211,13 @@ class T2GScrollView: UIScrollView {
     func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
-                let frame = self.frameForCell(self.dataDelegate!.currentLayout(), indexPath: self.indexPathForCell(cell.tag))
+                let frame = self.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(cell.tag))
                 if cell.frame.origin.x != frame.origin.x || cell.frame.origin.y != frame.origin.y || cell.frame.size.width != frame.size.width || cell.frame.size.height != frame.size.height {
-                    cell.changeFrameParadigm(self.dataDelegate!.currentLayout(), frame: frame)
+                    cell.changeFrameParadigm(self.layoutMode, frame: frame)
                 }
             } else {
                 if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.frameForDelimiter(self.dataDelegate!.currentLayout(), section: delimiter.tag - 1)
+                    let frame = self.frameForDelimiter(self.layoutMode, section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
@@ -237,7 +240,7 @@ class T2GScrollView: UIScrollView {
         
         for tag in tags {
             if let view = self.viewWithTag(tag) as? T2GCell {
-                let frame = self.frameForCell(self.dataDelegate!.currentLayout(), indexPath: self.indexPathForCell(view.tag))
+                let frame = self.frameForCell(self.layoutMode, indexPath: self.indexPathForCell(view.tag))
                 
                 if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
                     delayCount += 1.0
