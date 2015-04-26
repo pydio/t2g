@@ -242,7 +242,7 @@ class T2GScrollView: UIScrollView {
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
         
         var tags = self.subviews.map({($0 as UIView).tag})
-        tags.sort(isGoingOffscreen ? {$0 > $1} : {$0 < $1})
+        tags.sort(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
         
         for tag in tags {
             if let view = self.viewWithTag(tag) as? T2GCell {
