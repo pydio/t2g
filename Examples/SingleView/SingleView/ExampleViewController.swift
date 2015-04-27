@@ -254,7 +254,21 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             failure()
         } else {
             let indexPath = self.scrollView.indexPathForCell(cell.tag)
-            self.modelArray.removeAtIndex(indexPath.row)
+            
+            switch(indexPath.section) {
+            case 0:
+                self.modelArray.removeAtIndex(indexPath.row)
+                break
+            case 1:
+                self.modelArray2.removeAtIndex(indexPath.row)
+                break
+            case 2:
+                self.modelArray3.removeAtIndex(indexPath.row)
+                break
+            default:
+                break
+            }
+            
             completion()
         }
     }

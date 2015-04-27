@@ -908,9 +908,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                                         self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
                                     }
                                 } else if let delimiter = v as? T2GDelimiterView {
-                                    println(delimiter.frame)
                                     let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
-                                    println(frame)
                                     delimiter.frame = frame
                                 }
                             }
