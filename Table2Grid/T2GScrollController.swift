@@ -191,7 +191,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                             
-                            if let ref = scrollView.viewWithTag(T2GViewTags.refreshControl.rawValue) {
+                            if let ref = scrollView.viewWithTag(T2GViewTags.refreshControl) {
                                 if !CGRectContainsRect(scrollView.bounds, ref.bounds) {
                                     scrollHandler()
                                 }

@@ -303,7 +303,7 @@ class T2GScrollView: UIScrollView {
     :returns: NSIndexPath object will full description (row and section) of the placement of the cell.
     */
     func indexPathForCell(tag: Int) -> NSIndexPath {
-        let index = tag - T2GViewTags.cellConstant.rawValue
+        let index = tag - T2GViewTags.cellConstant
         
         var row = 0
         var section = 0

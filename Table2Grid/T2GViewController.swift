@@ -129,7 +129,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             count = count > totalCells ? totalCells : count
             
             for index in 0..<count {
-                self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue)
+                self.insertRowWithTag(index + T2GViewTags.cellConstant)
             }
             self.scrollView.adjustContentSize()
         }
@@ -210,7 +210,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
-                let isSelected = self.editingModeSelection[cell.tag - T2GViewTags.cellConstant.rawValue] ?? false
+                let isSelected = self.editingModeSelection[cell.tag - T2GViewTags.cellConstant] ?? false
                 cell.toggleMultipleChoice(self.isEditingModeActive, mode: self.scrollView.layoutMode, selected: isSelected, animated: true)
             }
         }
@@ -235,7 +235,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         for key in self.editingModeSelection.keys {
             if self.editingModeSelection[key] == true {
-                indexPaths.append(self.scrollView.indexPathForCell(key + T2GViewTags.cellConstant.rawValue))
+                indexPaths.append(self.scrollView.indexPathForCell(key + T2GViewTags.cellConstant))
             }
         }
         
@@ -249,12 +249,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     - DISCUSSION: Another TODO for making it more modular.
     */
     func toggleToolbar() {
-        if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar.rawValue) {
+        if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) {
             bar.removeFromSuperview()
             self.scrollView.adjustContentSize()
         } else {
             let bar = UIToolbar(frame: CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44))
-            bar.tag = T2GViewTags.editingModeToolbar.rawValue
+            bar.tag = T2GViewTags.editingModeToolbar
             bar.translucent = false
             
             let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: "moveBarButtonPressed")
@@ -301,7 +301,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             for cell in self.scrollView.subviews {
-                if cell.tag >= (totalIndex + T2GViewTags.cellConstant.rawValue) {
+                if cell.tag >= (totalIndex + T2GViewTags.cellConstant) {
                     if let c = cell as? T2GCell {
                         let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(c.tag + 1))
                         c.frame = newFrame
@@ -317,7 +317,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.scrollView.adjustContentSize()
             }, completion: { (_) -> Void in
-                self.insertRowWithTag(totalIndex + T2GViewTags.cellConstant.rawValue, animated: true)
+                self.insertRowWithTag(totalIndex + T2GViewTags.cellConstant, animated: true)
                 return
             })
         })
@@ -345,7 +345,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             cellView.tag = tag
             
             if self.isEditingModeActive {
-                let isSelected = self.editingModeSelection[cellView.tag - T2GViewTags.cellConstant.rawValue] ?? false
+                let isSelected = self.editingModeSelection[cellView.tag - T2GViewTags.cellConstant] ?? false
                 cellView.toggleMultipleChoice(true, mode: self.scrollView.layoutMode, selected: isSelected, animated: false)
             }
             
@@ -381,9 +381,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             var removedCount = 0
             
             for idx in indices {
-                if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
                     if notifyDelegate {
-                        self.delegate.willRemoveCellAtIndexPath(self.scrollView.indexPathForCell(idx - removedCount + T2GViewTags.cellConstant.rawValue))
+                        self.delegate.willRemoveCellAtIndexPath(self.scrollView.indexPathForCell(idx - removedCount + T2GViewTags.cellConstant))
                     }
                     
                     if self.openCellTag == view.tag {
@@ -397,13 +397,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }, completion: { (_) -> Void in
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 for idx in indices {
-                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
                         view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
                     }
                 }   
             }, completion: { (_) -> Void in
                 for idx in indices {
-                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant.rawValue) as? T2GCell {
+                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
                         view.removeFromSuperview()
                     }
                 }
@@ -418,12 +418,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                         let idx = self.scrollView.indexForIndexPath(firstIP)
                         
                         if let cell = self.scrollView.viewWithTag(tag) {
-                            if cell.tag > (idx + T2GViewTags.cellConstant.rawValue) {
+                            if cell.tag > (idx + T2GViewTags.cellConstant) {
                                 if let c = cell as? T2GCell {
                                     let newRowNum = idx + changedCount
-                                    let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(newRowNum + T2GViewTags.cellConstant.rawValue))
+                                    let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(newRowNum + T2GViewTags.cellConstant))
                                     c.frame = newFrame
-                                    c.tag = newRowNum + T2GViewTags.cellConstant.rawValue
+                                    c.tag = newRowNum + T2GViewTags.cellConstant
                                     self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
                                     
                                     changedCount += 1
@@ -467,12 +467,12 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             var from = (indicesExtremes.highest) + 1
             
             if from > self.scrollView.totalCellCount() {
-                from = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant.rawValue
+                from = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
             }
             
             var to = (indicesExtremes.highest) + 10
             if to > self.scrollView.totalCellCount() {
-                to = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant.rawValue
+                to = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
             }
             
             
@@ -533,14 +533,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
         let from = (indicesExtremes.highest) + 1
         var to = (indicesExtremes.highest) + 10
-        if (to - T2GViewTags.cellConstant.rawValue) < self.scrollView.totalCellCount() {
+        if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
             for index in from...to {
                 self.insertRowWithTag(index)
             }
         }
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
-            if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar.rawValue) as? UIToolbar {
+            if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
                 let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
                 bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
             }
@@ -635,7 +635,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         let extremes = self.scrollView.firstAndLastVisibleTags()
         let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
         let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
-        let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant.rawValue : self.scrollView.totalCellCount() + T2GViewTags.cellConstant.rawValue - 1
+        let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant : self.scrollView.totalCellCount() + T2GViewTags.cellConstant - 1
         
         let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
         let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
@@ -677,7 +677,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         
         let indices = self.scrollView.indicesForVisibleCells(m)
         for index in indices {
-            self.insertRowWithTag(index + T2GViewTags.cellConstant.rawValue, animated: true)
+            self.insertRowWithTag(index + T2GViewTags.cellConstant, animated: true)
         }
     }
     
@@ -694,8 +694,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         var secondTag = startTag + (2 * multiplier)
         var thirdTag = startTag + (3 * multiplier)
         
-        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant.rawValue > 0 : secondTag - T2GViewTags.cellConstant.rawValue < (self.scrollView.totalCellCount() - 1)
-        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant.rawValue > 0 : thirdTag - T2GViewTags.cellConstant.rawValue < (self.scrollView.totalCellCount() - 1)
+        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
+        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
         
         var lastTag = self.insertRowWithTag(firstTag)
         
@@ -782,7 +782,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: selected Boolean value representing whether the checkbox is selected or not.
     */
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool) {
-        self.editingModeSelection[tag - T2GViewTags.cellConstant.rawValue] = selected
+        self.editingModeSelection[tag - T2GViewTags.cellConstant] = selected
     }
     
     //MARK: - T2GCellDragAndDrop delegate

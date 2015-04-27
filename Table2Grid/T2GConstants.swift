@@ -13,12 +13,12 @@ Enum used throughout the whole framework for constants. Bizarre numbers are pick
 
 - DISCUSSION: Is there a better solution for this?
 */
-enum T2GViewTags: Int {
-    case cellConstant = 333
-    case editingModeToolbar = 777777
-    case checkboxButton = 666666
-    case cellDrawerButtonConstant = 555555
-    case cellBackgroundButton = 444444
-    case statusBarBackgroundView = 333333
-    case refreshControl = 222222
+struct T2GViewTags {
+    static let cellConstant = 333
+    static let editingModeToolbar = 777777
+    static let checkboxButton = 666666
+    static let cellDrawerButtonConstant = 555555
+    static let cellBackgroundButton = 444444
+    static let statusBarBackgroundView = 333333
+    static let refreshControl = 222222
 }

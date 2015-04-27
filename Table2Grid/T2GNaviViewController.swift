@@ -30,11 +30,11 @@ class T2GNaviViewController: UINavigationController {
     :returns: The status bar background view.
     */
     func addStatusBarBackgroundView() -> UIView {
-        if let view = self.view.viewWithTag(T2GViewTags.statusBarBackgroundView.rawValue) {
+        if let view = self.view.viewWithTag(T2GViewTags.statusBarBackgroundView) {
             return view
         } else {
             let view = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
-            view.tag = T2GViewTags.statusBarBackgroundView.rawValue
+            view.tag = T2GViewTags.statusBarBackgroundView
             view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.07)
             self.view.addSubview(view)
             return view

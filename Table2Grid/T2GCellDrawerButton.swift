@@ -41,7 +41,7 @@ class T2GCellDrawerButton: T2GColoredButton {
     /**
     */
     func setup() {
-        self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant.rawValue + 1)", forState: UIControlState.Normal)
+        self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
     }
     
     /**

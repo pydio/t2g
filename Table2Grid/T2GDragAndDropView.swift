@@ -79,7 +79,7 @@ class T2GDragAndDropView: UIView {
     :param: sender The long press gesture that is created when draggable flag is set to true.
     */
     func handleLongPress(sender: UILongPressGestureRecognizer) {
-        if self.viewWithTag(T2GViewTags.checkboxButton.rawValue) == nil {
+        if self.viewWithTag(T2GViewTags.checkboxButton) == nil {
             if sender.state == UIGestureRecognizerState.Began {
                 self.superview?.bringSubviewToFront(self)
                 self.origin = self.frame.origin

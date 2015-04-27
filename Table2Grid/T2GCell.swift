@@ -74,7 +74,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     var highlighted: Bool = false {
         didSet {
-            if let backgroundButton = self.backgroundView?.viewWithTag(T2GViewTags.cellBackgroundButton.rawValue) as? UIButton {
+            if let backgroundButton = self.backgroundView?.viewWithTag(T2GViewTags.cellBackgroundButton) as? UIButton {
                 backgroundButton.highlighted = self.highlighted
             }
         }
@@ -116,7 +116,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
         
         let backgroundViewButton = T2GColoredButton(frame: self.backgroundView!.frame)
-        backgroundViewButton.tag = T2GViewTags.cellBackgroundButton.rawValue
+        backgroundViewButton.tag = T2GViewTags.cellBackgroundButton
         backgroundViewButton.normalBackgroundColor = .clearColor()
         backgroundViewButton.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
         backgroundViewButton.addTarget(self, action: "backgroundViewButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -223,7 +223,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
         
         /// If in editing mode
-        if let button = self.viewWithTag(T2GViewTags.checkboxButton.rawValue) {
+        if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
             if mode == .Table {
                 for v in self.subviews {
                     if let v2 = v as? UIView {
@@ -252,7 +252,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         for index in 0..<count {
             let point = origins[index]
             let view = T2GCellDrawerButton(frame: point)
-            view.tag = T2GViewTags.cellDrawerButtonConstant.rawValue + index
+            view.tag = T2GViewTags.cellDrawerButtonConstant + index
             view.normalBackgroundColor = .blackColor()
             view.highlightedBackgroundColor = .lightGrayColor()
             view.setup()
@@ -279,7 +279,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :param: sender T2GCellDrawerButton that has been pressed.
     */
     func buttonSelected(sender: T2GCellDrawerButton) {
-        self.delegate?.didSelectButton(self.tag, index: sender.tag - T2GViewTags.cellDrawerButtonConstant.rawValue)
+        self.delegate?.didSelectButton(self.tag, index: sender.tag - T2GViewTags.cellDrawerButtonConstant)
     }
     
     //MARK: - Multiple choice toggle
@@ -333,7 +333,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let button = T2GCheckboxButton(frame: buttonFrame)
         button.isSelected = selected
         button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.tag = T2GViewTags.checkboxButton.rawValue
+        button.tag = T2GViewTags.checkboxButton
         
         whiteOverlay.alpha = 0.0
         self.addSubview(whiteOverlay)
@@ -361,7 +361,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         if let whiteOverlay = self.viewWithTag(22222) {
             UIView.animateWithDuration(duration_1, animations: { () -> Void in
-                if let button = self.viewWithTag(T2GViewTags.checkboxButton.rawValue) {
+                if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
                     
                     let size = button.frame.size.width
                     let originSize: CGFloat = 2.0
@@ -371,7 +371,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                     button.frame = CGRectMake(x, y, originSize, originSize)
                 }
             }, completion: { (_) -> Void in
-                if let button = self.viewWithTag(T2GViewTags.checkboxButton.rawValue) as? T2GCheckboxButton {
+                if let button = self.viewWithTag(T2GViewTags.checkboxButton) as? T2GCheckboxButton {
                     button.removeFromSuperview()
                 }
                     
@@ -414,13 +414,13 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 moveClosure()
                 self.addMultipleChoiceButton(selected)
             } else {
-                if let button = self.viewWithTag(T2GViewTags.checkboxButton.rawValue) {
+                if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
                     button.removeFromSuperview()
                 }
                 moveClosure()
             }
         }, completion: { (_) -> Void in
-            if !flag && self.viewWithTag(T2GViewTags.checkboxButton.rawValue) == nil {
+            if !flag && self.viewWithTag(T2GViewTags.checkboxButton) == nil {
                 self.backgroundColor = .grayColor()
             }
         })
@@ -440,7 +440,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let button = T2GCheckboxButton(frame: frame)
         button.isSelected = selected
         button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.tag = T2GViewTags.checkboxButton.rawValue
+        button.tag = T2GViewTags.checkboxButton
         button.alpha = 0.0
         self.addSubview(button)
         self.sendSubviewToBack(button)
@@ -555,7 +555,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let origins = coordinateData.frames
         
         for index in 0..<self.buttonCount {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
+            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 let frame = origins[index]
                 view.minOriginCoord = frame.origin
                 view.frame = frame
@@ -618,7 +618,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     */
     func moveButtonsInHierarchy(#shouldHide: Bool) {
         for index in 0...3 {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
+            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 if shouldHide {
                     self.sendSubviewToBack(view)
                 } else {
@@ -690,7 +690,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
         
         for index in 0..<self.buttonCount {
-            if let button = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant.rawValue + index) as? T2GCellDrawerButton {
+            if let button = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 button.resize(tailPosition, sizeDifference: sizeDifference)
             }
         }
