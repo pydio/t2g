@@ -25,6 +25,7 @@
 		E01286151ADFF563007EA890 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012860D1ADFF563007EA890 /* T2GViewController.swift */; };
 		E01286171ADFF5BF007EA890 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286161ADFF5BF007EA890 /* ExampleViewController.swift */; };
 		E01286491ADFFBD4007EA890 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01286481ADFFBD4007EA890 /* SplitViewController.swift */; };
+		E05B617D1AF27AEC00B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B617C1AF27AEC00B1268F /* T2GTabBarViewController.swift */; };
 		E0AA5C561AE9195A005ABFAA /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		E012860D1ADFF563007EA890 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GViewController.swift; path = ../../../Table2Grid/T2GViewController.swift; sourceTree = "<group>"; };
 		E01286161ADFF5BF007EA890 /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		E01286481ADFFBD4007EA890 /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
+		E05B617C1AF27AEC00B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarViewController.swift; path = ../../../Table2Grid/T2GTabBarViewController.swift; sourceTree = "<group>"; };
 		E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = ../../../Table2Grid/T2GConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,6 +154,7 @@
 				E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */,
 				E01286091ADFF563007EA890 /* T2GColoredButton.swift */,
 				E012860A1ADFF563007EA890 /* T2GNaviViewController.swift */,
+				E05B617C1AF27AEC00B1268F /* T2GTabBarViewController.swift */,
 				E012860B1ADFF563007EA890 /* T2GScrollController.swift */,
 				E012860C1ADFF563007EA890 /* T2GScrollView.swift */,
 				E012860D1ADFF563007EA890 /* T2GViewController.swift */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E05B617D1AF27AEC00B1268F /* T2GTabBarViewController.swift in Sources */,
 				E01286121ADFF563007EA890 /* T2GNaviViewController.swift in Sources */,
 				E00C88561AE52BCE00862938 /* T2GDragAndDropView.swift in Sources */,
 				E01286141ADFF563007EA890 /* T2GScrollView.swift in Sources */,
