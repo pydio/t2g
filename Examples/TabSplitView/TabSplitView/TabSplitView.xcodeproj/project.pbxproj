@@ -1,0 +1,487 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E05B613E1AF26E5700B1268F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B613D1AF26E5700B1268F /* AppDelegate.swift */; };
+		E05B61401AF26E5700B1268F /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B613F1AF26E5700B1268F /* MasterViewController.swift */; };
+		E05B61421AF26E5700B1268F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61411AF26E5700B1268F /* DetailViewController.swift */; };
+		E05B61451AF26E5700B1268F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E05B61431AF26E5700B1268F /* Main.storyboard */; };
+		E05B61471AF26E5700B1268F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E05B61461AF26E5700B1268F /* Images.xcassets */; };
+		E05B614A1AF26E5700B1268F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E05B61481AF26E5700B1268F /* LaunchScreen.xib */; };
+		E05B61561AF26E5700B1268F /* TabSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61551AF26E5700B1268F /* TabSplitViewTests.swift */; };
+		E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61601AF26E8000B1268F /* T2GCell.swift */; };
+		E05B616C1AF26E8000B1268F /* T2GCellDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */; };
+		E05B616D1AF26E8000B1268F /* T2GCheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */; };
+		E05B616E1AF26E8000B1268F /* T2GColoredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61631AF26E8000B1268F /* T2GColoredButton.swift */; };
+		E05B616F1AF26E8000B1268F /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61641AF26E8000B1268F /* T2GConstants.swift */; };
+		E05B61701AF26E8000B1268F /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */; };
+		E05B61711AF26E8000B1268F /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */; };
+		E05B61721AF26E8000B1268F /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */; };
+		E05B61731AF26E8000B1268F /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61681AF26E8000B1268F /* T2GScrollController.swift */; };
+		E05B61741AF26E8000B1268F /* T2GScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61691AF26E8000B1268F /* T2GScrollView.swift */; };
+		E05B61751AF26E8000B1268F /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B616A1AF26E8000B1268F /* T2GViewController.swift */; };
+		E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */; };
+		E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61781AF271DD00B1268F /* ExampleViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E05B61501AF26E5700B1268F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E05B61301AF26E5700B1268F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E05B61371AF26E5700B1268F;
+			remoteInfo = TabSplitView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E05B61381AF26E5700B1268F /* TabSplitView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TabSplitView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E05B613C1AF26E5700B1268F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E05B613D1AF26E5700B1268F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E05B613F1AF26E5700B1268F /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		E05B61411AF26E5700B1268F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E05B61441AF26E5700B1268F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E05B61461AF26E5700B1268F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E05B61491AF26E5700B1268F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		E05B614F1AF26E5700B1268F /* TabSplitViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabSplitViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E05B61541AF26E5700B1268F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E05B61551AF26E5700B1268F /* TabSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSplitViewTests.swift; sourceTree = "<group>"; };
+		E05B61601AF26E8000B1268F /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCell.swift; sourceTree = "<group>"; };
+		E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellDrawerButton.swift; sourceTree = "<group>"; };
+		E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCheckboxButton.swift; sourceTree = "<group>"; };
+		E05B61631AF26E8000B1268F /* T2GColoredButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GColoredButton.swift; sourceTree = "<group>"; };
+		E05B61641AF26E8000B1268F /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GConstants.swift; sourceTree = "<group>"; };
+		E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDelimiterView.swift; sourceTree = "<group>"; };
+		E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDragAndDropView.swift; sourceTree = "<group>"; };
+		E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNaviViewController.swift; sourceTree = "<group>"; };
+		E05B61681AF26E8000B1268F /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollController.swift; sourceTree = "<group>"; };
+		E05B61691AF26E8000B1268F /* T2GScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollView.swift; sourceTree = "<group>"; };
+		E05B616A1AF26E8000B1268F /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
+		E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
+		E05B61781AF271DD00B1268F /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E05B61351AF26E5700B1268F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E05B614C1AF26E5700B1268F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E05B612F1AF26E5700B1268F = {
+			isa = PBXGroup;
+			children = (
+				E05B613A1AF26E5700B1268F /* TabSplitView */,
+				E05B61521AF26E5700B1268F /* TabSplitViewTests */,
+				E05B61391AF26E5700B1268F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E05B61391AF26E5700B1268F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E05B61381AF26E5700B1268F /* TabSplitView.app */,
+				E05B614F1AF26E5700B1268F /* TabSplitViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E05B613A1AF26E5700B1268F /* TabSplitView */ = {
+			isa = PBXGroup;
+			children = (
+				E05B615F1AF26E8000B1268F /* Table2Grid */,
+				E05B613D1AF26E5700B1268F /* AppDelegate.swift */,
+				E05B613F1AF26E5700B1268F /* MasterViewController.swift */,
+				E05B61781AF271DD00B1268F /* ExampleViewController.swift */,
+				E05B61411AF26E5700B1268F /* DetailViewController.swift */,
+				E05B61431AF26E5700B1268F /* Main.storyboard */,
+				E05B61461AF26E5700B1268F /* Images.xcassets */,
+				E05B61481AF26E5700B1268F /* LaunchScreen.xib */,
+				E05B613B1AF26E5700B1268F /* Supporting Files */,
+			);
+			path = TabSplitView;
+			sourceTree = "<group>";
+		};
+		E05B613B1AF26E5700B1268F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E05B613C1AF26E5700B1268F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E05B61521AF26E5700B1268F /* TabSplitViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				E05B61551AF26E5700B1268F /* TabSplitViewTests.swift */,
+				E05B61531AF26E5700B1268F /* Supporting Files */,
+			);
+			path = TabSplitViewTests;
+			sourceTree = "<group>";
+		};
+		E05B61531AF26E5700B1268F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E05B61541AF26E5700B1268F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E05B615F1AF26E8000B1268F /* Table2Grid */ = {
+			isa = PBXGroup;
+			children = (
+				E05B61601AF26E8000B1268F /* T2GCell.swift */,
+				E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */,
+				E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */,
+				E05B61631AF26E8000B1268F /* T2GColoredButton.swift */,
+				E05B61641AF26E8000B1268F /* T2GConstants.swift */,
+				E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */,
+				E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */,
+				E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */,
+				E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */,
+				E05B61681AF26E8000B1268F /* T2GScrollController.swift */,
+				E05B61691AF26E8000B1268F /* T2GScrollView.swift */,
+				E05B616A1AF26E8000B1268F /* T2GViewController.swift */,
+			);
+			name = Table2Grid;
+			path = ../../../../Table2Grid;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E05B61371AF26E5700B1268F /* TabSplitView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E05B61591AF26E5700B1268F /* Build configuration list for PBXNativeTarget "TabSplitView" */;
+			buildPhases = (
+				E05B61341AF26E5700B1268F /* Sources */,
+				E05B61351AF26E5700B1268F /* Frameworks */,
+				E05B61361AF26E5700B1268F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TabSplitView;
+			productName = TabSplitView;
+			productReference = E05B61381AF26E5700B1268F /* TabSplitView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E05B614E1AF26E5700B1268F /* TabSplitViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E05B615C1AF26E5700B1268F /* Build configuration list for PBXNativeTarget "TabSplitViewTests" */;
+			buildPhases = (
+				E05B614B1AF26E5700B1268F /* Sources */,
+				E05B614C1AF26E5700B1268F /* Frameworks */,
+				E05B614D1AF26E5700B1268F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E05B61511AF26E5700B1268F /* PBXTargetDependency */,
+			);
+			name = TabSplitViewTests;
+			productName = TabSplitViewTests;
+			productReference = E05B614F1AF26E5700B1268F /* TabSplitViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E05B61301AF26E5700B1268F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Michal Švácha";
+				TargetAttributes = {
+					E05B61371AF26E5700B1268F = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					E05B614E1AF26E5700B1268F = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = E05B61371AF26E5700B1268F;
+					};
+				};
+			};
+			buildConfigurationList = E05B61331AF26E5700B1268F /* Build configuration list for PBXProject "TabSplitView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E05B612F1AF26E5700B1268F;
+			productRefGroup = E05B61391AF26E5700B1268F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E05B61371AF26E5700B1268F /* TabSplitView */,
+				E05B614E1AF26E5700B1268F /* TabSplitViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E05B61361AF26E5700B1268F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E05B61451AF26E5700B1268F /* Main.storyboard in Resources */,
+				E05B614A1AF26E5700B1268F /* LaunchScreen.xib in Resources */,
+				E05B61471AF26E5700B1268F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E05B614D1AF26E5700B1268F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E05B61341AF26E5700B1268F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E05B61731AF26E8000B1268F /* T2GScrollController.swift in Sources */,
+				E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */,
+				E05B61721AF26E8000B1268F /* T2GNaviViewController.swift in Sources */,
+				E05B61421AF26E5700B1268F /* DetailViewController.swift in Sources */,
+				E05B616E1AF26E8000B1268F /* T2GColoredButton.swift in Sources */,
+				E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */,
+				E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */,
+				E05B61401AF26E5700B1268F /* MasterViewController.swift in Sources */,
+				E05B616C1AF26E8000B1268F /* T2GCellDrawerButton.swift in Sources */,
+				E05B61741AF26E8000B1268F /* T2GScrollView.swift in Sources */,
+				E05B61701AF26E8000B1268F /* T2GDelimiterView.swift in Sources */,
+				E05B616D1AF26E8000B1268F /* T2GCheckboxButton.swift in Sources */,
+				E05B61711AF26E8000B1268F /* T2GDragAndDropView.swift in Sources */,
+				E05B613E1AF26E5700B1268F /* AppDelegate.swift in Sources */,
+				E05B61751AF26E8000B1268F /* T2GViewController.swift in Sources */,
+				E05B616F1AF26E8000B1268F /* T2GConstants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E05B614B1AF26E5700B1268F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E05B61561AF26E5700B1268F /* TabSplitViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E05B61511AF26E5700B1268F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E05B61371AF26E5700B1268F /* TabSplitView */;
+			targetProxy = E05B61501AF26E5700B1268F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E05B61431AF26E5700B1268F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E05B61441AF26E5700B1268F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E05B61481AF26E5700B1268F /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E05B61491AF26E5700B1268F /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E05B61571AF26E5700B1268F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E05B61581AF26E5700B1268F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E05B615A1AF26E5700B1268F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TabSplitView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E05B615B1AF26E5700B1268F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TabSplitView/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E05B615D1AF26E5700B1268F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TabSplitViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TabSplitView.app/TabSplitView";
+			};
+			name = Debug;
+		};
+		E05B615E1AF26E5700B1268F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TabSplitViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TabSplitView.app/TabSplitView";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E05B61331AF26E5700B1268F /* Build configuration list for PBXProject "TabSplitView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E05B61571AF26E5700B1268F /* Debug */,
+				E05B61581AF26E5700B1268F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E05B61591AF26E5700B1268F /* Build configuration list for PBXNativeTarget "TabSplitView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E05B615A1AF26E5700B1268F /* Debug */,
+				E05B615B1AF26E5700B1268F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E05B615C1AF26E5700B1268F /* Build configuration list for PBXNativeTarget "TabSplitViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E05B615D1AF26E5700B1268F /* Debug */,
+				E05B615E1AF26E5700B1268F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E05B61301AF26E5700B1268F /* Project object */;
+}
