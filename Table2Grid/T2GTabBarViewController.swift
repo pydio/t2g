@@ -9,7 +9,7 @@
 import UIKit
 
 /**
-Custom TabBar Controller implementing sliding strip on controller switch.
+Custom TabBar Controller implementing sliding strip on tab controller that slides when tab has been changed.
 */
 class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     /// the sliding strip
