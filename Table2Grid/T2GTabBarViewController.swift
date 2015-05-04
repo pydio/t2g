@@ -46,9 +46,27 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     :param: coordinator Default Cocoa API - The transition coordinator object managing the size change.
     */
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        if let slider = self.slidingView {
-            slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: size.width)
-        }
+        coordinator.animateAlongsideTransition({ (UIViewControllerTransitionCoordinatorContext) -> Void in
+            if let slider = self.slidingView {
+                slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: size.width)
+            }
+            
+            /*
+            let orientation = UIApplication.sharedApplication().statusBarOrientation
+            switch orientation {
+            case .Portrait:
+                // portrait
+                break
+            default:
+                // else
+                break
+            }
+            */
+        }, completion: { (UIViewControllerTransitionCoordinatorContext) -> Void in
+            // rotation done
+        })
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
     
     /**
