@@ -28,6 +28,7 @@
 		E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */; };
 		E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61781AF271DD00B1268F /* ExampleViewController.swift */; };
 		E05B617F1AF2889A00B1268F /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */; };
+		E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E691AF77DFA00D7829F /* SplitViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
 		E05B61781AF271DD00B1268F /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarTransition.swift; sourceTree = "<group>"; };
+		E08D0E691AF77DFA00D7829F /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			children = (
 				E05B615F1AF26E8000B1268F /* Table2Grid */,
 				E05B613D1AF26E5700B1268F /* AppDelegate.swift */,
+				E08D0E691AF77DFA00D7829F /* SplitViewController.swift */,
 				E05B613F1AF26E5700B1268F /* MasterViewController.swift */,
 				E05B61781AF271DD00B1268F /* ExampleViewController.swift */,
 				E05B61411AF26E5700B1268F /* DetailViewController.swift */,
@@ -271,6 +274,7 @@
 				E05B61721AF26E8000B1268F /* T2GNaviViewController.swift in Sources */,
 				E05B61421AF26E5700B1268F /* DetailViewController.swift in Sources */,
 				E05B616E1AF26E8000B1268F /* T2GColoredButton.swift in Sources */,
+				E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */,
 				E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */,
 				E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */,
 				E05B61401AF26E5700B1268F /* MasterViewController.swift in Sources */,
@@ -476,6 +480,7 @@
 				E05B615B1AF26E5700B1268F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E05B615C1AF26E5700B1268F /* Build configuration list for PBXNativeTarget "TabSplitViewTests" */ = {
 			isa = XCConfigurationList;
@@ -484,6 +489,7 @@
 				E05B615E1AF26E5700B1268F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
