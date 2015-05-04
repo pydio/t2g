@@ -131,7 +131,7 @@ class T2GNaviViewController: UINavigationController {
             dismissClosure()
         } else {
             if !dismissClosure() {
-                let menu = UIView(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height))
+                let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), itemCount: 3)
                 menu.tag = T2GViewTags.navigationBarMenu
                 menu.backgroundColor = .whiteColor()
                 menu.layer.masksToBounds = false
@@ -141,7 +141,7 @@ class T2GNaviViewController: UINavigationController {
                 self.view.insertSubview(menu, belowSubview: self.navigationBar)
                 
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height, self.navigationBar.frame.size.width, height)
+                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height + 20.0, self.navigationBar.frame.size.width, height)
                 })
             }
         }
