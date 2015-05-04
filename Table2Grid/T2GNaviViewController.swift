@@ -98,4 +98,52 @@ class T2GNaviViewController: UINavigationController {
     func delay(delay: Double, closure:() -> Void) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
     }
+    
+    /**
+    Proxy function of toggleBarMenu(forceClose) for UIBarButtonItem action call.
+    */
+    func toggleBarMenu() {
+        self.toggleBarMenu(false)
+    }
+    
+    /**
+    Opens/collapses navigation bar menu which slides below from the top of the navigation bar. Works like a switch on default, but is able to accept flag forcing the menu to disappear (handy to use when VC is about to be rotated and it is not desired to have a menu opened).
+    
+    :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
+    */
+    func toggleBarMenu(forceClose: Bool) {
+        let height: CGFloat = 64.0 * 3.0
+        
+        let dismissClosure = { () -> Bool in
+            if let menu = self.view.viewWithTag(11200211) {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height)
+                }, completion: { (_) -> Void in
+                    menu.removeFromSuperview()
+                })
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        if forceClose {
+            dismissClosure()
+        } else {
+            if !dismissClosure() {
+                let menu = UIView(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height))
+                menu.tag = 11200211
+                menu.backgroundColor = .whiteColor()
+                menu.layer.masksToBounds = false
+                menu.layer.shadowOffset = CGSizeMake(0, 6)
+                menu.layer.shadowRadius = 2.0
+                menu.layer.shadowOpacity = 0.45
+                self.view.insertSubview(menu, belowSubview: self.navigationBar)
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height, self.navigationBar.frame.size.width, height)
+                })
+            }
+        }
+    }
 }

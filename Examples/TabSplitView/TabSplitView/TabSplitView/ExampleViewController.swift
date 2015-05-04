@@ -39,7 +39,8 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
         var rightButton_transform: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
         var rightButton_toggle: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: self, action: "toggleEdit")
-        self.navigationItem.rightBarButtonItems = [rightButton_transform, rightButton_toggle]
+        var rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self.navigationController!, action: "toggleBarMenu")
+        self.navigationItem.rightBarButtonItems = [rightButton_transform, rightButton_toggle, rightButton_menu]
         
         self.isHidingEnabled = false
         
