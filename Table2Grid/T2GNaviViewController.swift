@@ -115,7 +115,7 @@ class T2GNaviViewController: UINavigationController {
         let height: CGFloat = 64.0 * 3.0
         
         let dismissClosure = { () -> Bool in
-            if let menu = self.view.viewWithTag(11200211) {
+            if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     menu.frame = CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height)
                 }, completion: { (_) -> Void in
@@ -132,7 +132,7 @@ class T2GNaviViewController: UINavigationController {
         } else {
             if !dismissClosure() {
                 let menu = UIView(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height))
-                menu.tag = 11200211
+                menu.tag = T2GViewTags.navigationBarMenu
                 menu.backgroundColor = .whiteColor()
                 menu.layer.masksToBounds = false
                 menu.layer.shadowOffset = CGSizeMake(0, 6)
