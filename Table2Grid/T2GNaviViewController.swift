@@ -15,6 +15,7 @@ class T2GNaviViewController: UINavigationController {
     /// Default value is 0 - no delay.
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
+    var menuDelegate: T2GNavigationBarMenuDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +132,7 @@ class T2GNaviViewController: UINavigationController {
             dismissClosure()
         } else {
             if !dismissClosure() {
-                let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), itemCount: 3)
+                let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), itemCount: 3, delegate: self.menuDelegate)
                 menu.tag = T2GViewTags.navigationBarMenu
                 menu.backgroundColor = .whiteColor()
                 menu.layer.masksToBounds = false
