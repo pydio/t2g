@@ -28,6 +28,7 @@
 		E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */; };
 		E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61781AF271DD00B1268F /* ExampleViewController.swift */; };
 		E05B617F1AF2889A00B1268F /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */; };
+		E064854A1AF8F1150024C9FB /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06485491AF8F1150024C9FB /* T2GTriangleView.swift */; };
 		E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E691AF77DFA00D7829F /* SplitViewController.swift */; };
 		E08D0E6E1AF7CEC600D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
 		E05B61781AF271DD00B1268F /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarTransition.swift; sourceTree = "<group>"; };
+		E06485491AF8F1150024C9FB /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTriangleView.swift; sourceTree = "<group>"; };
 		E08D0E691AF77DFA00D7829F /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,6 +164,7 @@
 				E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */,
 				E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */,
 				E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */,
+				E06485491AF8F1150024C9FB /* T2GTriangleView.swift */,
 				E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */,
 				E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */,
 				E05B61681AF26E8000B1268F /* T2GScrollController.swift */,
@@ -282,6 +285,7 @@
 				E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */,
 				E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */,
 				E05B61401AF26E5700B1268F /* MasterViewController.swift in Sources */,
+				E064854A1AF8F1150024C9FB /* T2GTriangleView.swift in Sources */,
 				E05B616C1AF26E8000B1268F /* T2GCellDrawerButton.swift in Sources */,
 				E05B61741AF26E8000B1268F /* T2GScrollView.swift in Sources */,
 				E05B617F1AF2889A00B1268F /* T2GTabBarTransition.swift in Sources */,
