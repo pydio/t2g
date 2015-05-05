@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate, T2GScrollViewDataDelegate {
+class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate, T2GScrollViewDataDelegate, T2GNavigationBarMenuDelegate {
     
     var modelArray: [Int] = []
     var modelArray2: [Int] = []
@@ -23,9 +23,8 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             modelArray3.append(index)
         }
         
-        var rightButton_transform: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
-        var rightButton_toggle: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: self, action: "toggleEdit")
-        self.navigationItem.rightBarButtonItems = [rightButton_transform, rightButton_toggle]
+        var rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self.navigationController!, action: "toggleBarMenu")
+        self.navigationItem.rightBarButtonItems = [rightButton_menu]
         
         self.isHidingEnabled = true
         
@@ -34,6 +33,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             
             navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navCtr.navigationBar.tintColor = .whiteColor()
+            navCtr.menuDelegate = self
         }
         
         self.scrollView.refreshControl = UIRefreshControl()
@@ -271,6 +271,79 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             
             completion()
         }
+    }
+    
+    //MARK: - T2GNavigationBarMenu delegate method
+    
+    /**
+    ...
+    
+    :returns:
+    */
+    func heightForMenu() -> CGFloat {
+        return 48.0 * 2.0
+    }
+    
+    /**
+    ...
+    
+    :returns:
+    */
+    func numberOfCells() -> Int {
+        return 2
+    }
+    
+    /**
+    ...
+    
+    :param: index
+    :returns:
+    */
+    func viewForCell(index: Int, size: CGSize) -> UIView {
+        let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
+        let ivSize = size.height * 0.7
+        let imageView = UIImageView(frame: CGRectMake(15.0, (size.height - ivSize) / CGFloat(2.0), ivSize, ivSize))
+        imageView.backgroundColor = .blackColor()
+        view.addSubview(imageView)
+        
+        let x = imageView.frame.origin.x + imageView.frame.size.width + 25.0
+        let label = UILabel(frame: CGRectMake(x, imageView.frame.origin.y, view.frame.size.width - x - 25.0, imageView.frame.size.height))
+        label.textColor = .blackColor()
+        label.font = UIFont.systemFontOfSize(14.0)
+        view.addSubview(label)
+        
+        switch(index) {
+        case 0:
+            label.text = "Transform view"
+            break
+        case 1:
+            label.text = "Edit content"
+            break
+        default:
+            break
+        }
+        
+        return view
+    }
+    
+    /**
+    ...
+    
+    :param: index
+    */
+    func didSelectButton(index: Int) {
+        switch(index) {
+        case 0:
+            self.transformView()
+            break
+        case 1:
+            self.toggleEdit()
+            break
+        default:
+            break
+        }
+        
+        (self.navigationController? as T2GNaviViewController).toggleBarMenu(true)
     }
 }
 

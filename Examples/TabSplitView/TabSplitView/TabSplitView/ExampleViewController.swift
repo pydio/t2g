@@ -42,11 +42,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             modelArray2.append(index)
             modelArray3.append(index)
         }
-        
-        var rightButton_transform: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "transformView")
-        var rightButton_toggle: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: self, action: "toggleEdit")
-        var rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self.navigationController!, action: "toggleBarMenu")
-        self.navigationItem.rightBarButtonItems = [rightButton_transform, rightButton_toggle, rightButton_menu]
+
+        var rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self.navigationController!, action: "toggleBarMenu")
+        self.navigationItem.rightBarButtonItems = [rightButton_menu]
         
         self.isHidingEnabled = false
         
@@ -399,8 +397,17 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     :returns:
     */
+    func heightForMenu() -> CGFloat {
+        return 48.0 * 5.0
+    }
+    
+    /**
+    ...
+    
+    :returns:
+    */
     func numberOfCells() -> Int {
-        return 4
+        return 5
     }
     
     /**
@@ -412,9 +419,37 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     func viewForCell(index: Int, size: CGSize) -> UIView {
         let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
         let ivSize = size.height * 0.7
-        let imageView = UIImageView(frame: CGRectMake(10.0, (size.height - ivSize) / CGFloat(2.0), ivSize, ivSize))
+        let imageView = UIImageView(frame: CGRectMake(15.0, (size.height - ivSize) / CGFloat(2.0), ivSize, ivSize))
         imageView.backgroundColor = .blackColor()
         view.addSubview(imageView)
+        
+        
+        let x = imageView.frame.origin.x + imageView.frame.size.width + 25.0
+        let label = UILabel(frame: CGRectMake(x, imageView.frame.origin.y, view.frame.size.width - x - 25.0, imageView.frame.size.height))
+        label.textColor = .blackColor()
+        label.font = UIFont.systemFontOfSize(14.0)
+        view.addSubview(label)
+        
+        switch(index) {
+        case 0:
+            label.text = "Sort"
+            break
+        case 1:
+            label.text = "Transform view"
+            break
+        case 2:
+            label.text = "Bookmark folder"
+            break
+        case 3:
+            label.text = "Add ..."
+            break
+        case 4:
+            label.text = "Edit folder contents"
+            break
+        default:
+            break
+        }
+        
         return view
     }
     
@@ -424,7 +459,26 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     :param: index
     */
     func didSelectButton(index: Int) {
-        println(index)
+        switch(index) {
+        case 0:
+            println("Sort not implemented yet.")
+            break
+        case 1:
+            self.transformView()
+            break
+        case 2:
+            println("Bookmarking not implemented yet.")
+            break
+        case 3:
+            println("Add not implemented yet.")
+            break
+        case 4:
+            self.toggleEdit()
+            break
+        default:
+            break
+        }
+        
         (self.navigationController? as T2GNaviViewController).toggleBarMenu(true)
     }
 }
