@@ -24,6 +24,7 @@
 		E01285931ADFF368007EA890 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012858B1ADFF368007EA890 /* T2GViewController.swift */; };
 		E05B617B1AF27AE400B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B617A1AF27AE400B1268F /* T2GTabBarViewController.swift */; };
 		E05B61811AF28EAD00B1268F /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */; };
+		E08D0E721AF8C7EA00D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */; };
 		E0AA5C501AE64E59005ABFAA /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C4F1AE64E59005ABFAA /* T2GDelimiterView.swift */; };
 		E0AA5C541AE9194E005ABFAA /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C531AE9194E005ABFAA /* T2GConstants.swift */; };
 /* End PBXBuildFile section */
@@ -60,6 +61,7 @@
 		E012858B1ADFF368007EA890 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GViewController.swift; path = ../../../Table2Grid/T2GViewController.swift; sourceTree = "<group>"; };
 		E05B617A1AF27AE400B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarViewController.swift; path = ../../../Table2Grid/T2GTabBarViewController.swift; sourceTree = "<group>"; };
 		E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarTransition.swift; path = ../../../Table2Grid/T2GTabBarTransition.swift; sourceTree = "<group>"; };
+		E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarMenu.swift; path = ../../../Table2Grid/T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
 		E0AA5C4F1AE64E59005ABFAA /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDelimiterView.swift; path = ../../../Table2Grid/T2GDelimiterView.swift; sourceTree = "<group>"; };
 		E0AA5C531AE9194E005ABFAA /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = ../../../Table2Grid/T2GConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +152,7 @@
 				E01285861ADFF368007EA890 /* T2GCheckboxButton.swift */,
 				E01285871ADFF368007EA890 /* T2GColoredButton.swift */,
 				E01285881ADFF368007EA890 /* T2GNaviViewController.swift */,
+				E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */,
 				E05B617A1AF27AE400B1268F /* T2GTabBarViewController.swift */,
 				E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */,
 				E01285891ADFF368007EA890 /* T2GScrollController.swift */,
@@ -271,6 +274,7 @@
 				E01285931ADFF368007EA890 /* T2GViewController.swift in Sources */,
 				E012858D1ADFF368007EA890 /* T2GCellDrawerButton.swift in Sources */,
 				E0AA5C501AE64E59005ABFAA /* T2GDelimiterView.swift in Sources */,
+				E08D0E721AF8C7EA00D7829F /* T2GNavigationBarMenu.swift in Sources */,
 				E00C88581AE5303000862938 /* T2GDragAndDropView.swift in Sources */,
 				E01285901ADFF368007EA890 /* T2GNaviViewController.swift in Sources */,
 				E012858C1ADFF368007EA890 /* T2GCell.swift in Sources */,
@@ -397,6 +401,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SingleView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -407,6 +412,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SingleView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
