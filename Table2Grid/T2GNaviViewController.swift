@@ -113,7 +113,7 @@ class T2GNaviViewController: UINavigationController {
     :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
     */
     func toggleBarMenu(forceClose: Bool) {
-        let height: CGFloat = 48.0 * 4.0
+        let height: CGFloat = self.menuDelegate!.heightForMenu()
         
         let dismissClosure = { () -> Bool in
             if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {

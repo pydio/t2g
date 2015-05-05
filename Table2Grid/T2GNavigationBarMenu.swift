@@ -13,6 +13,11 @@ Protocol for T2GNavigationBarMenu items' appearance and for handling clicking ev
 */
 protocol T2GNavigationBarMenuDelegate {
     /**
+    Returns the height of the menu.
+    */
+    func heightForMenu() -> CGFloat
+    
+    /**
     Returns the number of cells in the menu.
     */
     func numberOfCells() -> Int
