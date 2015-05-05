@@ -9,39 +9,48 @@
 import UIKit
 
 /**
+Custom UIView class for animating triangle while animating the appearance of the navigation bar menu.
 */
 class T2GTriangleView: UIView {
 
-    ///
-    var shapeLayer:CAShapeLayer! {
-        return self.layer as CAShapeLayer
-    }
-    
-    ///
-    override class func layerClass() -> AnyClass {
-        return TriangleShapeLayer.self
-    }
-    
-    ///
+    /// overridden property to be able to distribute the change to the fill of the layer
     override var backgroundColor: UIColor? {
         get {
-            return UIColor(CGColor : shapeLayer.fillColor)
+            return UIColor(CGColor: shapeLayer.fillColor)
         }
         set {
             shapeLayer.fillColor = newValue!.CGColor
         }
     }
     
+    /// custom calculated property for layer
+    var shapeLayer: CAShapeLayer! {
+        return self.layer as CAShapeLayer
+    }
+    
     /**
+    Sets custom class of the layer.
     */
-    class TriangleShapeLayer: CAShapeLayer {
-        override var bounds : CGRect {
+    override class func layerClass() -> AnyClass {
+        return TriangleLayer.self
+    }
+    
+    //MARK: -
+    /**
+    Custom private shape layer class for animating the triangle with smooth transition.
+    */
+    class TriangleLayer: CAShapeLayer {
+        override var bounds: CGRect {
             didSet {
                 path = self.shapeForBounds(bounds).CGPath
             }
         }
         
         /**
+        Creates the triangle shape for given rectangle. Created triangle always points down.
+        
+        :param: rect CGRect object to define the bounds where the triangle path should be drawn.
+        :returns: UIBezierPath defining the path of the triangle.
         */
         func shapeForBounds(rect: CGRect) -> UIBezierPath {
             let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
@@ -57,6 +66,10 @@ class T2GTriangleView: UIView {
         }
         
         /**
+        Overrides default behavior to be able to render the view when the frame gets changed.
+        
+        :param: anim Default Cocoa API - The animation to be added to the render tree.
+        :param: key Default Cocoa API - A string that identifies the animation.
         */
         override func addAnimation(anim: CAAnimation!, forKey key: String!) {
             super.addAnimation(anim, forKey: key)
