@@ -470,7 +470,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             println("Bookmarking not implemented yet.")
             break
         case 3:
-            println("Add not implemented yet.")
+            self.modelArray3.insert(42, atIndex: 0)
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            self.insertRowAtIndexPath(indexPath)
             break
         case 4:
             self.toggleEdit()
