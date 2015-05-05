@@ -416,6 +416,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     */
     func didSelectButton(index: Int) {
         println(index)
+        (self.navigationController? as T2GNaviViewController).toggleBarMenu(true)
     }
 }
 
