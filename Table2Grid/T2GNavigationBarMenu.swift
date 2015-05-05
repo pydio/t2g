@@ -8,17 +8,14 @@
 
 import UIKit
 
+protocol T2GNavigationBarMenuDelegate {
+    func didSelectButton(index: Int)
+}
+
 class T2GNavigationBarMenu: UIView {
+    var delegate: T2GNavigationBarMenuDelegate?
     var maxCount: Int = 0
     var setCount: Int = 0
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     convenience init(frame: CGRect, itemCount: Int) {
         self.init(frame: frame)
@@ -28,11 +25,23 @@ class T2GNavigationBarMenu: UIView {
         
         for index in 0..<itemCount {
             let y = CGFloat(index) * itemHeight
-            let view = UIView(frame: CGRectMake(0, y, frame.size.width, itemHeight))
-            view.backgroundColor = .blackColor()
-            var hue = CGFloat(index) + 0.2
-            view.alpha = 1.0 / hue
+            let view = T2GColoredButton(frame: CGRectMake(0, y, frame.size.width, itemHeight))
+            view.normalBackgroundColor = .clearColor()
+            view.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
+            view.tag = index
+            view.addTarget(self, action: "buttonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)
-        }   
+            
+            if index + 1 < itemCount {
+                let offset: CGFloat = 30.0
+                let line = UIView(frame: CGRectMake(offset, view.frame.origin.y + view.frame.size.height, view.frame.size.width - offset, 1))
+                line.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
+                self.addSubview(line)
+            }
+        }
+    }
+    
+    func buttonClicked(sender: T2GColoredButton) {
+        self.delegate?.didSelectButton(sender.tag)
     }
 }
