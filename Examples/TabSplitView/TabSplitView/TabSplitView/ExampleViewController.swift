@@ -402,6 +402,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     */
     func viewForCell(index: Int, size: CGSize) -> UIView {
         let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
+        let ivSize = size.height * 0.7
+        let imageView = UIImageView(frame: CGRectMake(10.0, (size.height - ivSize) / CGFloat(2.0), ivSize, ivSize))
+        imageView.backgroundColor = .blackColor()
+        view.addSubview(imageView)
         return view
     }
     
