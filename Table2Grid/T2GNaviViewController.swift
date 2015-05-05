@@ -149,7 +149,6 @@ class T2GNaviViewController: UINavigationController {
                 triangle.tag = T2GViewTags.navigationBarTriangle
                 triangle.backgroundColor = self.navigationBar.barTintColor
                 triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
-                println(self.navigationBar.translucent)
                 self.view.insertSubview(triangle, aboveSubview: self.navigationBar)
                 
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
