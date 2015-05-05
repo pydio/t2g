@@ -30,6 +30,8 @@ class T2GTriangleView: UIView {
     
     /**
     Sets custom class of the layer.
+    
+    :returns: Default Cocoa API - The class used to create the view’s Core Animation layer.
     */
     override class func layerClass() -> AnyClass {
         return TriangleLayer.self
