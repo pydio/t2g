@@ -397,6 +397,15 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     /**
     ...
     
+    :returns:
+    */
+    func numberOfCells() -> Int {
+        return 4
+    }
+    
+    /**
+    ...
+    
     :param: index
     :returns:
     */

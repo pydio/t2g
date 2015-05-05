@@ -13,6 +13,11 @@ Protocol for T2GNavigationBarMenu items' appearance and for handling clicking ev
 */
 protocol T2GNavigationBarMenuDelegate {
     /**
+    Returns the number of cells in the menu.
+    */
+    func numberOfCells() -> Int
+    
+    /**
     Gets called when the menu is being created.
     
     :param: index Index of the cell in the menu. Indexed from 0 from the top.
@@ -34,8 +39,6 @@ Class for menu view sliding from below the navigation bar.
 */
 class T2GNavigationBarMenu: UIView {
     var delegate: T2GNavigationBarMenuDelegate?
-    var maxCount: Int = 0
-    var setCount: Int = 0
     
     /**
     Custom initializer - initializes the menu and creates all its subviews. If delegate isn't set the cells will be empty.
@@ -44,11 +47,11 @@ class T2GNavigationBarMenu: UIView {
     :param: itemCount Expected number of items. Their size is calculated proportionally
     :param: delegate Delegate object that will determine appearance of the items in the menu and handle their events.
     */
-    convenience init(frame: CGRect, itemCount: Int, delegate: T2GNavigationBarMenuDelegate?) {
+    convenience init(frame: CGRect, delegate: T2GNavigationBarMenuDelegate?) {
         self.init(frame: frame)
         
         self.delegate = delegate
-        self.maxCount = itemCount
+        let itemCount = self.delegate?.numberOfCells() ?? 0
         let itemHeight = frame.size.height / CGFloat(itemCount)
         
         for index in 0..<itemCount {
