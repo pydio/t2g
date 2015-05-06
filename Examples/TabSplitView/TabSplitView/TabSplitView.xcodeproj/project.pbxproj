@@ -31,6 +31,7 @@
 		E064854A1AF8F1150024C9FB /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06485491AF8F1150024C9FB /* T2GTriangleView.swift */; };
 		E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E691AF77DFA00D7829F /* SplitViewController.swift */; };
 		E08D0E6E1AF7CEC600D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */; };
+		E0F557591AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		E06485491AF8F1150024C9FB /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTriangleView.swift; sourceTree = "<group>"; };
 		E08D0E691AF77DFA00D7829F /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
+		E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarTitle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */,
 				E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */,
 				E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */,
+				E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */,
 				E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */,
 				E06485491AF8F1150024C9FB /* T2GTriangleView.swift */,
 				E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */,
@@ -293,6 +296,7 @@
 				E05B616D1AF26E8000B1268F /* T2GCheckboxButton.swift in Sources */,
 				E05B61711AF26E8000B1268F /* T2GDragAndDropView.swift in Sources */,
 				E05B613E1AF26E5700B1268F /* AppDelegate.swift in Sources */,
+				E0F557591AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift in Sources */,
 				E05B61751AF26E8000B1268F /* T2GViewController.swift in Sources */,
 				E05B616F1AF26E8000B1268F /* T2GConstants.swift in Sources */,
 			);

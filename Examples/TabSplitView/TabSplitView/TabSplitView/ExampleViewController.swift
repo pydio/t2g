@@ -53,33 +53,23 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navCtr.navigationBar.tintColor = .whiteColor()
             
-            let titleView = T2GColoredButton(frame: CGRectMake(0.0, 0.0, 128.0, 42.0))
-            let subview = UIView(frame: titleView.frame)
-            let triangle = T2GTriangleView(frame:CGRectMake(subview.frame.size.width - 9.0 - 2.0, (subview.frame.height - 7.0) / CGFloat(2), 9.0, 7.0))
-            triangle.backgroundColor = .whiteColor()
-            subview.addSubview(triangle)
-            
-            let label = UILabel(frame: CGRectMake(2.0, (subview.frame.height - 20.0) / CGFloat(2), subview.frame.size.width - triangle.frame.size.width - 2.0 - 2.0 - 2.0, 20.0))
-            label.font = UIFont.boldSystemFontOfSize(16.0)
-            label.textColor = .whiteColor()
-            label.text = "Testing label"
-            subview.addSubview(label)
-            
-            subview.userInteractionEnabled = false
-            subview.exclusiveTouch = false
-            
-            titleView.addSubview(subview)
-            
-            titleView.normalBackgroundColor = .clearColor()
-            titleView.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
+            let text = "T2G Project folder"
+            let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
+            let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text)
+            titleView.addTarget(self, action: "titleViewPressed", forControlEvents: UIControlEvents.TouchUpInside)
             
             self.navigationItem.titleView = titleView
-            
         }
         
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl
+    }
+    
+    /**
+    */
+    func titleViewPressed() {
+        println("Title pressed")
     }
     
     /**
@@ -101,6 +91,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     override func viewWillAppear(animated: Bool) {
         self.scrollView.alignVisibleCells()
     }
+    
+//    override func viewDidAppear(animated: Bool) {
+//        (self.navigationItem.titleView as T2GNavigationBarTitle).titleViewAdded()
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
