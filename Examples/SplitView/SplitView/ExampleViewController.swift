@@ -49,7 +49,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             
             let text = "T2G Project folder"
             let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
-            let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text)
+            let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text, shouldHighlightText: true)
             titleView.addTarget(self, action: "titleViewPressed", forControlEvents: UIControlEvents.TouchUpInside)
             
             self.navigationItem.titleView = titleView
