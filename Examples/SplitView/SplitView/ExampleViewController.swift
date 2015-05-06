@@ -46,11 +46,24 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             navCtr.menuDelegate = self
             navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navCtr.navigationBar.tintColor = .whiteColor()
+            
+            let text = "T2G Project folder"
+            let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
+            let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text)
+            titleView.addTarget(self, action: "titleViewPressed", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            self.navigationItem.titleView = titleView
         }
         
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl
+    }
+    
+    /**
+    */
+    func titleViewPressed() {
+        println("Title pressed")
     }
     
     override func viewDidLayoutSubviews() {

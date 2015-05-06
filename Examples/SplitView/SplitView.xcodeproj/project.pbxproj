@@ -30,6 +30,7 @@
 		E064854E1AF8FB220024C9FB /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E064854D1AF8FB220024C9FB /* T2GTriangleView.swift */; };
 		E08D0E701AF8C7C800D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E6F1AF8C7C800D7829F /* T2GNavigationBarMenu.swift */; };
 		E0AA5C561AE9195A005ABFAA /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */; };
+		E0F5575D1AFA3ECA00BB7FDA /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F5575C1AFA3ECA00BB7FDA /* T2GNavigationBarTitle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		E064854D1AF8FB220024C9FB /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTriangleView.swift; path = ../../../Table2Grid/T2GTriangleView.swift; sourceTree = "<group>"; };
 		E08D0E6F1AF8C7C800D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarMenu.swift; path = ../../../Table2Grid/T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
 		E0AA5C551AE9195A005ABFAA /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = ../../../Table2Grid/T2GConstants.swift; sourceTree = "<group>"; };
+		E0F5575C1AFA3ECA00BB7FDA /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarTitle.swift; path = ../../../Table2Grid/T2GNavigationBarTitle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 				E01286081ADFF563007EA890 /* T2GCheckboxButton.swift */,
 				E01286091ADFF563007EA890 /* T2GColoredButton.swift */,
 				E012860A1ADFF563007EA890 /* T2GNaviViewController.swift */,
+				E0F5575C1AFA3ECA00BB7FDA /* T2GNavigationBarTitle.swift */,
 				E08D0E6F1AF8C7C800D7829F /* T2GNavigationBarMenu.swift */,
 				E064854D1AF8FB220024C9FB /* T2GTriangleView.swift */,
 				E05B617C1AF27AEC00B1268F /* T2GTabBarViewController.swift */,
@@ -285,6 +288,7 @@
 				E012860E1ADFF563007EA890 /* T2GCell.swift in Sources */,
 				E00C885A1AE5424400862938 /* T2GDelimiterView.swift in Sources */,
 				E012860F1ADFF563007EA890 /* T2GCellDrawerButton.swift in Sources */,
+				E0F5575D1AFA3ECA00BB7FDA /* T2GNavigationBarTitle.swift in Sources */,
 				E01286491ADFFBD4007EA890 /* SplitViewController.swift in Sources */,
 				E01286131ADFF563007EA890 /* T2GScrollController.swift in Sources */,
 				E0AA5C561AE9195A005ABFAA /* T2GConstants.swift in Sources */,
