@@ -136,6 +136,8 @@ class T2GNaviViewController: UINavigationController {
             dismissClosure()
         } else {
             if !dismissClosure() {
+                let statusBarOffset: CGFloat = UIApplication.sharedApplication().statusBarHidden ? 0 : 20
+                
                 let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), delegate: self.menuDelegate)
                 menu.tag = T2GViewTags.navigationBarMenu
                 menu.backgroundColor = .whiteColor()
@@ -145,14 +147,14 @@ class T2GNaviViewController: UINavigationController {
                 menu.layer.shadowOpacity = 0.45
                 self.view.insertSubview(menu, belowSubview: self.navigationBar)
                 
-                let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + 20.0, 32.0, 0.0))
+                let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + statusBarOffset, 32.0, 0.0))
                 triangle.tag = T2GViewTags.navigationBarTriangle
                 triangle.backgroundColor = self.navigationBar.barTintColor
                 triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
                 self.view.insertSubview(triangle, aboveSubview: self.navigationBar)
                 
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height + 20.0, self.navigationBar.frame.size.width, height)
+                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height + statusBarOffset, self.navigationBar.frame.size.width, height)
                     triangle.frame = CGRectMake(triangle.frame.origin.x, triangle.frame.origin.y, triangle.frame.size.width, 12.0)
                 })
             }
