@@ -165,7 +165,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     }
     
     /**
-    Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible.
+    Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible. Also checks if T2GNavigationBarTitle is present to form appearance for Normal and Highlighted state.
     
     :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
     */
@@ -173,6 +173,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.scrollView.delegate = self
         self.displayMissingCells()
         self.scrollView.adjustContentSize()
+        
+        if let titleView = self.navigationItem.titleView as? T2GNavigationBarTitle {
+            titleView.titleViewAdded()
+        }
     }
     
     override func didReceiveMemoryWarning() {
