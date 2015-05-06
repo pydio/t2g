@@ -522,13 +522,17 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     //MARK: - Rotation handler
     
     /**
-    Makes sure that all subviews get properly resized (Table) or placed (Collection) during rotation.
+    Makes sure that all subviews get properly resized (Table) or placed (Collection) during rotation. Forces navigation controller menu to close when opened.
     
     :param: toInterfaceOrientation Default Cocoa API - The new orientation for the user interface.
     :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
+        
+        if let navCtr = self.navigationController as? T2GNaviViewController {
+            navCtr.toggleBarMenu(true)
+        }
         
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
         let from = (indicesExtremes.highest) + 1
