@@ -173,10 +173,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.scrollView.delegate = self
         self.displayMissingCells()
         self.scrollView.adjustContentSize()
-        
-        if let titleView = self.navigationItem.titleView as? T2GNavigationBarTitle {
-            titleView.titleViewAdded()
-        }
     }
     
     override func didReceiveMemoryWarning() {
