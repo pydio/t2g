@@ -1,6 +1,6 @@
 //
 //  MasterViewController.swift
-//  TabSplitView
+//  TabSplitView - T2G Example
 //
 //  Created by Michal Švácha on 30/04/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+Custom MasterView controller for SplitView controller. Subclass of custom UITabBar controller. Contains other view controllers embeded in custom UINavigation controllers.
+*/
 class MasterViewController: T2GTabBarViewController {
 
     var detailViewController: DetailViewController? = nil

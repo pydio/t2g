@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Table2GridConcept
+//  TabSplitView - T2G Example
 //
 //  Created by Michal Švácha on 20/03/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 
 /**
-...
+Custom ExampleView controller. Is embedded in UINavigation controller in the storyboard.
 */
 class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDropDelegate, T2GScrollViewDataDelegate, T2GNavigationBarMenuDelegate {
     
@@ -26,9 +26,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
     }
     
-    /**
-    ...
-    */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,15 +63,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl
     }
     
-    /**
-    */
     func titleViewPressed() {
         println("Title pressed")
     }
     
-    /**
-    ...
-    */
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -85,26 +77,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
     }
     
-    /**
-    ...
-    */
     override func viewWillAppear(animated: Bool) {
         self.scrollView.alignVisibleCells()
     }
-    
-//    override func viewDidAppear(animated: Bool) {
-//        (self.navigationItem.titleView as T2GNavigationBarTitle).titleViewAdded()
-//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    /**
-    ...
-    
-    :param: sender
-    */
     func handlePullToRefresh(sender: UIRefreshControl) {
         //sender.attributedTitle = NSAttributedString(string: "\n Refreshing")
         
@@ -127,13 +107,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     /// Datasource methods
     
-    /**
-    ...
-    
-    :param: indexPath
-    :param: frame
-    :returns:
-    */
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell {
         var view: T2GCell?
         switch(indexPath.section) {
@@ -166,21 +139,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return view!
     }
     
-    /**
-    ...
-    
-    :returns:
-    */
     func numberOfSections() -> Int {
         return 3
     }
     
-    /**
-    ...
-    
-    :param: section
-    :returns:
-    */
     func numberOfCellsInSection(section: Int) -> Int {
         switch(section) {
         case 0:
@@ -194,22 +156,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
     }
     
-    /**
-    ...
-    
-    :param: section
-    :returns:
-    */
     func titleForHeaderInSection(section: Int) -> String? {
         return "Section #\(section + 1)"
     }
     
-    /**
-    ...
-    
-    :param: cell
-    :param: indexPath
-    */
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath) {
         switch(indexPath.section) {
         case 0:
@@ -231,12 +181,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     /// View methods
     
-    /**
-    ...
-    
-    :param: mode
-    :returns:
-    */
     func dimensionsForCell(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat) {
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
@@ -252,30 +196,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return (width, height, 12.0)
     }
     
-    /**
-    ...
-    
-    :returns:
-    */
     func dimensionsForSectionHeader() -> CGSize {
         return CGSize(width: 300, height: 32.0)
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    :returns:
-    */
     func willSelectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    */
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
         if indexPath.row%2 == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
@@ -288,31 +216,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    :returns:
-    */
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    */
     func didDeselectCellAtIndexPath(indexPath: NSIndexPath) {
         //
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    :param: buttonIndex
-    */
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int) {
         if buttonIndex == 0 {
             switch(indexPath.section) {
@@ -352,11 +263,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
     }
     
-    /**
-    ...
-    
-    :param: indexPath
-    */
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath) {
         switch(indexPath.section) {
         case 0:
@@ -375,14 +281,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     //MARK: T2GDrop delegate methods
     
-    /**
-    ...
-    
-    :param: cell
-    :param: onCell
-    :param: completion
-    :param: failure
-    */
     func didDropCell(cell: T2GCell, onCell: T2GCell, completion: () -> Void, failure: () -> Void) {
         if onCell.tag % 2 != 0 {
             failure()
@@ -409,30 +307,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     //MARK: - T2GNavigationBarMenu delegate method
     
-    /**
-    ...
-    
-    :returns:
-    */
     func heightForMenu() -> CGFloat {
         return 48.0 * 5.0
     }
     
-    /**
-    ...
-    
-    :returns:
-    */
     func numberOfCells() -> Int {
         return 5
     }
     
-    /**
-    ...
-    
-    :param: index
-    :returns:
-    */
     func viewForCell(index: Int, size: CGSize) -> UIView {
         let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
         let ivSize = size.height * 0.7
@@ -470,11 +352,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return view
     }
     
-    /**
-    ...
-    
-    :param: index
-    */
     func didSelectButton(index: Int) {
         switch(index) {
         case 0:
