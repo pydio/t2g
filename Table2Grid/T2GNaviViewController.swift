@@ -49,6 +49,8 @@ class T2GNaviViewController: UINavigationController {
     :returns: The view controller that was popped from the stack.
     */
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
+        self.toggleBarMenu(true)
+        
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
             if visibleViewController.isHidingEnabled {
@@ -56,6 +58,10 @@ class T2GNaviViewController: UINavigationController {
             }
             
             visibleViewController.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            
+            if let mDelegate = visibleViewController as? T2GNavigationBarMenuDelegate {
+                self.menuDelegate = mDelegate
+            }
         }
         return poppedViewController
     }
@@ -67,6 +73,8 @@ class T2GNaviViewController: UINavigationController {
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
     override func pushViewController(viewController: UIViewController, animated: Bool) {
+        self.toggleBarMenu(true)
+        
         if let viewController = self.visibleViewController as? T2GViewController {
             if viewController.isHidingEnabled {
                 viewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))

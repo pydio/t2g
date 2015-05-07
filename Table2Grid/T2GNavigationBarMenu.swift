@@ -11,7 +11,7 @@ import UIKit
 /**
 Protocol for T2GNavigationBarMenu items' appearance and for handling clicking event.
 */
-protocol T2GNavigationBarMenuDelegate {
+@objc protocol T2GNavigationBarMenuDelegate {
     /**
     Returns the height of the menu.
     */
