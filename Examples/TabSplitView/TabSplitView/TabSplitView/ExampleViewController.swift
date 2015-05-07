@@ -50,10 +50,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navCtr.navigationBar.tintColor = .whiteColor()
             
-            let text = "T2G Project folder"
+            if self.title == nil {
+                self.title = "Root"
+            }
+            
+            let text = self.title!
             let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
             let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text, shouldHighlightText: true)
-            titleView.addTarget(self, action: "titleViewPressed", forControlEvents: UIControlEvents.TouchUpInside)
+            titleView.addTarget(self.navigationController, action: "showPathPopover:", forControlEvents: UIControlEvents.TouchUpInside)
             
             self.navigationItem.titleView = titleView
         }
@@ -61,10 +65,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl
-    }
-    
-    func titleViewPressed() {
-        println("Title pressed")
     }
     
     override func viewDidLayoutSubviews() {
@@ -208,6 +208,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         if indexPath.row%2 == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
+            newVC.title = "R: \(indexPath.row) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)"
             self.navigationController?.pushViewController(newVC, animated: true)
         } else {
             self.tabBarController?.performSegueWithIdentifier("showDetail", sender: nil)

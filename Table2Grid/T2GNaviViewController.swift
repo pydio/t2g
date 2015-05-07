@@ -11,7 +11,7 @@ import UIKit
 /**
 Custom UINavigationController that enables slight delay between segues (for enter/exit animation) and that adds status bar background on top of the navigation bar (settable).
 */
-class T2GNaviViewController: UINavigationController {
+class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
     /// Default value is 0 - no delay.
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
@@ -75,12 +75,12 @@ class T2GNaviViewController: UINavigationController {
     override func pushViewController(viewController: UIViewController, animated: Bool) {
         self.toggleBarMenu(true)
         
-        if let viewController = self.visibleViewController as? T2GViewController {
-            if viewController.isHidingEnabled {
-                viewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+        if let vc = self.visibleViewController as? T2GViewController {
+            if vc.isHidingEnabled {
+                vc.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
             }
             
-            viewController.scrollView.animateSubviewCells(isGoingOffscreen: true)
+            vc.scrollView.animateSubviewCells(isGoingOffscreen: true)
         }
         
         self.delay(self.segueDelay, closure: { () -> Void in
@@ -167,5 +167,66 @@ class T2GNaviViewController: UINavigationController {
                 })
             }
         }
+    }
+    
+    //MARK: - UIPopover controller methods
+    
+    /**
+    Instantiates and shows PathView controller as UIPopover.
+    
+    :param: sender UIButton from which the PathView controller will be shown.
+    */
+    func showPathPopover(sender: UIButton) {
+        let pathViewController = T2GPathViewController()
+        pathViewController.modalPresentationStyle = .Popover
+        pathViewController.preferredContentSize = CGSizeMake(self.view.frame.width * 0.8, 256)
+        pathViewController.path = self.buildPath()
+        pathViewController.pathDelegate = self
+        
+        let popoverMenuViewController = pathViewController.popoverPresentationController
+        popoverMenuViewController?.permittedArrowDirections = .Any
+        popoverMenuViewController?.delegate = self
+        popoverMenuViewController?.sourceView = sender
+        
+        popoverMenuViewController?.sourceRect = CGRect(x: sender.frame.size.width / 2, y: sender.frame.size.height - 5, width: 1, height: 1)
+        self.presentViewController(pathViewController, animated: true, completion: nil)
+    }
+    
+    /**
+    Helper method for when PathView controller gets presented as UIPopover.
+    
+    :param: controller Default Cocoa API - The presentation controller that is managing the size change.
+    :returns: Default Cocoa API - The new presentation style, which must be either UIModalPresentationFullScreen or UIModalPresentationOverFullScreen.
+    */
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
+    /**
+    Builds path comprising of all ViewControllers on the stack.
+    
+    :returns: Array of Dictionary objects containing name and image to be displayed.
+    */
+    func buildPath() -> [[String : String]] {
+        var path = [[String : String]]()
+        
+        path.append(["name" : "Server", "image" : ""])
+        path.append(["name" : "Repository", "image" : ""])
+        
+        for vc in (self.viewControllers as [UIViewController]) {
+            path.append(["name" : vc.title!, "image" : ""])
+        }
+        
+        return path
+    }
+    
+    /**
+    Pops to selected ViewController on the stack.
+    
+    :param: index Index of the selected ViewController.
+    */
+    func didSelectViewController(index: Int) {
+        let vc = self.viewControllers[index] as UIViewController
+        self.popToViewController(vc, animated: true)
     }
 }
