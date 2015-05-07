@@ -26,6 +26,7 @@
 		E05B61811AF28EAD00B1268F /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */; };
 		E064854C1AF8FB120024C9FB /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E064854B1AF8FB120024C9FB /* T2GTriangleView.swift */; };
 		E08D0E721AF8C7EA00D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */; };
+		E0A26DE81AFB918500D9BAAC /* T2GPathViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A26DE71AFB918500D9BAAC /* T2GPathViewController.swift */; };
 		E0AA5C501AE64E59005ABFAA /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C4F1AE64E59005ABFAA /* T2GDelimiterView.swift */; };
 		E0AA5C541AE9194E005ABFAA /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AA5C531AE9194E005ABFAA /* T2GConstants.swift */; };
 		E0F5575B1AFA3EBE00BB7FDA /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F5575A1AFA3EBE00BB7FDA /* T2GNavigationBarTitle.swift */; };
@@ -65,6 +66,7 @@
 		E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarTransition.swift; path = ../../../Table2Grid/T2GTabBarTransition.swift; sourceTree = "<group>"; };
 		E064854B1AF8FB120024C9FB /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTriangleView.swift; path = ../../../Table2Grid/T2GTriangleView.swift; sourceTree = "<group>"; };
 		E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarMenu.swift; path = ../../../Table2Grid/T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
+		E0A26DE71AFB918500D9BAAC /* T2GPathViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GPathViewController.swift; path = ../../../Table2Grid/T2GPathViewController.swift; sourceTree = "<group>"; };
 		E0AA5C4F1AE64E59005ABFAA /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDelimiterView.swift; path = ../../../Table2Grid/T2GDelimiterView.swift; sourceTree = "<group>"; };
 		E0AA5C531AE9194E005ABFAA /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = ../../../Table2Grid/T2GConstants.swift; sourceTree = "<group>"; };
 		E0F5575A1AFA3EBE00BB7FDA /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarTitle.swift; path = ../../../Table2Grid/T2GNavigationBarTitle.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				E01285881ADFF368007EA890 /* T2GNaviViewController.swift */,
 				E0F5575A1AFA3EBE00BB7FDA /* T2GNavigationBarTitle.swift */,
 				E08D0E711AF8C7EA00D7829F /* T2GNavigationBarMenu.swift */,
+				E0A26DE71AFB918500D9BAAC /* T2GPathViewController.swift */,
 				E064854B1AF8FB120024C9FB /* T2GTriangleView.swift */,
 				E05B617A1AF27AE400B1268F /* T2GTabBarViewController.swift */,
 				E05B61801AF28EAD00B1268F /* T2GTabBarTransition.swift */,
@@ -275,6 +278,7 @@
 				E05B61811AF28EAD00B1268F /* T2GTabBarTransition.swift in Sources */,
 				E0AA5C541AE9194E005ABFAA /* T2GConstants.swift in Sources */,
 				E01285661ADFF345007EA890 /* ExampleViewController.swift in Sources */,
+				E0A26DE81AFB918500D9BAAC /* T2GPathViewController.swift in Sources */,
 				E05B617B1AF27AE400B1268F /* T2GTabBarViewController.swift in Sources */,
 				E01285641ADFF345007EA890 /* AppDelegate.swift in Sources */,
 				E01285921ADFF368007EA890 /* T2GScrollView.swift in Sources */,
