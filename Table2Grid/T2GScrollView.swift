@@ -1,6 +1,6 @@
 //
 //  T2GScrollView.swift
-//  Table2GridConcept
+//  Table2Grid Framework
 //
 //  Created by Michal Švácha on 14/04/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.

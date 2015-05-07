@@ -1,6 +1,6 @@
 //
 //  T2GTriangleView.swift
-//  TabSplitView
+//  Table2Grid Framework
 //
 //  Created by Michal Švácha on 05/05/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.

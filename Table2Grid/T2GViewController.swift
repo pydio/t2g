@@ -1,6 +1,6 @@
 //
 //  T2GViewController.swift
-//  Table2GridConcept
+//  Table2Grid Framework
 //
 //  Created by Michal Švácha on 25/03/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
