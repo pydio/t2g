@@ -498,7 +498,9 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             break
         }
         
-        (self.navigationController? as T2GNaviViewController).toggleBarMenu(true)
+        if let navCtr = self.navigationController as? T2GNaviViewController {
+            navCtr.toggleBarMenu(true)
+        }
     }
 }
 
