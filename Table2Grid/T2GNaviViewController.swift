@@ -49,7 +49,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :returns: The view controller that was popped from the stack.
     */
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
-        self.toggleBarMenu(true)
+        self.toggleBarMenu(forceClose: true)
         
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
@@ -73,7 +73,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
     override func pushViewController(viewController: UIViewController, animated: Bool) {
-        self.toggleBarMenu(true)
+        self.toggleBarMenu(forceClose: true)
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
@@ -112,7 +112,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     Proxy function of toggleBarMenu(forceClose) for UIBarButtonItem action call.
     */
     func toggleBarMenu() {
-        self.toggleBarMenu(false)
+        self.toggleBarMenu(forceClose: false)
     }
     
     /**
@@ -120,7 +120,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     
     :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
     */
-    func toggleBarMenu(forceClose: Bool) {
+    func toggleBarMenu(#forceClose: Bool) {
         let height: CGFloat = self.menuDelegate!.heightForMenu()
         
         let dismissClosure = { () -> Bool in
@@ -177,6 +177,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: sender UIButton from which the PathView controller will be shown.
     */
     func showPathPopover(sender: UIButton) {
+        self.toggleBarMenu(forceClose: true)
+        
         let pathViewController = T2GPathViewController()
         pathViewController.modalPresentationStyle = .Popover
         pathViewController.preferredContentSize = CGSizeMake(self.view.frame.width * 0.8, 256)
@@ -226,7 +228,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: index Index of the selected ViewController.
     */
     func didSelectViewController(index: Int) {
-        self.toggleBarMenu(true)
+        self.toggleBarMenu(forceClose: true)
         let vc = self.viewControllers[index] as UIViewController
         
         if let t2gVC = vc as? T2GViewController {
