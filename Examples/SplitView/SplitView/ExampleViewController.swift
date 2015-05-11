@@ -208,7 +208,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             newVC.title = "R: \(indexPath.row) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)"
             self.navigationController?.pushViewController(newVC, animated: true)
         } else {
-            self.tabBarController?.performSegueWithIdentifier("showDetail", sender: nil)
+            self.performSegueWithIdentifier("showDetail", sender: nil)
         }
     }
     
