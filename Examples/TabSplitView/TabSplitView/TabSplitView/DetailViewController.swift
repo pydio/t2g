@@ -42,11 +42,20 @@ class DetailViewController: UIViewController {
             navigationCtr.navigationBar.titleTextAttributes = [
                 NSForegroundColorAttributeName : UIColor.whiteColor()
             ]
+            
+            if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "closeBtnPressed")
+                self.navigationItem.leftBarButtonItem = closeButton
+            }
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func closeBtnPressed() {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
