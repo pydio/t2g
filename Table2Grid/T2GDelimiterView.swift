@@ -54,7 +54,7 @@ class T2GDelimiterView: UIView {
         let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
         let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))
         
-        let pointsPerPixel = dummyFont.pointSize / size.height
+        let pointsPerPixel = dummyFont.pointSize / adjustedSize.height
         return frame.size.height * pointsPerPixel
     }
 }
