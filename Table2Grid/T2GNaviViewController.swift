@@ -226,7 +226,21 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: index Index of the selected ViewController.
     */
     func didSelectViewController(index: Int) {
+        self.toggleBarMenu(true)
         let vc = self.viewControllers[index] as UIViewController
+        
+        if let t2gVC = vc as? T2GViewController {
+            if t2gVC.isHidingEnabled {
+                t2gVC.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+            }
+            
+            t2gVC.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            
+            if let mDelegate = t2gVC as? T2GNavigationBarMenuDelegate {
+                self.menuDelegate = mDelegate
+            }
+        }
+        
         self.popToViewController(vc, animated: true)
     }
 }
