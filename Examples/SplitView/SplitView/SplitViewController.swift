@@ -1,6 +1,6 @@
 //
 //  SplitViewController.swift
-//  SplitView
+//  SplitView - T2G Example
 //
 //  Created by Michal Švácha on 16/04/15.
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
