@@ -47,10 +47,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
             navCtr.navigationBar.tintColor = .whiteColor()
             
-            let text = "T2G Project folder"
+            if self.title == nil {
+                self.title = "Root"
+            }
+            
+            let text = self.title!
             let titleWidth = navCtr.navigationBar.frame.size.width * 0.57
             let titleView = T2GNavigationBarTitle(frame: CGRectMake(0.0, 0.0, titleWidth, 42.0), text: text, shouldHighlightText: true)
-            titleView.addTarget(self, action: "titleViewPressed", forControlEvents: UIControlEvents.TouchUpInside)
+            titleView.addTarget(self.navigationController, action: "showPathPopover:", forControlEvents: UIControlEvents.TouchUpInside)
             
             self.navigationItem.titleView = titleView
         }
@@ -58,12 +62,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         self.scrollView.refreshControl = UIRefreshControl()
         self.scrollView.refreshControl!.addTarget(self, action: "handlePullToRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.refreshControl!.tag = T2GViewTags.refreshControl
-    }
-    
-    /**
-    */
-    func titleViewPressed() {
-        println("Title pressed")
     }
     
     override func viewDidLayoutSubviews() {
@@ -207,12 +205,11 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         if indexPath.row%2 == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
+            newVC.title = "R: \(indexPath.row) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)"
             self.navigationController?.pushViewController(newVC, animated: true)
         } else {
-            self.performSegueWithIdentifier("showDetail", sender: nil)
+            self.tabBarController?.performSegueWithIdentifier("showDetail", sender: nil)
         }
-        
-        
     }
     
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
@@ -317,30 +314,14 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     //MARK: - T2GNavigationBarMenu delegate method
     
-    /**
-    ...
-    
-    :returns:
-    */
     func heightForMenu() -> CGFloat {
         return 48.0 * 2.0
     }
     
-    /**
-    ...
-    
-    :returns:
-    */
     func numberOfCells() -> Int {
         return 2
     }
-    
-    /**
-    ...
-    
-    :param: index
-    :returns:
-    */
+
     func viewForCell(index: Int, size: CGSize) -> UIView {
         let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
         let ivSize = size.height * 0.7
@@ -368,11 +349,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return view
     }
     
-    /**
-    ...
-    
-    :param: index
-    */
     func didSelectButton(index: Int) {
         switch(index) {
         case 0:
@@ -385,7 +361,8 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             break
         }
         
-        (self.navigationController? as T2GNaviViewController).toggleBarMenu(true)
+        if let navCtr = self.navigationController as? T2GNaviViewController {
+            navCtr.toggleBarMenu(forceClose: true)
+        }
     }
 }
-
