@@ -531,7 +531,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(true)
+            navCtr.toggleBarMenu(forceClose: true)
         }
         
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()

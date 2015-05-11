@@ -213,8 +213,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         } else {
             self.tabBarController?.performSegueWithIdentifier("showDetail", sender: nil)
         }
-        
-        
     }
     
     func willDeselectCellAtIndexPath(indexPath: NSIndexPath) -> NSIndexPath? {
@@ -377,7 +375,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(true)
+            navCtr.toggleBarMenu(forceClose: true)
         }
     }
 }

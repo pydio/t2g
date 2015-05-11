@@ -292,31 +292,15 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     }
     
     //MARK: - T2GNavigationBarMenu delegate method
-    
-    /**
-    ...
-    
-    :returns:
-    */
+
     func heightForMenu() -> CGFloat {
         return 48.0 * 2.0
     }
-    
-    /**
-    ...
-    
-    :returns:
-    */
+
     func numberOfCells() -> Int {
         return 2
     }
     
-    /**
-    ...
-    
-    :param: index
-    :returns:
-    */
     func viewForCell(index: Int, size: CGSize) -> UIView {
         let view = UIView(frame: CGRectMake(0.0, 0.0, size.width, size.height))
         let ivSize = size.height * 0.7
@@ -344,11 +328,6 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         return view
     }
     
-    /**
-    ...
-    
-    :param: index
-    */
     func didSelectButton(index: Int) {
         switch(index) {
         case 0:
@@ -362,7 +341,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(true)
+            navCtr.toggleBarMenu(forceClose: true)
         }
     }
 }
