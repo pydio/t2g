@@ -25,7 +25,7 @@ class T2GTriangleView: UIView {
     
     /// custom calculated property for layer
     var shapeLayer: CAShapeLayer! {
-        return self.layer as CAShapeLayer
+        return self.layer as! CAShapeLayer
     }
     
     /**
@@ -77,9 +77,9 @@ class T2GTriangleView: UIView {
             super.addAnimation(anim, forKey: key)
             
             if (anim.isKindOfClass(CABasicAnimation.self)) {
-                let basicAnimation = anim as CABasicAnimation
+                let basicAnimation = anim as! CABasicAnimation
                 if (basicAnimation.keyPath == "bounds.size") {
-                    var pathAnimation = basicAnimation.mutableCopy() as CABasicAnimation
+                    var pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
                     pathAnimation.keyPath = "path"
                     pathAnimation.fromValue = self.path
                     pathAnimation.toValue = self.shapeForBounds(self.bounds).CGPath

@@ -215,7 +215,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         path.append(["name" : "Server", "image" : ""])
         path.append(["name" : "Repository", "image" : ""])
         
-        for vc in (self.viewControllers as [UIViewController]) {
+        for vc in (self.viewControllers as! [UIViewController]) {
             path.append(["name" : vc.title!, "image" : ""])
         }
         
@@ -229,7 +229,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     */
     func didSelectViewController(index: Int) {
         self.toggleBarMenu(forceClose: true)
-        let vc = self.viewControllers[index] as UIViewController
+        let vc = self.viewControllers[index] as! UIViewController
         
         if let t2gVC = vc as? T2GViewController {
             if t2gVC.isHidingEnabled {

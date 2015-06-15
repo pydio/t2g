@@ -37,6 +37,10 @@ class T2GCellDrawerButton: T2GColoredButton {
         self.minSize = frame.size.width
         self.minOriginCoord = frame.origin
     }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     /**
     */

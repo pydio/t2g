@@ -84,7 +84,7 @@ class T2GNavigationBarTitle: T2GColoredButton {
             truncatedString = NSMutableString(string: "\(string.substringToIndex(truncatedString.length/2))...\(string.substringFromIndex(string.length - truncatedString.length/2))")
         }
         
-        return truncatedString
+        return truncatedString as String
     }
 
 }

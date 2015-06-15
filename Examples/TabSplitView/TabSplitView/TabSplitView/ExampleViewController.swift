@@ -207,7 +207,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
         if indexPath.row%2 == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
+            let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as! ExampleViewController
             newVC.title = "R: \(indexPath.row) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)"
             self.navigationController?.pushViewController(newVC, animated: true)
         } else {

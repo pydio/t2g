@@ -241,7 +241,7 @@ class T2GScrollView: UIScrollView {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
         
-        var tags = self.subviews.map({($0 as UIView).tag})
+        var tags = self.subviews.map({($0 as! UIView).tag})
         tags.sort(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
         
         for tag in tags {

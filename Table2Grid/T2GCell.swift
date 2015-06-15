@@ -331,7 +331,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let buttonFrame = CGRectMake(originX, originY, originSize, originSize)
         
         let button = T2GCheckboxButton(frame: buttonFrame)
-        button.isSelected = selected
+        button.wasSelected = selected
         button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         button.tag = T2GViewTags.checkboxButton
         
@@ -438,7 +438,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let frame = CGRectMake(x, y, size, size)
         
         let button = T2GCheckboxButton(frame: frame)
-        button.isSelected = selected
+        button.wasSelected = selected
         button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         button.tag = T2GViewTags.checkboxButton
         button.alpha = 0.0
@@ -458,8 +458,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :param: sender T2GCheckboxButton that has been pressed.
     */
     func multipleChoiceButtonPressed(sender: T2GCheckboxButton) {
-        sender.isSelected = !sender.isSelected
-        self.delegate?.didSelectMultipleChoiceButton(self.tag, selected: sender.isSelected)
+        sender.wasSelected = !sender.wasSelected
+        self.delegate?.didSelectMultipleChoiceButton(self.tag, selected: sender.wasSelected)
     }
     
     //MARK: - Helper methods

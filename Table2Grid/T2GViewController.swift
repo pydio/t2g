@@ -886,7 +886,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         if let win = self.findBiggestOverlappingView(view.tag, frame: view.frame) as? T2GCell {
             win.alpha = 1.0
             
-            self.dropDelegate?.didDropCell(view as T2GCell, onCell: win, completion: { () -> Void in
+            self.dropDelegate?.didDropCell(view as! T2GCell, onCell: win, completion: { () -> Void in
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                     let transform = CGAffineTransformMakeScale(1.07, 1.07)
                     win.transform = transform

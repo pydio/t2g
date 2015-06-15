@@ -84,8 +84,8 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        let from = find(tabBarController.viewControllers! as [UIViewController], fromVC)
-        let to = find(tabBarController.viewControllers! as [UIViewController], toVC)
+        let from = find(tabBarController.viewControllers! as! [UIViewController], fromVC)
+        let to = find(tabBarController.viewControllers! as! [UIViewController], toVC)
         var animatedTransitioningObject = T2GTabBarTransition(viewSize: fromVC.view.frame.size, isScrollingLeft: to > from)
         
         return animatedTransitioningObject
