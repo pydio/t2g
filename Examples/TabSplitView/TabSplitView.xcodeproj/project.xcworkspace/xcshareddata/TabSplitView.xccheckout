@@ -7,18 +7,18 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>AAEBF58C-3F09-48B4-9B1D-F5068680302E</string>
 	<key>IDESourceControlProjectName</key>
-	<string>TabSplitView</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>E5DC3647C60EBC32544D14FCF19EA647E3A02107</key>
 		<string>https://github.com/pydio/t2g.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Examples/TabSplitView/TabSplitView/TabSplitView.xcodeproj</string>
+	<string>Examples/TabSplitView/TabSplitView.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>E5DC3647C60EBC32544D14FCF19EA647E3A02107</key>
-		<string>../../../../..</string>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/pydio/t2g.git</string>
