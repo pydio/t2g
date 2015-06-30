@@ -535,33 +535,36 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
-        let from = (indicesExtremes.highest) + 1
-        var to = (indicesExtremes.highest) + 10
-        if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
-            for index in from...to {
-                self.insertRowWithTag(index)
-            }
-        }
         
-        UIView.animateWithDuration(0.8, animations: { () -> Void in
-            if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
-                let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
-                bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
-            }
-            
-            for view in self.scrollView.subviews {
-                if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
-                    cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
-                } else if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
-                    delimiter.frame = frame
+        if indicesExtremes.lowest != Int.max || indicesExtremes.highest != Int.min {
+            let from = (indicesExtremes.highest) + 1
+            var to = (indicesExtremes.highest) + 10
+            if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
+                for index in from...to {
+                    self.insertRowWithTag(index)
                 }
             }
             
-        }) { (_) -> Void in
-            self.scrollView.adjustContentSize()
-            self.scrollView.performSubviewCleanup()
+            UIView.animateWithDuration(0.8, animations: { () -> Void in
+                if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
+                    let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
+                    bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
+                }
+                
+                for view in self.scrollView.subviews {
+                    if let cell = view as? T2GCell {
+                        let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
+                        cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
+                    } else if let delimiter = view as? T2GDelimiterView {
+                        let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
+                        delimiter.frame = frame
+                    }
+                }
+                
+            }) { (_) -> Void in
+                self.scrollView.adjustContentSize()
+                self.scrollView.performSubviewCleanup()
+            }
         }
     }
     
@@ -611,7 +614,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Dynamically deletes and adds rows while scrolling.
     
-    - WARNING: Super must be called if hiding feature of T2GScrollController is desired.
+    - WARNING: Super must be called if hiding feature of T2GScrollController is desired. Fix has been done to handle rotation, not sure what it will do when scrolling fast.
     
     :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
     */
@@ -637,34 +640,39 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         let extremes = self.scrollView.firstAndLastVisibleTags()
-        let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
-        let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
-        let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant : self.scrollView.totalCellCount() + T2GViewTags.cellConstant - 1
         
-        let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
-        let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
-        
-        self.insertDelimiterForSection(self.scrollView.layoutMode, section: startingPointIndexPath.section)
-        self.insertDelimiterForSection(self.scrollView.layoutMode, section: endingPointIndexPath.section)
-        
-        if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
-            if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
-                cell.removeFromSuperview()
+        if extremes.lowest != Int.max || extremes.highest != Int.min {
+            let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
+            let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
+            let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant : self.scrollView.totalCellCount() + T2GViewTags.cellConstant - 1
+            
+            let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
+            let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
+            
+            self.insertDelimiterForSection(self.scrollView.layoutMode, section: startingPointIndexPath.section)
+            self.insertDelimiterForSection(self.scrollView.layoutMode, section: endingPointIndexPath.section)
+            
+            if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
+                if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
+                    cell.removeFromSuperview()
+                }
             }
-        }
-        
-        if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
-            if CGRectIntersectsRect(scrollView.bounds, edgeCell.frame) && startingPoint != edgeCondition {
-                let firstAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: startingPoint)
-                if (currentSpeed == .Fast || currentSpeed == .Normal) && firstAddedTag != edgeCondition {
-                    let secondAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: firstAddedTag)
-                    if (currentSpeed == .Fast) && secondAddedTag != edgeCondition {
-                        let thirdAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
-                        if (currentSpeed == .Fast || self.scrollView.layoutMode == .Collection) && thirdAddedTag != edgeCondition {
-                            let fourthAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
+            
+            if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
+                if CGRectIntersectsRect(scrollView.bounds, edgeCell.frame) && startingPoint != edgeCondition {
+                    let firstAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: startingPoint)
+                    if (currentSpeed == .Fast || currentSpeed == .Normal) && firstAddedTag != edgeCondition {
+                        let secondAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: firstAddedTag)
+                        if (currentSpeed == .Fast) && secondAddedTag != edgeCondition {
+                            let thirdAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
+                            if (currentSpeed == .Fast || self.scrollView.layoutMode == .Collection) && thirdAddedTag != edgeCondition {
+                                let fourthAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
+                            }
                         }
                     }
                 }
+            } else {
+                self.displayMissingCells()
             }
         } else {
             self.displayMissingCells()
