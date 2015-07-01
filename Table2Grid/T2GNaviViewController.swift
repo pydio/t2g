@@ -9,6 +9,52 @@
 import UIKit
 
 /**
+Protocol for path view controller setup - prependable content and icons for view controllers. Does not need to be implemented to fully function. Serves for esthetical reasons.
+*/
+protocol T2GNaviPathDelegate {
+    
+    /**
+    Gets called when path is being built to know how many items should be prepended.
+    
+    :returns: Number of items to be prepended.
+    */
+    func pathPrependableItemCount() -> Int
+    
+    /**
+    Gets called after the pathPrependableItemCount method in a for cycle from 0 to n to obtain attributes for all prependable items.
+    
+    - DISCUSSION: Could be made as returning optional, since Swift doesn't provide optional protocol methods. But then again, this method doesn't get called if the count is 0, so it can be implemented with a one-liner `{ return ("", "") }`
+    
+    :param: index Index of the prependable item.
+    :returns: Tuple with the name and the image name to use.
+    */
+    func pathPrependableItemAttributes(index: Int) -> (name: String, image: String)
+    
+    /**
+    Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
+    
+    :param: index Index of the prependable item.
+    :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
+    */
+    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
+    
+    /**
+    Gets called when path is being built to know what icon to use for the given view controller.
+    
+    :param: viewController UIViewController on the stack of viewControllers in UINavigationController.
+    :returns: Image asset name.
+    */
+    func pathImageForViewController(viewController: UIViewController) -> String
+    
+    /**
+    Gets called when prependable item on given index got selected.
+    
+    :param: index Index of the prepended item.
+    */
+    func didSelectPrependableIndex(index: Int)
+}
+
+/**
 Custom UINavigationController that enables slight delay between segues (for enter/exit animation) and that adds status bar background on top of the navigation bar (settable).
 */
 class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
@@ -16,6 +62,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
     var menuDelegate: T2GNavigationBarMenuDelegate?
+    var pathDelegate: T2GNaviPathDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -183,6 +230,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         pathViewController.modalPresentationStyle = .Popover
         pathViewController.preferredContentSize = CGSizeMake(self.view.frame.width * 0.8, 256)
         pathViewController.path = self.buildPath()
+        pathViewController.prependedItemCount = self.pathDelegate?.pathPrependableItemCount() ?? 0
         pathViewController.pathDelegate = self
         
         let popoverMenuViewController = pathViewController.popoverPresentationController
@@ -212,14 +260,39 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     func buildPath() -> [[String : String]] {
         var path = [[String : String]]()
         
-        path.append(["name" : "Server", "image" : ""])
-        path.append(["name" : "Repository", "image" : ""])
+        if let prependableCount = self.pathDelegate?.pathPrependableItemCount() {
+            for index in 0..<prependableCount {
+                let attributes = self.pathDelegate!.pathPrependableItemAttributes(index)
+                path.append(["name" : attributes.name, "image" : attributes.image])
+            }
+        }
         
         for vc in (self.viewControllers as! [UIViewController]) {
-            path.append(["name" : vc.title!, "image" : ""])
+            let image = self.pathDelegate?.pathImageForViewController(vc) ?? ""
+            path.append(["name" : vc.title!, "image" : image])
         }
         
         return path
+    }
+    
+    //MARK: T2GPathViewController delegate methods
+    
+    /**
+    Redirects to pathDelegate.
+    
+    :returns: Boolean flag indicating whether to pop or not - if pathDelegate is nil, returns false.
+    */
+    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool {
+        return self.pathDelegate?.shouldPopToRootWhenPrependedIndexIsSelected(index) ?? false
+    }
+    
+    /**
+    Redirects to pathDelegate.
+    
+    :param: index Index of the prepended item.
+    */
+    func didSelectPrependedIndex(index: Int) {
+        self.pathDelegate?.didSelectPrependableIndex(index)
     }
     
     /**

@@ -12,6 +12,22 @@ import UIKit
 Protocol to inform that selection has been made and delegate should act accordingly (e.g. pop to selected ViewController).
 */
 protocol T2GPathViewControllerDelegate {
+    
+    /**
+    Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
+    
+    :param: index Index of the prependable item.
+    :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
+    */
+    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
+    
+    /**
+    Gets called when prepended item gets selected.
+    
+    :index: Index of the prepended item.
+    */
+    func didSelectPrependedIndex(index: Int)
+    
     /**
     Gets called when a row has been selected.
     
@@ -26,6 +42,7 @@ Custom UITableView controller for showing popover with path to current VC in the
 class T2GPathViewController: UITableViewController {
     var path = [[String : String]]()
     var pathDelegate: T2GPathViewControllerDelegate?
+    var prependedItemCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +79,7 @@ class T2GPathViewController: UITableViewController {
         
         var text = self.path[indexPath.row]["name"]!
         if indexPath.row == self.path.count - 1 {
-            text = "> \(text)"
+            text = "▸ \(text)" // ▶ ▸
             cell.textLabel?.textColor = .lightGrayColor()
         } else {
             cell.textLabel?.textColor = .blackColor()
@@ -86,11 +103,17 @@ class T2GPathViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if indexPath.row != 0 || indexPath.row != 1 {
-            
-            let vcIndex = indexPath.row - 2
-            self.pathDelegate?.didSelectViewController(vcIndex)
-            
+        if let delegate = self.pathDelegate {
+            if indexPath.row > self.prependedItemCount - 1 {
+                let vcIndex = indexPath.row - self.prependedItemCount
+                delegate.didSelectViewController(vcIndex)
+            } else {
+                if delegate.shouldPopToRootWhenPrependedIndexIsSelected(indexPath.row) {
+                    delegate.didSelectViewController(0)
+                }
+                
+                delegate.didSelectPrependedIndex(indexPath.row)
+            }
         }
         
         self.dismissViewControllerAnimated(true, completion: nil)
