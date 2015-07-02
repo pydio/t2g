@@ -82,7 +82,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     var scrollView: UIScrollView?
     var backgroundView: UIView?
-    var imageView: UIView?
+    var imageView: UIImageView?
     var headerLabel: UILabel?
     var detailLabel: UILabel?
     
@@ -122,7 +122,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         backgroundViewButton.addTarget(self, action: "backgroundViewButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         self.backgroundView!.addSubview(backgroundViewButton)
         
-        
         // View must be added to hierarchy before setting constraints.
         backgroundViewButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         let views = ["background": self.backgroundView!, "button": backgroundViewButton]
@@ -137,25 +136,25 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.addSubview(self.backgroundView!)
         
         let imageFrame = CGRectMake(0, 0, 64 + 2, 64 + 2)
-        self.imageView = UIView(frame: imageFrame)
-        self.imageView!.backgroundColor = .blackColor()
+        self.imageView = UIImageView(frame: imageFrame)
+        self.imageView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
         self.backgroundView!.addSubview(self.imageView!)
         
         let labelDimensions = self.framesForLabels(frame)
         
         self.headerLabel = UILabel(frame: labelDimensions.header)
-        self.headerLabel!.backgroundColor = .blackColor()
+        self.headerLabel!.backgroundColor = .clearColor()//.blackColor()
         self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
-        self.headerLabel!.textColor = .whiteColor()
+        self.headerLabel!.textColor = .blackColor()//.whiteColor()
         self.headerLabel!.text = header
         self.backgroundView!.addSubview(self.headerLabel!)
         
         self.detailLabel = UILabel(frame: labelDimensions.detail)
-        self.detailLabel!.backgroundColor = .blackColor()
+        self.detailLabel!.backgroundColor = .clearColor()//.blackColor()
         self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         self.detailLabel!.font = UIFont.systemFontOfSize(11)
-        self.detailLabel!.textColor = .whiteColor()
+        self.detailLabel!.textColor = .blackColor()//.whiteColor()
         self.detailLabel!.text = detail
         self.backgroundView!.addSubview(self.detailLabel!)
         
