@@ -43,9 +43,17 @@ class T2GCellDrawerButton: T2GColoredButton {
     }
     
     /**
+    ...
+    
+    :param: image
     */
-    func setup() {
-        self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
+    func setup(image: UIImage?) {
+        if let img = image {
+            self.backgroundColor = .clearColor()
+            self.setBackgroundImage(img, forState: UIControlState.Normal)
+        } else {
+            self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
+        }
     }
     
     /**

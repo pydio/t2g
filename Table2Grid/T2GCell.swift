@@ -242,7 +242,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :param: count How many buttons should be added to the drawer.
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    func setupButtons(count: Int, mode: T2GLayoutMode) {
+    func setupButtons(images: [String], mode: T2GLayoutMode) {
+        let count = images.count
         self.buttonCount = count
         
         let coordinateData = self.coordinatesForButtons(count, mode: mode)
@@ -252,9 +253,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             let point = origins[index]
             let view = T2GCellDrawerButton(frame: point)
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
-            view.normalBackgroundColor = .blackColor()
+            //view.normalBackgroundColor = .blackColor()
             view.highlightedBackgroundColor = .lightGrayColor()
-            view.setup()
+            view.setup(UIImage(named: images[index]))
             view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)
             self.sendSubviewToBack(view)
