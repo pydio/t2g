@@ -43,20 +43,6 @@ class T2GCellDrawerButton: T2GColoredButton {
     }
     
     /**
-    ...
-    
-    :param: image
-    */
-    func setup(image: UIImage?) {
-        if let img = image {
-            self.backgroundColor = .clearColor()
-            self.setBackgroundImage(img, forState: UIControlState.Normal)
-        } else {
-            self.setTitle("\(self.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
-        }
-    }
-    
-    /**
     Resizes the button while scrollView is scrolling. Increases size while going left on the X axis and decreases while going right.
     
     :param: tailPosition The X coordinate of the tip of the tail of the T2GCell that is being scrolled.

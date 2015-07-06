@@ -239,7 +239,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     /**
     Sets up buttons in drawer.
     
-    :param: count How many buttons should be added to the drawer.
+    :param: images Array of images to be set as the buttons' backgrounds. Also used to inform how many buttons to set up.
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
     func setupButtons(images: [String], mode: T2GLayoutMode) {
@@ -255,7 +255,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
             //view.normalBackgroundColor = .blackColor()
             view.highlightedBackgroundColor = .lightGrayColor()
-            view.setup(UIImage(named: images[index]))
+            
+            if let img = UIImage(named: images[index]) {
+                view.backgroundColor = .clearColor()
+                view.setBackgroundImage(img, forState: UIControlState.Normal)
+            } else {
+                view.setTitle("\(view.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
+            }
+            
             view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)
             self.sendSubviewToBack(view)
