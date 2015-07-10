@@ -219,6 +219,19 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     }
     
     /**
+    Closes the cell at the given indexPath. Does nothing if the cell isn't visible anymore.
+    
+    :param: indexPath NSIndexPath of the given cell.
+    */
+    func closeCell(indexPath: NSIndexPath) {
+        let index = self.scrollView.indexForIndexPath(indexPath)
+        
+        if let cell = self.scrollView.viewWithTag(index + T2GViewTags.cellConstant) as? T2GCell {
+            cell.closeCell()
+        }
+    }
+    
+    /**
     Not implemented yet
     
     - DISCUSSION: This method probably shouldn't be here at all.
@@ -451,7 +464,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     Wrapper around transformViewWithCompletion for UIBarButton implementation.
     */
     func transformView() {
-        self.transformViewWithCompletion() {()->Void in}
+        self.transformViewWithCompletion() { ()->Void in }
     }
     
     /**
