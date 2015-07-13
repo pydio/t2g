@@ -343,19 +343,22 @@ class T2GScrollView: UIScrollView {
     :returns: CGSize object to be set as the scrollView's contentSize.
     */
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
-        let dimensions = self.dataDelegate!.dimensionsForCell(mode)
-        let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
-        let divisor = self.itemCountPerLine(mode)
+        var height: CGFloat = 0.0
         
-        var lineCount = 0
-        for section in 0..<self.dataDelegate!.numberOfSections() {
-            lineCount += (Int(ceil(Double((self.dataDelegate!.numberOfCellsInSection(section) - 1) / divisor))) + 1)
+        if let dimensions = self.dataDelegate?.dimensionsForCell(mode) {
+            let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
+            let divisor = self.itemCountPerLine(mode)
+            
+            var lineCount = 0
+            for section in 0..<self.dataDelegate!.numberOfSections() {
+                lineCount += (Int(ceil(Double((self.dataDelegate!.numberOfCellsInSection(section) - 1) / divisor))) + 1)
+            }
+            lineCount -= 1
+            
+            let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
+            height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
+            height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         }
-        lineCount -= 1
-
-        let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-        var height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
-        height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         
         return CGSize(width: self.superview!.frame.size.width, height: height)
     }
@@ -399,36 +402,37 @@ class T2GScrollView: UIScrollView {
     func indicesForVisibleCells(mode: T2GLayoutMode) -> [Int] {
         let frame = self.bounds
         var res = [Int]()
-        let dimensions = self.dataDelegate!.dimensionsForCell(mode)
         
-        if mode == .Collection {
-            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
-            if firstIndex < 0 {
-                firstIndex = 0
-            }
-            
-            var lastIndex = firstIndex + 2 * self.visibleCellCount(mode: .Collection)
-            if self.totalCellCount() - 1 < lastIndex {
-                lastIndex = self.totalCellCount() - 1
-            }
-            
-            for index in firstIndex...lastIndex {
-                res.append(index)
-            }
-        } else {
-            var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)))
-            if firstIndex < 0 {
-                firstIndex = 0
-            }
-            
-            var lastIndex = firstIndex + self.visibleCellCount(mode: .Table)
-            if self.totalCellCount() - 1 < lastIndex {
-                lastIndex = self.totalCellCount() - 1
-            }
-            
-            if lastIndex != -1 {
+        if let dimensions = self.dataDelegate?.dimensionsForCell(mode) {
+            if mode == .Collection {
+                var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding))) * self.itemCountPerLine(.Collection)
+                if firstIndex < 0 {
+                    firstIndex = 0
+                }
+                
+                var lastIndex = firstIndex + 2 * self.visibleCellCount(mode: .Collection)
+                if self.totalCellCount() - 1 < lastIndex {
+                    lastIndex = self.totalCellCount() - 1
+                }
+                
                 for index in firstIndex...lastIndex {
                     res.append(index)
+                }
+            } else {
+                var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)))
+                if firstIndex < 0 {
+                    firstIndex = 0
+                }
+                
+                var lastIndex = firstIndex + self.visibleCellCount(mode: .Table)
+                if self.totalCellCount() - 1 < lastIndex {
+                    lastIndex = self.totalCellCount() - 1
+                }
+                
+                if lastIndex != -1 {
+                    for index in firstIndex...lastIndex {
+                        res.append(index)
+                    }
                 }
             }
         }
