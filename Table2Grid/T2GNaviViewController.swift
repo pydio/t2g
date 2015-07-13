@@ -168,50 +168,50 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
     */
     func toggleBarMenu(#forceClose: Bool) {
-        let height: CGFloat = self.menuDelegate!.heightForMenu()
-        
-        let dismissClosure = { () -> Bool in
-            if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {
-                let triangle = self.view.viewWithTag(T2GViewTags.navigationBarTriangle)
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    triangle?.frame = CGRectMake(triangle!.frame.origin.x, triangle!.frame.origin.y, triangle!.frame.size.width, 0)
-                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height)
-                }, completion: { (_) -> Void in
-                    triangle?.removeFromSuperview()
-                    menu.removeFromSuperview()
-                })
-                return true
-            } else {
-                return false
+        if let height: CGFloat = self.menuDelegate?.heightForMenu() {
+            let dismissClosure = { () -> Bool in
+                if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {
+                    let triangle = self.view.viewWithTag(T2GViewTags.navigationBarTriangle)
+                    
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        triangle?.frame = CGRectMake(triangle!.frame.origin.x, triangle!.frame.origin.y, triangle!.frame.size.width, 0)
+                        menu.frame = CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height)
+                    }, completion: { (_) -> Void in
+                        triangle?.removeFromSuperview()
+                        menu.removeFromSuperview()
+                    })
+                    return true
+                } else {
+                    return false
+                }
             }
-        }
-        
-        if forceClose {
-            dismissClosure()
-        } else {
-            if !dismissClosure() {
-                let statusBarOffset: CGFloat = UIApplication.sharedApplication().statusBarHidden ? 0 : 20
-                
-                let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), delegate: self.menuDelegate)
-                menu.tag = T2GViewTags.navigationBarMenu
-                menu.backgroundColor = .whiteColor()
-                menu.layer.masksToBounds = false
-                menu.layer.shadowOffset = CGSizeMake(0, 6)
-                menu.layer.shadowRadius = 2.0
-                menu.layer.shadowOpacity = 0.45
-                self.view.insertSubview(menu, belowSubview: self.navigationBar)
-                
-                let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + statusBarOffset, 32.0, 0.0))
-                triangle.tag = T2GViewTags.navigationBarTriangle
-                triangle.backgroundColor = self.navigationBar.barTintColor
-                triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
-                self.view.insertSubview(triangle, aboveSubview: self.navigationBar)
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    menu.frame = CGRectMake(0, self.navigationBar.frame.size.height + statusBarOffset, self.navigationBar.frame.size.width, height)
-                    triangle.frame = CGRectMake(triangle.frame.origin.x, triangle.frame.origin.y, triangle.frame.size.width, 12.0)
-                })
+            
+            if forceClose {
+                dismissClosure()
+            } else {
+                if !dismissClosure() {
+                    let statusBarOffset: CGFloat = UIApplication.sharedApplication().statusBarHidden ? 0 : 20
+                    
+                    let menu = T2GNavigationBarMenu(frame: CGRectMake(0, self.navigationBar.frame.size.height - height, self.navigationBar.frame.size.width, height), delegate: self.menuDelegate)
+                    menu.tag = T2GViewTags.navigationBarMenu
+                    menu.backgroundColor = .whiteColor()
+                    menu.layer.masksToBounds = false
+                    menu.layer.shadowOffset = CGSizeMake(0, 6)
+                    menu.layer.shadowRadius = 2.0
+                    menu.layer.shadowOpacity = 0.45
+                    self.view.insertSubview(menu, belowSubview: self.navigationBar)
+                    
+                    let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + statusBarOffset, 32.0, 0.0))
+                    triangle.tag = T2GViewTags.navigationBarTriangle
+                    triangle.backgroundColor = self.navigationBar.barTintColor
+                    triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
+                    self.view.insertSubview(triangle, aboveSubview: self.navigationBar)
+                    
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        menu.frame = CGRectMake(0, self.navigationBar.frame.size.height + statusBarOffset, self.navigationBar.frame.size.width, height)
+                        triangle.frame = CGRectMake(triangle.frame.origin.x, triangle.frame.origin.y, triangle.frame.size.width, 12.0)
+                    })
+                }
             }
         }
     }
