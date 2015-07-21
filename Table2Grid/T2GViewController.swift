@@ -295,9 +295,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     */
     func insertDelimiterForSection(mode: T2GLayoutMode, section: Int) {
         if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
-            let name = self.delegate.titleForHeaderInSection(section)
+            let name = self.delegate.titleForHeaderInSection(section) ?? ""
             
-            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode: mode, section: section), title: name!)
+            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode: mode, section: section), title: name)
             delimiter.tag = section + 1
             
             self.scrollView.addSubview(delimiter)
