@@ -12,7 +12,7 @@ import UIKit
 Base class for checkbox in editing mode (can be overriden).
 */
 class T2GCheckboxButton: UIButton {
-    let strokeColor = UIColor(red: CGFloat(252.0/255.0), green: CGFloat(112.0/255.0), blue: CGFloat(87.0/255.0), alpha: 1.0)
+    let strokeColor = UIColor(named: .PYDOrange)
     var wasSelected: Bool = false {
         didSet {
             self.setNeedsDisplay()

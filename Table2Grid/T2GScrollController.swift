@@ -40,7 +40,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /// functionality is enabled by default
     var isHidingEnabled = true
     var statusBarBackgroundView: UIView?
-    var statusBarBackgroundViewColor = UIColor(red: CGFloat(252.0/255.0), green: CGFloat(112.0/255.0), blue: CGFloat(87.0/255.0), alpha: 1.0)
+    var statusBarBackgroundViewColor = UIColor(named: .PYDOrange)
     
     var lastScrollViewContentOffset: CGFloat = 0
     var scrollDirection: T2GScrollDirection = T2GScrollDirection()
