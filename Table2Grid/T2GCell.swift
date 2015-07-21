@@ -104,7 +104,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
-        self.backgroundColor = UIColor.grayColor()
+        self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
         
         self.scrollView = UIScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
         self.scrollView!.backgroundColor = .clearColor()
@@ -132,7 +132,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
         self.backgroundView!.addConstraints(constW)
         
-        self.backgroundView!.backgroundColor = .lightGrayColor()
+        self.backgroundView!.backgroundColor = .whiteColor()
         self.scrollView!.addSubview(self.backgroundView!)
         
         let imageFrame = CGRectMake(0, 0, 64 + 2, 64 + 2)
