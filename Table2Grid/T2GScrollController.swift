@@ -40,7 +40,6 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /// functionality is enabled by default
     var isHidingEnabled = true
     var statusBarBackgroundView: UIView?
-    var statusBarBackgroundViewColor = UIColor(named: .PYDOrange)
     
     var lastScrollViewContentOffset: CGFloat = 0
     var scrollDirection: T2GScrollDirection = T2GScrollDirection()
@@ -240,7 +239,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
         } else {
             var blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
             blackstripe2.tag = 5555
-            blackstripe2.backgroundColor = statusBarBackgroundViewColor
+            blackstripe2.backgroundColor = UIColor(named: .PYDOrange)
             blackstripe2.hidden = true
             navigationCtr.view.addSubview(blackstripe2)
             return blackstripe2
