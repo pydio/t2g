@@ -33,7 +33,14 @@ protocol T2GPathViewControllerDelegate {
     
     :param: index Selected row in the table view.
     */
-    func didSelectViewController(index: Int)
+    func didSelectViewController(index: Int, completion: (() -> Void)?)
+    
+    /**
+    Gets called when prepended index is selected and delegate does approve popping to root view controller. Returns optional closure to be performed when popping has ended.
+    
+    :returns: Optional closure.
+    */
+    func completionHandlerAfterRootViewControllerAppears() -> (() -> Void)?
 }
 
 /**
@@ -106,13 +113,13 @@ class T2GPathViewController: UITableViewController {
         if let delegate = self.pathDelegate {
             if indexPath.row > self.prependedItemCount - 1 {
                 let vcIndex = indexPath.row - self.prependedItemCount
-                delegate.didSelectViewController(vcIndex)
+                delegate.didSelectViewController(vcIndex, completion: nil)
             } else {
-                if delegate.shouldPopToRootWhenPrependedIndexIsSelected(indexPath.row) {
-                    delegate.didSelectViewController(0)
-                }
-                
                 delegate.didSelectPrependedIndex(indexPath.row)
+                
+                if delegate.shouldPopToRootWhenPrependedIndexIsSelected(indexPath.row) {
+                    delegate.didSelectViewController(0, completion: delegate.completionHandlerAfterRootViewControllerAppears())
+                }
             }
         }
         

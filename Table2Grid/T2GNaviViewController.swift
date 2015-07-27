@@ -9,6 +9,40 @@
 import UIKit
 
 /**
+Extension of UINavigationController to support completion handler when popped to view controller.
+*/
+extension UINavigationController {
+    
+    /**
+    Pops to given viewController in transaction and performs given closure when popping has ended.
+    
+    :param: vc View controller to be popped to.
+    :param: handler Optional handler to be performed after popping has ended.
+    */
+    func popToViewControllerWithHandler(vc: UIViewController, handler: (() -> Void)?) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(handler)
+        self.popToViewController(vc, animated: true)
+        CATransaction.commit()
+    }
+}
+
+/**
+Extension of UIViewController to obtain completion handler when popped to the view controller.
+*/
+extension UIViewController {
+    
+    /**
+    Returns completion closure to be performed.
+    
+    :returns: Optional closure.
+    */
+    func completionHandlerWhenAppeared() -> (() -> Void)? {
+        return nil
+    }
+}
+
+/**
 Protocol for path view controller setup - prependable content and icons for view controllers. Does not need to be implemented to fully function. Serves for esthetical reasons.
 */
 protocol T2GNaviPathDelegate {
@@ -300,7 +334,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     
     :param: index Index of the selected ViewController.
     */
-    func didSelectViewController(index: Int) {
+    func didSelectViewController(index: Int, completion: (() -> Void)?) {
         self.toggleBarMenu(forceClose: true)
         let vc = self.viewControllers[index] as! UIViewController
         
@@ -316,6 +350,19 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
             }
         }
         
-        self.popToViewController(vc, animated: true)
+        self.popToViewControllerWithHandler(vc, handler: completion)
+    }
+    
+    /**
+    Returns closure to be performed when root view controller appears.
+    
+    :returns: Optional closure.
+    */
+    func completionHandlerAfterRootViewControllerAppears() -> (() -> Void)? {
+        if let vc = self.viewControllers[0] as? UIViewController {
+            return vc.completionHandlerWhenAppeared()
+        }
+        
+        return nil
     }
 }
