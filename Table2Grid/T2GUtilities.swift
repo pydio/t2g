@@ -18,6 +18,7 @@ extension UIColor {
     */
     enum Name: UInt32 {
         case PYDOrange = 0xfc7057ff
+        case PYDLightGray = 0xeaeaeaff
         case PYDTransparentBlack = 0x00000088
     }
     
