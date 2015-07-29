@@ -32,7 +32,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             self.statusBarBackgroundView = navCtr.addStatusBarBackgroundView()
             
             navCtr.menuDelegate = self
-            navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
+            navCtr.navigationBar.barTintColor = UIColor(named: .PYDOrange)
             navCtr.navigationBar.tintColor = .whiteColor()
             
             if self.title == nil {
@@ -96,28 +96,35 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell {
         var view: T2GCell?
+        
+        var buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)] = []
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        
         switch(indexPath.section) {
         case 0:
             view = T2GCell(header: "R: \(self.modelArray[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)", detail: "\(indexPath)", frame: frame, mode: self.scrollView.layoutMode)
-            view!.setupButtons(indexPath.row%5, mode: self.scrollView.layoutMode)
+            view!.setupButtons(buttonsInfo, mode: self.scrollView.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
         case 1:
             view = T2GCell(header: "R: \(self.modelArray2[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)", detail: "\(indexPath)", frame: frame, mode: self.scrollView.layoutMode)
-            view!.setupButtons(indexPath.row%5, mode: self.scrollView.layoutMode)
+            view!.setupButtons(buttonsInfo, mode: self.scrollView.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
         case 2:
             view = T2GCell(header: "R: \(self.modelArray3[indexPath.row]) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)", detail: "\(indexPath)", frame: frame, mode: self.scrollView.layoutMode)
-            view!.setupButtons(indexPath.row%5, mode: self.scrollView.layoutMode)
+            view!.setupButtons(buttonsInfo, mode: self.scrollView.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
         default:
             view = T2GCell(header: "", detail: "\(indexPath)", frame: frame, mode: self.scrollView.layoutMode)
-            view!.setupButtons(indexPath.row%5, mode: self.scrollView.layoutMode)
+            view!.setupButtons(buttonsInfo, mode: self.scrollView.layoutMode)
             view!.draggable = true
             view!.draggableDelegate = self
             break
@@ -197,7 +204,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     
     func didSelectCellAtIndexPath(indexPath: NSIndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        let newVC: ExampleViewController = storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as ExampleViewController
+        let newVC: ExampleViewController = (storyboard.instantiateViewControllerWithIdentifier("ExampleVC") as! ExampleViewController)
         newVC.title = "R: \(indexPath.row) | S: \(indexPath.section) | T: \(self.scrollView.indexForIndexPath(indexPath) + T2GViewTags.cellConstant)"
         self.navigationController?.pushViewController(newVC, animated: true)
     }
