@@ -108,10 +108,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         var view: T2GCell?
         
         var buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)] = []
-        buttonsInfo.append(normalImage: "cell_delete", selectedImage: "cell_delete_active", optionalText: nil)
-        buttonsInfo.append(normalImage: "cell_bookmark", selectedImage: "cell_bookmark_active", optionalText: nil)
-        buttonsInfo.append(normalImage: "cell_share", selectedImage: "cell_share_active", optionalText: nil)
-        buttonsInfo.append(normalImage: "cell_more", selectedImage: "cell_more_active", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
         
         switch(indexPath.section) {
         case 0:
