@@ -80,7 +80,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
-    var scrollView: UIScrollView?
+    var scrollView: T2GCellDrawerScrollView?
     var backgroundView: UIView?
     var imageView: UIImageView?
     var headerLabel: UILabel?
@@ -106,12 +106,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.2)
         
-        self.scrollView = UIScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
+        self.scrollView = T2GCellDrawerScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
         self.scrollView!.backgroundColor = .clearColor()
         self.scrollView!.showsHorizontalScrollIndicator = false
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
-        self.scrollView!.canCancelContentTouches = true
+        
+        self.scrollView!.delaysContentTouches = false
+        //self.scrollView!.canCancelContentTouches = true
         
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
         
@@ -242,8 +244,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :param: images Array of images to be set as the buttons' backgrounds. Also used to inform how many buttons to set up.
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    func setupButtons(images: [String], mode: T2GLayoutMode) {
-        let count = images.count
+    func setupButtons(buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)], mode: T2GLayoutMode) {
+        let count = buttonsInfo.count
         self.buttonCount = count
         
         let coordinateData = self.coordinatesForButtons(count, mode: mode)
@@ -253,14 +255,24 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             let point = origins[index]
             let view = T2GCellDrawerButton(frame: point)
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
-            //view.normalBackgroundColor = .blackColor()
-            view.highlightedBackgroundColor = .lightGrayColor()
             
-            if let img = UIImage(named: images[index]) {
+            if let img = UIImage(named: buttonsInfo[index].normalImage) {
                 view.backgroundColor = .clearColor()
                 view.setBackgroundImage(img, forState: UIControlState.Normal)
+                
+                if let img2 = UIImage(named: buttonsInfo[index].selectedImage) {
+                    view.setBackgroundImage(img2, forState: UIControlState.Selected)
+                    view.setBackgroundImage(img2, forState: UIControlState.Highlighted)
+                }
             } else {
-                view.setTitle("\(view.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
+                view.normalBackgroundColor = .blackColor()
+                view.highlightedBackgroundColor = .lightGrayColor()
+                
+                if let title = buttonsInfo[index].optionalText {
+                    view.setTitle(title, forState: UIControlState.Normal)
+                } else {
+                    view.setTitle("\(view.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
+                }
             }
             
             view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
