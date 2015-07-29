@@ -14,25 +14,27 @@
 		E05B61471AF26E5700B1268F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E05B61461AF26E5700B1268F /* Images.xcassets */; };
 		E05B614A1AF26E5700B1268F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E05B61481AF26E5700B1268F /* LaunchScreen.xib */; };
 		E05B61561AF26E5700B1268F /* TabSplitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61551AF26E5700B1268F /* TabSplitViewTests.swift */; };
-		E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61601AF26E8000B1268F /* T2GCell.swift */; };
-		E05B616C1AF26E8000B1268F /* T2GCellDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */; };
-		E05B616D1AF26E8000B1268F /* T2GCheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */; };
-		E05B616E1AF26E8000B1268F /* T2GColoredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61631AF26E8000B1268F /* T2GColoredButton.swift */; };
-		E05B616F1AF26E8000B1268F /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61641AF26E8000B1268F /* T2GConstants.swift */; };
-		E05B61701AF26E8000B1268F /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */; };
-		E05B61711AF26E8000B1268F /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */; };
-		E05B61721AF26E8000B1268F /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */; };
-		E05B61731AF26E8000B1268F /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61681AF26E8000B1268F /* T2GScrollController.swift */; };
-		E05B61741AF26E8000B1268F /* T2GScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61691AF26E8000B1268F /* T2GScrollView.swift */; };
-		E05B61751AF26E8000B1268F /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B616A1AF26E8000B1268F /* T2GViewController.swift */; };
-		E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */; };
 		E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B61781AF271DD00B1268F /* ExampleViewController.swift */; };
-		E05B617F1AF2889A00B1268F /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */; };
-		E064854A1AF8F1150024C9FB /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06485491AF8F1150024C9FB /* T2GTriangleView.swift */; };
 		E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E691AF77DFA00D7829F /* SplitViewController.swift */; };
-		E08D0E6E1AF7CEC600D7829F /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */; };
-		E0A26DE21AFB835800D9BAAC /* T2GPathViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A26DE11AFB835800D9BAAC /* T2GPathViewController.swift */; };
-		E0F557591AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */; };
+		E0C6ACF61B6938A50000F4CC /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE31B6938A50000F4CC /* T2GCell.swift */; };
+		E0C6ACF71B6938A50000F4CC /* T2GCellDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE41B6938A50000F4CC /* T2GCellDrawerButton.swift */; };
+		E0C6ACF81B6938A50000F4CC /* T2GCellDrawerScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE51B6938A50000F4CC /* T2GCellDrawerScrollView.swift */; };
+		E0C6ACF91B6938A50000F4CC /* T2GCheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE61B6938A50000F4CC /* T2GCheckboxButton.swift */; };
+		E0C6ACFA1B6938A50000F4CC /* T2GColoredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE71B6938A50000F4CC /* T2GColoredButton.swift */; };
+		E0C6ACFB1B6938A50000F4CC /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE81B6938A50000F4CC /* T2GConstants.swift */; };
+		E0C6ACFC1B6938A50000F4CC /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACE91B6938A50000F4CC /* T2GDelimiterView.swift */; };
+		E0C6ACFD1B6938A50000F4CC /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACEA1B6938A50000F4CC /* T2GDragAndDropView.swift */; };
+		E0C6ACFE1B6938A50000F4CC /* T2GNavigationBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACEB1B6938A50000F4CC /* T2GNavigationBarMenu.swift */; };
+		E0C6ACFF1B6938A50000F4CC /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACEC1B6938A50000F4CC /* T2GNavigationBarTitle.swift */; };
+		E0C6AD001B6938A50000F4CC /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACED1B6938A50000F4CC /* T2GNaviViewController.swift */; };
+		E0C6AD011B6938A50000F4CC /* T2GPathViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACEE1B6938A50000F4CC /* T2GPathViewController.swift */; };
+		E0C6AD021B6938A50000F4CC /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACEF1B6938A50000F4CC /* T2GScrollController.swift */; };
+		E0C6AD031B6938A50000F4CC /* T2GScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF01B6938A50000F4CC /* T2GScrollView.swift */; };
+		E0C6AD041B6938A50000F4CC /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF11B6938A50000F4CC /* T2GTabBarTransition.swift */; };
+		E0C6AD051B6938A50000F4CC /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF21B6938A50000F4CC /* T2GTabBarViewController.swift */; };
+		E0C6AD061B6938A50000F4CC /* T2GTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF31B6938A50000F4CC /* T2GTriangleView.swift */; };
+		E0C6AD071B6938A50000F4CC /* T2GUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF41B6938A50000F4CC /* T2GUtilities.swift */; };
+		E0C6AD081B6938A50000F4CC /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ACF51B6938A50000F4CC /* T2GViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,25 +59,27 @@
 		E05B614F1AF26E5700B1268F /* TabSplitViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabSplitViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E05B61541AF26E5700B1268F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E05B61551AF26E5700B1268F /* TabSplitViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSplitViewTests.swift; sourceTree = "<group>"; };
-		E05B61601AF26E8000B1268F /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCell.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GCell.swift; sourceTree = "<absolute>"; };
-		E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCellDrawerButton.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GCellDrawerButton.swift; sourceTree = "<absolute>"; };
-		E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GCheckboxButton.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GCheckboxButton.swift; sourceTree = "<absolute>"; };
-		E05B61631AF26E8000B1268F /* T2GColoredButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GColoredButton.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GColoredButton.swift; sourceTree = "<absolute>"; };
-		E05B61641AF26E8000B1268F /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GConstants.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GConstants.swift; sourceTree = "<absolute>"; };
-		E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDelimiterView.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GDelimiterView.swift; sourceTree = "<absolute>"; };
-		E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GDragAndDropView.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GDragAndDropView.swift; sourceTree = "<absolute>"; };
-		E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNaviViewController.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GNaviViewController.swift; sourceTree = "<absolute>"; };
-		E05B61681AF26E8000B1268F /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GScrollController.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GScrollController.swift; sourceTree = "<absolute>"; };
-		E05B61691AF26E8000B1268F /* T2GScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GScrollView.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GScrollView.swift; sourceTree = "<absolute>"; };
-		E05B616A1AF26E8000B1268F /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GViewController.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GViewController.swift; sourceTree = "<absolute>"; };
-		E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarViewController.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GTabBarViewController.swift; sourceTree = "<absolute>"; };
 		E05B61781AF271DD00B1268F /* ExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
-		E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTabBarTransition.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GTabBarTransition.swift; sourceTree = "<absolute>"; };
-		E06485491AF8F1150024C9FB /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GTriangleView.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GTriangleView.swift; sourceTree = "<absolute>"; };
 		E08D0E691AF77DFA00D7829F /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
-		E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarMenu.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GNavigationBarMenu.swift; sourceTree = "<absolute>"; };
-		E0A26DE11AFB835800D9BAAC /* T2GPathViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GPathViewController.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GPathViewController.swift; sourceTree = "<absolute>"; };
-		E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = T2GNavigationBarTitle.swift; path = /Users/michalsvacha/Documents/xcode_dev/Table2GridConcept/Table2Grid/T2GNavigationBarTitle.swift; sourceTree = "<absolute>"; };
+		E0C6ACE31B6938A50000F4CC /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCell.swift; sourceTree = "<group>"; };
+		E0C6ACE41B6938A50000F4CC /* T2GCellDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellDrawerButton.swift; sourceTree = "<group>"; };
+		E0C6ACE51B6938A50000F4CC /* T2GCellDrawerScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellDrawerScrollView.swift; sourceTree = "<group>"; };
+		E0C6ACE61B6938A50000F4CC /* T2GCheckboxButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCheckboxButton.swift; sourceTree = "<group>"; };
+		E0C6ACE71B6938A50000F4CC /* T2GColoredButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GColoredButton.swift; sourceTree = "<group>"; };
+		E0C6ACE81B6938A50000F4CC /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GConstants.swift; sourceTree = "<group>"; };
+		E0C6ACE91B6938A50000F4CC /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDelimiterView.swift; sourceTree = "<group>"; };
+		E0C6ACEA1B6938A50000F4CC /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDragAndDropView.swift; sourceTree = "<group>"; };
+		E0C6ACEB1B6938A50000F4CC /* T2GNavigationBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarMenu.swift; sourceTree = "<group>"; };
+		E0C6ACEC1B6938A50000F4CC /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarTitle.swift; sourceTree = "<group>"; };
+		E0C6ACED1B6938A50000F4CC /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNaviViewController.swift; sourceTree = "<group>"; };
+		E0C6ACEE1B6938A50000F4CC /* T2GPathViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GPathViewController.swift; sourceTree = "<group>"; };
+		E0C6ACEF1B6938A50000F4CC /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollController.swift; sourceTree = "<group>"; };
+		E0C6ACF01B6938A50000F4CC /* T2GScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollView.swift; sourceTree = "<group>"; };
+		E0C6ACF11B6938A50000F4CC /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarTransition.swift; sourceTree = "<group>"; };
+		E0C6ACF21B6938A50000F4CC /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
+		E0C6ACF31B6938A50000F4CC /* T2GTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTriangleView.swift; sourceTree = "<group>"; };
+		E0C6ACF41B6938A50000F4CC /* T2GUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GUtilities.swift; sourceTree = "<group>"; };
+		E0C6ACF51B6938A50000F4CC /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +121,7 @@
 		E05B613A1AF26E5700B1268F /* TabSplitView */ = {
 			isa = PBXGroup;
 			children = (
-				E05B615F1AF26E8000B1268F /* Table2Grid */,
+				E0C6ACE21B6938A50000F4CC /* Table2Grid */,
 				E05B613D1AF26E5700B1268F /* AppDelegate.swift */,
 				E08D0E691AF77DFA00D7829F /* SplitViewController.swift */,
 				E05B613F1AF26E5700B1268F /* MasterViewController.swift */,
@@ -156,29 +160,31 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E05B615F1AF26E8000B1268F /* Table2Grid */ = {
+		E0C6ACE21B6938A50000F4CC /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
-				E05B61601AF26E8000B1268F /* T2GCell.swift */,
-				E05B61611AF26E8000B1268F /* T2GCellDrawerButton.swift */,
-				E05B61621AF26E8000B1268F /* T2GCheckboxButton.swift */,
-				E05B61631AF26E8000B1268F /* T2GColoredButton.swift */,
-				E05B61641AF26E8000B1268F /* T2GConstants.swift */,
-				E05B61651AF26E8000B1268F /* T2GDelimiterView.swift */,
-				E05B61661AF26E8000B1268F /* T2GDragAndDropView.swift */,
-				E05B61671AF26E8000B1268F /* T2GNaviViewController.swift */,
-				E0F557581AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift */,
-				E08D0E6D1AF7CEC600D7829F /* T2GNavigationBarMenu.swift */,
-				E0A26DE11AFB835800D9BAAC /* T2GPathViewController.swift */,
-				E06485491AF8F1150024C9FB /* T2GTriangleView.swift */,
-				E05B61761AF270B400B1268F /* T2GTabBarViewController.swift */,
-				E05B617E1AF2889A00B1268F /* T2GTabBarTransition.swift */,
-				E05B61681AF26E8000B1268F /* T2GScrollController.swift */,
-				E05B61691AF26E8000B1268F /* T2GScrollView.swift */,
-				E05B616A1AF26E8000B1268F /* T2GViewController.swift */,
+				E0C6ACE31B6938A50000F4CC /* T2GCell.swift */,
+				E0C6ACE41B6938A50000F4CC /* T2GCellDrawerButton.swift */,
+				E0C6ACE51B6938A50000F4CC /* T2GCellDrawerScrollView.swift */,
+				E0C6ACE61B6938A50000F4CC /* T2GCheckboxButton.swift */,
+				E0C6ACE71B6938A50000F4CC /* T2GColoredButton.swift */,
+				E0C6ACE81B6938A50000F4CC /* T2GConstants.swift */,
+				E0C6ACE91B6938A50000F4CC /* T2GDelimiterView.swift */,
+				E0C6ACEA1B6938A50000F4CC /* T2GDragAndDropView.swift */,
+				E0C6ACEB1B6938A50000F4CC /* T2GNavigationBarMenu.swift */,
+				E0C6ACEC1B6938A50000F4CC /* T2GNavigationBarTitle.swift */,
+				E0C6ACED1B6938A50000F4CC /* T2GNaviViewController.swift */,
+				E0C6ACEE1B6938A50000F4CC /* T2GPathViewController.swift */,
+				E0C6ACEF1B6938A50000F4CC /* T2GScrollController.swift */,
+				E0C6ACF01B6938A50000F4CC /* T2GScrollView.swift */,
+				E0C6ACF11B6938A50000F4CC /* T2GTabBarTransition.swift */,
+				E0C6ACF21B6938A50000F4CC /* T2GTabBarViewController.swift */,
+				E0C6ACF31B6938A50000F4CC /* T2GTriangleView.swift */,
+				E0C6ACF41B6938A50000F4CC /* T2GUtilities.swift */,
+				E0C6ACF51B6938A50000F4CC /* T2GViewController.swift */,
 			);
 			name = Table2Grid;
-			path = ../../../../Table2Grid;
+			path = ../../../Table2Grid;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,28 +287,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E05B61731AF26E8000B1268F /* T2GScrollController.swift in Sources */,
+				E0C6AD001B6938A50000F4CC /* T2GNaviViewController.swift in Sources */,
 				E05B61791AF271DD00B1268F /* ExampleViewController.swift in Sources */,
-				E05B61721AF26E8000B1268F /* T2GNaviViewController.swift in Sources */,
+				E0C6AD061B6938A50000F4CC /* T2GTriangleView.swift in Sources */,
+				E0C6ACFD1B6938A50000F4CC /* T2GDragAndDropView.swift in Sources */,
+				E0C6ACF91B6938A50000F4CC /* T2GCheckboxButton.swift in Sources */,
+				E0C6AD071B6938A50000F4CC /* T2GUtilities.swift in Sources */,
+				E0C6ACFB1B6938A50000F4CC /* T2GConstants.swift in Sources */,
 				E05B61421AF26E5700B1268F /* DetailViewController.swift in Sources */,
-				E08D0E6E1AF7CEC600D7829F /* T2GNavigationBarMenu.swift in Sources */,
-				E0A26DE21AFB835800D9BAAC /* T2GPathViewController.swift in Sources */,
-				E05B616E1AF26E8000B1268F /* T2GColoredButton.swift in Sources */,
+				E0C6AD021B6938A50000F4CC /* T2GScrollController.swift in Sources */,
+				E0C6ACF71B6938A50000F4CC /* T2GCellDrawerButton.swift in Sources */,
+				E0C6AD031B6938A50000F4CC /* T2GScrollView.swift in Sources */,
 				E08D0E6A1AF77DFA00D7829F /* SplitViewController.swift in Sources */,
-				E05B616B1AF26E8000B1268F /* T2GCell.swift in Sources */,
-				E05B61771AF270B400B1268F /* T2GTabBarViewController.swift in Sources */,
+				E0C6ACF81B6938A50000F4CC /* T2GCellDrawerScrollView.swift in Sources */,
+				E0C6AD051B6938A50000F4CC /* T2GTabBarViewController.swift in Sources */,
 				E05B61401AF26E5700B1268F /* MasterViewController.swift in Sources */,
-				E064854A1AF8F1150024C9FB /* T2GTriangleView.swift in Sources */,
-				E05B616C1AF26E8000B1268F /* T2GCellDrawerButton.swift in Sources */,
-				E05B61741AF26E8000B1268F /* T2GScrollView.swift in Sources */,
-				E05B617F1AF2889A00B1268F /* T2GTabBarTransition.swift in Sources */,
-				E05B61701AF26E8000B1268F /* T2GDelimiterView.swift in Sources */,
-				E05B616D1AF26E8000B1268F /* T2GCheckboxButton.swift in Sources */,
-				E05B61711AF26E8000B1268F /* T2GDragAndDropView.swift in Sources */,
+				E0C6AD041B6938A50000F4CC /* T2GTabBarTransition.swift in Sources */,
+				E0C6ACFF1B6938A50000F4CC /* T2GNavigationBarTitle.swift in Sources */,
+				E0C6ACFC1B6938A50000F4CC /* T2GDelimiterView.swift in Sources */,
 				E05B613E1AF26E5700B1268F /* AppDelegate.swift in Sources */,
-				E0F557591AFA1A9200BB7FDA /* T2GNavigationBarTitle.swift in Sources */,
-				E05B61751AF26E8000B1268F /* T2GViewController.swift in Sources */,
-				E05B616F1AF26E8000B1268F /* T2GConstants.swift in Sources */,
+				E0C6ACFA1B6938A50000F4CC /* T2GColoredButton.swift in Sources */,
+				E0C6ACFE1B6938A50000F4CC /* T2GNavigationBarMenu.swift in Sources */,
+				E0C6ACF61B6938A50000F4CC /* T2GCell.swift in Sources */,
+				E0C6AD081B6938A50000F4CC /* T2GViewController.swift in Sources */,
+				E0C6AD011B6938A50000F4CC /* T2GPathViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

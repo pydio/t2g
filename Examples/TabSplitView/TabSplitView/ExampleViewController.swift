@@ -47,7 +47,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
             navCtr.menuDelegate = self
-            navCtr.navigationBar.barTintColor = self.statusBarBackgroundViewColor
+            navCtr.navigationBar.barTintColor = UIColor(named: .PYDOrange)
             navCtr.navigationBar.tintColor = .whiteColor()
             
             if self.title == nil {
