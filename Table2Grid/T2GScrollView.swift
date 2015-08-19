@@ -70,6 +70,19 @@ class T2GScrollView: UIScrollView {
     var layoutMode: T2GLayoutMode = T2GLayoutMode()
     
     /**
+    Helps not to delay the touchUpInside event on a UIButton that could possibly be a subview.
+    
+    - DISCUSSION: referenced from: http://stackoverflow.com/questions/3642547/uibutton-touch-is-delayed-when-in-uiscrollview
+    */
+    override func touchesShouldCancelInContentView(view: UIView!) -> Bool {
+        if view is T2GCell {
+            return true
+        }
+        
+        return  super.touchesShouldCancelInContentView(view)
+    }
+    
+    /**
     Returns the number of cells per line in given mode.
     
     :param: mode T2GLayoutMode for which the line cell count should be calculated.
