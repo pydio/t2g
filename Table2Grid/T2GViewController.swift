@@ -150,7 +150,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         self.scrollView = T2GScrollView()
-        self.scrollView.delaysContentTouches = false
+        //self.scrollView.delaysContentTouches = false
         self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
         self.view.addSubview(scrollView)
         

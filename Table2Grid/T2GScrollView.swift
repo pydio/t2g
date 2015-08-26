@@ -73,7 +73,7 @@ class T2GScrollView: UIScrollView {
     Helps not to delay the touchUpInside event on a UIButton that could possibly be a subview.
     
     - DISCUSSION: referenced from: http://stackoverflow.com/questions/3642547/uibutton-touch-is-delayed-when-in-uiscrollview
-    */
+
     override func touchesShouldCancelInContentView(view: UIView!) -> Bool {
         if view is T2GCell {
             return true
@@ -81,6 +81,7 @@ class T2GScrollView: UIScrollView {
         
         return  super.touchesShouldCancelInContentView(view)
     }
+    */
     
     /**
     Returns the number of cells per line in given mode.
