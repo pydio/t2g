@@ -163,12 +163,13 @@
 		E0C6ACE21B6938A50000F4CC /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
+				E0C6ACF41B6938A50000F4CC /* T2GUtilities.swift */,
+				E0C6ACE81B6938A50000F4CC /* T2GConstants.swift */,
 				E0C6ACE31B6938A50000F4CC /* T2GCell.swift */,
-				E0C6ACE41B6938A50000F4CC /* T2GCellDrawerButton.swift */,
 				E0C6ACE51B6938A50000F4CC /* T2GCellDrawerScrollView.swift */,
+				E0C6ACE41B6938A50000F4CC /* T2GCellDrawerButton.swift */,
 				E0C6ACE61B6938A50000F4CC /* T2GCheckboxButton.swift */,
 				E0C6ACE71B6938A50000F4CC /* T2GColoredButton.swift */,
-				E0C6ACE81B6938A50000F4CC /* T2GConstants.swift */,
 				E0C6ACE91B6938A50000F4CC /* T2GDelimiterView.swift */,
 				E0C6ACEA1B6938A50000F4CC /* T2GDragAndDropView.swift */,
 				E0C6ACEB1B6938A50000F4CC /* T2GNavigationBarMenu.swift */,
@@ -180,7 +181,6 @@
 				E0C6ACF11B6938A50000F4CC /* T2GTabBarTransition.swift */,
 				E0C6ACF21B6938A50000F4CC /* T2GTabBarViewController.swift */,
 				E0C6ACF31B6938A50000F4CC /* T2GTriangleView.swift */,
-				E0C6ACF41B6938A50000F4CC /* T2GUtilities.swift */,
 				E0C6ACF51B6938A50000F4CC /* T2GViewController.swift */,
 			);
 			name = Table2Grid;
