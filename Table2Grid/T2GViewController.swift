@@ -143,10 +143,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let navigationCtr = self.navigationController {
-            if let naviCtr = navigationCtr as? T2GNaviViewController {
-                naviCtr.segueDelay = 0.16
-            }
+        if let navigationCtr = self.navigationController as? T2GNaviViewController {
+            navigationCtr.segueDelay = 0.16
         }
         
         self.scrollView = T2GScrollView()
@@ -666,10 +664,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             self.insertDelimiterForSection(self.scrollView.layoutMode, section: startingPointIndexPath.section)
             self.insertDelimiterForSection(self.scrollView.layoutMode, section: endingPointIndexPath.section)
             
-            if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell {
-                if !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
-                    cell.removeFromSuperview()
-                }
+            if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell where !CGRectIntersectsRect(scrollView.bounds, cell.frame) {
+                cell.removeFromSuperview()
             }
             
             if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
@@ -826,24 +822,22 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         var winningRect: CGRect = CGRectMake(0, 0, 0, 0)
         
         for view in self.scrollView.subviews {
-            if let c = view as? T2GCell {
-                if c.tag != excludedTag {
-                    if CGRectIntersectsRect(frame, c.frame) {
-                        if winningView == nil {
+            if let c = view as? T2GCell where c.tag != excludedTag {
+                if CGRectIntersectsRect(frame, c.frame) {
+                    if winningView == nil {
+                        winningView = c
+                        winningRect = winningView!.frame
+                    } else {
+                        if (c.frame.size.height * c.frame.size.width) > (winningRect.size.height * winningRect.size.width) {
+                            winningView!.alpha = 1.0
                             winningView = c
                             winningRect = winningView!.frame
                         } else {
-                            if (c.frame.size.height * c.frame.size.width) > (winningRect.size.height * winningRect.size.width) {
-                                winningView!.alpha = 1.0
-                                winningView = c
-                                winningRect = winningView!.frame
-                            } else {
-                                c.alpha = 1.0
-                            }
+                            c.alpha = 1.0
                         }
-                    } else {
-                        c.alpha = 1.0
                     }
+                } else {
+                    c.alpha = 1.0
                 }
             }
         }

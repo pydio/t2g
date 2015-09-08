@@ -227,11 +227,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
             if mode == .Table {
                 for v in self.subviews {
-                    if let v2 = v as? UIView {
-                        if v2.tag != button.tag {
-                            let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
-                            v2.frame = frame
-                        }
+                    if let v2 = v as? UIView where v2.tag != button.tag {
+                        let frame = CGRectMake(v.frame.origin.x + 50.0, v.frame.origin.y, v.frame.size.width, v.frame.size.height)
+                        v2.frame = frame
                     }
                 }
             }
