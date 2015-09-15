@@ -135,7 +135,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
             if visibleViewController.isHidingEnabled {
-                visibleViewController.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+                visibleViewController.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
             visibleViewController.scrollView.animateSubviewCells(isGoingOffscreen: false)
@@ -158,7 +158,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
-                vc.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+                vc.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
             vc.scrollView.animateSubviewCells(isGoingOffscreen: true)
@@ -340,7 +340,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         
         if let t2gVC = vc as? T2GViewController {
             if t2gVC.isHidingEnabled {
-                t2gVC.showBar(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+                t2gVC.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
             t2gVC.scrollView.animateSubviewCells(isGoingOffscreen: false)

@@ -76,7 +76,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
-                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
                     
                     if (self.scrollDirection == .Down) {
                         // hide
@@ -125,7 +125,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
-                if (self.isViewLoaded() && self.view.window != nil && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                if (self.isViewLoaded() && self.view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
                     // check when refresher is refreshing
                     if (self.automaticSnapStatus == .None) {
                         if (self.lastScrollViewContentOffset > scrollView.contentOffset.y) {
