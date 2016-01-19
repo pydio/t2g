@@ -83,7 +83,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
 
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame;
-                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
+                        let blackstripe = self.createMinifiedStripeBar(navigationCtr)
                         
                         statusBarBackgroundViewFrame?.origin.y = -44
                         barFrame.origin.y = -24
@@ -181,7 +181,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
                                         statusBarBackgroundViewFrame?.origin.y += toMove
                                         barFrame.origin.y += toMove
                                     } else {
-                                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
+//                                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
                                         statusBarBackgroundViewFrame?.origin.y = -44;
                                         barFrame.origin.y = -24;
                                     }
@@ -237,7 +237,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
         if let blackstripe = navigationCtr.view.viewWithTag(5555) {
             return blackstripe
         } else {
-            var blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
+            let blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
             blackstripe2.tag = 5555
             blackstripe2.backgroundColor = UIColor(named: .PYDOrange)
             blackstripe2.hidden = true

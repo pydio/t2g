@@ -183,12 +183,12 @@ class T2GScrollView: UIScrollView {
     func frameForDelimiter(mode: T2GLayoutMode? = nil, section: Int) -> CGRect {
         let m = mode ?? self.layoutMode
         
-        var x: CGFloat = 0.0
+        let x: CGFloat = 0.0
         var y: CGFloat = 0.0
         
         let dimensions = self.dataDelegate!.dimensionsForSectionHeader()
-        var height: CGFloat = dimensions.height
-        var width: CGFloat = self.frame.size.width
+        let height: CGFloat = dimensions.height
+        let width: CGFloat = self.frame.size.width
         
         let cellDimensions = self.dataDelegate!.dimensionsForCell(m)
         
@@ -251,12 +251,12 @@ class T2GScrollView: UIScrollView {
     
     :params: isGoingOffscreen Boolean value defining whether the view is going offscreen or not.
     */
-    func animateSubviewCells(#isGoingOffscreen: Bool) {
+    func animateSubviewCells(isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
         
-        var tags = self.subviews.map({($0 as! UIView).tag})
-        tags.sort(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
+        var tags = self.subviews.map({($0).tag})
+        tags.sortInPlace(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
         
         for tag in tags {
             if let view = self.viewWithTag(tag) as? T2GCell {
@@ -265,7 +265,7 @@ class T2GScrollView: UIScrollView {
                 if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
                     delayCount += 1.0
                     let delay: Double = delayCount * 0.02
-                    UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
+                    UIView.animateWithDuration(0.2, delay: delay, options: [], animations: { () -> Void in
                         view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
                     }, completion: nil)
                 }
@@ -422,7 +422,7 @@ class T2GScrollView: UIScrollView {
                     firstIndex = 0
                 }
                 
-                var lastIndex = firstIndex + 2 * self.visibleCellCount(mode: .Collection)
+                var lastIndex = firstIndex + 2 * self.visibleCellCount(.Collection)
                 if self.totalCellCount() - 1 < lastIndex {
                     lastIndex = self.totalCellCount() - 1
                 }
@@ -436,7 +436,7 @@ class T2GScrollView: UIScrollView {
                     firstIndex = 0
                 }
                 
-                var lastIndex = firstIndex + self.visibleCellCount(mode: .Table)
+                var lastIndex = firstIndex + self.visibleCellCount(.Table)
                 if self.totalCellCount() - 1 < lastIndex {
                     lastIndex = self.totalCellCount() - 1
                 }
@@ -497,7 +497,7 @@ class T2GScrollView: UIScrollView {
                         shouldContinueScrolling = false
                     }
                 } else {
-                    let maxContentOffset = self.contentSize.height - self.frame.size.height
+//                    let maxContentOffset = self.contentSize.height - self.frame.size.height
                     if self.contentOffset.y == self.contentSize.height - self.frame.size.height {
                         shouldContinueScrolling = false
                     }

@@ -16,7 +16,7 @@ class T2GTriangleView: UIView {
     /// overridden property to be able to distribute the change to the fill of the layer
     override var backgroundColor: UIColor? {
         get {
-            return UIColor(CGColor: shapeLayer.fillColor)
+            return UIColor(CGColor: shapeLayer.fillColor!)
         }
         set {
             shapeLayer.fillColor = newValue!.CGColor
@@ -73,13 +73,13 @@ class T2GTriangleView: UIView {
         :param: anim Default Cocoa API - The animation to be added to the render tree.
         :param: key Default Cocoa API - A string that identifies the animation.
         */
-        override func addAnimation(anim: CAAnimation!, forKey key: String!) {
+        override func addAnimation(anim: CAAnimation, forKey key: String!) {
             super.addAnimation(anim, forKey: key)
             
             if (anim.isKindOfClass(CABasicAnimation.self)) {
                 let basicAnimation = anim as! CABasicAnimation
                 if (basicAnimation.keyPath == "bounds.size") {
-                    var pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
+                    let pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
                     pathAnimation.keyPath = "path"
                     pathAnimation.fromValue = self.path
                     pathAnimation.toValue = self.shapeForBounds(self.bounds).CGPath

@@ -28,12 +28,12 @@ class T2GCheckboxButton: UIButton {
         let lineWidth: CGFloat = self.wasSelected ? 4.0 : 3.0
         let fillColor = self.wasSelected ? UIColor.blackColor().CGColor : UIColor.clearColor().CGColor
         
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         CGContextSetLineWidth(context, lineWidth)
         CGContextAddArc(context, frame.size.width / 2, frame.size.height / 2, (frame.size.width - 10)/2, 0.0, CGFloat(M_PI * 2.0), 1)
         CGContextSetFillColorWithColor(context, fillColor)
         CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor)
-        CGContextDrawPath(context, kCGPathFillStroke)
+        //CGContextDrawPath(context, kCGPathFillStroke)
     }
     
     /**

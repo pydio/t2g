@@ -125,13 +125,13 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundView!.addSubview(backgroundViewButton)
         
         // View must be added to hierarchy before setting constraints.
-        backgroundViewButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        backgroundViewButton.translatesAutoresizingMaskIntoConstraints = false
         let views = ["background": self.backgroundView!, "button": backgroundViewButton]
         
-        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
         self.backgroundView!.addConstraints(constH)
         
-        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
         self.backgroundView!.addConstraints(constW)
         
         self.backgroundView!.backgroundColor = .whiteColor()
@@ -188,7 +188,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     */
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
         if self.scrollView!.contentOffset.x != 0 {
-            self.moveButtonsInHierarchy(shouldHide: true)
+            self.moveButtonsInHierarchy(true)
             self.scrollView!.contentOffset.x = 0
         }
         
@@ -285,7 +285,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     Closes the drawer if it's opened.
     */
     func closeCell() {
-        self.moveButtonsInHierarchy(shouldHide: true)
+        self.moveButtonsInHierarchy(true)
         self.swipeDirection = .Right
         self.handleScrollEnd(self.scrollView!)
     }
@@ -623,7 +623,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.delegate?.didCellClose(self.tag)
             } else {
                 self.delegate?.didCellOpen(self.tag)
-                self.moveButtonsInHierarchy(shouldHide: false)
+                self.moveButtonsInHierarchy(false)
             }
         })
     }
@@ -633,7 +633,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     :param: shouldHide Flag determining whether the scrollView is getting closed or opened.
     */
-    func moveButtonsInHierarchy(#shouldHide: Bool) {
+    func moveButtonsInHierarchy(shouldHide: Bool) {
         for index in 0...3 {
             if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 if shouldHide {
@@ -654,7 +654,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     */
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.delegate?.cellStartedSwiping(self.tag)
-        self.moveButtonsInHierarchy(shouldHide: true)
+        self.moveButtonsInHierarchy(true)
     }
     
     /**
@@ -691,7 +691,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     */
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         if self.swipeDirection == .Left {
-            self.moveButtonsInHierarchy(shouldHide: false)
+            self.moveButtonsInHierarchy(false)
         }
     }
     

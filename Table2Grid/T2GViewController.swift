@@ -153,13 +153,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.view.addSubview(scrollView)
         
         // View must be added to hierarchy before setting constraints.
-        self.scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         let views = ["view": self.view, "scroll_view": scrollView]
         
-        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[scroll_view]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[scroll_view]|", options: .AlignAllCenterY, metrics: nil, views: views)
         view.addConstraints(constH)
         
-        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll_view]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll_view]|", options: .AlignAllCenterX, metrics: nil, views: views)
         view.addConstraints(constW)
     }
     
@@ -236,7 +236,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     - DISCUSSION: This method probably shouldn't be here at all.
     */
     func moveBarButtonPressed() {
-        println("Not implemented yet.")
+        print("Not implemented yet.")
     }
     
     /**
@@ -251,7 +251,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }
         }
         
-        self.removeRowsAtIndexPaths(indexPaths.sorted{$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}, notifyDelegate: true)
+        self.removeRowsAtIndexPaths(indexPaths.sort({$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}), notifyDelegate: true)
         self.editingModeSelection = [Int : Bool]()
     }
     
@@ -296,7 +296,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
             let name = self.delegate.titleForHeaderInSection(section) ?? ""
             
-            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode: mode, section: section), title: name)
+            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode, section: section), title: name)
             delimiter.tag = section + 1
             
             self.scrollView.addSubview(delimiter)
@@ -421,7 +421,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 }
                 
                 var tags = self.scrollView.subviews.filter({$0 is T2GCell || $0 is T2GDelimiterView}).map({(subview) -> Int in return subview.tag})
-                tags.sort(<)
+                tags.sortInPlace(<)
                         
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     var changedCount = 0
@@ -496,15 +496,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         let mode = self.scrollView.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
-        self.scrollView.adjustContentSize(mode: mode)
+        self.scrollView.adjustContentSize(mode)
         self.displayMissingCells()
-        self.displayMissingCells(mode: mode)
+        self.displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(mode: mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                    let frame = self.scrollView.frameForCell(mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
                     
                     /*
                     * Not really working - TBD
@@ -517,7 +517,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     
                     cell.changeFrameParadigm(mode, frame: frame)
                 } else if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(mode: mode, section: delimiter.tag - 1)
+                    let frame = self.scrollView.frameForDelimiter(mode, section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
@@ -543,14 +543,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(forceClose: true)
+            navCtr.toggleBarMenu(true)
         }
         
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
         
         if indicesExtremes.lowest != Int.max || indicesExtremes.highest != Int.min {
             let from = (indicesExtremes.highest) + 1
-            var to = (indicesExtremes.highest) + 10
+            let to = (indicesExtremes.highest) + 10
             if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
                 for index in from...to {
                     self.insertRowWithTag(index)
@@ -633,13 +633,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
         
-        var currentOffset = scrollView.contentOffset;
-        var currentTime = NSDate.timeIntervalSinceReferenceDate()
+        let currentOffset = scrollView.contentOffset;
+        let currentTime = NSDate.timeIntervalSinceReferenceDate()
         var currentSpeed = T2GScrollingSpeed.Slow
         
         if(currentTime - self.lastSpeedOffsetCaptureTime > 0.1) {
-            var distance = currentOffset.y - self.lastSpeedOffset.y
-            var scrollSpeed = fabsf(Float((distance * 10) / 1000))
+            let distance = currentOffset.y - self.lastSpeedOffset.y
+            let scrollSpeed = fabsf(Float((distance * 10) / 1000))
             
             if (scrollSpeed > 6) {
                 currentSpeed = .Fast
@@ -711,10 +711,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :returns: Integer value of the last added tag to the scrollView.
     */
     func addRowsWhileScrolling(direction: T2GScrollDirection, startTag: Int) -> Int {
-        var multiplier = direction == .Up ? -1 : 1
-        var firstTag = startTag + (1 * multiplier)
-        var secondTag = startTag + (2 * multiplier)
-        var thirdTag = startTag + (3 * multiplier)
+        let multiplier = direction == .Up ? -1 : 1
+        let firstTag = startTag + (1 * multiplier)
+        let secondTag = startTag + (2 * multiplier)
+        let thirdTag = startTag + (3 * multiplier)
         
         let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
         let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
@@ -854,7 +854,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     func didMove(tag: Int, frame: CGRect) {
         let height: CGFloat = 30.0
         
-        var frameInView = self.scrollView.convertRect(frame, toView: self.view)
+        let frameInView = self.scrollView.convertRect(frame, toView: self.view)
         
         var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
         if let navigationBar = self.navigationController {

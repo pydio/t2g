@@ -31,13 +31,13 @@ class T2GDelimiterView: UIView {
         self.titleLabel!.text = title
         self.addSubview(self.titleLabel!)
         
-        self.titleLabel!.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.titleLabel!.translatesAutoresizingMaskIntoConstraints = false
         let views = ["background": self, "button": self.titleLabel!]
         
-        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
         self.addConstraints(constH)
         
-        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
         self.addConstraints(constW)
     }
     
@@ -49,7 +49,7 @@ class T2GDelimiterView: UIView {
     */
     private func fontSize(frame: CGRect) -> CGFloat {
         let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        var dummyFont = UIFont.systemFontOfSize(12)
+        let dummyFont = UIFont.systemFontOfSize(12)
         
         let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
         let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))

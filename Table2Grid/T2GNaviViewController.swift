@@ -130,15 +130,15 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :returns: The view controller that was popped from the stack.
     */
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
-        var poppedViewController = super.popViewControllerAnimated(animated)
+        let poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
             if visibleViewController.isHidingEnabled {
                 visibleViewController.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            visibleViewController.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            visibleViewController.scrollView.animateSubviewCells(false)
             
             if let mDelegate = visibleViewController as? T2GNavigationBarMenuDelegate {
                 self.menuDelegate = mDelegate
@@ -154,14 +154,14 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
     override func pushViewController(viewController: UIViewController, animated: Bool) {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
                 vc.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            vc.scrollView.animateSubviewCells(isGoingOffscreen: true)
+            vc.scrollView.animateSubviewCells(true)
         }
         
         self.delay(self.segueDelay, closure: { () -> Void in
@@ -193,7 +193,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     Proxy function of toggleBarMenu(forceClose) for UIBarButtonItem action call.
     */
     func toggleBarMenu() {
-        self.toggleBarMenu(forceClose: false)
+        self.toggleBarMenu(false)
     }
     
     /**
@@ -201,7 +201,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     
     :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
     */
-    func toggleBarMenu(#forceClose: Bool) {
+    func toggleBarMenu(forceClose: Bool) {
         if let height: CGFloat = self.menuDelegate?.heightForMenu() {
             let dismissClosure = { () -> Bool in
                 if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {
@@ -258,7 +258,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: sender UIButton from which the PathView controller will be shown.
     */
     func showPathPopover(sender: UIButton) {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
         let pathViewController = T2GPathViewController()
         pathViewController.modalPresentationStyle = .Popover
@@ -301,7 +301,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
             }
         }
         
-        for vc in (self.viewControllers as! [UIViewController]) {
+        for vc in (self.viewControllers) {
             let image = self.pathDelegate?.pathImageForViewController(vc) ?? ""
             path.append(["name" : vc.title!, "image" : image])
         }
@@ -335,15 +335,15 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: index Index of the selected ViewController.
     */
     func didSelectViewController(index: Int, completion: (() -> Void)?) {
-        self.toggleBarMenu(forceClose: true)
-        let vc = self.viewControllers[index] as! UIViewController
+        self.toggleBarMenu(true)
+        let vc = self.viewControllers[index] 
         
         if let t2gVC = vc as? T2GViewController {
             if t2gVC.isHidingEnabled {
                 t2gVC.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            t2gVC.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            t2gVC.scrollView.animateSubviewCells(false)
             
             if let mDelegate = t2gVC as? T2GNavigationBarMenuDelegate {
                 self.menuDelegate = mDelegate

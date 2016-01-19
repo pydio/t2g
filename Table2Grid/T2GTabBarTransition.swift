@@ -38,8 +38,8 @@ class T2GTabBarTransition: NSObject, UIViewControllerAnimatedTransitioning {
         let fromView : UIView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
         let toView : UIView = transitionContext.viewForKey(UITransitionContextToViewKey)!
         
-        transitionContext.containerView().addSubview(fromView)
-        transitionContext.containerView().addSubview(toView)
+        transitionContext.containerView()!.addSubview(fromView)
+        transitionContext.containerView()!.addSubview(toView)
         
         var multiplier: CGFloat = self.isScrollingLeft ? 1.0 : -1.0
         toView.frame = CGRectMake(multiplier * toView.frame.width, 0, toView.frame.width, toView.frame.height)
@@ -61,7 +61,7 @@ class T2GTabBarTransition: NSObject, UIViewControllerAnimatedTransitioning {
     :param: transitionContext Default Cocoa API - The context object containing information to use during the transition.
     :returns: Default Cocoa API - The duration, in seconds, of your custom transition animation.
     */
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.3
     }
 }

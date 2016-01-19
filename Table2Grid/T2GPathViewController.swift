@@ -82,7 +82,7 @@ class T2GPathViewController: UITableViewController {
     Sets up the cell. Last cell (currently active ViewController) is grayed out and prepended with '>' symbol to show that this is where the user currently is in the structure.
     */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) 
         
         var text = self.path[indexPath.row]["name"]!
         if indexPath.row == self.path.count - 1 {
@@ -148,7 +148,7 @@ class T2GPathViewController: UITableViewController {
     */
     func imageWithColor(color: UIColor, rect: CGRect) -> UIImage {
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()
+        let context: CGContextRef = UIGraphicsGetCurrentContext()!
         
         CGContextSetFillColorWithColor(context, color.CGColor)
         CGContextFillRect(context, rect)

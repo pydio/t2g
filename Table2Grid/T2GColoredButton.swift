@@ -35,7 +35,7 @@ class T2GColoredButton: UIButton {
     private func imageWithColor(color: UIColor) -> UIImage {
         let rect: CGRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()
+        let context: CGContextRef = UIGraphicsGetCurrentContext()!
     
         CGContextSetFillColorWithColor(context, color.CGColor)
         CGContextFillRect(context, rect)
@@ -59,7 +59,7 @@ class T2GColoredButton: UIButton {
         
         view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
         
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+       let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         return image
