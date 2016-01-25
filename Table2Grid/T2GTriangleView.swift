@@ -14,15 +14,15 @@ Custom UIView class for animating triangle while animating the appearance of the
 class T2GTriangleView: UIView {
 
     /// overridden property to be able to distribute the change to the fill of the layer
-    override var backgroundColor: UIColor? {
-        get {
-            return UIColor(CGColor: shapeLayer.fillColor!)
-        }
-        set {
-            shapeLayer.fillColor = newValue!.CGColor
-        }
-    }
-    
+//    override var backgroundColor: UIColor? {
+//        get {
+//            return UIColor(CGColor: shapeLayer.fillColor!)
+//        }
+//        set {
+//            shapeLayer.fillColor = newValue!.CGColor
+//        }
+//    }
+//    
     /// custom calculated property for layer
     var shapeLayer: CAShapeLayer! {
         return self.layer as! CAShapeLayer

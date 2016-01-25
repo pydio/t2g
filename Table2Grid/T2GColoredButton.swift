@@ -42,7 +42,7 @@ class T2GColoredButton: UIButton {
     
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-    
+        
         return image
     }
     

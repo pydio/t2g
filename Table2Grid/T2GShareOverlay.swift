@@ -23,21 +23,24 @@ class T2GShareOverlay: T2GBookmarkOverlay {
     }
     
     override class func layerClass() -> AnyClass {
-        return ShareLayer.self
+        return self
+//        return ShareLayer.self
     }
-    
-    class ShareLayer: BookmarkLayer {
-        override func shapeForBounds(rect: CGRect) -> UIBezierPath {
-            let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
-            let point2 = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect))
-            let point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))
-            
-            let triangle = UIBezierPath()
-            triangle.moveToPoint(point1)
-            triangle.addLineToPoint(point2)
-            triangle.addLineToPoint(point3)
-            triangle.closePath()
-            return triangle
-        }
-    }
+
+//    class ShareLayer: BookmarkLayer {
+//        override func shapeForBounds(rect: CGRect) -> UIBezierPath {
+//            let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
+//            let point2 = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect))
+//            let point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))
+//            
+//            let triangle = UIBezierPath()
+//            triangle.moveToPoint(point1)
+//            triangle.addLineToPoint(point2)
+//            triangle.addLineToPoint(point3)
+//            triangle.closePath()
+//            return triangle
+//        }
+//    }
+
 }
+
