@@ -11,6 +11,7 @@ import UIKit
 /**
 Custom T2GTriangleView subclass to draw triangle arrow facing south-west.
 */
+
 class T2GBookmarkOverlay: T2GTriangleView {
     
     override init(frame: CGRect) {
@@ -40,5 +41,4 @@ class T2GBookmarkOverlay: T2GTriangleView {
             return triangle
         }
     }
-
 }
