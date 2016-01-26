@@ -23,7 +23,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
             modelArray3.append(index)
         }
         
-        var rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self.navigationController!, action: "toggleBarMenu")
+        let rightButton_menu: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self.navigationController!, action: "toggleBarMenu")
         self.navigationItem.rightBarButtonItems = [rightButton_menu]
         
         self.isHidingEnabled = true
@@ -55,7 +55,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     /**
     */
     func titleViewPressed() {
-        println("Title pressed")
+        print("Title pressed")
     }
     
     override func viewDidLayoutSubviews() {
@@ -98,10 +98,10 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         var view: T2GCell?
         
         var buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)] = []
-        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
-        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
-        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
-        buttonsInfo.append(normalImage: "", selectedImage: "", optionalText: nil)
+        buttonsInfo.append((normalImage: "", selectedImage: "", optionalText: nil))
+        buttonsInfo.append((normalImage: "", selectedImage: "", optionalText: nil))
+        buttonsInfo.append((normalImage: "", selectedImage: "", optionalText: nil))
+        buttonsInfo.append((normalImage: "", selectedImage: "", optionalText: nil))
         
         switch(indexPath.section) {
         case 0:
@@ -348,7 +348,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(forceClose: true)
+            navCtr.toggleBarMenu(true)
         }
     }
 }
