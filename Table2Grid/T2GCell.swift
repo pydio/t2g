@@ -494,7 +494,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         var multiplier: CGFloat = 1.0
         
         if mode == .Table {
-            let margin = (self.frame.size.width - CGFloat(4 * buttonSize)) / 5.0
+            let margin = (self.frame.size.width - CGFloat(4 * buttonSize * 1.8)) / 5.0
             let y = (self.frame.size.height - CGFloat(buttonSize)) / 2.0
             
             for index in 0..<count {
