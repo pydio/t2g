@@ -170,7 +170,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     */
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
-        self.displayMissingCells()
         self.scrollView.adjustContentSize()
     }
     
@@ -193,6 +192,16 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         self.displayMissingCells()
         self.scrollView.adjustContentSize()
+    }
+    
+    /**
+    Clear the scrollview by removing each subview inside
+    */
+    
+    func clearScrollView() {
+        for view in self.scrollView.subviews {
+            view.removeFromSuperview()
+        }
     }
     
     //MARK: - Editing mode
