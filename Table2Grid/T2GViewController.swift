@@ -180,14 +180,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Reloads the whole scrollView - does NOT delete everything, rather calls update on every visible cell.
     */
-    func reloadScrollView(clear: Bool=false) {
+    func reloadScrollView() {
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
-                if clear{
-                    cell.removeFromSuperview()
-                }else{
-                    self.delegate.updateCellForIndexPath(cell, indexPath: self.scrollView.indexPathForCell(cell.tag))
-                }
+                self.delegate.updateCellForIndexPath(cell, indexPath: self.scrollView.indexPathForCell(cell.tag))
             }
         }
         self.displayMissingCells()
@@ -200,7 +196,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     func clearScrollView() {
         for view in self.scrollView.subviews {
-            view.removeFromSuperview()
+            if let cell = view as? T2GCell {
+                cell.removeFromSuperview()
+            }
         }
     }
     
