@@ -237,7 +237,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
                     
                     let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + statusBarOffset, 32.0, 0.0))
                     triangle.tag = T2GViewTags.navigationBarTriangle
-                    triangle.backgroundColor = self.navigationBar.barTintColor
+                    triangle.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.00)
                     triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
                     self.view.insertSubview(triangle, aboveSubview: self.navigationBar)
                     
