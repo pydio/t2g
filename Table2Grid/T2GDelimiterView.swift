@@ -23,11 +23,9 @@ class T2GDelimiterView: UIView {
     convenience init(frame: CGRect, title: String) {
         self.init(frame: frame)
         
-        self.backgroundColor = .darkGrayColor()
-        
         self.titleLabel = UILabel()
-        self.titleLabel!.font = UIFont.boldSystemFontOfSize(15)
-        self.titleLabel!.textColor = .whiteColor()
+        self.titleLabel!.font = UIFont.boldSystemFontOfSize(18)
+        self.titleLabel!.textColor = .grayColor()
         self.titleLabel!.text = title
         self.addSubview(self.titleLabel!)
         
