@@ -11,82 +11,102 @@ import UIKit
 /**
 Custom UIView class for animating triangle while animating the appearance of the navigation bar menu.
 */
-class T2GTriangleView: UIView {
+class DownTriangleView: UIView {
+    
+    var color = UIColor.grayColor() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    override func drawRect(rect: CGRect) {
+        self.backgroundColor = UIColor.clearColor()
+        
+        let layerHeight = self.layer.frame.height
+        let layerWidth = self.layer.frame.width
+        
+        let line = UIBezierPath()
+        line.moveToPoint(CGPointMake(0, 0))
+        line.addLineToPoint(CGPointMake(layerWidth, 0))
+        line.addLineToPoint(CGPointMake(layerWidth/2, layerHeight))
+        line.addLineToPoint(CGPointMake(0, 0))
+        line.closePath()
+        
+        color.setStroke()
+        color.setFill()
+        line.lineWidth = 3.00
+        line.fill()
+        line.stroke()
+        // Mask to Path
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = line.CGPath
+        self.layer.mask = shapeLayer
+    }
+}
 
-    /// overridden property to be able to distribute the change to the fill of the layer
-//    override var backgroundColor: UIColor? {
-//        get {
-//            return UIColor(CGColor: shapeLayer.fillColor!)
-//        }
-//        set {
-//            shapeLayer.fillColor = newValue!.CGColor
-//        }
-//    }
-//    
-    /// custom calculated property for layer
-    var shapeLayer: CAShapeLayer! {
-        return self.layer as! CAShapeLayer
+
+class T2GBookmarkTriangleView: UIView {
+    var color = UIColor(named: .PYDBlue) {
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
-    /**
-    Sets custom class of the layer.
-    
-    :returns: Default Cocoa API - The class used to create the view’s Core Animation layer.
-    */
-    override class func layerClass() -> AnyClass {
-        return TriangleLayer.self
+    override func drawRect(rect: CGRect) {
+        self.backgroundColor = UIColor.clearColor()
+        
+        
+        let layerHeight = self.layer.frame.height
+        let layerWidth = self.layer.frame.width
+        
+        let line = UIBezierPath()
+        line.moveToPoint(CGPointMake(0, 0))
+        line.addLineToPoint(CGPointMake(0, layerHeight))
+        line.addLineToPoint(CGPointMake(layerWidth, layerHeight))
+        line.addLineToPoint(CGPointMake(0, 0))
+        line.closePath()
+        
+        color.setStroke()
+        color.setFill()
+        line.lineWidth = 3.00
+        line.fill()
+        line.stroke()
+        // Mask to Path
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = line.CGPath
+        self.layer.mask = shapeLayer
+    }
+}
+
+class T2GShareTriangleView: UIView {
+    var color = UIColor(named: .PYDMarine) {
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
-    //MARK: -
-    /**
-    Custom private shape layer class for animating the triangle with smooth transition.
-    */
-    class TriangleLayer: CAShapeLayer {
-        override var bounds: CGRect {
-            didSet {
-                path = self.shapeForBounds(bounds).CGPath
-            }
-        }
+    override func drawRect(rect: CGRect) {
+        self.backgroundColor = UIColor.clearColor()
         
-        /**
-        Creates the triangle shape for given rectangle. Created triangle always points down.
         
-        :param: rect CGRect object to define the bounds where the triangle path should be drawn.
-        :returns: UIBezierPath defining the path of the triangle.
-        */
-        func shapeForBounds(rect: CGRect) -> UIBezierPath {
-            let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
-            let point2 = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect))
-            let point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))
-            
-            let triangle = UIBezierPath()
-            triangle.moveToPoint(point1)
-            triangle.addLineToPoint(point2)
-            triangle.addLineToPoint(point3)
-            triangle.closePath()
-            return triangle
-        }
+        let layerHeight = self.layer.frame.height
+        let layerWidth = self.layer.frame.width
         
-        /**
-        Overrides default behavior to be able to render the view when the frame gets changed.
+        let line = UIBezierPath()
+        line.moveToPoint(CGPointMake(0, 0))
+        line.addLineToPoint(CGPointMake(0, layerHeight))
+        line.addLineToPoint(CGPointMake(layerWidth, 0))
+        line.addLineToPoint(CGPointMake(0, 0))
+        line.closePath()
         
-        :param: anim Default Cocoa API - The animation to be added to the render tree.
-        :param: key Default Cocoa API - A string that identifies the animation.
-        */
-        override func addAnimation(anim: CAAnimation, forKey key: String!) {
-            super.addAnimation(anim, forKey: key)
-            
-            if (anim.isKindOfClass(CABasicAnimation.self)) {
-                let basicAnimation = anim as! CABasicAnimation
-                if (basicAnimation.keyPath == "bounds.size") {
-                    let pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
-                    pathAnimation.keyPath = "path"
-                    pathAnimation.fromValue = self.path
-                    pathAnimation.toValue = self.shapeForBounds(self.bounds).CGPath
-                    self.removeAnimationForKey("path")
-                    self.addAnimation(pathAnimation,forKey: "path")
-                }
-            }
-        }
+        color.setStroke()
+        color.setFill()
+        line.lineWidth = 3.00
+        line.fill()
+        line.stroke()
+        // Mask to Path
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = line.CGPath
+        self.layer.mask = shapeLayer
     }
 }
