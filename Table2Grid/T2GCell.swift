@@ -112,6 +112,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         
         self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        // SCROLLVIEW
+        
         self.scrollView = T2GCellDrawerScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
         self.scrollView!.backgroundColor = .clearColor()
         self.scrollView!.showsHorizontalScrollIndicator = false
@@ -120,6 +122,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.delaysContentTouches = false
         
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
+        
+        // BACKGROUND VIEW BUTTONS
         
         let backgroundViewButton = T2GColoredButton(frame: self.backgroundView!.frame)
         backgroundViewButton.tag = T2GViewTags.cellBackgroundButton
@@ -138,6 +142,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
         self.backgroundView!.addConstraints(constW)
         
+        
+        // IMAGE
         
         let imageFrame: CGRect
         if self.cellType == .NodeCell {
@@ -278,6 +284,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                     self.headerLabel?.frame = dimensions.header
                     self.headerLabel?.font = UIFont.boldSystemFontOfSize(13)
                     self.headerLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+                    self.headerLabel?.textAlignment = NSTextAlignment.Left
                 
                     self.blackFooter?.hidden = true
                 }
