@@ -235,7 +235,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
                     menu.layer.shadowOpacity = 0.45
                     self.view.insertSubview(menu, belowSubview: self.navigationBar)
                     
-                    let triangle = T2GTriangleView(frame: CGRectMake((menu.frame.size.width - 32.0) / CGFloat(2), self.navigationBar.frame.size.height + statusBarOffset, 32.0, 0.0))
+                    let triangle = DownTriangleView(frame: CGRect(x: (menu.frame.size.width - 32.0) / CGFloat(2), y: self.navigationBar.frame.size.height + statusBarOffset, width: 32, height: 0))
+                    triangle.color = UIColor(named: .PYDOrange)
                     triangle.tag = T2GViewTags.navigationBarTriangle
                     triangle.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.00)
                     triangle.alpha = self.navigationBar.translucent ? 0.85 : 1.0
