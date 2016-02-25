@@ -82,6 +82,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     var scrollView: T2GCellDrawerScrollView?
     var backgroundView: UIView?
+    var iconView: UIView?
+    var moreImageButton: UIButton?
     var imageView: UIImageView?
     var headerLabel: UILabel?
     var detailLabel: UILabel?
@@ -92,7 +94,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     var buttonCount: Int = 0
     
-    private var swipeDirection: T2GCellSwipeDirection = .Left
+    private var swipeDirection: T2GCellSwipeDirection = .Right
     private var lastContentOffset: CGFloat = 0
     
     /**
@@ -114,14 +116,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
         // SCROLLVIEW
         
-        self.scrollView = T2GCellDrawerScrollView(frame: CGRectMake(-1, -1, self.frame.size.width + 2, self.frame.size.height + 2))
+        self.scrollView = T2GCellDrawerScrollView(frame: CGRectMake(0, 0, self.frame.size.width, self.frame.size.height))
         self.scrollView!.backgroundColor = .clearColor()
         self.scrollView!.showsHorizontalScrollIndicator = false
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
         self.scrollView!.delaysContentTouches = false
         
-        self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width + 2, self.frame.size.height + 2))
+        self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width, self.frame.size.height))
         
         // BACKGROUND VIEW BUTTONS
         
@@ -143,22 +145,23 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundView!.addConstraints(constW)
         
         
-        // IMAGE
+        self.iconView = UIView(frame: CGRectMake(0, 0, (self.frame.height), (self.frame.height)))
+        self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
         
+        // IMAGE
         let imageFrame: CGRect
         if self.cellType == .NodeCell {
-            imageFrame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
+            imageFrame = CGRectMake(0, 0, (self.frame.height / 3 * 2), (self.frame.height / 3 * 2))
         } else {
-            imageFrame = CGRectMake(8, 8, 48 + 2, 48 + 2)
+            imageFrame = CGRectMake(8, 8, 48, 48)
         }
-        // Set imageView - it customization depends on the cellType
-
         self.imageView = UIImageView(frame: imageFrame)
-        self.imageView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
-        self.backgroundView!.addSubview(self.imageView!)
+        self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
         
+        self.backgroundView?.addSubview(self.iconView!)
+        self.iconView!.addSubview(self.imageView!)
         
-        let blackFooterFrame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height)
+        let blackFooterFrame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
         self.blackFooter = UIView(frame: blackFooterFrame)
         self.blackFooter!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         self.blackFooter!.hidden = true
@@ -189,10 +192,18 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.detailLabel!.textColor = .grayColor()
             self.detailLabel!.text = detail
             
+            let imageButton = UIImage(named: "dots_vertical")
+            self.moreImageButton = UIButton(type: UIButtonType.Custom) as UIButton
+            self.moreImageButton!.setImage(imageButton, forState: .Normal)
+            self.moreImageButton!.frame = CGRectMake(0, 0, 24, 24)
+            self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2), y: self.frame.height / 2)
+            self.moreImageButton!.alpha = 0.3
+            self.moreImageButton!.addTarget(self, action: "moreButtonImagePressed:", forControlEvents: .TouchUpInside)
+            self.backgroundView!.addSubview(self.moreImageButton!)
+            
             self.backgroundView!.addSubview(self.detailLabel!)
-            
             self.backgroundView!.bringSubviewToFront(backgroundViewButton)
-            
+            self.backgroundView!.bringSubviewToFront(self.moreImageButton!)
 
             
             self.ownerDelegate = self
@@ -210,6 +221,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             UIGraphicsBeginImageContextWithOptions(CGSize(width: 48, height: 48), false, 0)
             UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).setFill()
             UIRectFill(rect)
+            self.iconView?.backgroundColor = UIColor.clearColor()
             self.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
             self.imageView?.layer.cornerRadius = 24.0
             self.imageView?.layer.masksToBounds = true
@@ -266,46 +278,59 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
         
         self.frame = frame
-        self.scrollView?.frame = CGRectMake(-1, -1, frame.size.width + 2, frame.size.height + 2)
-        self.backgroundView?.frame = CGRectMake(0, 0, frame.size.width + 2, frame.size.height + 2)
+        self.scrollView?.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+        self.backgroundView?.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
         self.scrollView?.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
         
         self.rearrangeButtons(mode)
         
-        if let image = self.imageView {
-            if mode == .Table {
-                if self.cellType == .NodeCell {
-                    image.frame = CGRectMake(0, 0, self.frame.height + 2, self.frame.height + 2)
-                    let dimensions = self.framesForLabels(frame)
-
-                    self.detailLabel?.frame = dimensions.detail
-                    self.detailLabel?.alpha = 1
-                    
-                    self.headerLabel?.frame = dimensions.header
-                    self.headerLabel?.font = UIFont.boldSystemFontOfSize(13)
-                    self.headerLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-                    self.headerLabel?.textAlignment = NSTextAlignment.Left
+        if mode == .Table {
+            if self.cellType == .NodeCell {
                 
-                    self.blackFooter?.hidden = true
-                }
-                else if self.cellType == .WorkspaceCell {
-                    self.headerLabel?.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
-                }
-            } else {
-                self.blackFooter?.hidden = false
-                self.blackFooter?.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
-                image.frame = CGRectMake(0, 0, frame.width, frame.height)
+                self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
+                self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
+                self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 3 * 2), (self.frame.height / 3 * 2))
+                self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
                 
-                self.headerLabel?.center = (blackFooter?.center)!
                 
-                self.headerLabel?.font = UIFont.boldSystemFontOfSize(11)
-                self.headerLabel?.textAlignment = NSTextAlignment.Center
-                self.headerLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
                 
-                self.detailLabel?.alpha = 0
+                let dimensions = self.framesForLabels(frame)
+                
+                self.detailLabel?.frame = dimensions.detail
+                self.detailLabel?.hidden = false
+                
+                self.headerLabel?.frame = dimensions.header
+                self.headerLabel?.font = UIFont.boldSystemFontOfSize(13)
+                self.headerLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+                self.headerLabel?.textAlignment = NSTextAlignment.Left
+                
+                self.blackFooter?.hidden = true
             }
+            else if self.cellType == .WorkspaceCell {
+                self.headerLabel?.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
+            }
+        } else {
+            self.scrollView?.scrollEnabled = false
+            self.blackFooter?.hidden = false
+            self.blackFooter?.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
+            //                image.frame = CGRectMake(0, 0, frame.width, frame.height)
+            
+            self.iconView!.frame = CGRectMake(0, 0, frame.width, frame.height - self.blackFooter!.frame.height)
+            self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
+            
+            self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 2), (self.frame.height / 2))
+            self.imageView!.center = CGPoint(x: self.iconView!.frame.width / 2, y: self.iconView!.frame.height / 2)
+            
+            
+            
+            
+            self.headerLabel?.center = (blackFooter?.center)!
+            self.headerLabel?.font = UIFont.boldSystemFontOfSize(11)
+            self.headerLabel?.textAlignment = NSTextAlignment.Center
+            self.headerLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+            
+            self.detailLabel?.hidden = true
         }
-        
         /// If in editing mode
         if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
             if mode == .Table {
@@ -690,6 +715,37 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         return (headerFrame, detailFrame)
     }
+    
+    
+    
+    
+    
+    func moreButtonImagePressed(sender: UIButton) {
+        ColorLog.green("Button PRESSED")
+        
+//        self.delegate?.cellStartedSwiping(self.tag)
+//        self.moveButtonsInHierarchy(true)
+        
+        if self.swipeDirection == .Right {
+            ColorLog.cyan("SwipeDirection == .RIGHT")
+        } else if self.swipeDirection == .Left {
+            ColorLog.cyan("SwipeDirection == .LEFT")
+        } else {
+            ColorLog.purple("SwipeDirection == \(self.swipeDirection)")
+        }
+
+
+
+        if self.swipeDirection == .Left {
+            self.closeCell()
+        } else if swipeDirection == .Right {
+            self.swipeDirection = .Left
+            self.handleScrollEnd(self.scrollView!)
+        }
+
+    }
+    
+
     
     
     //MARK: - Scroll view delegate methods
