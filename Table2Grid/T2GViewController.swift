@@ -782,6 +782,10 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: tag Integer value representing the tag of the opened cell.
     */
     func didCellOpen(tag: Int) {
+        if self.openCellTag != -1 && self.openCellTag != tag {
+            let cell = self.view.viewWithTag(self.openCellTag) as? T2GCell
+            cell?.closeCell()
+        }
         self.openCellTag = tag
     }
     
@@ -793,7 +797,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: tag
     */
     func didCellClose(tag: Int) {
-        self.openCellTag = -1
+//        self.openCellTag = -1
     }
     
     /**
