@@ -122,6 +122,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
         self.scrollView!.delaysContentTouches = false
+        self.scrollView!.scrollEnabled = false
         
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width, self.frame.size.height))
         
@@ -286,6 +287,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         if mode == .Table {
             if self.cellType == .NodeCell {
+                self.moreImageButton?.hidden = false
                 
                 self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
                 self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
@@ -293,6 +295,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
                 
                 
+                self.moreImageButton!.frame = CGRectMake(0, 0, 24, 24)
+                self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2), y: self.frame.height / 2)
                 
                 let dimensions = self.framesForLabels(frame)
                 
@@ -310,6 +314,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.headerLabel?.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
             }
         } else {
+            self.moreImageButton?.hidden = true
             self.scrollView?.scrollEnabled = false
             self.blackFooter?.hidden = false
             self.blackFooter?.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
