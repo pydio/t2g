@@ -122,7 +122,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
         self.scrollView!.delaysContentTouches = false
-        self.scrollView!.scrollEnabled = false
+        self.scrollView!.scrollEnabled = true
         
         self.backgroundView = UIView(frame: CGRectMake(0, 0, self.frame.size.width, self.frame.size.height))
         
