@@ -136,6 +136,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
     }
 
+    var showCopyMoveView: Bool = true
     var copyMoveViewDelegate: T2GCopyMoveViewDelegate?
     var dropDelegate: T2GDropDelegate?
     
@@ -162,36 +163,27 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
     */
     override func viewDidAppear(animated: Bool) {
+        self.copyMoveView = T2GCopyMoveView(frame: self.view.frame, delegate: copyMoveViewDelegate)
+        self.view.insertSubview(self.copyMoveView, belowSubview: self.scrollView)
+
         let t = ActionNodeSingleton.sharedInstance
-        if t.actionNode != nil {
+        if t.actionNode != nil && self.showCopyMoveView {
             self.showMoveView()
         } else {
             self.hideMoveView()
         }
-        self.copyMoveView = T2GCopyMoveView(frame: self.view.frame, delegate: copyMoveViewDelegate)
-        self.view.addSubview(self.copyMoveView)
         
         self.scrollView.delegate = self
         self.scrollView.adjustContentSize()
         self.copyMoveView.delegate = self
-        self.view.bringSubviewToFront(self.scrollView)
     }
     
     func showMoveView() {
             self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height / 4 * 3)
-//        UIView.animateWithDuration(0.5, animations: {
-//
-//            }, completion: {
-//                (value: Bool) in
-//        })
     }
     
     func hideMoveView() {
         self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
-//        UIView.animateWithDuration(0.5, animations: {
-//            }, completion: {
-//                (value: Bool) in
-//        })
     }
     
     override func didReceiveMemoryWarning() {
