@@ -179,11 +179,23 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     }
     
     func showMoveView() {
-            self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height / 4 * 3)
+        self.scrollView.removeFromSuperview()
+        self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height / 4 * 3)
+        ColorLog.purple("\(self.view.frame.origin.x), \(self.view.frame.origin.y)")
+        ColorLog.purple("\(self.view.frame.width), \(self.view.frame.height)")
+        ColorLog.green("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
+        ColorLog.green("\(self.scrollView.frame.width), \(self.scrollView.frame.height)")
+        self.view.addSubview(self.scrollView)
     }
     
     func hideMoveView() {
+        self.scrollView.removeFromSuperview()
         self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        ColorLog.purple("\(self.view.frame.origin.x), \(self.view.frame.origin.y)")
+        ColorLog.purple("\(self.view.frame.width), \(self.view.frame.height)")
+        ColorLog.green("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
+        ColorLog.green("\(self.scrollView.frame.width), \(self.scrollView.frame.height)")
+        self.view.addSubview(self.scrollView)
     }
     
     override func didReceiveMemoryWarning() {
@@ -587,6 +599,16 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
                     let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
                     bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
+                }
+                self.copyMoveView.removeFromSuperview()
+                
+                self.copyMoveView = T2GCopyMoveView(frame: self.view.frame, delegate: self.copyMoveViewDelegate)
+                
+                let t = ActionNodeSingleton.sharedInstance
+                if t.actionNode != nil && self.showCopyMoveView {
+                    self.showMoveView()
+                } else {
+                    self.hideMoveView()
                 }
                 
                 for view in self.scrollView.subviews {
