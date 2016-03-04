@@ -150,9 +150,17 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             navigationCtr.segueDelay = 0.16
         }
         
+        self.setCopyMoveView()
         self.scrollView = T2GScrollView()
-        //self.scrollView.delaysContentTouches = false
         self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
+
+        let t = ActionNodeSingleton.sharedInstance
+        if t.actionNode != nil && self.showCopyMoveView {
+            self.copyMoveView.hidden = false
+        } else {
+            self.copyMoveView.hidden = true
+        }
+        
         
         self.view.addSubview(self.scrollView)
     }
@@ -163,9 +171,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
     */
     override func viewDidAppear(animated: Bool) {
-        self.copyMoveView = T2GCopyMoveView(frame: self.view.frame, delegate: copyMoveViewDelegate)
-        self.view.insertSubview(self.copyMoveView, belowSubview: self.scrollView)
-
         let t = ActionNodeSingleton.sharedInstance
         if t.actionNode != nil && self.showCopyMoveView {
             self.showMoveView()
@@ -178,24 +183,46 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.copyMoveView.delegate = self
     }
     
+    func setCopyMoveView() {
+        let frame = CGRectMake(self.view.frame.origin.x, (self.view.frame.height / 4 * 3) - 20, self.view.frame.width, self.view.frame.height / 4)
+        self.copyMoveView = T2GCopyMoveView(frame: frame, delegate: copyMoveViewDelegate)
+        //self.view.insertSubview(self.copyMoveView, belowSubview: self.scrollView)
+        self.copyMoveView.hidden = true
+        self.view.addSubview(self.copyMoveView)
+        self.view.sendSubviewToBack(self.copyMoveView)
+        
+    }
+    
     func showMoveView() {
+        self.copyMoveView.hidden = false
         self.scrollView.removeFromSuperview()
-        self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height / 4 * 3)
-        ColorLog.purple("\(self.view.frame.origin.x), \(self.view.frame.origin.y)")
-        ColorLog.purple("\(self.view.frame.width), \(self.view.frame.height)")
-        ColorLog.green("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
-        ColorLog.green("\(self.scrollView.frame.width), \(self.scrollView.frame.height)")
+        
+        var topBarHeight: CGFloat = 0.00
+        var topBarHeight2 = (self.navigationController?.navigationBar.frame.size.height)!
+        if (UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+            topBarHeight = 64
+        } else {
+            topBarHeight = 55
+        }
+        self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.frame.width, (self.view.frame.height - topBarHeight) / 4 * 3)
         self.view.addSubview(self.scrollView)
+        ColorLog.yellow("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
+        ColorLog.yellow("\(self.scrollView.frame.width) x \(self.scrollView.frame.height)")
     }
     
     func hideMoveView() {
+        self.copyMoveView.hidden = true
         self.scrollView.removeFromSuperview()
-        self.scrollView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
-        ColorLog.purple("\(self.view.frame.origin.x), \(self.view.frame.origin.y)")
-        ColorLog.purple("\(self.view.frame.width), \(self.view.frame.height)")
-        ColorLog.green("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
-        ColorLog.green("\(self.scrollView.frame.width), \(self.scrollView.frame.height)")
+        
+        var topBarHeight = (self.navigationController?.navigationBar.frame.size.height)!
+        if (UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+            topBarHeight += 20
+        }
+        self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.frame.width, self.view.frame.height - topBarHeight)
         self.view.addSubview(self.scrollView)
+        ColorLog.yellow("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
+        ColorLog.yellow("\(self.scrollView.frame.width) x \(self.scrollView.frame.height)")
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -601,9 +628,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
                 }
                 self.copyMoveView.removeFromSuperview()
-                
-                self.copyMoveView = T2GCopyMoveView(frame: self.view.frame, delegate: self.copyMoveViewDelegate)
-                
+                self.setCopyMoveView()
+
                 let t = ActionNodeSingleton.sharedInstance
                 if t.actionNode != nil && self.showCopyMoveView {
                     self.showMoveView()
@@ -686,7 +712,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
         
-        let currentOffset = scrollView.contentOffset;
+        let currentOffset = scrollView.contentOffset
         let currentTime = NSDate.timeIntervalSinceReferenceDate()
         var currentSpeed = T2GScrollingSpeed.Slow
         
