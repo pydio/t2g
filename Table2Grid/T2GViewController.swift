@@ -198,7 +198,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.scrollView.removeFromSuperview()
         
         var topBarHeight: CGFloat = 0.00
-        var topBarHeight2 = (self.navigationController?.navigationBar.frame.size.height)!
         if (UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
             topBarHeight = 64
         } else {
@@ -215,7 +214,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.scrollView.removeFromSuperview()
         
         var topBarHeight = (self.navigationController?.navigationBar.frame.size.height)!
-        if (UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+        if UIApplication.sharedApplication().statusBarHidden == false {
             topBarHeight += 20
         }
         self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.frame.width, self.view.frame.height - topBarHeight)
