@@ -237,8 +237,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 initials = initials + String(string.characters.first!)
             }
             self.initialsLabel = UILabel(frame: imageFrame)
-            self.initialsLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
-            self.initialsLabel?.textAlignment = NSTextAlignment.Center
+            self.initialsLabel!.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+            self.initialsLabel!.textAlignment = NSTextAlignment.Center
             
             var labelDimensions = self.framesForLabels(frame)
             labelDimensions.header.size.width = labelDimensions.header.size.width - 20
@@ -279,62 +279,56 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
         
         self.frame = frame
-        self.scrollView?.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
-        self.backgroundView?.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
-        self.scrollView?.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
+        self.scrollView!.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+        self.backgroundView!.frame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+        self.scrollView!.contentSize = CGSizeMake(frame.size.width * 2, frame.size.height)
         
         self.rearrangeButtons(mode)
         
         if mode == .Table {
             if self.cellType == .NodeCell {
-                self.moreImageButton?.hidden = false
-                
                 self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
                 self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
                 self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 3 * 2), (self.frame.height / 3 * 2))
                 self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
                 
-                
                 self.moreImageButton!.frame = CGRectMake(0, 0, 24, 24)
                 self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2), y: self.frame.height / 2)
                 
                 let dimensions = self.framesForLabels(frame)
+                self.detailLabel!.frame = dimensions.detail
                 
-                self.detailLabel?.frame = dimensions.detail
-                self.detailLabel?.hidden = false
+                self.headerLabel!.frame = dimensions.header
+                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
+                self.headerLabel!.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+                self.headerLabel!.textAlignment = NSTextAlignment.Left
                 
-                self.headerLabel?.frame = dimensions.header
-                self.headerLabel?.font = UIFont.boldSystemFontOfSize(13)
-                self.headerLabel?.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-                self.headerLabel?.textAlignment = NSTextAlignment.Left
-                
-                self.blackFooter?.hidden = true
+                self.blackFooter!.hidden = true
+                self.moreImageButton!.hidden = false
+                self.detailLabel!.hidden = false
+                self.scrollView!.scrollEnabled = true
             }
             else if self.cellType == .WorkspaceCell {
-                self.headerLabel?.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
+                self.headerLabel!.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
             }
         } else {
-            self.moreImageButton?.hidden = true
-            self.scrollView?.scrollEnabled = false
-            self.blackFooter?.hidden = false
-            self.blackFooter?.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
-            //                image.frame = CGRectMake(0, 0, frame.width, frame.height)
-            
             self.iconView!.frame = CGRectMake(0, 0, frame.width, frame.height - self.blackFooter!.frame.height)
             self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
-            
             self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 2), (self.frame.height / 2))
             self.imageView!.center = CGPoint(x: self.iconView!.frame.width / 2, y: self.iconView!.frame.height / 2)
+
+            self.blackFooter!.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
             
+            self.headerLabel!.frame = CGRectMake(0, 0, frame.width, frame.height / 5)
+            self.headerLabel!.center = (blackFooter?.center)!
+            self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
+            self.headerLabel!.textAlignment = NSTextAlignment.Center
+            self.headerLabel!.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
             
-            
-            
-            self.headerLabel?.center = (blackFooter?.center)!
-            self.headerLabel?.font = UIFont.boldSystemFontOfSize(11)
-            self.headerLabel?.textAlignment = NSTextAlignment.Center
-            self.headerLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
-            
-            self.detailLabel?.hidden = true
+            self.blackFooter!.hidden = false
+            self.moreImageButton!.hidden = true
+            self.detailLabel!.hidden = true
+            self.scrollView!.scrollEnabled = false
         }
         /// If in editing mode
         if let button = self.viewWithTag(T2GViewTags.checkboxButton) {
@@ -726,32 +720,15 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     
     func moreButtonImagePressed(sender: UIButton) {
-        ColorLog.green("Button PRESSED")
-        
 //        self.delegate?.cellStartedSwiping(self.tag)
 //        self.moveButtonsInHierarchy(true)
-        
-        if self.swipeDirection == .Right {
-            ColorLog.cyan("SwipeDirection == .RIGHT")
-        } else if self.swipeDirection == .Left {
-            ColorLog.cyan("SwipeDirection == .LEFT")
-        } else {
-            ColorLog.purple("SwipeDirection == \(self.swipeDirection)")
-        }
-
-
-
         if self.swipeDirection == .Left {
             self.closeCell()
         } else if swipeDirection == .Right {
             self.swipeDirection = .Left
             self.handleScrollEnd(self.scrollView!)
         }
-
     }
-    
-
-    
     
     //MARK: - Scroll view delegate methods
     
