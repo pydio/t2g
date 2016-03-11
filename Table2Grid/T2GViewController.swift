@@ -165,63 +165,68 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.view.addSubview(self.scrollView)
     }
     
-    /**
-    Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible. Also checks if T2GNavigationBarTitle is present to form appearance for Normal and Highlighted state.
+    override func viewWillAppear(animated: Bool) {
+        self.scrollView.tag = 999
+    }
     
-    :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
-    */
-    override func viewDidAppear(animated: Bool) {
-        let t = ActionNodeSingleton.sharedInstance
-        if t.actionNode != nil && self.showCopyMoveView {
-            self.showMoveView()
-        } else {
-            self.hideMoveView()
+    override func viewDidLayoutSubviews() {
+        if self.navigationController != nil && self.scrollView.tag == 999 {
+            self.scrollView.tag = 666
+            let t = ActionNodeSingleton.sharedInstance
+            if t.actionNode != nil && self.showCopyMoveView {
+                self.hideMoveView(false)
+            } else {
+                self.hideMoveView(true)
+            }
         }
-        
-        self.scrollView.delegate = self
-        self.scrollView.adjustContentSize()
-        self.copyMoveView.delegate = self
     }
     
     func setCopyMoveView() {
         let frame = CGRectMake(self.view.frame.origin.x, (self.view.frame.height / 4 * 3) - 20, self.view.frame.width, self.view.frame.height / 4)
         self.copyMoveView = T2GCopyMoveView(frame: frame, delegate: copyMoveViewDelegate)
-        //self.view.insertSubview(self.copyMoveView, belowSubview: self.scrollView)
         self.copyMoveView.hidden = true
         self.view.addSubview(self.copyMoveView)
         self.view.sendSubviewToBack(self.copyMoveView)
         
     }
     
-    func showMoveView() {
-        self.copyMoveView.hidden = false
+    func hideMoveView(hidden: Bool) {
+        self.copyMoveView.hidden = hidden
         self.scrollView.removeFromSuperview()
-        
-        var topBarHeight: CGFloat = 0.00
-        if (UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
-            topBarHeight = 64
-        } else {
-            topBarHeight = 55
-        }
-        self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.frame.width, (self.view.frame.height - topBarHeight) / 4 * 3)
-        self.view.addSubview(self.scrollView)
-        ColorLog.yellow("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
-        ColorLog.yellow("\(self.scrollView.frame.width) x \(self.scrollView.frame.height)")
-    }
-    
-    func hideMoveView() {
-        self.copyMoveView.hidden = true
-        self.scrollView.removeFromSuperview()
-        
+
         var topBarHeight = (self.navigationController?.navigationBar.frame.size.height)!
         if UIApplication.sharedApplication().statusBarHidden == false {
             topBarHeight += 20
         }
-        self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.frame.width, self.view.frame.height - topBarHeight)
+        if hidden == true {
+            self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.bounds.width, self.view.bounds.height - topBarHeight)
+        } else {
+            self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.bounds.width, (self.view.bounds.height - topBarHeight) / 4 * 3)
+        }
         self.view.addSubview(self.scrollView)
-        ColorLog.yellow("\(self.scrollView.frame.origin.x), \(self.scrollView.frame.origin.y)")
-        ColorLog.yellow("\(self.scrollView.frame.width) x \(self.scrollView.frame.height)")
-
+        
+        
+        // REFRESH ScrollView Content
+        for view in self.scrollView.subviews {
+            if let cell = view as? T2GCell {
+                let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
+                cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
+            } else if let delimiter = view as? T2GDelimiterView {
+                let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
+                delimiter.frame = frame
+            }
+        }
+        
+    }
+    /**
+    Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible. Also checks if T2GNavigationBarTitle is present to form appearance for Normal and Highlighted state.
+    
+    :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
+    */
+    override func viewDidAppear(animated: Bool) {
+        self.scrollView.delegate = self
+        self.scrollView.adjustContentSize()
+        self.copyMoveView.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -620,36 +625,35 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     self.insertRowWithTag(index)
                 }
             }
+        }
+        UIView.animateWithDuration(0.8, animations: { () -> Void in
+            if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
+                let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
+                bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
+            }
+            self.copyMoveView.removeFromSuperview()
+            self.setCopyMoveView()
             
-            UIView.animateWithDuration(0.8, animations: { () -> Void in
-                if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) as? UIToolbar {
-                    let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
-                    bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
+            let t = ActionNodeSingleton.sharedInstance
+            if t.actionNode != nil && self.showCopyMoveView {
+                self.hideMoveView(false)
+            } else {
+                self.hideMoveView(true)
+            }
+            
+            for view in self.scrollView.subviews {
+                if let cell = view as? T2GCell {
+                    let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
+                    cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
+                } else if let delimiter = view as? T2GDelimiterView {
+                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
+                    delimiter.frame = frame
                 }
-                self.copyMoveView.removeFromSuperview()
-                self.setCopyMoveView()
-
-                let t = ActionNodeSingleton.sharedInstance
-                if t.actionNode != nil && self.showCopyMoveView {
-                    self.showMoveView()
-                } else {
-                    self.hideMoveView()
-                }
-                
-                for view in self.scrollView.subviews {
-                    if let cell = view as? T2GCell {
-                        let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
-                        cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
-                    } else if let delimiter = view as? T2GDelimiterView {
-                        let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
-                        delimiter.frame = frame
-                    }
-                }
-                
+            }
+            
             }) { (_) -> Void in
                 self.scrollView.adjustContentSize()
                 self.scrollView.performSubviewCleanup()
-            }
         }
     }
     
