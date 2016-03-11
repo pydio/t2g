@@ -122,9 +122,7 @@ class T2GScrollView: UIScrollView {
         if m == .Table {
             count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
             if count == 0 {
-                if let superframe = self.superview?.frame {
-                    count = Int(ceil(superframe.size.height / (dimensions.height + dimensions.padding)))
-                }
+                    count = Int(ceil(self.frame.size.height / (dimensions.height + dimensions.padding)))
                 
                 count = count == 0 ? 10 : count
             }
@@ -146,7 +144,6 @@ class T2GScrollView: UIScrollView {
     func frameForCell(mode: T2GLayoutMode? = nil, indexPath: NSIndexPath) -> CGRect {
         let m = mode ?? self.layoutMode
         
-        let superviewFrame = self.superview!.frame
         let dimensions = self.dataDelegate!.dimensionsForCell(m)
         
         if m == .Collection {
@@ -173,6 +170,7 @@ class T2GScrollView: UIScrollView {
             return frame
             
         } else {
+            let superviewFrame = self.frame
             let viewX = (superviewFrame.size.width - dimensions.width) / 2
             
             var ypsilon = viewX + (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.dimensionsForSectionHeader().height
@@ -369,7 +367,7 @@ class T2GScrollView: UIScrollView {
         var height: CGFloat = 0.0
         
         if let dimensions = self.dataDelegate?.dimensionsForCell(mode) {
-            let viewX = mode == .Collection ? dimensions.padding : (self.superview!.frame.size.width - dimensions.width) / 2
+            let viewX = mode == .Collection ? dimensions.padding : (self.frame.size.width - dimensions.width) / 2
             let divisor = self.itemCountPerLine(mode)
             
             var lineCount = 0
@@ -382,7 +380,7 @@ class T2GScrollView: UIScrollView {
             height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
             height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         }
-        return CGSize(width: self.superview!.frame.size.width, height: height)
+        return CGSize(width: self.frame.size.width, height: height)
     }
     
     /**
