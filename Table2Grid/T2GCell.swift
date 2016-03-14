@@ -182,14 +182,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.headerLabel = UILabel(frame: labelDimensions.header)
             self.headerLabel!.backgroundColor = .clearColor()
             self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.headerLabel!.font = UIFont.systemFontOfSize(16)
+            self.headerLabel!.font = UIFont(name: "SFUIDisplay-Regular", size: 16)
             self.headerLabel!.textColor = .blackColor()
             self.headerLabel!.text = header
             
             self.detailLabel = UILabel(frame: labelDimensions.detail)
             self.detailLabel!.backgroundColor = .clearColor()
             self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.detailLabel!.font = UIFont.systemFontOfSize(13)
+            self.detailLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 13)
             self.detailLabel!.textColor = .grayColor()
             self.detailLabel!.text = detail
             
@@ -246,7 +246,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.headerLabel = UILabel(frame: labelDimensions.header)
             self.headerLabel!.backgroundColor = .clearColor()
             self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.headerLabel!.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
+            self.headerLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 16)
             self.headerLabel!.textColor = .blackColor()
             self.headerLabel!.text = header
             
@@ -300,7 +300,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.detailLabel!.frame = dimensions.detail
                 
                 self.headerLabel!.frame = dimensions.header
-                self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
                 self.headerLabel!.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
                 self.headerLabel!.textAlignment = NSTextAlignment.Left
                 
@@ -308,9 +307,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.moreImageButton!.hidden = false
                 self.detailLabel!.hidden = false
                 self.scrollView!.scrollEnabled = true
-            }
-            else if self.cellType == .WorkspaceCell {
-                self.headerLabel!.font = UIFont.systemFontOfSize(19, weight: UIFontWeightLight)
             }
         } else {
             self.iconView!.frame = CGRectMake(0, 0, frame.width, frame.height - self.blackFooter!.frame.height)
@@ -321,7 +317,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             
             self.headerLabel!.frame = CGRectMake(0, 0, frame.width, frame.height / 5)
             self.headerLabel!.center = (blackFooter?.center)!
-            self.headerLabel!.font = UIFont.boldSystemFontOfSize(11)
             self.headerLabel!.textAlignment = NSTextAlignment.Center
             self.headerLabel!.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
             
