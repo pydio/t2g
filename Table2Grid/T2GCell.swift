@@ -113,11 +113,11 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.cellType = cellType
         
         
-        self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        self.backgroundColor = UIColor(red: 0.995, green: 0.995, blue: 0.995, alpha: 1)
         // SCROLLVIEW
         
         self.scrollView = T2GCellDrawerScrollView(frame: CGRectMake(0, 0, self.frame.size.width, self.frame.size.height))
-        self.scrollView!.backgroundColor = .clearColor()
+        self.scrollView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.02)
         self.scrollView!.showsHorizontalScrollIndicator = false
         self.scrollView!.bounces = false
         self.scrollView!.delegate = self
@@ -147,12 +147,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         
         self.iconView = UIView(frame: CGRectMake(0, 0, (self.frame.height), (self.frame.height)))
-        self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.02)
         
         // IMAGE
         let imageFrame: CGRect
         if self.cellType == .NodeCell {
-            imageFrame = CGRectMake(0, 0, (self.frame.height / 3 * 2), (self.frame.height / 3 * 2))
+            imageFrame = CGRectMake(0, 0, self.frame.height, self.frame.height)
         } else {
             imageFrame = CGRectMake(8, 8, 48, 48)
         }
@@ -182,24 +182,25 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.headerLabel = UILabel(frame: labelDimensions.header)
             self.headerLabel!.backgroundColor = .clearColor()
             self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.headerLabel!.font = UIFont.boldSystemFontOfSize(13)
+            self.headerLabel!.font = UIFont.systemFontOfSize(16)
             self.headerLabel!.textColor = .blackColor()
             self.headerLabel!.text = header
             
             self.detailLabel = UILabel(frame: labelDimensions.detail)
             self.detailLabel!.backgroundColor = .clearColor()
             self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.detailLabel!.font = UIFont.systemFontOfSize(11)
+            self.detailLabel!.font = UIFont.systemFontOfSize(13)
             self.detailLabel!.textColor = .grayColor()
             self.detailLabel!.text = detail
             
             let imageButton = UIImage(named: "dots_vertical")
             self.moreImageButton = UIButton(type: UIButtonType.Custom) as UIButton
             self.moreImageButton!.setImage(imageButton, forState: .Normal)
-            self.moreImageButton!.frame = CGRectMake(0, 0, 24, 24)
-            self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2), y: self.frame.height / 2)
+            self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
+            self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
             self.moreImageButton!.alpha = 0.3
             self.moreImageButton!.addTarget(self, action: "moreButtonImagePressed:", forControlEvents: .TouchUpInside)
+            self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
             self.backgroundView!.addSubview(self.moreImageButton!)
             
             self.backgroundView!.addSubview(self.detailLabel!)
@@ -288,12 +289,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         if mode == .Table {
             if self.cellType == .NodeCell {
                 self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
-                self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
                 self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 3 * 2), (self.frame.height / 3 * 2))
                 self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
                 
-                self.moreImageButton!.frame = CGRectMake(0, 0, 24, 24)
-                self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2), y: self.frame.height / 2)
+                self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
+                self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
+                self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
                 
                 let dimensions = self.framesForLabels(frame)
                 self.detailLabel!.frame = dimensions.detail
@@ -313,7 +314,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             }
         } else {
             self.iconView!.frame = CGRectMake(0, 0, frame.width, frame.height - self.blackFooter!.frame.height)
-            self.iconView!.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1)
             self.imageView!.frame = CGRectMake(0, 0, (self.frame.height / 2), (self.frame.height / 2))
             self.imageView!.center = CGPoint(x: self.iconView!.frame.width / 2, y: self.iconView!.frame.height / 2)
 
@@ -363,7 +363,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             let view = T2GCellDrawerButton(frame: point)
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
             
-            if let img = UIImage(named: buttonsInfo[index].normalImage) {
+            if var img = UIImage(named: buttonsInfo[index].normalImage) {
+                img = img.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                view.tintColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
                 view.backgroundColor = .clearColor()
                 view.setBackgroundImage(img, forState: UIControlState.Normal)
                 
@@ -387,7 +389,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.sendSubviewToBack(view)
         }
         
-        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
+        self.scrollView!.contentSize = CGSizeMake(self.frame.size.width * 2 - self.frame.size.height, self.frame.size.height)
     }
     
     /**
@@ -600,18 +602,19 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :returns: Tuple (frames: [CGRect], offsetMultiplier: CGFloat) - array of frames for the buttons and multipler for how wide the content view of the scrollView needs to be to open as far as it is necessary.
     */
     func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (frames: [CGRect], offsetMultiplier: CGFloat) {
-        let buttonSize: CGFloat = 16.0
+        let buttonSize: CGFloat = 12.0
         var coords: [CGRect] = []
         var multiplier: CGFloat = 1.0
         
         if mode == .Table {
-            let margin = (self.frame.size.width - CGFloat(4 * buttonSize * 1.8)) / 5.0
+            let m = (self.frame.size.width - self.frame.size.height) / 4
+            let margin = self.frame.height + m/2 - buttonSize / 2
             let y = (self.frame.size.height - CGFloat(buttonSize)) / 2.0
             
             for index in 0..<count {
-                let x = self.frame.size.width - (CGFloat(index + 1) * (CGFloat(buttonSize) + margin))
-                multiplier = 1 + (1 - ((x - (margin * 0.75))/self.frame.size.width))
+                let x = margin + (m * CGFloat(index))
                 coords.append(CGRectMake(x, y, buttonSize, buttonSize))
+                multiplier = 1 + (1 - self.frame.height/self.frame.width)
             }
         } else {
             let squareSize = CGFloat(self.frame.size.width)
@@ -702,15 +705,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     private func framesForLabels(frame: CGRect) -> (header: CGRect, detail: CGRect) {
         let headerHeight = frame.size.height * 0.25
         let detailHeight = frame.size.height * 0.15
-        //let margin = (frame.size.height - (headerHeight + detailHeight)) / 3
-        
-        let headerMargin = (frame.size.height - headerHeight - detailHeight) / 2
-        
-        let headerWidth = frame.size.width - (frame.size.height + 10) - 10
+        let headerWidth = frame.size.width - (frame.size.height + 10) - 100
         let detailWidth = headerWidth * 0.75
         
+        let headerMargin = (frame.size.height - headerHeight - detailHeight) / 2 - 5
         let headerFrame = CGRectMake(frame.size.height + 10, headerMargin, headerWidth, headerHeight)
-        let detailFrame = CGRectMake(frame.size.height + 10, headerMargin + headerHeight/*headerFrame.size.height + (2 * margin)*/, detailWidth, detailHeight)
+        let detailFrame = CGRectMake(frame.size.height + 10, headerMargin + headerHeight + 5, detailWidth, detailHeight)
         
         return (headerFrame, detailFrame)
     }
