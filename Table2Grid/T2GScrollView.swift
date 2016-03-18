@@ -223,7 +223,7 @@ class T2GScrollView: UIScrollView {
     
     /**
     Adjusts the content size of the scrollView depending on the number of cells.
-    
+    If the content height size if lower than then the scrollview height size, the content height size is set to scrollView height size + 1 to allow the scrollView to scroll for the refresh control.
     :param: mode T2GLayoutMode for which the content size should be calculated. Optional value - if nothing is passed, current layout is used.
     */
     func adjustContentSize(mode: T2GLayoutMode? = nil) {
@@ -231,6 +231,9 @@ class T2GScrollView: UIScrollView {
             self.contentSize = self.contentSizeForMode(m)
         } else {
             self.contentSize = self.contentSizeForMode(self.layoutMode)
+        }
+        if self.contentSize.height <= self.frame.height {
+            self.contentSize = CGSize(width: self.frame.width, height: self.frame.height + 1)
         }
     }
     
