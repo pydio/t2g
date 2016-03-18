@@ -66,6 +66,11 @@ private enum T2GCellSwipeDirection {
     case Left
 }
 
+enum ImageType {
+    case Icon
+    case Picture
+}
+
 /**
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
@@ -80,6 +85,13 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         }
     }
     
+    
+    var imageType: ImageType = .Icon
+    var isBookmarked: Bool = false
+    var isShared: Bool = false
+    var isSynced: Bool = false
+    
+    
     // Common attribute
     var scrollView: T2GCellDrawerScrollView?
     var backgroundView: UIView?
@@ -91,9 +103,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     var detailLabel: UILabel?
     
     var infoView: UIView?
-    var bookmarkImageView: UIImageView?
-    var shareImageView: UIImageView?
-    var syncImageView: UIImageView?
+    var bookmarkImageView: UIImageView? = UIImageView()
+    var shareImageView: UIImageView? = UIImageView()
+    var syncImageView: UIImageView? = UIImageView()
     
     // Table attribute
     var moreImageButton: UIButton?
@@ -227,30 +239,23 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
 
             
             // Annotation images view handling
-            self.infoView = UIView(frame: CGRectMake(0, self.iconView!.frame.height / 5 * 4, self.iconView!.frame.height, self.iconView!.frame.height / 5))
+            self.infoView = UIView(frame: CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.height, 15))
             
-            let margin = self.infoView!.frame.width / 3
-            let imgSize = self.infoView!.frame.height
-            
-            
-            self.shareImageView = UIImageView(frame: CGRectMake(margin / 2, 0, imgSize, imgSize))
+            self.shareImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
             self.shareImageView!.image = UIImage(named: "share_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             self.shareImageView!.tintColor = UIColor(named: .PYDMarine)
-            self.shareImageView!.center = CGPoint(x: margin / 2, y: imgSize / 2)
             self.shareImageView!.hidden = true
             self.infoView!.addSubview(self.shareImageView!)
             
-            self.bookmarkImageView = UIImageView(frame: CGRectMake(margin / 2 + margin, 0, imgSize, imgSize))
+            self.bookmarkImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
             self.bookmarkImageView!.image = UIImage(named: "bookmark_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             self.bookmarkImageView!.tintColor = UIColor(named: .PYDBlue)
-            self.bookmarkImageView!.center = CGPoint(x: margin / 2 + margin, y: imgSize / 2)
             self.bookmarkImageView!.hidden = true
             self.infoView!.addSubview(self.bookmarkImageView!)
             
-            self.syncImageView = UIImageView(frame: CGRectMake(margin / 2 + margin + margin, 0, imgSize, imgSize))
+            self.syncImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
             self.syncImageView!.image = UIImage(named: "sync_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             self.syncImageView!.tintColor = UIColor(named: .PYDOrange)
-            self.syncImageView!.center = CGPoint(x: margin / 2 + 2 * margin, y: imgSize / 2)
             self.syncImageView!.hidden = true
             self.infoView!.addSubview(self.syncImageView!)
             
@@ -343,7 +348,25 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 self.whiteFooter?.removeFromSuperview()
                 self.layer.borderWidth = 0
                 self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
-                self.imageView!.center = CGPoint(x: self.iconView!.frame.width / 2, y: self.iconView!.frame.height / 2)
+                if self.imageType == .Icon {
+                    self.imageView!.frame.size = CGSizeMake(30, 30)
+                    self.imageView!.center = self.iconView!.center
+                } else {
+                    self.imageView!.frame = self.iconView!.frame
+                }
+                
+                
+
+                
+
+
+
+                
+                
+                
+                
+                
+                
                 
                 self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
                 self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
@@ -352,27 +375,27 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 let dimensions = self.framesForLabels(frame)
                 self.detailLabel!.frame = dimensions.detail
                 
+                // LABEL
                 self.headerLabel!.frame = dimensions.header
                 self.headerLabel!.textColor = .blackColor()
                 self.headerLabel!.textAlignment = NSTextAlignment.Left
                 
-                self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height / 5 * 4, self.iconView!.frame.width, self.iconView!.frame.height / 5)
-                
-                let margin = self.infoView!.frame.width / 3
-                let imgSize = self.infoView!.frame.height
-                
-                self.shareImageView!.frame = CGRectMake(margin / 2, 0, imgSize, imgSize)
-                self.shareImageView!.center = CGPoint(x: margin / 2, y: imgSize / 2)
-                
-                self.bookmarkImageView!.frame = CGRectMake(margin / 2 + margin, 0, imgSize, imgSize)
-                self.bookmarkImageView!.center = CGPoint(x: margin / 2 + margin, y: imgSize / 2)
-                
-                self.syncImageView!.frame = CGRectMake(margin / 2 + margin + margin, 0, imgSize, imgSize)
-                self.syncImageView!.center = CGPoint(x: margin / 2 + 2 * margin, y: imgSize / 2)
-
+                // INFO VIEW
+                self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
+                var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
+                if self.isBookmarked {
+                    self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+                    margin = margin - 5 - self.bookmarkImageView!.frame.width
+                }
+                if self.isShared {
+                    self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+                    margin = margin - 5 - self.shareImageView!.frame.width
+                }
                 
                 
-
+                
+                
+                
                 self.backgroundView?.addSubview(self.moreImageButton!)
                 self.backgroundView?.addSubview(self.detailLabel!)
                 
@@ -388,33 +411,33 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.whiteFooter!.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
             self.backgroundView?.addSubview(self.whiteFooter!)
             
-            
+            // IMAGE
             self.iconView!.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - self.whiteFooter!.frame.height)
-            self.imageView!.center = CGPoint(x: self.iconView!.frame.width / 2, y: self.iconView!.frame.height / 2)
+            if self.imageType == .Icon {
+                self.imageView!.frame.size = CGSizeMake(30, 30)
+                self.imageView!.center = self.iconView!.center
+            } else {
+                self.imageView!.frame = self.iconView!.frame
+            }
             
             
-            
-            
-
+            // LABEL
             self.headerLabel!.frame = CGRectMake(0, 0, frame.width, frame.height / 5)
             self.headerLabel!.center = (whiteFooter?.center)!
             self.headerLabel!.textAlignment = NSTextAlignment.Center
             self.headerLabel!.textColor = .blackColor()
             
-            self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height / 5 * 4, self.iconView!.frame.width, self.iconView!.frame.height / 5)
-            
-            let margin = self.infoView!.frame.width / 3
-            let imgSize = self.infoView!.frame.height
-
-            self.shareImageView!.frame = CGRectMake(margin / 2, 0, imgSize, imgSize)
-            self.shareImageView!.center = CGPoint(x: margin / 2, y: imgSize / 2)
-            
-            self.bookmarkImageView!.frame = CGRectMake(margin / 2 + margin, 0, imgSize, imgSize)
-            self.bookmarkImageView!.center = CGPoint(x: margin / 2 + margin, y: imgSize / 2)
-            
-            self.syncImageView!.frame = CGRectMake(margin / 2 + margin + margin, 0, imgSize, imgSize)
-            self.syncImageView!.center = CGPoint(x: margin / 2 + 2 * margin, y: imgSize / 2)
-            
+            // INFO VIEW
+            self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
+            var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
+            if self.isBookmarked {
+                self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+                margin = margin - 5 - self.bookmarkImageView!.frame.width
+            }
+            if self.isShared {
+                self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+                margin = margin - 5 - self.shareImageView!.frame.width
+            }
             
             self.scrollView!.scrollEnabled = false
         }
@@ -784,8 +807,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let detailWidth = headerWidth * 0.75
         
         let headerMargin = (frame.size.height - headerHeight - detailHeight) / 2 - 5
-        let headerFrame = CGRectMake(frame.size.height + 10, headerMargin, headerWidth, headerHeight)
-        let detailFrame = CGRectMake(frame.size.height + 10, headerMargin + headerHeight + 5, detailWidth, detailHeight)
+        let headerFrame = CGRectMake(frame.size.height + 20, headerMargin, headerWidth, headerHeight)
+        let detailFrame = CGRectMake(frame.size.height + 20, headerMargin + headerHeight + 5, detailWidth, detailHeight)
         
         return (headerFrame, detailFrame)
     }
