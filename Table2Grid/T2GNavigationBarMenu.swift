@@ -65,7 +65,7 @@ class T2GNavigationBarMenu: UIView {
             button.normalBackgroundColor = .clearColor()
             button.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
             button.tag = index
-            button.addTarget(self, action: "buttonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(T2GNavigationBarMenu.buttonClicked(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             if let subview = self.delegate?.viewForCell(button.tag, size: button.frame.size) {
                 subview.userInteractionEnabled = false
                 subview.exclusiveTouch = false
