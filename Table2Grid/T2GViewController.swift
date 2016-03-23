@@ -332,8 +332,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             bar.tag = T2GViewTags.editingModeToolbar
             bar.translucent = false
             
-            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: "moveBarButtonPressed")
-            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: "deleteBarButtonPressed")
+            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.moveBarButtonPressed))
+            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.deleteBarButtonPressed))
             let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
             bar.items = [leftItem, space, rightItem]
             
