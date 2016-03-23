@@ -159,7 +159,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         backgroundViewButton.tag = T2GViewTags.cellBackgroundButton
         backgroundViewButton.normalBackgroundColor = .clearColor()
         backgroundViewButton.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
-        backgroundViewButton.addTarget(self, action: "backgroundViewButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+        backgroundViewButton.addTarget(self, action: #selector(T2GCell.backgroundViewButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         self.backgroundView!.addSubview(backgroundViewButton)
         // View must be added to hierarchy before setting constraints.
         backgroundViewButton.translatesAutoresizingMaskIntoConstraints = false
@@ -232,7 +232,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
             self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
             self.moreImageButton!.alpha = 0.3
-            self.moreImageButton!.addTarget(self, action: "moreButtonImagePressed:", forControlEvents: .TouchUpInside)
+            self.moreImageButton!.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
             self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
             self.backgroundView!.addSubview(self.moreImageButton!)
             
@@ -482,7 +482,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 }
             }
             
-            view.addTarget(self, action: "buttonSelected:", forControlEvents: UIControlEvents.TouchUpInside)
+            view.addTarget(self, action: #selector(T2GCell.buttonSelected(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             self.addSubview(view)
             self.sendSubviewToBack(view)
         }
@@ -558,7 +558,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         let button = T2GCheckboxButton(frame: buttonFrame)
         button.wasSelected = selected
-        button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(T2GCell.multipleChoiceButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         button.tag = T2GViewTags.checkboxButton
         
         whiteOverlay.alpha = 0.0
@@ -667,7 +667,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         let button = T2GCheckboxButton(frame: frame)
         button.wasSelected = selected
-        button.addTarget(self, action: "multipleChoiceButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(T2GCell.multipleChoiceButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         button.tag = T2GViewTags.checkboxButton
         button.alpha = 0.0
         self.addSubview(button)
