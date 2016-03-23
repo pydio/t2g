@@ -58,7 +58,7 @@ class T2GDragAndDropView: UIView {
                 self.lastDraggedLocation = self.frame.origin
                 
                 if self.longPressGestureRecognizer == nil {
-                    self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+                    self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(T2GDragAndDropView.handleLongPress(_:)))
                     self.longPressGestureRecognizer!.minimumPressDuration = 1.5
                     self.ownerDelegate?.addGestureRecognizerToView(self.longPressGestureRecognizer!)
                 }
