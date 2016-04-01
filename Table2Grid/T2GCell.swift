@@ -109,16 +109,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     // Table attribute
     var moreImageButton: UIButton?
-    var initialsLabel: UILabel?
 
-    
     // Collection attribute
     var whiteFooter: UIView?
-    
-    
-    
-    
-    var cellType: T2GCellType?
     
     var buttonCount: Int = 0
     
@@ -135,11 +128,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     :param: frame Frame for the cell.
     :param: mode Which mode the cell is in (T2GLayoutMode).
     */
-    convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode, cellType: T2GCellType) {
+    convenience init(header: String, detail: String, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
-        
-        self.cellType = cellType
-        
         
         self.backgroundColor = UIColor(red: 0.995, green: 0.995, blue: 0.995, alpha: 1)
 
@@ -181,11 +171,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         
         // IMAGE
         let imageFrame: CGRect
-        if self.cellType == .NodeCell {
-            imageFrame = CGRectMake(0, 0, self.iconView!.frame.height, self.iconView!.frame.height)
-        } else {
-            imageFrame = CGRectMake(8, 8, 48, 48)
-        }
+        imageFrame = CGRectMake(0, 0, self.iconView!.frame.height, self.iconView!.frame.height)
         self.imageView = UIImageView(frame: imageFrame)
         self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
         
@@ -199,116 +185,71 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundView?.addSubview(self.whiteFooter!)
         
         
-        if self.cellType == .NodeCell {
-            self.backgroundView!.backgroundColor = .whiteColor()
-            
-            // Not needed for nodes
-            self.initialsLabel?.hidden = true
-            
-            let labelDimensions = self.framesForLabels(frame)
-            
-            self.headerLabel = UILabel(frame: labelDimensions.header)
-            self.headerLabel!.backgroundColor = .clearColor()
-            self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.headerLabel!.font = UIFont(name: "SFUIDisplay-Regular", size: 16)
-            self.headerLabel!.textColor = .blackColor()
-            self.headerLabel!.text = header
-            self.backgroundView!.addSubview(self.headerLabel!)
-
-            
-            self.detailLabel = UILabel(frame: labelDimensions.detail)
-            self.detailLabel!.backgroundColor = .clearColor()
-            self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.detailLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 13)
-            self.detailLabel!.textColor = .grayColor()
-            self.detailLabel!.text = detail
-            self.backgroundView!.addSubview(self.detailLabel!)
-            
-            
-            
-            let imageButton = UIImage(named: "dots_vertical")
-            self.moreImageButton = UIButton(type: UIButtonType.Custom) as UIButton
-            self.moreImageButton!.setImage(imageButton, forState: .Normal)
-            self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
-            self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
-            self.moreImageButton!.alpha = 0.3
-            self.moreImageButton!.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
-            self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
-            self.backgroundView!.addSubview(self.moreImageButton!)
-            
-
-            
-            // Annotation images view handling
-            self.infoView = UIView(frame: CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.height, 15))
-            
-            self.shareImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
-            self.shareImageView!.image = UIImage(named: "share_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-            self.shareImageView!.tintColor = UIColor(named: .PYDMarine)
-            self.shareImageView!.hidden = true
-            self.infoView!.addSubview(self.shareImageView!)
-            
-            self.bookmarkImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
-            self.bookmarkImageView!.image = UIImage(named: "bookmark_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-            self.bookmarkImageView!.tintColor = UIColor(named: .PYDBlue)
-            self.bookmarkImageView!.hidden = true
-            self.infoView!.addSubview(self.bookmarkImageView!)
-            
-            self.syncImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
-            self.syncImageView!.image = UIImage(named: "sync_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-            self.syncImageView!.tintColor = UIColor(named: .PYDOrange)
-            self.syncImageView!.hidden = true
-            self.infoView!.addSubview(self.syncImageView!)
-            
-            self.backgroundView!.addSubview(self.infoView!)
-
-            self.backgroundView!.bringSubviewToFront(backgroundViewButton)
-            self.backgroundView!.bringSubviewToFront(self.moreImageButton!)
-            
-            self.ownerDelegate = self
-            
-            if mode == .Collection {
-                self.changeFrameParadigm(.Collection, frame: self.frame)
-            }
-        }
-        else if self.cellType == .WorkspaceCell {
-            self.backgroundView!.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
-            self.detailLabel?.hidden = true
-            
-            // Black rounded Image with workspace initials inside
-            let rect = CGRectMake(0, 0, 48, 48)
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: 48, height: 48), false, 0)
-            UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).setFill()
-            UIRectFill(rect)
-            self.iconView?.backgroundColor = UIColor.clearColor()
-            self.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
-            self.imageView?.layer.cornerRadius = 24.0
-            self.imageView?.layer.masksToBounds = true
-            self.imageView?.frame.origin.y = (frame.size.height - (self.imageView?.frame.size.height)!) / 2
-            self.imageView?.frame.origin.x = (self.imageView?.frame.origin.y)! + 20
-
-            
-            // Get the workspace initials
-            var initials = ""
-            let stringInputArr = header.componentsSeparatedByString(" ")
-            for string in stringInputArr {
-                initials = initials + String(string.characters.first!)
-            }
-            self.initialsLabel = UILabel(frame: imageFrame)
-            self.initialsLabel!.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
-            self.initialsLabel!.textAlignment = NSTextAlignment.Center
-            self.backgroundView!.addSubview(self.initialsLabel!)
-            
-            var labelDimensions = self.framesForLabels(frame)
-            labelDimensions.header.size.width = labelDimensions.header.size.width - 20
-            self.headerLabel = UILabel(frame: labelDimensions.header)
-            self.headerLabel!.backgroundColor = .clearColor()
-            self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-            self.headerLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 16)
-            self.headerLabel!.textColor = .blackColor()
-            self.headerLabel!.text = header
-            self.backgroundView!.addSubview(self.headerLabel!)
-            
-            self.backgroundView!.bringSubviewToFront(backgroundViewButton)
+        self.backgroundView!.backgroundColor = .whiteColor()
+                
+        let labelDimensions = self.framesForLabels(frame)
+        
+        self.headerLabel = UILabel(frame: labelDimensions.header)
+        self.headerLabel!.backgroundColor = .clearColor()
+        self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
+        self.headerLabel!.font = UIFont(name: "SFUIDisplay-Regular", size: 16)
+        self.headerLabel!.textColor = .blackColor()
+        self.headerLabel!.text = header
+        self.backgroundView!.addSubview(self.headerLabel!)
+        
+        
+        self.detailLabel = UILabel(frame: labelDimensions.detail)
+        self.detailLabel!.backgroundColor = .clearColor()
+        self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
+        self.detailLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 13)
+        self.detailLabel!.textColor = .grayColor()
+        self.detailLabel!.text = detail
+        self.backgroundView!.addSubview(self.detailLabel!)
+        
+        
+        
+        let imageButton = UIImage(named: "dots_vertical")
+        self.moreImageButton = UIButton(type: UIButtonType.Custom) as UIButton
+        self.moreImageButton!.setImage(imageButton, forState: .Normal)
+        self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
+        self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
+        self.moreImageButton!.alpha = 0.3
+        self.moreImageButton!.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
+        self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
+        self.backgroundView!.addSubview(self.moreImageButton!)
+        
+        
+        
+        // Annotation images view handling
+        self.infoView = UIView(frame: CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.height, 15))
+        
+        self.shareImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
+        self.shareImageView!.image = UIImage(named: "share_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        self.shareImageView!.tintColor = UIColor(named: .PYDMarine)
+        self.shareImageView!.hidden = true
+        self.infoView!.addSubview(self.shareImageView!)
+        
+        self.bookmarkImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
+        self.bookmarkImageView!.image = UIImage(named: "bookmark_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        self.bookmarkImageView!.tintColor = UIColor(named: .PYDBlue)
+        self.bookmarkImageView!.hidden = true
+        self.infoView!.addSubview(self.bookmarkImageView!)
+        
+        self.syncImageView = UIImageView(frame: CGRectMake(0, 0, self.infoView!.frame.height, self.infoView!.frame.height))
+        self.syncImageView!.image = UIImage(named: "sync_annotation")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        self.syncImageView!.tintColor = UIColor(named: .PYDOrange)
+        self.syncImageView!.hidden = true
+        self.infoView!.addSubview(self.syncImageView!)
+        
+        self.backgroundView!.addSubview(self.infoView!)
+        
+        self.backgroundView!.bringSubviewToFront(backgroundViewButton)
+        self.backgroundView!.bringSubviewToFront(self.moreImageButton!)
+        
+        self.ownerDelegate = self
+        
+        if mode == .Collection {
+            self.changeFrameParadigm(.Collection, frame: self.frame)
         }
         self.scrollView!.addSubview(self.backgroundView!)
         self.addSubview(self.scrollView!)
@@ -343,89 +284,27 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.rearrangeButtons(mode)
         
         if mode == .Table {
-            if self.cellType == .NodeCell {
-                // Remove unused view for that cell view mode
-                self.whiteFooter?.removeFromSuperview()
-                self.layer.borderWidth = 0
-                self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
-                if self.imageType == .Icon {
-                    self.imageView!.frame.size = CGSizeMake(30, 30)
-                    self.imageView!.center = self.iconView!.center
-                } else {
-                    self.imageView!.frame = self.iconView!.frame
-                }
-                
-                
-
-                
-
-
-
-                
-                
-                
-                
-                
-                
-                
-                self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
-                self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
-                self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
-                
-                let dimensions = self.framesForLabels(frame)
-                self.detailLabel!.frame = dimensions.detail
-                
-                // LABEL
-                self.headerLabel!.frame = dimensions.header
-                self.headerLabel!.textColor = .blackColor()
-                self.headerLabel!.textAlignment = NSTextAlignment.Left
-                
-                // INFO VIEW
-                self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
-                var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
-                if self.isBookmarked {
-                    self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
-                    margin = margin - 5 - self.bookmarkImageView!.frame.width
-                }
-                if self.isShared {
-                    self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
-                    margin = margin - 5 - self.shareImageView!.frame.width
-                }
-                
-                
-                
-                
-                
-                self.backgroundView?.addSubview(self.moreImageButton!)
-                self.backgroundView?.addSubview(self.detailLabel!)
-                
-                self.scrollView!.scrollEnabled = true
-            }
-        } else {
-            self.moreImageButton?.removeFromSuperview()
-            self.detailLabel!.removeFromSuperview()
-
-            self.layer.borderWidth = 1
-            self.layer.borderColor = UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: 1.0).CGColor
-
-            self.whiteFooter!.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
-            self.backgroundView?.addSubview(self.whiteFooter!)
-            
-            // IMAGE
-            self.iconView!.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - self.whiteFooter!.frame.height)
+            // Remove unused view for that cell view mode
+            self.whiteFooter?.removeFromSuperview()
+            self.layer.borderWidth = 0
+            self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
             if self.imageType == .Icon {
                 self.imageView!.frame.size = CGSizeMake(30, 30)
                 self.imageView!.center = self.iconView!.center
             } else {
                 self.imageView!.frame = self.iconView!.frame
             }
+            self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
+            self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
+            self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
             
+            let dimensions = self.framesForLabels(frame)
+            self.detailLabel!.frame = dimensions.detail
             
             // LABEL
-            self.headerLabel!.frame = CGRectMake(0, 0, frame.width, frame.height / 5)
-            self.headerLabel!.center = (whiteFooter?.center)!
-            self.headerLabel!.textAlignment = NSTextAlignment.Center
+            self.headerLabel!.frame = dimensions.header
             self.headerLabel!.textColor = .blackColor()
+            self.headerLabel!.textAlignment = NSTextAlignment.Left
             
             // INFO VIEW
             self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
@@ -439,7 +318,10 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
                 margin = margin - 5 - self.shareImageView!.frame.width
             }
             
-            self.scrollView!.scrollEnabled = false
+            self.backgroundView?.addSubview(self.moreImageButton!)
+            self.backgroundView?.addSubview(self.detailLabel!)
+            
+            self.scrollView!.scrollEnabled = true
         }
     }
     
