@@ -74,7 +74,7 @@ enum ImageType {
 /**
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
-class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDelegate {
+class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDelegate */{
     var delegate: T2GCellDelegate?
     
     var highlighted: Bool = false {
@@ -173,6 +173,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         let imageFrame: CGRect
         imageFrame = CGRectMake(0, 0, self.iconView!.frame.height, self.iconView!.frame.height)
         self.imageView = UIImageView(frame: imageFrame)
+        self.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
         self.imageView!.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
         
         self.backgroundView?.addSubview(self.iconView!)
@@ -246,7 +247,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
         self.backgroundView!.bringSubviewToFront(backgroundViewButton)
         self.backgroundView!.bringSubviewToFront(self.moreImageButton!)
         
-        self.ownerDelegate = self
+//        self.ownerDelegate = self
         
         if mode == .Collection {
             self.changeFrameParadigm(.Collection, frame: self.frame)
@@ -854,7 +855,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
     
     :param: recognizer Long press gesture created when draggable flag is set to true.
     */
-    func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
-        self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
-    }
+//    func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
+//        self.scrollView?.addGestureRecognizer(self.longPressGestureRecognizer!)
+//    }
 }
