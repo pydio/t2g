@@ -288,40 +288,61 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate, T2GDragAndDropOwnerDele
             self.whiteFooter?.removeFromSuperview()
             self.layer.borderWidth = 0
             self.iconView!.frame = CGRectMake(0, 0, frame.height, frame.height)
-            if self.imageType == .Icon {
-                self.imageView!.frame.size = CGSizeMake(30, 30)
-                self.imageView!.center = self.iconView!.center
-            } else {
-                self.imageView!.frame = self.iconView!.frame
-            }
             self.moreImageButton!.frame = CGRectMake(0, 0, self.frame.height, self.frame.height)
             self.moreImageButton!.center = CGPoint(x: self.frame.width - (self.frame.height / 2.7), y: self.frame.height / 2)
             self.moreImageButton!.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
             
+            // LABEL
             let dimensions = self.framesForLabels(frame)
             self.detailLabel!.frame = dimensions.detail
-            
-            // LABEL
             self.headerLabel!.frame = dimensions.header
             self.headerLabel!.textColor = .blackColor()
             self.headerLabel!.textAlignment = NSTextAlignment.Left
-            
-            // INFO VIEW
-            self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
-            var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
-            if self.isBookmarked {
-                self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
-                margin = margin - 5 - self.bookmarkImageView!.frame.width
-            }
-            if self.isShared {
-                self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
-                margin = margin - 5 - self.shareImageView!.frame.width
-            }
             
             self.backgroundView?.addSubview(self.moreImageButton!)
             self.backgroundView?.addSubview(self.detailLabel!)
             
             self.scrollView!.scrollEnabled = true
+            
+        } else if mode == .Collection {
+            self.moreImageButton?.removeFromSuperview()
+            self.detailLabel!.removeFromSuperview()
+            
+            self.layer.borderWidth = 1
+            self.layer.borderColor = UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: 1.0).CGColor
+            
+            self.whiteFooter!.frame = CGRectMake(0, frame.height / 5 * 4, frame.width, frame.height / 5)
+            self.backgroundView?.addSubview(self.whiteFooter!)
+            
+            // IMAGE
+            self.iconView!.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - self.whiteFooter!.frame.height)
+            
+            
+            // LABEL
+            self.headerLabel!.frame = CGRectMake(0, 0, frame.width, frame.height / 5)
+            self.headerLabel!.center = (whiteFooter?.center)!
+            self.headerLabel!.textAlignment = NSTextAlignment.Center
+            self.headerLabel!.textColor = .blackColor()
+            
+            self.scrollView!.scrollEnabled = false
+        }
+        // IMAGE
+        if self.imageType == .Icon {
+            self.imageView!.frame.size = CGSizeMake(30, 30)
+            self.imageView!.center = self.iconView!.center
+        } else {
+            self.imageView!.frame = self.iconView!.frame
+        }
+        // INFOVIEW
+        self.infoView!.frame  = CGRectMake(0, self.iconView!.frame.height - 15, self.iconView!.frame.width, 15)
+        var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
+        if self.isBookmarked {
+            self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+            margin = margin - 5 - self.bookmarkImageView!.frame.width
+        }
+        if self.isShared {
+            self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+            margin = margin - 5 - self.shareImageView!.frame.width
         }
     }
     
