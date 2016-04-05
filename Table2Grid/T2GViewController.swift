@@ -106,7 +106,7 @@ private enum T2GScrollingSpeed {
 /**
 Custom view controller class handling the whole T2G environment (meant to be overriden for customizations).
 */
-class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDelegate, T2GCopyMoveViewDelegate {
+class T2GViewController: T2GScrollController, T2GCellDelegate, /*T2GDragAndDropDelegate,*/ T2GCopyMoveViewDelegate {
     var scrollView: T2GScrollView!
     var copyMoveView: T2GCopyMoveView!
     var openCellTag: Int = -1
@@ -884,34 +884,34 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: frame CGRect object representing the view to which an overlapping view is desired to be found.
     :returns: Optional UIView object if an eligible one has been found that is overlapping with the given frame.
     */
-    func findBiggestOverlappingView(excludedTag: Int, frame: CGRect) -> UIView? {
-        var winningView: UIView?
-        
-        var winningRect: CGRect = CGRectMake(0, 0, 0, 0)
-        
-        for view in self.scrollView.subviews {
-            if let c = view as? T2GCell where c.tag != excludedTag {
-                if CGRectIntersectsRect(frame, c.frame) {
-                    if winningView == nil {
-                        winningView = c
-                        winningRect = winningView!.frame
-                    } else {
-                        if (c.frame.size.height * c.frame.size.width) > (winningRect.size.height * winningRect.size.width) {
-                            winningView!.alpha = 1.0
-                            winningView = c
-                            winningRect = winningView!.frame
-                        } else {
-                            c.alpha = 1.0
-                        }
-                    }
-                } else {
-                    c.alpha = 1.0
-                }
-            }
-        }
-        
-        return winningView
-    }
+//    func findBiggestOverlappingView(excludedTag: Int, frame: CGRect) -> UIView? {
+//        var winningView: UIView?
+//        
+//        var winningRect: CGRect = CGRectMake(0, 0, 0, 0)
+//        
+//        for view in self.scrollView.subviews {
+//            if let c = view as? T2GCell where c.tag != excludedTag {
+//                if CGRectIntersectsRect(frame, c.frame) {
+//                    if winningView == nil {
+//                        winningView = c
+//                        winningRect = winningView!.frame
+//                    } else {
+//                        if (c.frame.size.height * c.frame.size.width) > (winningRect.size.height * winningRect.size.width) {
+//                            winningView!.alpha = 1.0
+//                            winningView = c
+//                            winningRect = winningView!.frame
+//                        } else {
+//                            c.alpha = 1.0
+//                        }
+//                    }
+//                } else {
+//                    c.alpha = 1.0
+//                }
+//            }
+//        }
+//        
+//        return winningView
+//    }
     
     /**
     Gets called when T2GDragAndDropView gets moved. Highlights the most overlapping view and determines whether the scrollView should be automatically scrolled up or down (top/bottom of the screen).
@@ -919,106 +919,106 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     :param: tag Integer value of the given cell.
     :param: frame CGRect object representing the frame of the dragged T2GDragAndDropView.
     */
-    func didMove(tag: Int, frame: CGRect) {
-        let height: CGFloat = 30.0
-        
-        let frameInView = self.scrollView.convertRect(frame, toView: self.view)
-        
-        var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
-        if let navigationBar = self.navigationController {
-            topOrigin.y += navigationBar.navigationBar.frame.origin.y + navigationBar.navigationBar.frame.size.height
-        }
-        let topStrip = CGRectMake(0, topOrigin.y, self.scrollView.frame.size.width, height)
-        
-        if CGRectIntersectsRect(topStrip, frameInView) {
-            let subview = self.view.viewWithTag(tag)
-            let isFirstEncounter = subview?.superview is UIScrollView
-            self.view.addSubview(subview!)
-            
-            if isFirstEncounter {
-                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(topStrip, overlapping: frameInView) * -1
-                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: topStrip, overlappingView: subview, navigationController: self.navigationController)
-            }
-        }
-        
-        let bottomOrigin = self.scrollView.convertPoint(CGPointMake(0, self.scrollView.contentOffset.y + self.scrollView.frame.size.height - height), toView: self.view)
-        let bottomStrip = CGRectMake(0, bottomOrigin.y, self.scrollView.frame.size.width, height)
-        
-        if CGRectIntersectsRect(bottomStrip, frameInView) {
-            let subview = self.view.viewWithTag(tag)
-            let isFirstEncounter = subview?.superview is UIScrollView
-            self.view.addSubview(subview!)
-            
-            if isFirstEncounter {
-                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(bottomStrip, overlapping: frameInView)
-                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: bottomStrip, overlappingView: subview, navigationController: self.navigationController)
-            }
-        }
-        
-        let winningView = self.findBiggestOverlappingView(tag, frame: frame)
-        winningView?.alpha = 0.3
-    }
-    
+//    func didMove(tag: Int, frame: CGRect) {
+//        let height: CGFloat = 30.0
+//        
+//        let frameInView = self.scrollView.convertRect(frame, toView: self.view)
+//        
+//        var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
+//        if let navigationBar = self.navigationController {
+//            topOrigin.y += navigationBar.navigationBar.frame.origin.y + navigationBar.navigationBar.frame.size.height
+//        }
+//        let topStrip = CGRectMake(0, topOrigin.y, self.scrollView.frame.size.width, height)
+//        
+//        if CGRectIntersectsRect(topStrip, frameInView) {
+//            let subview = self.view.viewWithTag(tag)
+//            let isFirstEncounter = subview?.superview is UIScrollView
+//            self.view.addSubview(subview!)
+//            
+//            if isFirstEncounter {
+//                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(topStrip, overlapping: frameInView) * -1
+//                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: topStrip, overlappingView: subview, navigationController: self.navigationController)
+//            }
+//        }
+//        
+//        let bottomOrigin = self.scrollView.convertPoint(CGPointMake(0, self.scrollView.contentOffset.y + self.scrollView.frame.size.height - height), toView: self.view)
+//        let bottomStrip = CGRectMake(0, bottomOrigin.y, self.scrollView.frame.size.width, height)
+//        
+//        if CGRectIntersectsRect(bottomStrip, frameInView) {
+//            let subview = self.view.viewWithTag(tag)
+//            let isFirstEncounter = subview?.superview is UIScrollView
+//            self.view.addSubview(subview!)
+//            
+//            if isFirstEncounter {
+//                let speedCoefficient = self.scrollView.coefficientForOverlappingFrames(bottomStrip, overlapping: frameInView)
+//                self.scrollView.scrollContinously(speedCoefficient, stationaryFrame: bottomStrip, overlappingView: subview, navigationController: self.navigationController)
+//            }
+//        }
+//        
+//        let winningView = self.findBiggestOverlappingView(tag, frame: frame)
+//        winningView?.alpha = 0.3
+//    }
+//    
     /**
     Gets called when T2GDragAndDropView gets dropped. Determines where exactly it was dropped and calls the delegate method to handle whether or not will the destination accept it.
     
     :param: view T2GDragAndDropView that got dropped.
     */
-    func didDrop(view: T2GDragAndDropView) {
-        self.scrollView.performSubviewCleanup()
-        
-        if let win = self.findBiggestOverlappingView(view.tag, frame: view.frame) as? T2GCell {
-            win.alpha = 1.0
-            
-            self.dropDelegate?.didDropCell(view as! T2GCell, onCell: win, completion: { () -> Void in
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
-                    let transform = CGAffineTransformMakeScale(1.07, 1.07)
-                    win.transform = transform
-                    
-                    view.center = win.center
-                    
-                    let transform2 = CGAffineTransformMakeScale(0.1, 0.1)
-                    view.transform = transform2
-                }, completion: { (_) -> Void in
-                    view.removeFromSuperview()
-                        
-                    UIView.animateWithDuration(0.15, animations: { () -> Void in
-                        let transform = CGAffineTransformMakeScale(1.0, 1.0)
-                        win.transform = transform
-                    }, completion: { (_) -> Void in
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            for v in self.scrollView.subviews {
-                                if let c = v as? T2GCell {
-                                    if c.tag > view.tag {
-                                        let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(c.tag - 1))
-                                        c.frame = newFrame
-                                        c.tag = c.tag - 1
-                                        self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
-                                    }
-                                } else if let delimiter = v as? T2GDelimiterView {
-                                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
-                                    delimiter.frame = frame
-                                }
-                            }
-                        }, completion: { (_) -> Void in
-                            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                self.scrollView.adjustContentSize()
-                            }, completion: { (_) -> Void in
-                                self.displayMissingCells()
-                            })
-                        })
-                    })
-                })
-            }, failure: { () -> Void in
-                UIView.animateWithDuration(0.3) {
-                    view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
-                }
-            })
-            
-        } else {
-            UIView.animateWithDuration(0.3) {
-                view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
-            }
-        }
-    }
+//    func didDrop(view: T2GDragAndDropView) {
+//        self.scrollView.performSubviewCleanup()
+//        
+//        if let win = self.findBiggestOverlappingView(view.tag, frame: view.frame) as? T2GCell {
+//            win.alpha = 1.0
+//            
+//            self.dropDelegate?.didDropCell(view as! T2GCell, onCell: win, completion: { () -> Void in
+//                UIView.animateWithDuration(0.1, animations: { () -> Void in
+//                    let transform = CGAffineTransformMakeScale(1.07, 1.07)
+//                    win.transform = transform
+//                    
+//                    view.center = win.center
+//                    
+//                    let transform2 = CGAffineTransformMakeScale(0.1, 0.1)
+//                    view.transform = transform2
+//                }, completion: { (_) -> Void in
+//                    view.removeFromSuperview()
+//                        
+//                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+//                        let transform = CGAffineTransformMakeScale(1.0, 1.0)
+//                        win.transform = transform
+//                    }, completion: { (_) -> Void in
+//                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+//                            for v in self.scrollView.subviews {
+//                                if let c = v as? T2GCell {
+//                                    if c.tag > view.tag {
+//                                        let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(c.tag - 1))
+//                                        c.frame = newFrame
+//                                        c.tag = c.tag - 1
+//                                        self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
+//                                    }
+//                                } else if let delimiter = v as? T2GDelimiterView {
+//                                    let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
+//                                    delimiter.frame = frame
+//                                }
+//                            }
+//                        }, completion: { (_) -> Void in
+//                            UIView.animateWithDuration(0.3, animations: { () -> Void in
+//                                self.scrollView.adjustContentSize()
+//                            }, completion: { (_) -> Void in
+//                                self.displayMissingCells()
+//                            })
+//                        })
+//                    })
+//                })
+//            }, failure: { () -> Void in
+//                UIView.animateWithDuration(0.3) {
+//                    view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
+//                }
+//            })
+//            
+//        } else {
+//            UIView.animateWithDuration(0.3) {
+//                view.frame = CGRectMake(view.origin.x, view.origin.y, view.frame.size.width, view.frame.size.height)
+//            }
+//        }
+//    }
 }
