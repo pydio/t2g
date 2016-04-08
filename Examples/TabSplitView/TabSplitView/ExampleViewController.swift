@@ -31,7 +31,11 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         
         if let split = self.splitViewController {
             let controllers = split.viewControllers
-            self.detailViewController = controllers[controllers.count - 1].topViewController as? DetailViewController
+            if controllers.count > 1 {
+                let ctr = controllers[controllers.count - 1]
+                print(ctr)
+                self.detailViewController = (controllers[controllers.count - 1] as! UINavigationController).topViewController as? DetailViewController
+            }
         }
         
         for index in 0..<10 {
@@ -354,13 +358,13 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
     func didSelectButton(index: Int) {
         switch(index) {
         case 0:
-            println("Sort not implemented yet.")
+            print("Sort not implemented yet.")
             break
         case 1:
             self.transformView()
             break
         case 2:
-            println("Bookmarking not implemented yet.")
+            print("Bookmarking not implemented yet.")
             break
         case 3:
             self.modelArray3.insert(42, atIndex: 0)
@@ -375,7 +379,7 @@ class ExampleViewController: T2GViewController, T2GViewControllerDelegate, T2GDr
         }
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(forceClose: true)
+            navCtr.toggleBarMenu(true)
         }
     }
 }

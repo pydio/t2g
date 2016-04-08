@@ -22,31 +22,31 @@ class T2GCheckboxButton: UIButton {
     /**
     Custom draws the button based on property wasSelected.
     
-    :param: rect Default Cocoa API - The portion of the view’s bounds that needs to be updated.
+    - parameter rect: Default Cocoa API - The portion of the view’s bounds that needs to be updated.
     */
     override func drawRect(rect: CGRect) {
         let lineWidth: CGFloat = self.wasSelected ? 4.0 : 3.0
         let fillColor = self.wasSelected ? UIColor.blackColor().CGColor : UIColor.clearColor().CGColor
         
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         CGContextSetLineWidth(context, lineWidth)
         CGContextAddArc(context, frame.size.width / 2, frame.size.height / 2, (frame.size.width - 10)/2, 0.0, CGFloat(M_PI * 2.0), 1)
         CGContextSetFillColorWithColor(context, fillColor)
         CGContextSetStrokeColorWithColor(context, self.strokeColor.CGColor)
-        CGContextDrawPath(context, kCGPathFillStroke)
+        CGContextDrawPath(context, CGPathDrawingMode.FillStroke)
     }
     
     /**
     Overriden initializer that serves for setting up initial background color.
     
-    :param: frame Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
+    - parameter frame: Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
     */
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

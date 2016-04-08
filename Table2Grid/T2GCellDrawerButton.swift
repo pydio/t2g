@@ -29,7 +29,7 @@ class T2GCellDrawerButton: T2GColoredButton {
     /**
     Overriden initializer that serves for setting up initial values of minSize and minOriginCoord (that serves for calculated property maxOriginCoord).
     
-    :param: frame Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
+    - parameter frame: Default Cocoa API - The frame rectangle, which describes the view’s location and size in its superview’s coordinate system.
     */
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,15 +38,15 @@ class T2GCellDrawerButton: T2GColoredButton {
         self.minOriginCoord = frame.origin
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     /**
     Resizes the button while scrollView is scrolling. Increases size while going left on the X axis and decreases while going right.
     
-    :param: tailPosition The X coordinate of the tip of the tail of the T2GCell that is being scrolled.
-    :param: sizeDifference The difference of how much it moved since this method has been called last time. The method automatically adjusts if the value is out of bounds.
+    - parameter tailPosition: The X coordinate of the tip of the tail of the T2GCell that is being scrolled.
+    - parameter sizeDifference: The difference of how much it moved since this method has been called last time. The method automatically adjusts if the value is out of bounds.
     */
     func resize(tailPosition: CGFloat, sizeDifference: CGFloat) {
         let size = self.frame.size.width

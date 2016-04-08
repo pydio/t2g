@@ -25,16 +25,16 @@ Protocol for T2GNavigationBarMenu items' appearance and for handling clicking ev
     /**
     Gets called when the menu is being created.
     
-    :param: index Index of the cell in the menu. Indexed from 0 from the top.
-    :param: size Size of the whole cell.
-    :returns: UIView object that will be put as a subview of the button.
+    - parameter index: Index of the cell in the menu. Indexed from 0 from the top.
+    - parameter size: Size of the whole cell.
+    - returns: UIView object that will be put as a subview of the button.
     */
     func viewForCell(index: Int, size: CGSize) -> UIView
     
     /**
     Gets called when a button has been pressed.
     
-    :param: index Index of the selected button.
+    - parameter index: Index of the selected button.
     */
     func didSelectButton(index: Int)
 }
@@ -48,9 +48,9 @@ class T2GNavigationBarMenu: UIView {
     /**
     Custom initializer - initializes the menu and creates all its subviews. If delegate isn't set the cells will be empty.
     
-    :param: frame Default Cocoa API - The frame rectangle for the view, measured in points.
-    :param: itemCount Expected number of items. Their size is calculated proportionally
-    :param: delegate Delegate object that will determine appearance of the items in the menu and handle their events.
+    - parameter frame: Default Cocoa API - The frame rectangle for the view, measured in points.
+    - parameter itemCount: Expected number of items. Their size is calculated proportionally
+    - parameter delegate: Delegate object that will determine appearance of the items in the menu and handle their events.
     */
     convenience init(frame: CGRect, delegate: T2GNavigationBarMenuDelegate?) {
         self.init(frame: frame)
@@ -86,7 +86,7 @@ class T2GNavigationBarMenu: UIView {
     /**
     Redirects button action to its delegate.
     
-    :param: sender The button on which the action has been called.
+    - parameter sender: The button on which the action has been called.
     */
     internal func buttonClicked(sender: T2GColoredButton) {
         self.delegate?.didSelectButton(sender.tag)

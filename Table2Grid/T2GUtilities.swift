@@ -27,7 +27,7 @@ extension UIColor {
     /**
     Convenience initializer to initialize color with given Name.
     
-    :param: name Name Enum representing one of the additional colors.
+    - parameter name: Name Enum representing one of the additional colors.
     */
     convenience init(named name: Name) {
         let RGBAValue = name.rawValue

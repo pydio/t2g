@@ -16,8 +16,8 @@ protocol T2GPathViewControllerDelegate {
     /**
     Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
     
-    :param: index Index of the prependable item.
-    :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
+    - parameter index: Index of the prependable item.
+    - returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
     */
     func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
     
@@ -31,14 +31,14 @@ protocol T2GPathViewControllerDelegate {
     /**
     Gets called when a row has been selected.
     
-    :param: index Selected row in the table view.
+    - parameter index: Selected row in the table view.
     */
     func didSelectViewController(index: Int, completion: (() -> Void)?)
     
     /**
     Gets called when prepended index is selected and delegate does approve popping to root view controller. Returns optional closure to be performed when popping has ended.
     
-    :returns: Optional closure.
+    - returns: Optional closure.
     */
     func completionHandlerAfterRootViewControllerAppears() -> (() -> Void)?
 }
@@ -82,7 +82,7 @@ class T2GPathViewController: UITableViewController {
     Sets up the cell. Last cell (currently active ViewController) is grayed out and prepended with '>' symbol to show that this is where the user currently is in the structure.
     */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) 
         
         var text = self.path[indexPath.row]["name"]!
         if indexPath.row == self.path.count - 1 {
@@ -104,8 +104,8 @@ class T2GPathViewController: UITableViewController {
     
     - DISCUSSION: Needs to handle indices 0 and 1 as they are too proprietary for Pydio use.
     
-    :param: tableView Default Cocoa API - A table-view object informing the delegate about the new row selection.
-    :param: indexPath Default Cocoa API - An index path locating the new selected row in tableView.
+    - parameter tableView: Default Cocoa API - A table-view object informing the delegate about the new row selection.
+    - parameter indexPath: Default Cocoa API - An index path locating the new selected row in tableView.
     */
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -129,9 +129,9 @@ class T2GPathViewController: UITableViewController {
     /**
     Highlights every row except for the one that represents currently active ViewController.
     
-    :param: tableView Default Cocoa API - The table-view object that is making this request.
-    :param: indexPath Default Cocoa API - The index path of the row being highlighted.
-    :returns: Boolean value indicating whether or not highlight selected row.
+    - parameter tableView: Default Cocoa API - The table-view object that is making this request.
+    - parameter indexPath: Default Cocoa API - The index path of the row being highlighted.
+    - returns: Boolean value indicating whether or not highlight selected row.
     */
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return indexPath.row != self.path.count - 1
@@ -142,13 +142,13 @@ class T2GPathViewController: UITableViewController {
     
     - DISCUSSION: Is used only when the image mentioned in the path object is not present.
     
-    :param: color UICOlor object
-    :param: rect CGRect object giving exact size of the UIImage.
-    :returns: UIImage with given color and size.
+    - parameter color: UICOlor object
+    - parameter rect: CGRect object giving exact size of the UIImage.
+    - returns: UIImage with given color and size.
     */
     func imageWithColor(color: UIColor, rect: CGRect) -> UIImage {
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()
+        let context: CGContextRef = UIGraphicsGetCurrentContext()!
         
         CGContextSetFillColorWithColor(context, color.CGColor)
         CGContextFillRect(context, rect)

@@ -17,25 +17,25 @@ protocol T2GViewControllerDelegate {
     /**
     Creates and returns a T2GCell object ready to be put in the scrollView.
     
-    :param: indexPath NSIndexPath object with precise location of the cell (row and section).
-    :param: frame Expected frame for the cell.
-    :returns:
+    - parameter indexPath: NSIndexPath object with precise location of the cell (row and section).
+    - parameter frame: Expected frame for the cell.
+    - returns:
     */
     func cellForIndexPath(indexPath: NSIndexPath, frame: CGRect) -> T2GCell
     
     /**
     Returns the header text for section delimiter.
     
-    :param: section Integer value defining number of cells in given section.
-    :returns: Optional String to be set in the UILabel of T2GDelimiterView
+    - parameter section: Integer value defining number of cells in given section.
+    - returns: Optional String to be set in the UILabel of T2GDelimiterView
     */
     func titleForHeaderInSection(section: Int) -> String?
     
     /**
     Gets called when cell needs an update.
     
-    :param: cell T2GCell view to be updated.
-    :param: indexPath NSIndexPath object with precise location of the cell (row and section).
+    - parameter cell: T2GCell view to be updated.
+    - parameter indexPath: NSIndexPath object with precise location of the cell (row and section).
     */
     func updateCellForIndexPath(cell: T2GCell, indexPath: NSIndexPath)
     
@@ -44,22 +44,22 @@ protocol T2GViewControllerDelegate {
     /**
     Gets called when cell is tapped.
     
-    :param: indexPath NSIndexPath object with precise location of the cell (row and section).
+    - parameter indexPath: NSIndexPath object with precise location of the cell (row and section).
     */
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
     
     /**
     Gets called when button in the drawer is tapped.
     
-    :param: indexPath NSIndexPath object with precise location of the cell (row and section).
-    :param: buttonIndex Index of the button in the drawer - indexed from right to left starting with 0.
+    - parameter indexPath: NSIndexPath object with precise location of the cell (row and section).
+    - parameter buttonIndex: Index of the button in the drawer - indexed from right to left starting with 0.
     */
     func didSelectDrawerButtonAtIndex(indexPath: NSIndexPath, buttonIndex: Int)
     
     /**
     Gets called when a cell will be removed from the scrollView.
     
-    :param: NSIndexPath object with precise location of the cell (row and section).
+    - parameter NSIndexPath: object with precise location of the cell (row and section).
     */
     func willRemoveCellAtIndexPath(indexPath: NSIndexPath)
     
@@ -86,10 +86,10 @@ protocol T2GDropDelegate {
     /**
     Gets called when a T2GCell gets dropped on top of another cell. This method should handle the event of success/failure.
     
-    :param: cell Dragged cell.
-    :param: onCell Cell on which the dragged cell has been dropped.
-    :param: completion Completion closure to be performed in case the drop has been successful.
-    :param: failure Failure closure to be performed in case the drop has not been successful.
+    - parameter cell: Dragged cell.
+    - parameter onCell: Cell on which the dragged cell has been dropped.
+    - parameter completion: Completion closure to be performed in case the drop has been successful.
+    - parameter failure: Failure closure to be performed in case the drop has not been successful.
     */
     func didDropCell(cell: T2GCell, onCell: T2GCell, completion: () -> Void, failure: () -> Void)
 }
@@ -153,20 +153,20 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         self.view.addSubview(scrollView)
         
         // View must be added to hierarchy before setting constraints.
-        self.scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         let views = ["view": self.view, "scroll_view": scrollView]
         
-        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[scroll_view]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[scroll_view]|", options: .AlignAllCenterY, metrics: nil, views: views)
         view.addConstraints(constH)
         
-        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll_view]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll_view]|", options: .AlignAllCenterX, metrics: nil, views: views)
         view.addConstraints(constW)
     }
     
     /**
     Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible. Also checks if T2GNavigationBarTitle is present to form appearance for Normal and Highlighted state.
     
-    :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
+    - parameter animated: Default Cocoa API - If YES, the view was added to the window using an animation.
     */
     override func viewDidAppear(animated: Bool) {
         self.scrollView.delegate = self
@@ -220,7 +220,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Closes the cell at the given indexPath. Does nothing if the cell isn't visible anymore.
     
-    :param: indexPath NSIndexPath of the given cell.
+    - parameter indexPath: NSIndexPath of the given cell.
     */
     func closeCell(indexPath: NSIndexPath) {
         let index = self.scrollView.indexForIndexPath(indexPath)
@@ -236,7 +236,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     - DISCUSSION: This method probably shouldn't be here at all.
     */
     func moveBarButtonPressed() {
-        println("Not implemented yet.")
+        print("Not implemented yet.")
     }
     
     /**
@@ -251,7 +251,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             }
         }
         
-        self.removeRowsAtIndexPaths(indexPaths.sorted{$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}, notifyDelegate: true)
+        self.removeRowsAtIndexPaths(indexPaths.sort{$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}, notifyDelegate: true)
         self.editingModeSelection = [Int : Bool]()
     }
     
@@ -269,8 +269,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
             bar.tag = T2GViewTags.editingModeToolbar
             bar.translucent = false
             
-            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: "moveBarButtonPressed")
-            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: "deleteBarButtonPressed")
+            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.moveBarButtonPressed))
+            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.deleteBarButtonPressed))
             let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
             bar.items = [leftItem, space, rightItem]
             
@@ -289,14 +289,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Inserts delimiter for the given section.
     
-    :param: mode T2GLayoutMode for which the delimiter's frame should be calculated.
-    :param: section Integer value representing the section of the delimiter to ask for the title accordingly.
+    - parameter mode: T2GLayoutMode for which the delimiter's frame should be calculated.
+    - parameter section: Integer value representing the section of the delimiter to ask for the title accordingly.
     */
     func insertDelimiterForSection(mode: T2GLayoutMode, section: Int) {
         if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
             let name = self.delegate.titleForHeaderInSection(section) ?? ""
             
-            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode: mode, section: section), title: name)
+            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode, section: section), title: name)
             delimiter.tag = section + 1
             
             self.scrollView.addSubview(delimiter)
@@ -306,7 +306,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Inserts cell in given indexPath.
     
-    :param: indexPath
+    - parameter indexPath:
     */
     func insertRowAtIndexPath(indexPath: NSIndexPath) {
         let totalIndex = self.scrollView.indexForIndexPath(indexPath)
@@ -338,9 +338,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Inserts cell with given tag. Meant mainly for internal use as it is strongly advised not to use the internal tags.
     
-    :param: tag Integer value representing the tag of the new cell.
-    :param: animated Boolean flag determining if the cell should be added animated.
-    :returns: Integer value representing the tag of the newly added cell.
+    - parameter tag: Integer value representing the tag of the new cell.
+    - parameter animated: Boolean flag determining if the cell should be added animated.
+    - returns: Integer value representing the tag of the newly added cell.
     */
     private func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
         let indexPath = self.scrollView.indexPathForCell(tag)
@@ -380,8 +380,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Removes rows at given indexPaths. Used even for single row removal.
     
-    :param: indexPaths Array of NSIndexPath objects defining the positions of the cells.
-    :param: notifyDelegate Boolean flag saying whether or not the delegate should be notified about the removal - maybe the call was performed before the model has been adjusted.
+    - parameter indexPaths: Array of NSIndexPath objects defining the positions of the cells.
+    - parameter notifyDelegate: Boolean flag saying whether or not the delegate should be notified about the removal - maybe the call was performed before the model has been adjusted.
     */
     func removeRowsAtIndexPaths(indexPaths: [NSIndexPath], notifyDelegate: Bool = false) {
         var indices: [Int] = []
@@ -421,7 +421,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                 }
                 
                 var tags = self.scrollView.subviews.filter({$0 is T2GCell || $0 is T2GDelimiterView}).map({(subview) -> Int in return subview.tag})
-                tags.sort(<)
+                tags.sortInPlace(<)
                         
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     var changedCount = 0
@@ -471,7 +471,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     - DISCUSSION: Rearranging items when deep in view - the animation could be much nicer (sometimes, when deep in the view, tha animation makes everything "slide away" and then it magically shows everything that's supposed to be visible) - maybe scroll to point where the top item should be after the view is rearranged.
     
-    :param: completionClosure
+    - parameter completionClosure:
     */
     private func transformViewWithCompletion(completionClosure:() -> Void) {
         let collectionClosure = {() -> T2GLayoutMode in
@@ -496,15 +496,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
         }
         
         let mode = self.scrollView.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
-        self.scrollView.adjustContentSize(mode: mode)
+        self.scrollView.adjustContentSize(mode)
         self.displayMissingCells()
-        self.displayMissingCells(mode: mode)
+        self.displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
             
             for view in self.scrollView.subviews {
                 if let cell = view as? T2GCell {
-                    let frame = self.scrollView.frameForCell(mode: mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                    let frame = self.scrollView.frameForCell(mode, indexPath: self.scrollView.indexPathForCell(cell.tag))
                     
                     /*
                     * Not really working - TBD
@@ -517,7 +517,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
                     
                     cell.changeFrameParadigm(mode, frame: frame)
                 } else if let delimiter = view as? T2GDelimiterView {
-                    let frame = self.scrollView.frameForDelimiter(mode: mode, section: delimiter.tag - 1)
+                    let frame = self.scrollView.frameForDelimiter(mode, section: delimiter.tag - 1)
                     delimiter.frame = frame
                 }
             }
@@ -536,14 +536,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Makes sure that all subviews get properly resized (Table) or placed (Collection) during rotation. Forces navigation controller menu to close when opened.
     
-    :param: toInterfaceOrientation Default Cocoa API - The new orientation for the user interface.
-    :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
+    - parameter toInterfaceOrientation: Default Cocoa API - The new orientation for the user interface.
+    - parameter duration: Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
         
         if let navCtr = self.navigationController as? T2GNaviViewController {
-            navCtr.toggleBarMenu(forceClose: true)
+            navCtr.toggleBarMenu(true)
         }
         
         let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
@@ -583,7 +583,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Makes sure to display all missing cells after the rotation ended.
     
-    :param: fromInterfaceOrientation Default Cocoa API - The old orientation of the user interface.
+    - parameter fromInterfaceOrientation: Default Cocoa API - The old orientation of the user interface.
     */
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.displayMissingCells()
@@ -601,7 +601,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Performs cleanup of all forgotten subviews that are off-screen.
     
-    :param: scrollView Default Cocoa API - The scroll-view object in which the decelerating occurred.
+    - parameter scrollView: Default Cocoa API - The scroll-view object in which the decelerating occurred.
     */
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.scrollView.performSubviewCleanup()
@@ -612,8 +612,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     - WARNING: Super must be called if hiding feature of T2GScrollController is desired.
     
-    :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
-    :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
+    - parameter scrollView: Default Cocoa API - The scroll-view object that finished scrolling the content view.
+    - parameter willDecelerate: Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         super.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
@@ -628,18 +628,18 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     - WARNING: Super must be called if hiding feature of T2GScrollController is desired. Fix has been done to handle rotation, not sure what it will do when scrolling fast.
     
-    :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
+    - parameter scrollView: Default Cocoa API - The scroll-view object in which the scrolling occurred.
     */
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
         
-        var currentOffset = scrollView.contentOffset;
-        var currentTime = NSDate.timeIntervalSinceReferenceDate()
+        let currentOffset = scrollView.contentOffset;
+        let currentTime = NSDate.timeIntervalSinceReferenceDate()
         var currentSpeed = T2GScrollingSpeed.Slow
         
         if(currentTime - self.lastSpeedOffsetCaptureTime > 0.1) {
-            var distance = currentOffset.y - self.lastSpeedOffset.y
-            var scrollSpeed = fabsf(Float((distance * 10) / 1000))
+            let distance = currentOffset.y - self.lastSpeedOffset.y
+            let scrollSpeed = fabsf(Float((distance * 10) / 1000))
             
             if (scrollSpeed > 6) {
                 currentSpeed = .Fast
@@ -692,7 +692,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Checks and displays all cells that should be displayed.
     
-    :param: mode T2GLayoutMode for which the supposedly displayed cells should be calculated. Optional value - if nothing is passed, current layout is used.
+    - parameter mode: T2GLayoutMode for which the supposedly displayed cells should be calculated. Optional value - if nothing is passed, current layout is used.
     */
     func displayMissingCells(mode: T2GLayoutMode? = nil) {
         let m = mode ?? self.scrollView.layoutMode
@@ -706,15 +706,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Adds rows while scrolling. Handles edge situations.
     
-    :param: direction T2GScrollDirection defining which way is the scrollView being scrolled.
-    :param: startTag Integer value representing the starting tag from which the next should be calculated - if direction is Up it is the TOP cell, if Down it is the BOTTOM cell in the scrollView.
-    :returns: Integer value of the last added tag to the scrollView.
+    - parameter direction: T2GScrollDirection defining which way is the scrollView being scrolled.
+    - parameter startTag: Integer value representing the starting tag from which the next should be calculated - if direction is Up it is the TOP cell, if Down it is the BOTTOM cell in the scrollView.
+    - returns: Integer value of the last added tag to the scrollView.
     */
     func addRowsWhileScrolling(direction: T2GScrollDirection, startTag: Int) -> Int {
-        var multiplier = direction == .Up ? -1 : 1
-        var firstTag = startTag + (1 * multiplier)
-        var secondTag = startTag + (2 * multiplier)
-        var thirdTag = startTag + (3 * multiplier)
+        let multiplier = direction == .Up ? -1 : 1
+        let firstTag = startTag + (1 * multiplier)
+        let secondTag = startTag + (2 * multiplier)
+        let thirdTag = startTag + (3 * multiplier)
         
         let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
         let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
@@ -741,7 +741,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag Integer value representing the tag of the currently swiped cell.
+    - parameter tag: Integer value representing the tag of the currently swiped cell.
     */
     func cellStartedSwiping(tag: Int) {
         if self.openCellTag != -1 && self.openCellTag != tag {
@@ -755,7 +755,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag Integer value representing the tag of the selected cell.
+    - parameter tag: Integer value representing the tag of the selected cell.
     */
     func didSelectCell(tag: Int) {
         self.delegate.didSelectCellAtIndexPath(self.scrollView.indexPathForCell(tag))
@@ -766,7 +766,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag Integer value representing the tag of the opened cell.
+    - parameter tag: Integer value representing the tag of the opened cell.
     */
     func didCellOpen(tag: Int) {
         self.openCellTag = tag
@@ -777,7 +777,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag
+    - parameter tag:
     */
     func didCellClose(tag: Int) {
         self.openCellTag = -1
@@ -788,8 +788,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag Integer value representing the tag of the cell where the drawer button has been selected.
-    :param: index Integer value representing the index of the button that has been selected.
+    - parameter tag: Integer value representing the tag of the cell where the drawer button has been selected.
+    - parameter index: Integer value representing the index of the button that has been selected.
     */
     func didSelectButton(tag: Int, index: Int) {
         self.delegate.didSelectDrawerButtonAtIndex(self.scrollView.indexPathForCell(tag), buttonIndex: index)
@@ -800,8 +800,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     
     For description of the function header, see T2GCellDelegate protocol definition in T2GCell class.
     
-    :param: tag Integer value representing the tag value of the cell whose checkbox has been pressed.
-    :param: selected Boolean value representing whether the checkbox is selected or not.
+    - parameter tag: Integer value representing the tag value of the cell whose checkbox has been pressed.
+    - parameter selected: Boolean value representing whether the checkbox is selected or not.
     */
     func didSelectMultipleChoiceButton(tag: Int, selected: Bool) {
         self.editingModeSelection[tag - T2GViewTags.cellConstant] = selected
@@ -812,9 +812,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Helper method finding the biggest overlapping subview to given CGRect.
     
-    :param: excludedTag Integer value of the tag representing the dragged view to leave it out of the equation.
-    :param: frame CGRect object representing the view to which an overlapping view is desired to be found.
-    :returns: Optional UIView object if an eligible one has been found that is overlapping with the given frame.
+    - parameter excludedTag: Integer value of the tag representing the dragged view to leave it out of the equation.
+    - parameter frame: CGRect object representing the view to which an overlapping view is desired to be found.
+    - returns: Optional UIView object if an eligible one has been found that is overlapping with the given frame.
     */
     func findBiggestOverlappingView(excludedTag: Int, frame: CGRect) -> UIView? {
         var winningView: UIView?
@@ -848,13 +848,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Gets called when T2GDragAndDropView gets moved. Highlights the most overlapping view and determines whether the scrollView should be automatically scrolled up or down (top/bottom of the screen).
     
-    :param: tag Integer value of the given cell.
-    :param: frame CGRect object representing the frame of the dragged T2GDragAndDropView.
+    - parameter tag: Integer value of the given cell.
+    - parameter frame: CGRect object representing the frame of the dragged T2GDragAndDropView.
     */
     func didMove(tag: Int, frame: CGRect) {
         let height: CGFloat = 30.0
         
-        var frameInView = self.scrollView.convertRect(frame, toView: self.view)
+        let frameInView = self.scrollView.convertRect(frame, toView: self.view)
         
         var topOrigin = self.scrollView.convertPoint(CGPointMake(self.scrollView.contentOffset.x, self.scrollView.contentOffset.y), toView: self.view)
         if let navigationBar = self.navigationController {
@@ -894,7 +894,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GDragAndDropDel
     /**
     Gets called when T2GDragAndDropView gets dropped. Determines where exactly it was dropped and calls the delegate method to handle whether or not will the destination accept it.
     
-    :param: view T2GDragAndDropView that got dropped.
+    - parameter view: T2GDragAndDropView that got dropped.
     */
     func didDrop(view: T2GDragAndDropView) {
         self.scrollView.performSubviewCleanup()

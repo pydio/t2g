@@ -16,7 +16,7 @@ class T2GTriangleView: UIView {
     /// overridden property to be able to distribute the change to the fill of the layer
     override var backgroundColor: UIColor? {
         get {
-            return UIColor(CGColor: shapeLayer.fillColor)
+            return UIColor(CGColor: shapeLayer.fillColor!)
         }
         set {
             shapeLayer.fillColor = newValue!.CGColor
@@ -31,7 +31,7 @@ class T2GTriangleView: UIView {
     /**
     Sets custom class of the layer.
     
-    :returns: Default Cocoa API - The class used to create the view’s Core Animation layer.
+    - returns: Default Cocoa API - The class used to create the view’s Core Animation layer.
     */
     override class func layerClass() -> AnyClass {
         return TriangleLayer.self
@@ -51,8 +51,8 @@ class T2GTriangleView: UIView {
         /**
         Creates the triangle shape for given rectangle. Created triangle always points down.
         
-        :param: rect CGRect object to define the bounds where the triangle path should be drawn.
-        :returns: UIBezierPath defining the path of the triangle.
+        - parameter rect: CGRect object to define the bounds where the triangle path should be drawn.
+        - returns: UIBezierPath defining the path of the triangle.
         */
         func shapeForBounds(rect: CGRect) -> UIBezierPath {
             let point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))
@@ -70,16 +70,16 @@ class T2GTriangleView: UIView {
         /**
         Overrides default behavior to be able to render the view when the frame gets changed.
         
-        :param: anim Default Cocoa API - The animation to be added to the render tree.
-        :param: key Default Cocoa API - A string that identifies the animation.
+        - parameter anim: Default Cocoa API - The animation to be added to the render tree.
+        - parameter key: Default Cocoa API - A string that identifies the animation.
         */
-        override func addAnimation(anim: CAAnimation!, forKey key: String!) {
+        override func addAnimation(anim: CAAnimation, forKey key: String?) {
             super.addAnimation(anim, forKey: key)
             
             if (anim.isKindOfClass(CABasicAnimation.self)) {
                 let basicAnimation = anim as! CABasicAnimation
                 if (basicAnimation.keyPath == "bounds.size") {
-                    var pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
+                    let pathAnimation = basicAnimation.mutableCopy() as! CABasicAnimation
                     pathAnimation.keyPath = "path"
                     pathAnimation.fromValue = self.path
                     pathAnimation.toValue = self.shapeForBounds(self.bounds).CGPath

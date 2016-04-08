@@ -15,7 +15,7 @@ protocol T2GDragAndDropOwnerDelegate {
     /**
     Gets called when draggable boolean variable is set to true. Passes long press gesture recognizer to be added to the drop owner delegate.
     
-    :param: recognizer Long press gesture created when draggable flag is set to true. Should be added to the owner of this view.
+    - parameter recognizer: Long press gesture created when draggable flag is set to true. Should be added to the owner of this view.
     */
     func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer)
 }
@@ -27,15 +27,15 @@ protocol T2GDragAndDropDelegate {
     /**
     Informs delegate that frame has been changed while being dragged.
     
-    :param: tag Tag of the dragged view.
-    :param: frame Frame of the dragged view (for potential overlapping detection).
+    - parameter tag: Tag of the dragged view.
+    - parameter frame: Frame of the dragged view (for potential overlapping detection).
     */
     func didMove(tag: Int, frame: CGRect)
     
     /**
     Informs delegate that the view has been dropped - the long press gesture (followed by swiping movement has come to an end).
     
-    :param: cell The whole view in case the delegte wants to modify or remove it.
+    - parameter cell: The whole view in case the delegte wants to modify or remove it.
     */
     func didDrop(view: T2GDragAndDropView)
 }
@@ -76,7 +76,7 @@ class T2GDragAndDropView: UIView {
     /**
     Long press handler - animates the view (zoom in and out to signal change of its state) and then 'releases' the view to drag around. When drag has been finished, delegate method didDrop gets called to handle next steps.
     
-    :param: sender The long press gesture that is created when draggable flag is set to true.
+    - parameter sender: The long press gesture that is created when draggable flag is set to true.
     */
     func handleLongPress(sender: UILongPressGestureRecognizer) {
         if self.viewWithTag(T2GViewTags.checkboxButton) == nil {

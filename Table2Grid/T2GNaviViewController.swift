@@ -16,8 +16,8 @@ extension UINavigationController {
     /**
     Pops to given viewController in transaction and performs given closure when popping has ended.
     
-    :param: vc View controller to be popped to.
-    :param: handler Optional handler to be performed after popping has ended.
+    - parameter vc: View controller to be popped to.
+    - parameter handler: Optional handler to be performed after popping has ended.
     */
     func popToViewControllerWithHandler(vc: UIViewController, handler: (() -> Void)?) {
         CATransaction.begin()
@@ -35,7 +35,7 @@ extension UIViewController {
     /**
     Returns completion closure to be performed.
     
-    :returns: Optional closure.
+    - returns: Optional closure.
     */
     func completionHandlerWhenAppeared() -> (() -> Void)? {
         return nil
@@ -50,7 +50,7 @@ protocol T2GNaviPathDelegate {
     /**
     Gets called when path is being built to know how many items should be prepended.
     
-    :returns: Number of items to be prepended.
+    - returns: Number of items to be prepended.
     */
     func pathPrependableItemCount() -> Int
     
@@ -59,31 +59,31 @@ protocol T2GNaviPathDelegate {
     
     - DISCUSSION: Could be made as returning optional, since Swift doesn't provide optional protocol methods. But then again, this method doesn't get called if the count is 0, so it can be implemented with a one-liner `{ return ("", "") }`
     
-    :param: index Index of the prependable item.
-    :returns: Tuple with the name and the image name to use.
+    - parameter index: Index of the prependable item.
+    - returns: Tuple with the name and the image name to use.
     */
     func pathPrependableItemAttributes(index: Int) -> (name: String, image: String)
     
     /**
     Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
     
-    :param: index Index of the prependable item.
-    :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
+    - parameter index: Index of the prependable item.
+    - returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
     */
     func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
     
     /**
     Gets called when path is being built to know what icon to use for the given view controller.
     
-    :param: viewController UIViewController on the stack of viewControllers in UINavigationController.
-    :returns: Image asset name.
+    - parameter viewController: UIViewController on the stack of viewControllers in UINavigationController.
+    - returns: Image asset name.
     */
     func pathImageForViewController(viewController: UIViewController) -> String
     
     /**
     Gets called when prependable item on given index got selected.
     
-    :param: index Index of the prepended item.
+    - parameter index: Index of the prepended item.
     */
     func didSelectPrependableIndex(index: Int)
 }
@@ -109,7 +109,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Adds status bar view behind the status bar for graphical effect.
     
-    :returns: The status bar background view.
+    - returns: The status bar background view.
     */
     func addStatusBarBackgroundView() -> UIView {
         if let view = self.view.viewWithTag(T2GViewTags.statusBarBackgroundView) {
@@ -126,11 +126,11 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Pops current view controller. In case previous view controller in the stack has isHidingEnabled flag set to true, it shows the bar so it doesn't mess up with the UI while animating the cells on the way back.
     
-    :param: animated Default Cocoa API behavior - Set this value to YES to animate the transition.
-    :returns: The view controller that was popped from the stack.
+    - parameter animated: Default Cocoa API behavior - Set this value to YES to animate the transition.
+    - returns: The view controller that was popped from the stack.
     */
     override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
         var poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
@@ -138,7 +138,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
                 visibleViewController.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            visibleViewController.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            visibleViewController.scrollView.animateSubviewCells(false)
             
             if let mDelegate = visibleViewController as? T2GNavigationBarMenuDelegate {
                 self.menuDelegate = mDelegate
@@ -150,18 +150,18 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Pushes new view controller on the stack with delay. The delay serves to create a gap to let exit animation be more visible.
     
-    :param: viewController The view controller to push onto the stack.
-    :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
+    - parameter viewController: The view controller to push onto the stack.
+    - parameter animated: Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
     override func pushViewController(viewController: UIViewController, animated: Bool) {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
                 vc.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            vc.scrollView.animateSubviewCells(isGoingOffscreen: true)
+            vc.scrollView.animateSubviewCells(true)
         }
         
         self.delay(self.segueDelay, closure: { () -> Void in
@@ -172,8 +172,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Helper method to perform delay dispatch (unable to call the same method inside dispatch_after) of push.
     
-    :param: viewController The view controller to push onto the stack.
-    :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
+    - parameter viewController: The view controller to push onto the stack.
+    - parameter animated: Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
     func performPush(viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: animated)
@@ -182,8 +182,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Helper method that dispatches method after certain time passes.
     
-    :param: delay Time to wait before closure is called.
-    :param: closure Closure to be performed after the delay time passes.
+    - parameter delay: Time to wait before closure is called.
+    - parameter closure: Closure to be performed after the delay time passes.
     */
     func delay(delay: Double, closure:() -> Void) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
@@ -193,15 +193,15 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     Proxy function of toggleBarMenu(forceClose) for UIBarButtonItem action call.
     */
     func toggleBarMenu() {
-        self.toggleBarMenu(forceClose: false)
+        self.toggleBarMenu(false)
     }
     
     /**
     Opens/collapses navigation bar menu which slides below from the top of the navigation bar. Works like a switch on default, but is able to accept flag forcing the menu to disappear (handy to use when VC is about to be rotated and it is not desired to have a menu opened).
     
-    :param: forceClose Boolean flag indicating whether toggle should be automatic or forced close only.
+    - parameter forceClose: Boolean flag indicating whether toggle should be automatic or forced close only.
     */
-    func toggleBarMenu(#forceClose: Bool) {
+    func toggleBarMenu(forceClose: Bool) {
         if let height: CGFloat = self.menuDelegate?.heightForMenu() {
             let dismissClosure = { () -> Bool in
                 if let menu = self.view.viewWithTag(T2GViewTags.navigationBarMenu) {
@@ -255,10 +255,10 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Instantiates and shows PathView controller as UIPopover.
     
-    :param: sender UIButton from which the PathView controller will be shown.
+    - parameter sender: UIButton from which the PathView controller will be shown.
     */
     func showPathPopover(sender: UIButton) {
-        self.toggleBarMenu(forceClose: true)
+        self.toggleBarMenu(true)
         
         let pathViewController = T2GPathViewController()
         pathViewController.modalPresentationStyle = .Popover
@@ -279,8 +279,8 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Helper method for when PathView controller gets presented as UIPopover.
     
-    :param: controller Default Cocoa API - The presentation controller that is managing the size change.
-    :returns: Default Cocoa API - The new presentation style, which must be either UIModalPresentationFullScreen or UIModalPresentationOverFullScreen.
+    - parameter controller: Default Cocoa API - The presentation controller that is managing the size change.
+    - returns: Default Cocoa API - The new presentation style, which must be either UIModalPresentationFullScreen or UIModalPresentationOverFullScreen.
     */
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
@@ -289,7 +289,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Builds path comprising of all ViewControllers on the stack.
     
-    :returns: Array of Dictionary objects containing name and image to be displayed.
+    - returns: Array of Dictionary objects containing name and image to be displayed.
     */
     func buildPath() -> [[String : String]] {
         var path = [[String : String]]()
@@ -301,7 +301,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
             }
         }
         
-        for vc in (self.viewControllers as! [UIViewController]) {
+        for vc in (self.viewControllers ) {
             let image = self.pathDelegate?.pathImageForViewController(vc) ?? ""
             path.append(["name" : vc.title!, "image" : image])
         }
@@ -314,7 +314,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Redirects to pathDelegate.
     
-    :returns: Boolean flag indicating whether to pop or not - if pathDelegate is nil, returns false.
+    - returns: Boolean flag indicating whether to pop or not - if pathDelegate is nil, returns false.
     */
     func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool {
         return self.pathDelegate?.shouldPopToRootWhenPrependedIndexIsSelected(index) ?? false
@@ -323,7 +323,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Redirects to pathDelegate.
     
-    :param: index Index of the prepended item.
+    - parameter index: Index of the prepended item.
     */
     func didSelectPrependedIndex(index: Int) {
         self.pathDelegate?.didSelectPrependableIndex(index)
@@ -332,18 +332,18 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Pops to selected ViewController on the stack.
     
-    :param: index Index of the selected ViewController.
+    - parameter index: Index of the selected ViewController.
     */
     func didSelectViewController(index: Int, completion: (() -> Void)?) {
-        self.toggleBarMenu(forceClose: true)
-        let vc = self.viewControllers[index] as! UIViewController
+        self.toggleBarMenu(true)
+        let vc = self.viewControllers[index] 
         
         if let t2gVC = vc as? T2GViewController {
             if t2gVC.isHidingEnabled {
                 t2gVC.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
             }
             
-            t2gVC.scrollView.animateSubviewCells(isGoingOffscreen: false)
+            t2gVC.scrollView.animateSubviewCells(false)
             
             if let mDelegate = t2gVC as? T2GNavigationBarMenuDelegate {
                 self.menuDelegate = mDelegate
@@ -356,7 +356,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     /**
     Returns closure to be performed when root view controller appears.
     
-    :returns: Optional closure.
+    - returns: Optional closure.
     */
     func completionHandlerAfterRootViewControllerAppears() -> (() -> Void)? {
         if let vc = self.viewControllers[0] as? UIViewController {

@@ -31,9 +31,9 @@ class T2GNavigationBarTitle: T2GColoredButton {
     /**
     Convenience initializer that creates the whole view. Truncates the text in the middle if it exceeds given width and appends ▾ symbol at the end to inform user that this, in fact, is clickable.
     
-    :param: frame CGRect giving the bounds of the button.
-    :param: text The text that will be placed as the title. Truncated in the middle if too long.
-    :param: shouldHighlightText Determines whether the button should highlight the text or the background.
+    - parameter frame: CGRect giving the bounds of the button.
+    - parameter text: The text that will be placed as the title. Truncated in the middle if too long.
+    - parameter shouldHighlightText: Determines whether the button should highlight the text or the background.
     */
     convenience init(frame: CGRect, text: String, shouldHighlightText: Bool) {
         self.init(frame: frame)
@@ -64,10 +64,10 @@ class T2GNavigationBarTitle: T2GColoredButton {
     /**
     Truncates given string if it is too long to fit in the given frame using given font.
     
-    :param: string The text that is supposed to be truncated if necessary.
-    :param: width Max width bounding the size of the label.
-    :param: font Font for which the size is supposed to be calculated.
-    :returns: Truncated string with '...' in the middle.
+    - parameter string: The text that is supposed to be truncated if necessary.
+    - parameter width: Max width bounding the size of the label.
+    - parameter font: Font for which the size is supposed to be calculated.
+    - returns: Truncated string with '...' in the middle.
     */
     func stringTruncatedToWidth(string: NSString, width: CGFloat, font: UIFont) -> String {
         var truncatedString = NSMutableString(string: string)

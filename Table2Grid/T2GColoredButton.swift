@@ -29,13 +29,13 @@ class T2GColoredButton: UIButton {
     
     - DISCUSSION: This class used to be implemented with three listeners on TouchUpInside, TouchUpOutside and TouchDown that would change the background color. The problem was that it wasn't fast enough (slight, but still noticeable delay). This implementation may not be "standard" but it sure solves the whole issue very well.
     
-    :param: color Color to be used to fill the image with.
-    :returns: UIImage with the same dimensions as this view filled with given color.
+    - parameter color: Color to be used to fill the image with.
+    - returns: UIImage with the same dimensions as this view filled with given color.
     */
     private func imageWithColor(color: UIColor) -> UIImage {
         let rect: CGRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()
+        let context: CGContextRef = UIGraphicsGetCurrentContext()!
     
         CGContextSetFillColorWithColor(context, color.CGColor)
         CGContextFillRect(context, rect)
@@ -51,15 +51,15 @@ class T2GColoredButton: UIButton {
     
     - WARNING: The view must be rendered already. Without it, it creates a UIImage that is completely black.
     
-    :param: view View that will be transformed into a UIImage.
-    :returns: UIImage of the same size as the view given in the parameter.
+    - parameter view: View that will be transformed into a UIImage.
+    - returns: UIImage of the same size as the view given in the parameter.
     */
     func imageWithView(view: UIView) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0)
         
         view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
         
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         return image

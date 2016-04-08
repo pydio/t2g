@@ -56,8 +56,8 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /**
     Shows bar while rotating to landscape mode - since iOS 8 introduced the smaller version of the bar, it would totally mess up the whole layout.
     
-    :param: toInterfaceOrientation Default Cocoa API - The new orientation for the user interface.
-    :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
+    - parameter toInterfaceOrientation: Default Cocoa API - The new orientation for the user interface.
+    - parameter duration: Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if self.isHidingEnabled {
@@ -70,8 +70,8 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /**
     Handles the end of scrolling event, to make sure the navigation bar doesn't end up in inconsistent state (hides/shows).
     
-    :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
-    :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
+    - parameter scrollView: Default Cocoa API - The scroll-view object that finished scrolling the content view.
+    - parameter willDecelerate: Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
@@ -83,7 +83,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
 
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
                         var barFrame = navigationCtr.navigationBar.frame;
-                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
+                        let blackstripe = self.createMinifiedStripeBar(navigationCtr)
                         
                         statusBarBackgroundViewFrame?.origin.y = -44
                         barFrame.origin.y = -24
@@ -120,7 +120,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /**
     Gets called every time the scrollView moves - even when UIRefreshControl is the one making the movement. This method handles all those events and acts accordingly - moves the navigation bar up/down and in case of snapping back it calls handleSnapBack method.
     
-    :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
+    - parameter scrollView: Default Cocoa API - The scroll-view object in which the scrolling occurred.
     */
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if self.isHidingEnabled {
@@ -230,14 +230,14 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /**
     Creates new dummy stripe bar (if it does not already exist - otherwise it just returns what's already there) that overlays the UINavigationBar that is partially hidden. It is here, because in case buttons are present in the navigation bar then they "sort of" overlap into the whole view and it looks rather uninviting. That's where this overlay comes in to make it visually more appealing.
     
-    :param: navigationCtr The UINavigationController in which the minified stripe view should be initialized.
-    :returns: The UIView that has been added to the UINavigationController passed in the parameters.
+    - parameter navigationCtr: The UINavigationController in which the minified stripe view should be initialized.
+    - returns: The UIView that has been added to the UINavigationController passed in the parameters.
     */
     func createMinifiedStripeBar(navigationCtr: UINavigationController) -> UIView {
         if let blackstripe = navigationCtr.view.viewWithTag(5555) {
             return blackstripe
         } else {
-            var blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
+            let blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
             blackstripe2.tag = 5555
             blackstripe2.backgroundColor = UIColor(named: .PYDOrange)
             blackstripe2.hidden = true
@@ -249,7 +249,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /**
     Helper method to show the bar whatever is going on. Comes in handy when the device is about to be rotated or new view controller is about to be pushed on the stack.
     
-    :param: isLandscape Flag determining which kind of navigation bar we'll be dealing with (minified version since iOS 8).
+    - parameter isLandscape: Flag determining which kind of navigation bar we'll be dealing with (minified version since iOS 8).
     */
     func showBar(isLandscape: Bool) {
         if let navigationCtr = self.navigationController {

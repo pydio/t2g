@@ -17,8 +17,8 @@ class T2GDelimiterView: UIView {
     /**
     Convenience initializer to initialize the delimiter with given parameters.
     
-    :param: title Text line.
-    :param: frame Frame for the delimiter.
+    - parameter title: Text line.
+    - parameter frame: Frame for the delimiter.
     */
     convenience init(frame: CGRect, title: String) {
         self.init(frame: frame)
@@ -31,25 +31,25 @@ class T2GDelimiterView: UIView {
         self.titleLabel!.text = title
         self.addSubview(self.titleLabel!)
         
-        self.titleLabel!.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.titleLabel!.translatesAutoresizingMaskIntoConstraints = false
         let views = ["background": self, "button": self.titleLabel!]
         
-        var constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let constH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[button]|", options: .AlignAllCenterY, metrics: nil, views: views)
         self.addConstraints(constH)
         
-        var constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
+        let constW = NSLayoutConstraint.constraintsWithVisualFormat("V:|[button]|", options: .AlignAllCenterX, metrics: nil, views: views)
         self.addConstraints(constW)
     }
     
     /**
     Calculates proportional max size of font for a label in given frame.
     
-    :param: frame Bounds for the text used for the calculation.
-    :returns: Max size of system font.
+    - parameter frame: Bounds for the text used for the calculation.
+    - returns: Max size of system font.
     */
     private func fontSize(frame: CGRect) -> CGFloat {
         let dummyString: NSString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        var dummyFont = UIFont.systemFontOfSize(12)
+        let dummyFont = UIFont.systemFontOfSize(12)
         
         let size = dummyString.sizeWithAttributes([NSFontAttributeName : UIFont.systemFontOfSize(12)])
         let adjustedSize: CGSize = CGSizeMake(CGFloat(ceilf(Float(size.width))), CGFloat(ceilf(Float(size.height))))

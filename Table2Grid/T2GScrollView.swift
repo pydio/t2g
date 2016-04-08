@@ -27,23 +27,23 @@ protocol T2GScrollViewDataDelegate {
     /**
     Returns the number of sections in the datasource.
     
-    :returns: Integer value defining number of sections.
+    - returns: Integer value defining number of sections.
     */
     func numberOfSections() -> Int
     
     /**
     Returns the number of cells in given section.
     
-    :param: section Integer value representing the section, indexed from 0.
-    :returns: Integer value defining number of cells in given section.
+    - parameter section: Integer value representing the section, indexed from 0.
+    - returns: Integer value defining number of cells in given section.
     */
     func numberOfCellsInSection(section: Int) -> Int
     
     /**
     Returns the dimensions for the cell in given layout mode.
     
-    :param: mode T2GLayoutMode for which dimensions should be calculated.
-    :returns: Tuple of width, height and padding for the cell.
+    - parameter mode: T2GLayoutMode for which dimensions should be calculated.
+    - returns: Tuple of width, height and padding for the cell.
     */
     func dimensionsForCell(mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
     
@@ -52,7 +52,7 @@ protocol T2GScrollViewDataDelegate {
     
     - DISCUSSION: Will be most likely renamed to heightForSectionHeader, because the width is left out and is stretched to the full width.
     
-    :returns: CGSize object defining width and height.
+    - returns: CGSize object defining width and height.
     */
     func dimensionsForSectionHeader() -> CGSize
 }
@@ -86,8 +86,8 @@ class T2GScrollView: UIScrollView {
     /**
     Returns the number of cells per line in given mode.
     
-    :param: mode T2GLayoutMode for which the line cell count should be calculated.
-    :returns: Integer value representing the number of cells for given mode.
+    - parameter mode: T2GLayoutMode for which the line cell count should be calculated.
+    - returns: Integer value representing the number of cells for given mode.
     */
     func itemCountPerLine(mode: T2GLayoutMode) -> Int {
         if mode == .Collection {
@@ -101,8 +101,8 @@ class T2GScrollView: UIScrollView {
     /**
     Returns the number of cells that SHOULD be visible at the moment for the given mode.
     
-    :param: mode T2GLayoutMode for which the count should be calculated. Optional value - if nothing is passed, current layout is used.
-    :returns:
+    - parameter mode: T2GLayoutMode for which the count should be calculated. Optional value - if nothing is passed, current layout is used.
+    - returns:
     */
     func visibleCellCount(mode: T2GLayoutMode? = nil) -> Int {
         let m = mode ?? self.layoutMode
@@ -130,9 +130,9 @@ class T2GScrollView: UIScrollView {
     /**
     Returns the exact frame for cell at given indexPath.
     
-    :param: mode T2GLayoutMode for which the cell frame should be calculated. Optional value - if nothing is passed, current layout is used.
-    :param: indexPath NSIndexPath object for the given cell.
-    :returns: CGRect object with origin and size parameters filled and ready to be used on the T2GCell view.
+    - parameter mode: T2GLayoutMode for which the cell frame should be calculated. Optional value - if nothing is passed, current layout is used.
+    - parameter indexPath: NSIndexPath object for the given cell.
+    - returns: CGRect object with origin and size parameters filled and ready to be used on the T2GCell view.
     */
     func frameForCell(mode: T2GLayoutMode? = nil, indexPath: NSIndexPath) -> CGRect {
         let m = mode ?? self.layoutMode
@@ -176,19 +176,19 @@ class T2GScrollView: UIScrollView {
     /**
     Returns the exact frame for delimiter for given section.
     
-    :param: mode T2GLayoutMode for which the delimiter frame should be calculated. Optional value - if nothing is passed, current layout is used.
-    :param: section Integer value representing the section.
-    :returns: CGRect object with origin and size parameters filled and ready to be used on the T2GDelimiter view.
+    - parameter mode: T2GLayoutMode for which the delimiter frame should be calculated. Optional value - if nothing is passed, current layout is used.
+    - parameter section: Integer value representing the section.
+    - returns: CGRect object with origin and size parameters filled and ready to be used on the T2GDelimiter view.
     */
     func frameForDelimiter(mode: T2GLayoutMode? = nil, section: Int) -> CGRect {
         let m = mode ?? self.layoutMode
         
-        var x: CGFloat = 0.0
+        let x: CGFloat = 0.0
         var y: CGFloat = 0.0
         
         let dimensions = self.dataDelegate!.dimensionsForSectionHeader()
-        var height: CGFloat = dimensions.height
-        var width: CGFloat = self.frame.size.width
+        let height: CGFloat = dimensions.height
+        let width: CGFloat = self.frame.size.width
         
         let cellDimensions = self.dataDelegate!.dimensionsForCell(m)
         
@@ -215,7 +215,7 @@ class T2GScrollView: UIScrollView {
     /**
     Adjusts the content size of the scrollView depending on the number of cells.
     
-    :param: mode T2GLayoutMode for which the content size should be calculated. Optional value - if nothing is passed, current layout is used.
+    - parameter mode: T2GLayoutMode for which the content size should be calculated. Optional value - if nothing is passed, current layout is used.
     */
     func adjustContentSize(mode: T2GLayoutMode? = nil) {
         if let m = mode {
@@ -251,12 +251,12 @@ class T2GScrollView: UIScrollView {
     
     :params: isGoingOffscreen Boolean value defining whether the view is going offscreen or not.
     */
-    func animateSubviewCells(#isGoingOffscreen: Bool) {
+    func animateSubviewCells(isGoingOffscreen: Bool) {
         var delayCount: Double = 0.0
         let xOffset: CGFloat = isGoingOffscreen ? -150 : 150
         
-        var tags = self.subviews.map({($0 as! UIView).tag})
-        tags.sort(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
+        var tags = self.subviews.map({($0 ).tag})
+        tags.sortInPlace(isGoingOffscreen ? {$0 < $1} : {$0 < $1})
         
         for tag in tags {
             if let view = self.viewWithTag(tag) as? T2GCell {
@@ -265,7 +265,7 @@ class T2GScrollView: UIScrollView {
                 if isGoingOffscreen || view.frame.origin.x != frame.origin.x {
                     delayCount += 1.0
                     let delay: Double = delayCount * 0.02
-                    UIView.animateWithDuration(0.2, delay: delay, options: nil, animations: { () -> Void in
+                    UIView.animateWithDuration(0.2, delay: delay, options: [], animations: { () -> Void in
                         view.frame = CGRectMake(view.frame.origin.x + xOffset, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
                     }, completion: nil)
                 }
@@ -294,8 +294,8 @@ class T2GScrollView: UIScrollView {
     /**
     Calculates the total index for given index path.
     
-    :param: indexPath NSIndexPath object of the given cell.
-    :returns: Integer value representing the total index.
+    - parameter indexPath: NSIndexPath object of the given cell.
+    - returns: Integer value representing the total index.
     */
     func indexForIndexPath(indexPath: NSIndexPath) -> Int {
         var totalIndex = indexPath.row
@@ -311,8 +311,8 @@ class T2GScrollView: UIScrollView {
     
     - DISCUSSION: Maybe it would be cleaner to already send an index instead of a TAG, but it is not anything that would be of a concern.
     
-    :param: tag Integer value of the given cell.
-    :returns: NSIndexPath object will full description (row and section) of the placement of the cell.
+    - parameter tag: Integer value of the given cell.
+    - returns: NSIndexPath object will full description (row and section) of the placement of the cell.
     */
     func indexPathForCell(tag: Int) -> NSIndexPath {
         let index = tag - T2GViewTags.cellConstant
@@ -337,7 +337,7 @@ class T2GScrollView: UIScrollView {
     /**
     Returns total count of all the cells in all the sections from the datasource.
     
-    :returns: Integer value representing the number of cells.
+    - returns: Integer value representing the number of cells.
     */
     func totalCellCount() -> Int {
         var total = 0
@@ -351,8 +351,8 @@ class T2GScrollView: UIScrollView {
     /**
     Calculates the content size of the scrollView for the given mode based on current datasource status.
     
-    :param: mode T2GLayoutMode for which the content size should be calculated.
-    :returns: CGSize object to be set as the scrollView's contentSize.
+    - parameter mode: T2GLayoutMode for which the content size should be calculated.
+    - returns: CGSize object to be set as the scrollView's contentSize.
     */
     func contentSizeForMode(mode: T2GLayoutMode) -> CGSize {
         var height: CGFloat = 0.0
@@ -380,7 +380,7 @@ class T2GScrollView: UIScrollView {
     
     - DISCUSSION: Functional approach or for cycle?
     
-    :returns: Tuple with two integer values representing the TAGs.
+    - returns: Tuple with two integer values representing the TAGs.
     */
     func firstAndLastVisibleTags() -> (lowest: Int, highest: Int) {
         /*
@@ -408,8 +408,8 @@ class T2GScrollView: UIScrollView {
     /**
     Returns the indices of all the cells that SHOULD be visible for the given mode at the given contentOffset (self.bounds).
     
-    :param: mode T2GLayoutMode for which the indices should be calculated.
-    :returns: Array of integer values representing the total indices of the cells.
+    - parameter mode: T2GLayoutMode for which the indices should be calculated.
+    - returns: Array of integer values representing the total indices of the cells.
     */
     func indicesForVisibleCells(mode: T2GLayoutMode) -> [Int] {
         let frame = self.bounds
@@ -422,7 +422,7 @@ class T2GScrollView: UIScrollView {
                     firstIndex = 0
                 }
                 
-                var lastIndex = firstIndex + 2 * self.visibleCellCount(mode: .Collection)
+                var lastIndex = firstIndex + 2 * self.visibleCellCount(.Collection)
                 if self.totalCellCount() - 1 < lastIndex {
                     lastIndex = self.totalCellCount() - 1
                 }
@@ -436,7 +436,7 @@ class T2GScrollView: UIScrollView {
                     firstIndex = 0
                 }
                 
-                var lastIndex = firstIndex + self.visibleCellCount(mode: .Table)
+                var lastIndex = firstIndex + self.visibleCellCount(.Table)
                 if self.totalCellCount() - 1 < lastIndex {
                     lastIndex = self.totalCellCount() - 1
                 }
@@ -457,10 +457,10 @@ class T2GScrollView: UIScrollView {
     /**
     Gets called when dragged view gets dragged to the bottom/top of the scrollView. This method then decides how and where should it scroll.
     
-    :param: speedCoefficient CGFloat value defining how fast should the continuous scroll be.
-    :param: stationaryFrame CGRect object defining top/bottom of the scrollView towards which the overlap is calculated.
-    :param: overlappingView UIView being measured with the stationaryFrame, most likely a T2GDragAndDropView object.
-    :param: navigationController Optional object that makes sure the stationaryFrame gets pulled lower in case navigation bar is present.
+    - parameter speedCoefficient: CGFloat value defining how fast should the continuous scroll be.
+    - parameter stationaryFrame: CGRect object defining top/bottom of the scrollView towards which the overlap is calculated.
+    - parameter overlappingView: UIView being measured with the stationaryFrame, most likely a T2GDragAndDropView object.
+    - parameter navigationController: Optional object that makes sure the stationaryFrame gets pulled lower in case navigation bar is present.
     */
     func scrollContinously(speedCoefficient: CGFloat, stationaryFrame: CGRect, overlappingView: UIView?, navigationController: UINavigationController?) {
         UIView.animateWithDuration(0.1, animations: { () -> Void in
@@ -518,9 +518,9 @@ class T2GScrollView: UIScrollView {
     /**
     Helper method calculating the speed of the continuous scroll. Calculates the ratio of overlapping of two frames.
     
-    :param: stationary CGRect defining the stationary view.
-    :param: overlapping CGRect defining the moving view.
-    :returns: CGFloat with the value defining the speed.
+    - parameter stationary: CGRect defining the stationary view.
+    - parameter overlapping: CGRect defining the moving view.
+    - returns: CGFloat with the value defining the speed.
     */
     func coefficientForOverlappingFrames(stationary: CGRect, overlapping: CGRect) -> CGFloat {
         let stationarySize = stationary.size.width * stationary.size.height
