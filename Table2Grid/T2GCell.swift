@@ -193,8 +193,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
         self.headerLabel = UILabel(frame: labelDimensions.header)
         self.headerLabel!.backgroundColor = .clearColor()
         self.headerLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-        self.headerLabel!.font = UIFont(name: "SFUIDisplay-Regular", size: 16)
-        self.headerLabel!.textColor = .blackColor()
+        self.headerLabel!.font = T2GStyle.Node.nodeTitleFont
+        self.headerLabel!.textColor = T2GStyle.Node.nodeTitleColor
         self.headerLabel!.text = header
         self.backgroundView!.addSubview(self.headerLabel!)
         
@@ -202,8 +202,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
         self.detailLabel = UILabel(frame: labelDimensions.detail)
         self.detailLabel!.backgroundColor = .clearColor()
         self.detailLabel!.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
-        self.detailLabel!.font = UIFont(name: "SFUIDisplay-Light", size: 13)
-        self.detailLabel!.textColor = .grayColor()
+        self.detailLabel!.font = T2GStyle.Node.nodeDescriptionFont
+        self.detailLabel!.textColor = T2GStyle.Node.nodeDescriptionColor
         self.detailLabel!.text = detail
         self.backgroundView!.addSubview(self.detailLabel!)
         
@@ -254,6 +254,54 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
         }
         self.scrollView!.addSubview(self.backgroundView!)
         self.addSubview(self.scrollView!)
+    }
+    
+    /**
+     Define the style of the image view deping if the node has a thumbnail.
+     
+     :param: node PYDNode concerned
+     */
+    func cellSetImage(node: PYDNode){
+        if let thumb = node.loadThumbnailImageData(), img = UIImage(data: thumb) {
+            self.imageView!.frame = self.iconView!.frame
+            self.imageView!.image = img
+            self.imageType = .Picture
+        } else {
+            let image = UIImage(named: node.loadIcon()!) ?? UIImage(named: "mime_empty.png")!
+            self.imageView!.frame.size = CGSizeMake(30, 30)
+            self.imageView!.center = self.iconView!.center
+            self.imageView!.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            self.imageView!.tintColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
+            self.imageType = .Icon
+        }
+    }
+    
+    /**
+     Set annotations to the cell for the given node.
+     
+     :param: node PYDNode concerned
+     */
+    func cellSetAnnotations(node: PYDNode) {
+        var margin = self.infoView!.frame.width - 5.0 - self.infoView!.frame.height
+        
+        if node.loadIsBookmarked() {
+            self.bookmarkImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+            self.isBookmarked = true
+            self.bookmarkImageView!.hidden = false
+            margin = margin - 5 - self.bookmarkImageView!.frame.width
+        } else {
+            self.isBookmarked = false
+            self.bookmarkImageView!.hidden = true
+        }
+        if node.loadIsShared() {
+            self.shareImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+            self.isShared = true
+            self.shareImageView!.hidden = false
+            margin = margin - 5 - self.shareImageView!.frame.width
+        } else {
+            self.isShared = false
+            self.shareImageView!.hidden = true
+        }
     }
     
     /**
