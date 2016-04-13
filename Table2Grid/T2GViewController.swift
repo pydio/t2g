@@ -13,6 +13,12 @@ Protocol for view controller delegate defining required methods to properly disp
 */
 protocol T2GViewControllerDelegate {
     /// View methods
+    /** 
+     Enable/Disable Swipe back action see in NodeViewController for more details.
+     
+     :param: enabled: boolean that indicate if the user can swipe back on the previous view controller.
+     */
+    func backGestureStatus(enabled: Bool)
     
     /**
     Creates and returns a T2GCell object ready to be put in the scrollView.
@@ -838,6 +844,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, /*T2GDragAndDropD
             cell?.closeCell()
         }
         self.openCellTag = tag
+        self.delegate.backGestureStatus(false)
     }
     
     /**
@@ -848,7 +855,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, /*T2GDragAndDropD
     :param: tag
     */
     func didCellClose(tag: Int) {
-//        self.openCellTag = -1
+        self.delegate.backGestureStatus(true)
     }
     
     /**
