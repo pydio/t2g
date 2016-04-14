@@ -304,7 +304,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
         
         for vc in (self.viewControllers) {
             let image = self.pathDelegate?.pathImageForViewController(vc) ?? ""
-            let title = vc.title ?? "bug"
+            let title = vc.title ?? "/"
             path.append(["name" : title, "image" : image])
         }
         
