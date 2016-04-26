@@ -276,6 +276,25 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
         }
     }
     
+    // Suite a une discussion avec Charles, il faut que je regarde dans le registre ou toutes les associations doivent se trouver.
+    func cellSetImage(node: PYDOfflineNode) {
+        let nodeIcon = node.loadIcon()
+        
+        if nodeIcon == "image.png" {
+            self.imageView!.frame = self.iconView!.frame
+            self.imageView!.image = UIImage(contentsOfFile: node.loadNodeAbsolutePath()!)
+            self.imageType = .Picture
+        } else {
+            let image: UIImage = UIImage(named: nodeIcon)!
+            
+            self.imageView!.frame.size = CGSizeMake(30, 30)
+            self.imageView!.center = self.iconView!.center
+            self.imageView!.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            self.imageView!.tintColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
+            self.imageType = .Icon
+        }
+    }
+    
     /**
      Set annotations to the cell for the given node.
      
