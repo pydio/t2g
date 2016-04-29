@@ -58,10 +58,6 @@ If you prefer not to use neither CocoaPods, nor Carthage, you can simply drag an
 ## TODO:
 
 1. Full manual
-2. Proper licence (Apache 2.0 / BSD / MIT)
-
-## Contributing
-TBD
 
 ## License
-TBD
+Apache 2.0
