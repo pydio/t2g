@@ -321,6 +321,14 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
             self.isShared = false
             self.shareImageView!.hidden = true
         }
+        if node.loadIsSynced() {
+            self.syncImageView!.frame = CGRectMake(margin, 0, self.infoView!.frame.height, self.infoView!.frame.height)
+            self.isSynced = true
+            self.syncImageView!.hidden = false
+        } else {
+            self.isShared = false
+            self.syncImageView!.hidden = true
+        }
     }
     
     /**
