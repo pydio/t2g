@@ -20,15 +20,6 @@ enum T2GLayoutMode {
     }
 }
 
-enum T2GCellType {
-    case WorkspaceCell
-    case NodeCell
-    
-    init () {
-        self = .NodeCell
-    }
-}
-
 /**
 Protocol for scrollView delegate defining all key dimensional methods to be able to render all the cells precisely.
 */
