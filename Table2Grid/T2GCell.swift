@@ -140,12 +140,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     }
     
     func renderCell() {
-        self.backgroundColor = T2GStyle.Node.Table.backgroundColor
-        
         if self.mode == .Table {
+            self.backgroundColor = T2GStyle.Node.Table.backgroundColor
             self.detailLabel.hidden = false
             self.whiteFooter.hidden = true
         } else {
+            self.backgroundColor = T2GStyle.Node.Collection.backgroundColor
             self.detailLabel.hidden = true
             self.whiteFooter.hidden = false
         }
