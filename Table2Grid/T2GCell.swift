@@ -360,6 +360,20 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
         }
     }
     
+    func cellSetIsSynced(node: PYDOfflineNode) {
+        let margin = self.infoView.frame.width - 5.0 - self.infoView.frame.height
+
+        if node.loadIsSynced() {
+            self.syncImageView.frame = CGRectMake(margin, 0, self.infoView.frame.height, self.infoView.frame.height)
+            self.isSynced = true
+            self.syncImageView.hidden = false
+        } else {
+            self.isShared = false
+            self.syncImageView.hidden = true
+        }
+    }
+    
+    
     /**
      Set annotations to the cell for the given node.
      
