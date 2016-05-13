@@ -443,7 +443,7 @@ class T2GScrollView: UIScrollView {
                     lastIndex = self.totalCellCount() - 1
                 }
                 
-                if lastIndex != -1 {
+                if lastIndex >= firstIndex {
                     for index in firstIndex...lastIndex {
                         res.append(index)
                     }
