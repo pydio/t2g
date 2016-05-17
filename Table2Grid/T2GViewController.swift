@@ -246,6 +246,11 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
         self.scrollView.adjustContentSize()
     }
     
+    func refreshScrollView() {
+        self.clearScrollView()
+        self.displayMissingCells()
+        self.scrollView.adjustContentSize()
+    }
     /**
      Clear the scrollview by removing each subview inside
      */
@@ -372,6 +377,18 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
         }
     }
     
+    
+    /**
+     Inserts cells in given indexPaths.
+     
+     :param: indexPaths
+     */
+    func insertRowsAtIndexPath(indexPaths: [NSIndexPath]) {
+        for i in indexPaths {
+            insertRowAtIndexPath(i)
+        }
+    }
+    
     /**
     Inserts cell in given indexPath.
     
@@ -446,6 +463,24 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
         }
     }
     
+    
+    
+    func updateRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
+        for i in indexPaths {
+            updateRowAtIndexPath(i)
+        }
+    }
+    
+    func updateRowAtIndexPath(indexPath: NSIndexPath) {
+        for view in self.scrollView.subviews {
+            if let cell = view as? T2GCell {
+                if cell.tag == indexPath.row {
+                    self.delegate.updateCellForIndexPath(cell, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                }
+            }
+        }
+    }
+    
     /**
     Removes rows at given indexPaths. Used even for single row removal.
     
@@ -454,6 +489,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
     */
     func removeRowsAtIndexPaths(indexPaths: [NSIndexPath], notifyDelegate: Bool = false) {
         var indices: [Int] = []
+        if indexPaths.count == 0 {
+            return
+        }
         for indexPath in indexPaths {
             indices.append(self.scrollView.indexForIndexPath(indexPath))
         }
