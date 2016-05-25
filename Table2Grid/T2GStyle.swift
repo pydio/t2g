@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-
-
 struct T2GStyle {
 
     struct Node {
