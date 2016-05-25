@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Michal Švácha. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import Material
 
 /**
 Protocol for handling the events of cell - selection, swiping the cell to open drawer or button press.
@@ -74,7 +74,7 @@ enum ImageType {
 /**
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
-class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDelegate */{
+class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     var delegate: T2GCellDelegate?
     
     var highlighted: Bool = false {
@@ -96,8 +96,8 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     
     // Common attribute
     var scrollView: T2GCellDrawerScrollView = T2GCellDrawerScrollView()
-    var backgroundView: UIView = UIView()
-    var backgroundViewButton: T2GColoredButton = T2GColoredButton()
+    var backgroundView: MaterialPulseView = MaterialPulseView()
+    var backgroundViewButton: FlatButton = FlatButton()
     
     
     var iconView: UIView = UIView()
@@ -109,7 +109,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     var bookmarkImageView: UIImageView = UIImageView()
     var shareImageView: UIImageView = UIImageView()
     var syncImageView: UIImageView = UIImageView()
-    var moreImageButton: UIButton = UIButton(type: UIButtonType.Custom)// as UIButton
+    var moreImageButton: IconButton = IconButton()
 
     // Collection attribute
     var whiteFooter: UIView = UIView()
@@ -200,8 +200,9 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     
     
     func cellSetBackgroundView() {
-        self.backgroundView.backgroundColor = T2GStyle.Node.nodeBackgroundViewBackgroundColor
-        self.backgroundView.frame = self.scrollView.frame
+        backgroundView.backgroundColor = MaterialColor.white
+        backgroundView.depth = MaterialDepth.Depth5
+        backgroundView.frame = self.scrollView.frame
         if self.mode == .Table {
             self.cellSetHeaderLabel()
             self.cellSetDetailLabel()
@@ -227,8 +228,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     func cellSetBackgroundViewButton() {
         self.backgroundViewButton.frame = self.backgroundView.bounds
         self.backgroundViewButton.tag = T2GViewTags.cellBackgroundButton
-        self.backgroundViewButton.normalBackgroundColor = .clearColor()
-        self.backgroundViewButton.highlightedBackgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
+        self.backgroundViewButton.backgroundColor = .clearColor()
         self.backgroundViewButton.addTarget(self, action: #selector(T2GCell.backgroundViewButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
     }
 
@@ -248,8 +248,6 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     }
     
     func cellSetImageView() {
-        //self.imageView.frame = self.iconView.frame
-        //self.imageView.center = CGPoint(x: self.frame.height / 2, y: self.frame.height / 2)
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
         self.imageView.clipsToBounds = true
         if self.imageType == .Icon {
@@ -281,13 +279,12 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate/*, T2GDragAndDropOwnerDe
     }
     
     func cellSetMoreImageButton() {
-        let imageButton = UIImage(named: "dots_vertical")
-        self.moreImageButton.setImage(imageButton, forState: .Normal)
-
-        self.moreImageButton.alpha = 0.3
-        self.moreImageButton.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
-        self.moreImageButton.imageEdgeInsets = UIEdgeInsetsMake(30, 30, 30, 30)
-        
+        let image = MaterialIcon.cm.moreVertical
+        moreImageButton.pulseColor = MaterialColor.grey.base
+        moreImageButton.tintColor = MaterialColor.grey.lighten1
+        moreImageButton.setImage(image, forState: .Normal)
+        moreImageButton.setImage(image, forState: .Highlighted)
+        moreImageButton.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
         if self.mode == .Table {
             self.moreImageButton.frame = CGRectMake(self.frame.width - self.frame.height, 0, self.frame.height, self.frame.height)
         } else {
