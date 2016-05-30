@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Material
 
 /**
 Protocol for view controller delegate defining required methods to properly display all subviews and also to define action methods to be called when an event occurrs.
@@ -114,7 +115,9 @@ private enum T2GScrollingSpeed {
  */
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDelegate {
     var scrollView: T2GScrollView!
+    var activityIndicator: MaterialActivityIndicatorView!
     var copyMoveView: T2GCopyMoveView!
+    var actionView: MaterialView!
     var openCellTag: Int = -1
     
     var lastSpeedOffset: CGPoint = CGPointMake(0, 0)
@@ -152,22 +155,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let navigationCtr = self.navigationController as? T2GNaviViewController {
+        if let navigationCtr = navigationController as? T2GNaviViewController {
             navigationCtr.segueDelay = 0.16
         }
-        
-
-        self.scrollView = T2GScrollView()
-        self.scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
-
-
-        
-        
-        self.view.addSubview(self.scrollView)
+        prepareScrollView()
+        prepareActivityIndicator()
+        prepareCopyMoveView()
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.scrollView.tag = 999
     }
     
     override func viewDidLayoutSubviews() {
@@ -175,50 +171,88 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
             self.scrollView.tag = 666
             let t = ActionNodeSingleton.sharedInstance
             if t.actionNode != nil && self.showCopyMoveView {
-                self.hideMoveView(false)
+                hideMoveView(false)
             } else {
-                self.hideMoveView(true)
+                hideMoveView(true)
             }
         }
     }
     
-    func hideMoveView(hidden: Bool) {
-        self.scrollView.removeFromSuperview()
+    private func prepareScrollView() {
+        scrollView = T2GScrollView()
+        scrollView.tag = 999
+        scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
+        scrollView.adjustContentSize()
+        scrollView.delegate = self
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
         
-        var topBarHeight = (self.navigationController?.navigationBar.frame.size.height)!
-        if UIApplication.sharedApplication().statusBarHidden == false {
-            topBarHeight += 20
-        }
+        let horizontalConstraint = NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        view.addConstraint(horizontalConstraint)
         
-        if hidden == true {
-            self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.bounds.width, self.view.bounds.height - topBarHeight)
-        } else {
-            self.scrollView.frame = CGRectMake(0, topBarHeight, self.view.bounds.width, (self.view.bounds.height - topBarHeight) / 3 * 2)
-        }
-        self.view.addSubview(self.scrollView)
-        
-        for view in self.scrollView.subviews {
+        let verticalConstraintTop = NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        let verticalConstraintBottom = NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        view.addConstraint(verticalConstraintTop)
+        view.addConstraint(verticalConstraintBottom)
+        let widthConstraint = NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+        view.addConstraint(widthConstraint)
+        view.addConstraint(heightConstraint)
+    }
+    
+    private func updateScrollView() {
+        for view in scrollView.subviews {
             if let cell = view as? T2GCell {
-                let frame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(cell.tag))
-                cell.changeFrameParadigm(self.scrollView.layoutMode, frame: frame)
+                let frame = scrollView.frameForCell(indexPath: scrollView.indexPathForCell(cell.tag))
+                cell.changeFrameParadigm(scrollView.layoutMode, frame: frame)
             } else if let delimiter = view as? T2GDelimiterView {
-                let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
+                let frame = scrollView.frameForDelimiter(section: delimiter.tag - 1)
                 delimiter.frame = frame
             }
         }
+    }
+    
+    private func prepareActivityIndicator() {
+        activityIndicator = MaterialActivityIndicatorView(style: .Default)
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
+    }
+    
+    private func prepareCopyMoveView() {
+        actionView = MaterialView()
+        actionView.depth = MaterialDepth.Depth5
+        actionView.backgroundColor = MaterialColor.teal.accent4
+        actionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(actionView)
         
-        let frame = CGRectMake(0, self.scrollView.frame.height + topBarHeight, self.view.bounds.width, self.scrollView.frame.height / 2)
-        self.copyMoveView = T2GCopyMoveView(frame: frame, delegate: copyMoveViewDelegate)
-        self.copyMoveView.hidden = true
-        self.view.addSubview(self.copyMoveView)
-        self.view.sendSubviewToBack(self.copyMoveView)
+        let horizontalConstraint = NSLayoutConstraint(item: actionView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        view.addConstraint(horizontalConstraint)
         
-        self.copyMoveView.hidden = hidden
+        let verticalConstraint = NSLayoutConstraint(item: actionView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        view.addConstraint(verticalConstraint)
         
-        self.scrollView.delegate = self
-        self.scrollView.adjustContentSize()
-        self.copyMoveView.delegate = self
+        let widthConstraint = NSLayoutConstraint(item: actionView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
+        view.addConstraint(widthConstraint)
         
+        let heightConstraint = NSLayoutConstraint(item: actionView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 120)
+        view.addConstraint(heightConstraint)
+
+        let frame = CGRectMake(0, 0, view.frame.width, 120)
+        copyMoveView = T2GCopyMoveView(frame: frame, delegate: copyMoveViewDelegate)
+        copyMoveView.delegate = self
+        actionView.addSubview(copyMoveView)
+    }
+    
+    private func updateCopyMoveView() {
+        actionView.removeFromSuperview()
+        copyMoveView.removeFromSuperview()
+        prepareCopyMoveView()
+    }
+    
+    
+    func hideMoveView(hidden: Bool) {
+        copyMoveView.hidden = hidden
+        actionView.hidden = hidden
     }
     
     /**
@@ -669,8 +703,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
                 let height: CGFloat = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 35.0 : 44.0
                 bar.frame = CGRectMake(0, self.view.frame.size.height - height, self.view.frame.size.width, height)
             }
-            self.copyMoveView.removeFromSuperview()
-            
+            self.updateScrollView()
+            self.updateCopyMoveView()
             let t = ActionNodeSingleton.sharedInstance
             if t.actionNode != nil && self.showCopyMoveView {
                 self.hideMoveView(false)
@@ -926,4 +960,11 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
         self.editingModeSelection[tag - T2GViewTags.cellConstant] = selected
     }
     
+    func startsLoading() {
+        activityIndicator.startAnimating()
+    }
+    
+    func stopLoading() {
+        activityIndicator.stopAnimating()
+    }
 }
