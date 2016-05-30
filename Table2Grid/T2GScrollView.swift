@@ -374,7 +374,7 @@ class T2GScrollView: UIScrollView {
             height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
             height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         }
-        return CGSize(width: self.frame.size.width, height: height)
+        return CGSize(width: self.frame.size.width, height: height + 234)
     }
     
     /**
@@ -428,9 +428,10 @@ class T2GScrollView: UIScrollView {
                 if self.totalCellCount() - 1 < lastIndex {
                     lastIndex = self.totalCellCount() - 1
                 }
-                
-                for index in firstIndex...lastIndex {
-                    res.append(index)
+                if lastIndex >= firstIndex {
+                    for index in firstIndex...lastIndex {
+                        res.append(index)
+                    }                
                 }
             } else {
                 var firstIndex = Int(floor(((frame.origin.y - dimensions.height) - (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)))
@@ -530,5 +531,4 @@ class T2GScrollView: UIScrollView {
         let intersectionSize = intersection.size.height * intersection.size.width
         return intersectionSize / stationarySize
     }
-
 }
