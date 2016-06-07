@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Material
 
 /**
 Protocol to inform that selection has been made and delegate should act accordingly (e.g. pop to selected ViewController).
@@ -53,7 +54,7 @@ class T2GPathViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.registerClass(MaterialTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -82,7 +83,7 @@ class T2GPathViewController: UITableViewController {
     Sets up the cell. Last cell (currently active ViewController) is grayed out and prepended with '>' symbol to show that this is where the user currently is in the structure.
     */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) 
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
         
         var text = self.path[indexPath.row]["name"]!
         if indexPath.row == self.path.count - 1 {
