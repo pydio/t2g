@@ -530,72 +530,14 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
             indices.append(self.scrollView.indexForIndexPath(indexPath))
         }
         
-        UIView.animateWithDuration(0.6, animations: { () -> Void in
-            var removedCount = 0
-            
-            for idx in indices {
-                if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
-                    if notifyDelegate {
-                        self.delegate.willRemoveCellAtIndexPath(self.scrollView.indexPathForCell(idx - removedCount + T2GViewTags.cellConstant))
-                    }
-                    
-                    if self.openCellTag == view.tag {
-                        view.closeCell()
-                    }
-                    
-                    view.frame = CGRectMake(view.frame.origin.x - 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                }
-                removedCount += 1
+        
+        for idx in indices {
+            if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
+                view.removeFromSuperview()
             }
-        }, completion: { (_) -> Void in
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                for idx in indices {
-                    if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
-                        view.frame = CGRectMake(self.scrollView.bounds.width + 40, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-                        }
-                    }
-                    }, completion: { (_) -> Void in
-                        for idx in indices {
-                            if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
-                                view.removeFromSuperview()
-                            }
-                        }
-                        
-                        var tags = self.scrollView.subviews.filter({$0 is T2GCell || $0 is T2GDelimiterView}).map({(subview) -> Int in return subview.tag})
-                        tags.sortInPlace(<)
-                        
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            var changedCount = 0
-                            for tag in tags {
-                                let firstIP = indexPaths.first!
-                                let idx = self.scrollView.indexForIndexPath(firstIP)
-                                
-                                if let cell = self.scrollView.viewWithTag(tag) {
-                                    if cell.tag > (idx + T2GViewTags.cellConstant) {
-                                        if let c = cell as? T2GCell {
-                                            let newRowNum = idx + changedCount
-                                            let newFrame = self.scrollView.frameForCell(indexPath: self.scrollView.indexPathForCell(newRowNum + T2GViewTags.cellConstant))
-                                            c.frame = newFrame
-                                            c.tag = newRowNum + T2GViewTags.cellConstant
-                                            self.delegate.updateCellForIndexPath(c, indexPath: self.scrollView.indexPathForCell(c.tag))
-                                            
-                                            changedCount += 1
-                                        }
-                                    } else if let delimiter = cell as? T2GDelimiterView {
-                                        let frame = self.scrollView.frameForDelimiter(section: delimiter.tag - 1)
-                                        delimiter.frame = frame
-                                    }
-                                }
-                            }
-                            }, completion: { (_) -> Void in
-                                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                                    self.scrollView.adjustContentSize()
-                                    }, completion: { (_) -> Void in
-                                        self.displayMissingCells()
-                                })
-                        })
-                })
-        })
+        }
+        scrollView.adjustContentSize()
+        displayMissingCells()
     }
     
     //MARK: - View transformation (Table <-> Collection)
