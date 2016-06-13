@@ -115,7 +115,6 @@ private enum T2GScrollingSpeed {
  */
 class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDelegate {
     var scrollView: T2GScrollView!
-    var activityIndicator: MaterialActivityIndicatorView!
     var copyMoveView: T2GCopyMoveView!
     var actionView: MaterialView!
     var openCellTag: Int = -1
@@ -159,7 +158,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
             navigationCtr.segueDelay = 0.16
         }
         prepareScrollView()
-        prepareActivityIndicator()
         prepareCopyMoveView()
     }
     
@@ -210,12 +208,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
                 delimiter.frame = frame
             }
         }
-    }
-    
-    private func prepareActivityIndicator() {
-        activityIndicator = MaterialActivityIndicatorView(style: .Default)
-        activityIndicator.center = view.center
-        view.addSubview(activityIndicator)
     }
     
     private func prepareCopyMoveView() {
@@ -902,11 +894,4 @@ class T2GViewController: T2GScrollController, T2GCellDelegate, T2GCopyMoveViewDe
         self.editingModeSelection[tag - T2GViewTags.cellConstant] = selected
     }
     
-    func startsLoading() {
-        activityIndicator.startAnimating()
-    }
-    
-    func stopLoading() {
-        activityIndicator.stopAnimating()
-    }
 }
