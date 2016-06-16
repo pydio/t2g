@@ -374,7 +374,7 @@ class T2GScrollView: UIScrollView {
             height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(self.dataDelegate!.numberOfSections()) * self.dataDelegate!.dimensionsForSectionHeader().height)
             height = height < self.bounds.height ? (self.bounds.height - 31.0) : height
         }
-        return CGSize(width: self.frame.size.width, height: height + 234)
+        return CGSize(width: self.frame.size.width, height: height + 90)
     }
     
     /**
