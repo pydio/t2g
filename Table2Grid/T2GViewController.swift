@@ -56,6 +56,24 @@ protocol T2GViewControllerDelegate {
     func didSelectCellAtIndexPath(indexPath: NSIndexPath)
     
     /**
+     Gets called when cell is checked from multi-selection.
+     
+     :param: indexPath NSIndexPath object with precise location of the cell (row and section).
+     */
+    func didCheckCellAtIndexPath(indexPath: NSIndexPath)
+
+    
+    
+    /**
+     Gets called when cell is unchecked from multi-selection.
+     
+     :param: indexPath NSIndexPath object with precise location of the cell (row and section).
+     */
+    func didUncheckCellAtIndexPath(indexPath: NSIndexPath)
+   
+    
+    
+    /**
     Gets called when button in the drawer is tapped.
     
     :param: indexPath NSIndexPath object with precise location of the cell (row and section).
@@ -255,11 +273,13 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
                 let isSelected = self.editingModeSelection[cell.tag - T2GViewTags.cellConstant] ?? false
+                cell.selected = nil
                 cell.toggleMultipleChoice(self.isEditingModeActive, mode: self.scrollView.layoutMode, selected: isSelected, animated: true)
             }
         }
-        
-        self.toggleToolbar()
+        if self.isEditingModeActive {
+            self.toggleSelectionPanel()
+        }
     }
     
     /**
@@ -275,14 +295,6 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         }
     }
     
-    /**
-     Not implemented yet
-     
-     - DISCUSSION: This method probably shouldn't be here at all.
-     */
-    func moveBarButtonPressed() {
-        print("Not implemented yet.")
-    }
     
     /**
      Gets called when delete button in the toolbar has been pressed and therefore multiple rows should be deleted. Animates all the visible/potentinally visible after the animation, notifies the delegate before doing so to adjust the model so the new cell frames could be calculated.
@@ -300,33 +312,8 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.editingModeSelection = [Int : Bool]()
     }
     
-    /**
-    Shows toolbar with Move and Delete buttons.
-    
-    - DISCUSSION: Another TODO for making it more modular.
-    */
-    func toggleToolbar() {
-        if let bar = self.view.viewWithTag(T2GViewTags.editingModeToolbar) {
-            bar.removeFromSuperview()
-            self.scrollView.adjustContentSize()
-        } else {
-            let bar = UIToolbar(frame: CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44))
-            bar.tag = T2GViewTags.editingModeToolbar
-            bar.translucent = false
-            
-            let leftItem = UIBarButtonItem(title: "Move", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.moveBarButtonPressed))
-            let rightItem = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(T2GViewController.deleteBarButtonPressed))
-            let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-            bar.items = [leftItem, space, rightItem]
-            
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, self.scrollView.contentSize.height + 44.0)
-            bar.alpha = 0.0
-            self.view.addSubview(bar)
-            
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                bar.alpha = 1.0
-            })
-        }
+    func toggleSelectionPanel() {
+        NSNotificationCenter.defaultCenter().postNotificationName("multiSelectionViewVisibilityChanged", object: nil, userInfo: ["visible": true])
     }
     
     //MARK: - CRUD methods
@@ -781,6 +768,15 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.delegate.didSelectCellAtIndexPath(self.scrollView.indexPathForCell(tag))
     }
     
+    
+    func didCheckCell(tag: Int) {
+        self.delegate.didCheckCellAtIndexPath(self.scrollView.indexPathForCell(tag))
+    }
+    
+    func didUncheckCell(tag: Int) {
+        self.delegate.didUncheckCellAtIndexPath(self.scrollView.indexPathForCell(tag))
+    }
+    
     /**
      Sets the tag for the currently open cell to be able to close it when another cell gets swiped.
      
@@ -832,4 +828,9 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
         self.editingModeSelection[tag - T2GViewTags.cellConstant] = selected
     }
     
+    func didLongPressCell(tag: Int) {
+        if !self.isEditingModeActive {
+            toggleEdit()
+        }
+    }
 }
