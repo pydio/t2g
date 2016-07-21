@@ -1,0 +1,531 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7AD21C805320210E671742AA /* Pods_Table2Grid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C306B28EB64D9BE43B65617D /* Pods_Table2Grid.framework */; };
+		B3BDC89F1D411194000DF9C2 /* Table2Grid.h in Headers */ = {isa = PBXBuildFile; fileRef = B3BDC89E1D411194000DF9C2 /* Table2Grid.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B3BDC8A61D411194000DF9C2 /* Table2Grid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */; };
+		B3BDC8AB1D411194000DF9C2 /* Table2GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8AA1D411194000DF9C2 /* Table2GridTests.swift */; };
+		B3BDC8C61D4113A9000DF9C2 /* T2GCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8B51D4113A9000DF9C2 /* T2GCell.swift */; };
+		B3BDC8C71D4113A9000DF9C2 /* T2GCellDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8B61D4113A9000DF9C2 /* T2GCellDrawerButton.swift */; };
+		B3BDC8C81D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8B71D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift */; };
+		B3BDC8C91D4113A9000DF9C2 /* T2GColoredButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8B81D4113A9000DF9C2 /* T2GColoredButton.swift */; };
+		B3BDC8CA1D4113A9000DF9C2 /* T2GConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8B91D4113A9000DF9C2 /* T2GConstants.swift */; };
+		B3BDC8CB1D4113A9000DF9C2 /* T2GDelimiterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BA1D4113A9000DF9C2 /* T2GDelimiterView.swift */; };
+		B3BDC8CC1D4113A9000DF9C2 /* T2GDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BB1D4113A9000DF9C2 /* T2GDragAndDropView.swift */; };
+		B3BDC8CD1D4113A9000DF9C2 /* T2GNavigationBarTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BC1D4113A9000DF9C2 /* T2GNavigationBarTitle.swift */; };
+		B3BDC8CE1D4113A9000DF9C2 /* T2GNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BD1D4113A9000DF9C2 /* T2GNaviViewController.swift */; };
+		B3BDC8CF1D4113A9000DF9C2 /* T2GPathViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BE1D4113A9000DF9C2 /* T2GPathViewController.swift */; };
+		B3BDC8D01D4113A9000DF9C2 /* T2GScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8BF1D4113A9000DF9C2 /* T2GScrollController.swift */; };
+		B3BDC8D11D4113A9000DF9C2 /* T2GScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C01D4113A9000DF9C2 /* T2GScrollView.swift */; };
+		B3BDC8D21D4113A9000DF9C2 /* T2GStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C11D4113A9000DF9C2 /* T2GStyle.swift */; };
+		B3BDC8D31D4113A9000DF9C2 /* T2GTabBarTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C21D4113A9000DF9C2 /* T2GTabBarTransition.swift */; };
+		B3BDC8D41D4113A9000DF9C2 /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C31D4113A9000DF9C2 /* T2GTabBarViewController.swift */; };
+		B3BDC8D51D4113A9000DF9C2 /* T2GUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C41D4113A9000DF9C2 /* T2GUtilities.swift */; };
+		B3BDC8D61D4113A9000DF9C2 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */; };
+		B3BDC8D81D411442000DF9C2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3BDC8D71D411442000DF9C2 /* Images.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B3BDC8A71D411194000DF9C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BDC8921D411194000DF9C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B3BDC89A1D411194000DF9C2;
+			remoteInfo = Table2Grid;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		35DBD9665EF0CB214FDA2349 /* Pods-Table2Grid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Table2Grid.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Table2Grid/Pods-Table2Grid.debug.xcconfig"; sourceTree = "<group>"; };
+		B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Table2Grid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3BDC89E1D411194000DF9C2 /* Table2Grid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Table2Grid.h; sourceTree = "<group>"; };
+		B3BDC8A01D411194000DF9C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3BDC8A51D411194000DF9C2 /* Table2GridTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Table2GridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3BDC8AA1D411194000DF9C2 /* Table2GridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table2GridTests.swift; sourceTree = "<group>"; };
+		B3BDC8AC1D411194000DF9C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3BDC8B51D4113A9000DF9C2 /* T2GCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCell.swift; sourceTree = "<group>"; };
+		B3BDC8B61D4113A9000DF9C2 /* T2GCellDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellDrawerButton.swift; sourceTree = "<group>"; };
+		B3BDC8B71D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GCellDrawerScrollView.swift; sourceTree = "<group>"; };
+		B3BDC8B81D4113A9000DF9C2 /* T2GColoredButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GColoredButton.swift; sourceTree = "<group>"; };
+		B3BDC8B91D4113A9000DF9C2 /* T2GConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GConstants.swift; sourceTree = "<group>"; };
+		B3BDC8BA1D4113A9000DF9C2 /* T2GDelimiterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDelimiterView.swift; sourceTree = "<group>"; };
+		B3BDC8BB1D4113A9000DF9C2 /* T2GDragAndDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GDragAndDropView.swift; sourceTree = "<group>"; };
+		B3BDC8BC1D4113A9000DF9C2 /* T2GNavigationBarTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNavigationBarTitle.swift; sourceTree = "<group>"; };
+		B3BDC8BD1D4113A9000DF9C2 /* T2GNaviViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GNaviViewController.swift; sourceTree = "<group>"; };
+		B3BDC8BE1D4113A9000DF9C2 /* T2GPathViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GPathViewController.swift; sourceTree = "<group>"; };
+		B3BDC8BF1D4113A9000DF9C2 /* T2GScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollController.swift; sourceTree = "<group>"; };
+		B3BDC8C01D4113A9000DF9C2 /* T2GScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GScrollView.swift; sourceTree = "<group>"; };
+		B3BDC8C11D4113A9000DF9C2 /* T2GStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GStyle.swift; sourceTree = "<group>"; };
+		B3BDC8C21D4113A9000DF9C2 /* T2GTabBarTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarTransition.swift; sourceTree = "<group>"; };
+		B3BDC8C31D4113A9000DF9C2 /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
+		B3BDC8C41D4113A9000DF9C2 /* T2GUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GUtilities.swift; sourceTree = "<group>"; };
+		B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
+		B3BDC8D71D411442000DF9C2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C306B28EB64D9BE43B65617D /* Pods_Table2Grid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Table2Grid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F699BEEF9A67B5B0B54B8769 /* Pods-Table2Grid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Table2Grid.release.xcconfig"; path = "Pods/Target Support Files/Pods-Table2Grid/Pods-Table2Grid.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B3BDC8971D411194000DF9C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AD21C805320210E671742AA /* Pods_Table2Grid.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BDC8A21D411194000DF9C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BDC8A61D411194000DF9C2 /* Table2Grid.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9E6CDD91163D006D57C6A6D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C306B28EB64D9BE43B65617D /* Pods_Table2Grid.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B3BDC8911D411194000DF9C2 = {
+			isa = PBXGroup;
+			children = (
+				B3BDC89D1D411194000DF9C2 /* Table2Grid */,
+				B3BDC8A91D411194000DF9C2 /* Table2GridTests */,
+				B3BDC89C1D411194000DF9C2 /* Products */,
+				D80ED0879C56D88C62E44B6C /* Pods */,
+				9E6CDD91163D006D57C6A6D2 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B3BDC89C1D411194000DF9C2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */,
+				B3BDC8A51D411194000DF9C2 /* Table2GridTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B3BDC89D1D411194000DF9C2 /* Table2Grid */ = {
+			isa = PBXGroup;
+			children = (
+				B3BDC8B51D4113A9000DF9C2 /* T2GCell.swift */,
+				B3BDC8B61D4113A9000DF9C2 /* T2GCellDrawerButton.swift */,
+				B3BDC8B71D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift */,
+				B3BDC8B81D4113A9000DF9C2 /* T2GColoredButton.swift */,
+				B3BDC8B91D4113A9000DF9C2 /* T2GConstants.swift */,
+				B3BDC8BA1D4113A9000DF9C2 /* T2GDelimiterView.swift */,
+				B3BDC8BB1D4113A9000DF9C2 /* T2GDragAndDropView.swift */,
+				B3BDC8BC1D4113A9000DF9C2 /* T2GNavigationBarTitle.swift */,
+				B3BDC8BD1D4113A9000DF9C2 /* T2GNaviViewController.swift */,
+				B3BDC8BE1D4113A9000DF9C2 /* T2GPathViewController.swift */,
+				B3BDC8BF1D4113A9000DF9C2 /* T2GScrollController.swift */,
+				B3BDC8C01D4113A9000DF9C2 /* T2GScrollView.swift */,
+				B3BDC8C11D4113A9000DF9C2 /* T2GStyle.swift */,
+				B3BDC8C21D4113A9000DF9C2 /* T2GTabBarTransition.swift */,
+				B3BDC8C31D4113A9000DF9C2 /* T2GTabBarViewController.swift */,
+				B3BDC8C41D4113A9000DF9C2 /* T2GUtilities.swift */,
+				B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */,
+				B3BDC89E1D411194000DF9C2 /* Table2Grid.h */,
+				B3BDC8A01D411194000DF9C2 /* Info.plist */,
+				B3BDC8D71D411442000DF9C2 /* Images.xcassets */,
+			);
+			path = Table2Grid;
+			sourceTree = "<group>";
+		};
+		B3BDC8A91D411194000DF9C2 /* Table2GridTests */ = {
+			isa = PBXGroup;
+			children = (
+				B3BDC8AA1D411194000DF9C2 /* Table2GridTests.swift */,
+				B3BDC8AC1D411194000DF9C2 /* Info.plist */,
+			);
+			path = Table2GridTests;
+			sourceTree = "<group>";
+		};
+		D80ED0879C56D88C62E44B6C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				35DBD9665EF0CB214FDA2349 /* Pods-Table2Grid.debug.xcconfig */,
+				F699BEEF9A67B5B0B54B8769 /* Pods-Table2Grid.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B3BDC8981D411194000DF9C2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BDC89F1D411194000DF9C2 /* Table2Grid.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B3BDC89A1D411194000DF9C2 /* Table2Grid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BDC8AF1D411195000DF9C2 /* Build configuration list for PBXNativeTarget "Table2Grid" */;
+			buildPhases = (
+				A70C5184C5486839BAE5D29E /* 📦 Check Pods Manifest.lock */,
+				B3BDC8961D411194000DF9C2 /* Sources */,
+				B3BDC8971D411194000DF9C2 /* Frameworks */,
+				B3BDC8981D411194000DF9C2 /* Headers */,
+				B3BDC8991D411194000DF9C2 /* Resources */,
+				6368D3B356E3770E17B91564 /* 📦 Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Table2Grid;
+			productName = Table2Grid;
+			productReference = B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B3BDC8A41D411194000DF9C2 /* Table2GridTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BDC8B21D411195000DF9C2 /* Build configuration list for PBXNativeTarget "Table2GridTests" */;
+			buildPhases = (
+				B3BDC8A11D411194000DF9C2 /* Sources */,
+				B3BDC8A21D411194000DF9C2 /* Frameworks */,
+				B3BDC8A31D411194000DF9C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B3BDC8A81D411194000DF9C2 /* PBXTargetDependency */,
+			);
+			name = Table2GridTests;
+			productName = Table2GridTests;
+			productReference = B3BDC8A51D411194000DF9C2 /* Table2GridTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B3BDC8921D411194000DF9C2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Leo Marcotte";
+				TargetAttributes = {
+					B3BDC89A1D411194000DF9C2 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					B3BDC8A41D411194000DF9C2 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = B3BDC8951D411194000DF9C2 /* Build configuration list for PBXProject "Table2Grid" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B3BDC8911D411194000DF9C2;
+			productRefGroup = B3BDC89C1D411194000DF9C2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B3BDC89A1D411194000DF9C2 /* Table2Grid */,
+				B3BDC8A41D411194000DF9C2 /* Table2GridTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B3BDC8991D411194000DF9C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BDC8D81D411442000DF9C2 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BDC8A31D411194000DF9C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6368D3B356E3770E17B91564 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Table2Grid/Pods-Table2Grid-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A70C5184C5486839BAE5D29E /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B3BDC8961D411194000DF9C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BDC8C71D4113A9000DF9C2 /* T2GCellDrawerButton.swift in Sources */,
+				B3BDC8D11D4113A9000DF9C2 /* T2GScrollView.swift in Sources */,
+				B3BDC8C81D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift in Sources */,
+				B3BDC8CD1D4113A9000DF9C2 /* T2GNavigationBarTitle.swift in Sources */,
+				B3BDC8CC1D4113A9000DF9C2 /* T2GDragAndDropView.swift in Sources */,
+				B3BDC8D41D4113A9000DF9C2 /* T2GTabBarViewController.swift in Sources */,
+				B3BDC8D51D4113A9000DF9C2 /* T2GUtilities.swift in Sources */,
+				B3BDC8CB1D4113A9000DF9C2 /* T2GDelimiterView.swift in Sources */,
+				B3BDC8CA1D4113A9000DF9C2 /* T2GConstants.swift in Sources */,
+				B3BDC8D61D4113A9000DF9C2 /* T2GViewController.swift in Sources */,
+				B3BDC8D01D4113A9000DF9C2 /* T2GScrollController.swift in Sources */,
+				B3BDC8CE1D4113A9000DF9C2 /* T2GNaviViewController.swift in Sources */,
+				B3BDC8D21D4113A9000DF9C2 /* T2GStyle.swift in Sources */,
+				B3BDC8D31D4113A9000DF9C2 /* T2GTabBarTransition.swift in Sources */,
+				B3BDC8C91D4113A9000DF9C2 /* T2GColoredButton.swift in Sources */,
+				B3BDC8C61D4113A9000DF9C2 /* T2GCell.swift in Sources */,
+				B3BDC8CF1D4113A9000DF9C2 /* T2GPathViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3BDC8A11D411194000DF9C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3BDC8AB1D411194000DF9C2 /* Table2GridTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B3BDC8A81D411194000DF9C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B3BDC89A1D411194000DF9C2 /* Table2Grid */;
+			targetProxy = B3BDC8A71D411194000DF9C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B3BDC8AD1D411195000DF9C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B3BDC8AE1D411195000DF9C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B3BDC8B01D411195000DF9C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35DBD9665EF0CB214FDA2349 /* Pods-Table2Grid.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Table2Grid/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = leomarcotte.Table2Grid;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B3BDC8B11D411195000DF9C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F699BEEF9A67B5B0B54B8769 /* Pods-Table2Grid.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Table2Grid/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = leomarcotte.Table2Grid;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B3BDC8B31D411195000DF9C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Table2GridTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = leomarcotte.Table2GridTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B3BDC8B41D411195000DF9C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Table2GridTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = leomarcotte.Table2GridTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B3BDC8951D411194000DF9C2 /* Build configuration list for PBXProject "Table2Grid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BDC8AD1D411195000DF9C2 /* Debug */,
+				B3BDC8AE1D411195000DF9C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3BDC8AF1D411195000DF9C2 /* Build configuration list for PBXNativeTarget "Table2Grid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BDC8B01D411195000DF9C2 /* Debug */,
+				B3BDC8B11D411195000DF9C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3BDC8B21D411195000DF9C2 /* Build configuration list for PBXNativeTarget "Table2GridTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3BDC8B31D411195000DF9C2 /* Debug */,
+				B3BDC8B41D411195000DF9C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B3BDC8921D411194000DF9C2 /* Project object */;
+}
