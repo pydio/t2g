@@ -253,7 +253,7 @@ class T2GViewController: T2GScrollController, T2GCellDelegate {
     
     func clearScrollView() {
         for view in self.scrollView.subviews {
-            if let cell = view as? UIView {
+            if let cell: UIView = view {
                 if cell.tag != 222222 { //Check if subview is not the refreshControl
                     cell.removeFromSuperview()
                 }
