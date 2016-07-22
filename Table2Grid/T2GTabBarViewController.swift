@@ -11,27 +11,27 @@ import UIKit
 /**
 Custom TabBar Controller implementing sliding strip on tab controller that slides when tab has been changed.
 */
-class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
+public class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     /// the sliding strip
     var slidingView: UIView?
-    var sliderColor = UIColor.blackColor()
+    public var sliderColor = UIColor.blackColor()
 
     /**
     Sets the tab bar delegate to be self.
     */
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     /**
     It is safer to add the sliding view after the subviews have been laid out.
     */
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         if slidingView == nil {
             self.slidingView = UIView(frame: self.sliderFrameForIndex(self.selectedIndex, barWidth: self.view.frame.size.width))
             self.slidingView!.backgroundColor = self.sliderColor
@@ -45,7 +45,7 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     :param: size Default Cocoa API - The new size for the container’s view.
     :param: coordinator Default Cocoa API - The transition coordinator object managing the size change.
     */
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override public func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animateAlongsideTransition({ (UIViewControllerTransitionCoordinatorContext) -> Void in
             if let slider = self.slidingView {
                 slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: size.width)
@@ -75,7 +75,7 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     :param: tabBarController Default Cocoa API - The tab bar controller containing viewController.
     :param: viewController Default Cocoa API - The view controller that the user selected.
     */
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+    public func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             if let slider = self.slidingView {
                 slider.frame = self.sliderFrameForIndex(self.selectedIndex, barWidth: self.view.frame.size.width)
@@ -83,7 +83,7 @@ class T2GTabBarViewController: UITabBarController, UITabBarControllerDelegate {
         })
     }
     
-    func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
         let from = tabBarController.viewControllers!.indexOf(fromVC)
         let to = tabBarController.viewControllers!.indexOf(toVC)

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct T2GStyle {
+public struct T2GStyle {
 
     struct Node {
         static var nodeTitleColor = UIColor.blackColor()

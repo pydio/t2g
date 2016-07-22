@@ -43,7 +43,7 @@ protocol T2GDragAndDropDelegate {
 /**
 Custom UIView with drag and drop implementation. Activated on long press.
 */
-class T2GDragAndDropView: UIView {
+public class T2GDragAndDropView: UIView {
     var ownerDelegate: T2GDragAndDropOwnerDelegate?
     var draggableDelegate: T2GDragAndDropDelegate?
     
@@ -52,7 +52,7 @@ class T2GDragAndDropView: UIView {
     var origin:CGPoint = CGPointMake(0, 0)
     
     /// Activating flag for drag and drop
-    var draggable: Bool = false {
+    public var draggable: Bool = false {
         didSet {
             if draggable {
                 self.lastDraggedLocation = self.frame.origin

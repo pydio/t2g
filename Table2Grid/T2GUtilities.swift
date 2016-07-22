@@ -11,12 +11,12 @@ import UIKit
 /**
 UIColor extension supporting Name declaration in order to prevent tedious RGB initialization.
 */
-extension UIColor {
+public extension UIColor {
     
     /**
     Enum values of additional colors.
     */
-    enum Name: UInt32 {
+    public enum Name: UInt32 {
         case PYDOrange = 0xfc7057ff
         case PYDBlue = 0x79b9e0ff
         case PYDMarine = 0x4aceb0ff

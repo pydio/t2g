@@ -11,7 +11,7 @@ import UIKit
 /**
 Custom implementation of button that changes its background color on tap rather than just the title color.
 */
-class T2GColoredButton: UIButton {
+public class T2GColoredButton: UIButton {
     var normalBackgroundColor: UIColor? {
         didSet {
             self.backgroundColor = normalBackgroundColor!

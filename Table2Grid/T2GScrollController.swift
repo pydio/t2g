@@ -11,7 +11,7 @@ import UIKit
 /**
 Enum for defining the state in which the scrollView is when UIRefreshControl has been pulled down and will "snap" back in the near future.
 */
-enum T2GAutomaticScrollViewSnapStatus {
+public enum T2GAutomaticScrollViewSnapStatus {
     case None
     case WillSnap
     case DidSnap
@@ -36,20 +36,20 @@ enum T2GScrollDirection {
 /**
 Custom UIViewController that implements hiding feature of UINavigationBar when both scrollView and navigationBar are present. Thanks to neat Swift optionals it will not crash when neither is present.
 */
-class T2GScrollController: UIViewController, UIScrollViewDelegate {
+public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /// functionality is enabled by default
-    var isHidingEnabled = true
+    public var isHidingEnabled = true
     var statusBarBackgroundView: UIView?
     
     var lastScrollViewContentOffset: CGFloat = 0
     var scrollDirection: T2GScrollDirection = T2GScrollDirection()
-    var automaticSnapStatus: T2GAutomaticScrollViewSnapStatus = T2GAutomaticScrollViewSnapStatus()
+    public var automaticSnapStatus: T2GAutomaticScrollViewSnapStatus = T2GAutomaticScrollViewSnapStatus()
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
@@ -59,7 +59,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: toInterfaceOrientation Default Cocoa API - The new orientation for the user interface.
     :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    override public func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if self.isHidingEnabled {
             self.showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
         }
@@ -73,7 +73,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
     :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
                 if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
@@ -122,7 +122,7 @@ class T2GScrollController: UIViewController, UIScrollViewDelegate {
     
     :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
     */
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    public func scrollViewDidScroll(scrollView: UIScrollView) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
                 if (self.isViewLoaded() && self.view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {

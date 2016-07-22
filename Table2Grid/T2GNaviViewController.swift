@@ -30,14 +30,14 @@ extension UINavigationController {
 /**
 Extension of UIViewController to obtain completion handler when popped to the view controller.
 */
-extension UIViewController {
+public extension UIViewController {
     
     /**
     Returns completion closure to be performed.
     
     :returns: Optional closure.
     */
-    func completionHandlerWhenAppeared() -> (() -> Void)? {
+    public func completionHandlerWhenAppeared() -> (() -> Void)? {
         return nil
     }
 }
@@ -45,7 +45,7 @@ extension UIViewController {
 /**
 Protocol for path view controller setup - prependable content and icons for view controllers. Does not need to be implemented to fully function. Serves for esthetical reasons.
 */
-protocol T2GNaviPathDelegate {
+public protocol T2GNaviPathDelegate {
     
     /**
     Gets called when path is being built to know how many items should be prepended.
@@ -91,17 +91,17 @@ protocol T2GNaviPathDelegate {
 /**
 Custom UINavigationController that enables slight delay between segues (for enter/exit animation) and that adds status bar background on top of the navigation bar (settable).
 */
-class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
+public class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
     /// Default value is 0 - no delay.
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
-    var pathDelegate: T2GNaviPathDelegate?
+    public var pathDelegate: T2GNaviPathDelegate?
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
@@ -128,7 +128,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: animated Default Cocoa API behavior - Set this value to YES to animate the transition.
     :returns: The view controller that was popped from the stack.
     */
-    override func popViewControllerAnimated(animated: Bool) -> UIViewController? {
+    override public func popViewControllerAnimated(animated: Bool) -> UIViewController? {
         
         let poppedViewController = super.popViewControllerAnimated(animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
@@ -147,7 +147,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: viewController The view controller to push onto the stack.
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
-    override func pushViewController(viewController: UIViewController, animated: Bool) {
+    override public func pushViewController(viewController: UIViewController, animated: Bool) {
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
@@ -189,7 +189,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     
     :param: sender UIButton from which the PathView controller will be shown.
     */
-    func showPathPopover(sender: UIButton) {
+    public func showPathPopover(sender: UIButton) {
         let pathViewController = T2GPathViewController()
         pathViewController.modalPresentationStyle = .Popover
         pathViewController.preferredContentSize = CGSizeMake(self.view.frame.width * 0.8, 256)
@@ -212,7 +212,7 @@ class T2GNaviViewController: UINavigationController, UIPopoverPresentationContro
     :param: controller Default Cocoa API - The presentation controller that is managing the size change.
     :returns: Default Cocoa API - The new presentation style, which must be either UIModalPresentationFullScreen or UIModalPresentationOverFullScreen.
     */
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+    public func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
     

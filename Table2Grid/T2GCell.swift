@@ -116,7 +116,7 @@ private enum T2GCellSwipeDirection {
     case Left
 }
 
-enum ImageType {
+public enum ImageType {
     case Icon
     case Picture
 }
@@ -124,7 +124,7 @@ enum ImageType {
 /**
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
-class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
+public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     var delegate: T2GCellDelegate?
     
     var highlighted: Bool = false {
@@ -134,32 +134,32 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             }
         }
     }
-    var mode: T2GLayoutMode = .Collection
+    public var mode: T2GLayoutMode = .Collection
 
     var header: String = ""
     var detail: String = ""
-    var imageType: ImageType = .Icon
-    var isBookmarked: Bool = false
-    var isShared: Bool = false
-    var isSynced: Bool = false
-    var image: UIImage!
+    public var imageType: ImageType = .Icon
+    public var isBookmarked: Bool = false
+    public var isShared: Bool = false
+    public var isSynced: Bool = false
+    public var image: UIImage!
     var selected: Bool?
     
     // Common attribute
-    var scrollView: T2GCellDrawerScrollView = T2GCellDrawerScrollView()
+    public var scrollView: T2GCellDrawerScrollView = T2GCellDrawerScrollView()
     var backgroundView: MaterialPulseView = MaterialPulseView()
     var backgroundButton: FlatButton = FlatButton()
     
     
     var imageView: UIImageView = UIImageView()
-    var headerLabel: MaterialLabel = MaterialLabel()
-    var detailLabel: MaterialLabel = MaterialLabel()
+    public var headerLabel: MaterialLabel = MaterialLabel()
+    public var detailLabel: MaterialLabel = MaterialLabel()
     
     var infoView: MaterialView = MaterialView()
     var bookmarkImageView: UIImageView = UIImageView()
     var shareImageView: UIImageView = UIImageView()
     var syncImageView: UIImageView = UIImageView()
-    var moreButton: IconButton = IconButton()
+    public var moreButton: IconButton = IconButton()
     var selectionButton: IconButton = IconButton()
 
     // Collection attribute
@@ -180,7 +180,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: frame Frame for the cell.
     :param: mode Which mode the cell is in (T2GLayoutMode).
     */
-    convenience init(header: String, detail: String,  icon: String?, image: NSData? = nil, isBookmarked: Bool = false, isShared: Bool = false, isSynced: Bool = false, frame: CGRect, mode: T2GLayoutMode) {
+    public convenience init(header: String, detail: String,  icon: String?, image: NSData? = nil, isBookmarked: Bool = false, isShared: Bool = false, isSynced: Bool = false, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
         self.header = header
@@ -201,7 +201,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         self.renderCell()
     }
     
-    func renderCell() {
+    public func renderCell() {
         self.removeConstraints(self.constraints)
         scrollView.removeConstraints(scrollView.constraints)
         backgroundView.removeConstraints(backgroundView.constraints)
@@ -481,7 +481,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             ])
     }
     
-    func cellSetSelected(selected: Bool) {
+    public func cellSetSelected(selected: Bool) {
         self.selected = selected
         if self.selected! {
             self.selectionButton.tintColor = MaterialColor.blue.base
@@ -523,7 +523,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: images Array of images to be set as the buttons' backgrounds. Also used to inform how many buttons to set up.
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    func setupButtons(buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)], mode: T2GLayoutMode) {
+    public func setupButtons(buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)], mode: T2GLayoutMode) {
         let count = buttonsInfo.count
         self.buttonCount = count
         
@@ -757,7 +757,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is about to scroll the content view.
     */
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.delegate?.cellStartedSwiping(self.tag)
         self.moveButtonsInHierarchy(true)
     }
@@ -770,7 +770,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object that finished scrolling the content view.
     :param: decelerate True if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             self.handleScrollEnd(scrollView)
         }
@@ -783,7 +783,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is decelerating the scrolling of the content view.
     */
-    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+    public func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
         self.handleScrollEnd(scrollView)
     }
     
@@ -794,7 +794,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is performing the scrolling animation.
     */
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         if self.swipeDirection == .Left {
             self.moveButtonsInHierarchy(false)
         }
@@ -807,7 +807,7 @@ class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object in which the scrolling occurred.
     */
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    public func scrollViewDidScroll(scrollView: UIScrollView) {
         let tailPosition = -scrollView.contentOffset.x + self.backgroundView.frame.size.width
         let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
         

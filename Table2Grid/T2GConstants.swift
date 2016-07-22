@@ -13,14 +13,14 @@ Enum used throughout the whole framework for constants. Bizarre numbers are pick
 
 - DISCUSSION: Is there a better solution for this?
 */
-struct T2GViewTags {
-    static let cellConstant = 333
-    static let navigationBarMenu = 888888
-    static let navigationBarTriangle = 888887
-    static let editingModeToolbar = 777777
-    static let checkboxButton = 666666
-    static let cellDrawerButtonConstant = 555555
-    static let cellBackgroundButton = 444444
-    static let statusBarBackgroundView = 333333
-    static let refreshControl = 222222
+public struct T2GViewTags {
+    public static let cellConstant = 333
+    public static let navigationBarMenu = 888888
+    public static let navigationBarTriangle = 888887
+    public static let editingModeToolbar = 777777
+    public static let checkboxButton = 666666
+    public static let cellDrawerButtonConstant = 555555
+    public static let cellBackgroundButton = 444444
+    public static let statusBarBackgroundView = 333333
+    public static let refreshControl = 222222
 }

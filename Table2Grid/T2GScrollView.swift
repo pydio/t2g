@@ -11,7 +11,7 @@ import UIKit
 /**
 Enum defining the state of the T2GScrollView. Table by default if not stated otherwise.
 */
-enum T2GLayoutMode {
+public enum T2GLayoutMode {
     case Table
     case Collection
     
@@ -23,7 +23,7 @@ enum T2GLayoutMode {
 /**
 Protocol for scrollView delegate defining all key dimensional methods to be able to render all the cells precisely.
 */
-protocol T2GScrollViewDataDelegate {
+public protocol T2GScrollViewDataDelegate {
     /**
     Returns the number of sections in the datasource.
     
@@ -60,14 +60,14 @@ protocol T2GScrollViewDataDelegate {
 /**
 Custom UIScrollView class that takes care of all the T2GCell objects and displays them.
 */
-class T2GScrollView: UIScrollView {
-    var dataDelegate: T2GScrollViewDataDelegate?
-    var refreshControl: UIControl? {
+public class T2GScrollView: UIScrollView {
+    public var dataDelegate: T2GScrollViewDataDelegate?
+    public var refreshControl: UIControl? {
         didSet {
             self.addSubview(self.refreshControl!)
         }
     }
-    var layoutMode: T2GLayoutMode = T2GLayoutMode()
+    public var layoutMode: T2GLayoutMode = T2GLayoutMode()
     
     /**
     Helps not to delay the touchUpInside event on a UIButton that could possibly be a subview.
@@ -231,7 +231,7 @@ class T2GScrollView: UIScrollView {
     /**
     Aligns all the visible cells to make them be where they are (useful after rotation).
     */
-    func alignVisibleCells() {
+    public func alignVisibleCells() {
         for view in self.subviews {
             if let cell = view as? T2GCell {
                 let frame = self.frameForCell(indexPath: self.indexPathForCell(cell.tag))

@@ -11,7 +11,7 @@ import UIKit
 /**
 Custom class for title view in navigation bar. Extends T2GColoredButton so it gives the possibility to either highlight text on click or background.
 */
-class T2GNavigationBarTitle: T2GColoredButton {
+public class T2GNavigationBarTitle: T2GColoredButton {
     var normalTextColor: UIColor? {
         didSet {
             self.setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
@@ -35,7 +35,7 @@ class T2GNavigationBarTitle: T2GColoredButton {
     :param: text The text that will be placed as the title. Truncated in the middle if too long.
     :param: shouldHighlightText Determines whether the button should highlight the text or the background.
     */
-    convenience init(frame: CGRect, text: String, shouldHighlightText: Bool) {
+    public convenience init(frame: CGRect, text: String, shouldHighlightText: Bool) {
         self.init(frame: frame)
         self.shouldHighlightText = shouldHighlightText
 
