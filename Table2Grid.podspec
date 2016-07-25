@@ -22,5 +22,4 @@ s.dependency 'Material', '~> 1.0'
 s.source_files = "Table2Grid/**/*.{swift}"
 
 s.resources = "Table2Grid/**/*.{png,jpeg,jpg,storyboard,xib}"
-s.ios.resource_bundle = { 'T2G' => 'Table2Grid/**/*.xcassets' }
 end
