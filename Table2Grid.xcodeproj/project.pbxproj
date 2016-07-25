@@ -28,7 +28,6 @@
 		B3BDC8D41D4113A9000DF9C2 /* T2GTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C31D4113A9000DF9C2 /* T2GTabBarViewController.swift */; };
 		B3BDC8D51D4113A9000DF9C2 /* T2GUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C41D4113A9000DF9C2 /* T2GUtilities.swift */; };
 		B3BDC8D61D4113A9000DF9C2 /* T2GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */; };
-		B3BDC8D81D411442000DF9C2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3BDC8D71D411442000DF9C2 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +65,6 @@
 		B3BDC8C31D4113A9000DF9C2 /* T2GTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GTabBarViewController.swift; sourceTree = "<group>"; };
 		B3BDC8C41D4113A9000DF9C2 /* T2GUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GUtilities.swift; sourceTree = "<group>"; };
 		B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = T2GViewController.swift; sourceTree = "<group>"; };
-		B3BDC8D71D411442000DF9C2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C306B28EB64D9BE43B65617D /* Pods_Table2Grid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Table2Grid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F699BEEF9A67B5B0B54B8769 /* Pods-Table2Grid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Table2Grid.release.xcconfig"; path = "Pods/Target Support Files/Pods-Table2Grid/Pods-Table2Grid.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,7 +139,6 @@
 				B3BDC8C51D4113A9000DF9C2 /* T2GViewController.swift */,
 				B3BDC89E1D411194000DF9C2 /* Table2Grid.h */,
 				B3BDC8A01D411194000DF9C2 /* Info.plist */,
-				B3BDC8D71D411442000DF9C2 /* Images.xcassets */,
 			);
 			path = Table2Grid;
 			sourceTree = "<group>";
@@ -257,7 +254,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3BDC8D81D411442000DF9C2 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
