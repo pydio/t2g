@@ -99,6 +99,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B31B3C791D46783200837C4F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B31B3C771D466A6900837C4F /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		B3BDC8911D411194000DF9C2 = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +130,7 @@
 		B3BDC89D1D411194000DF9C2 /* Table2Grid */ = {
 			isa = PBXGroup;
 			children = (
-				B31B3C771D466A6900837C4F /* Images.xcassets */,
+				B31B3C791D46783200837C4F /* Resources */,
 				B3BDC8B51D4113A9000DF9C2 /* T2GCell.swift */,
 				B3BDC8B61D4113A9000DF9C2 /* T2GCellDrawerButton.swift */,
 				B3BDC8B71D4113A9000DF9C2 /* T2GCellDrawerScrollView.swift */,
