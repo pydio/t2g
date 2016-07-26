@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7AD21C805320210E671742AA /* Pods_Table2Grid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C306B28EB64D9BE43B65617D /* Pods_Table2Grid.framework */; };
-		B31B3C781D466A6900837C4F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B31B3C771D466A6900837C4F /* Images.xcassets */; };
+		B31B3C7B1D467A2300837C4F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B31B3C7A1D467A2300837C4F /* Images.xcassets */; };
 		B3BDC89F1D411194000DF9C2 /* Table2Grid.h in Headers */ = {isa = PBXBuildFile; fileRef = B3BDC89E1D411194000DF9C2 /* Table2Grid.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B3BDC8A61D411194000DF9C2 /* Table2Grid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */; };
 		B3BDC8AB1D411194000DF9C2 /* Table2GridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BDC8AA1D411194000DF9C2 /* Table2GridTests.swift */; };
@@ -43,7 +43,7 @@
 
 /* Begin PBXFileReference section */
 		35DBD9665EF0CB214FDA2349 /* Pods-Table2Grid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Table2Grid.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Table2Grid/Pods-Table2Grid.debug.xcconfig"; sourceTree = "<group>"; };
-		B31B3C771D466A6900837C4F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B31B3C7A1D467A2300837C4F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B3BDC89B1D411194000DF9C2 /* Table2Grid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Table2Grid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3BDC89E1D411194000DF9C2 /* Table2Grid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Table2Grid.h; sourceTree = "<group>"; };
 		B3BDC8A01D411194000DF9C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 		B31B3C791D46783200837C4F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B31B3C771D466A6900837C4F /* Images.xcassets */,
+				B31B3C7A1D467A2300837C4F /* Images.xcassets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -265,7 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B31B3C781D466A6900837C4F /* Images.xcassets in Resources */,
+				B31B3C7B1D467A2300837C4F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
