@@ -24,10 +24,11 @@ s.social_media_url = 'https://twitter.com/pydio'
 s.ios.deployment_target = '8.0'
 
 s.source_files = 'Table2Grid/Classes/**/*'
+s.resources = 'Table2Grid/Assets/*.xcassets'
 
-s.resource_bundles = {
-'Table2Grid' => ['Table2Grid/Assets/*.xcassets']
-}
+#s.resource_bundles = {
+#'Table2Grid' => ['Table2Grid/Assets/*.xcassets']
+#}
 
 # s.public_header_files = 'Pod/Classes/**/*.h'
 # s.frameworks = 'UIKit', 'MapKit'
