@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Table2Grid_Example' do
+  pod 'Table2Grid', :path => '../'
+
+  target 'Table2Grid_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
