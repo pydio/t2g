@@ -24,7 +24,10 @@ s.social_media_url = 'https://twitter.com/pydio'
 s.ios.deployment_target = '8.0'
 
 s.source_files = 'Table2Grid/Classes/**/*'
-s.resources = 'Table2Grid/Assets/*.xcassets'
+s.resources = [
+  'Table2Grid/Assets/*.xcassets',
+  'Talbe2Grid/**/*.png'
+]
 
 #s.resource_bundles = {
 #'Table2Grid' => ['Table2Grid/Assets/*.xcassets']
