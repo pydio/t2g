@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Material
 
 /**
 Custom class for title view in navigation bar. Extends T2GColoredButton so it gives the possibility to either highlight text on click or background.
 */
 public class T2GNavigationBarTitle: T2GColoredButton {
-    var normalTextColor: UIColor? {
+    public var normalTextColor: UIColor? {
         didSet {
             self.setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
         }
@@ -35,31 +36,27 @@ public class T2GNavigationBarTitle: T2GColoredButton {
     :param: text The text that will be placed as the title. Truncated in the middle if too long.
     :param: shouldHighlightText Determines whether the button should highlight the text or the background.
     */
-    public convenience init(frame: CGRect, text: String, shouldHighlightText: Bool) {
+    public convenience init(frame: CGRect, text: String, color: UIColor) {
         self.init(frame: frame)
-        self.shouldHighlightText = shouldHighlightText
 
         let triangleWidth = CGFloat(9.0)
         let triangleMargin = CGFloat(3.0)
         
-        let labelSize = text.sizeWithAttributes([NSFontAttributeName : UIFont.boldSystemFontOfSize(17.0)])
+        let labelSize = text.sizeWithAttributes([NSFontAttributeName : RobotoFont.boldWithSize(17.0)])
         let maxWidth = frame.size.width - triangleWidth - triangleMargin
         let actualLabelWidth = labelSize.width < maxWidth ? labelSize.width : maxWidth
         
-        let title = "\(self.stringTruncatedToWidth(text, width: actualLabelWidth, font: UIFont.boldSystemFontOfSize(17.0))) ▾" //▼"
-        self.setTitle(title, forState: UIControlState.Normal)
-        self.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
-        self.normalTextColor = .whiteColor()
-        self.setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
+        let title = "\(self.stringTruncatedToWidth(text, width: actualLabelWidth, font: RobotoFont.boldWithSize(17.0))) ▾"
+        setTitle(title, forState: UIControlState.Normal)
+        titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
+        normalTextColor = color
+        setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
         
-        if self.shouldHighlightText {
-            self.highlightedTextColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3)
-            self.setTitleColor(self.highlightedTextColor, forState: UIControlState.Selected)
-            self.setTitleColor(self.highlightedTextColor, forState: UIControlState.Highlighted)
-        } else {
-            self.highlightedBackgroundColor = self.highlightedTextColor
-        }
+        highlightedTextColor = color.colorWithAlphaComponent(0.3)
+        setTitleColor(highlightedTextColor, forState: UIControlState.Selected)
+        setTitleColor(highlightedTextColor, forState: UIControlState.Highlighted)
     }
+    
     
     /**
     Truncates given string if it is too long to fit in the given frame using given font.
