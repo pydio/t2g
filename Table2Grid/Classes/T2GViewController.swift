@@ -489,22 +489,22 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     private func transformViewWithCompletion(completionClosure:() -> Void) {
         let collectionClosure = {() -> T2GLayoutMode in
             let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
-            var from = (indicesExtremes.highest) + 1
-            
-            if from > self.scrollView.totalCellCount() {
-                from = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
+            if indicesExtremes.highest != Int.min && indicesExtremes.lowest != Int.max {
+                var from = (indicesExtremes.highest) + 1
+                
+                if from > self.scrollView.totalCellCount() {
+                    from = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
+                }
+                
+                var to = (indicesExtremes.highest) + 10
+                if to > self.scrollView.totalCellCount() {
+                    to = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
+                }
+                
+                for index in from...to {
+                    self.insertRowWithTag(index)
+                }
             }
-            
-            var to = (indicesExtremes.highest) + 10
-            if to > self.scrollView.totalCellCount() {
-                to = self.scrollView.totalCellCount() - 1 + T2GViewTags.cellConstant
-            }
-            
-            
-            for index in from...to {
-                self.insertRowWithTag(index)
-            }
-            
             return .Collection
         }
         
