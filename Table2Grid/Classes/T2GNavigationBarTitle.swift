@@ -42,11 +42,11 @@ public class T2GNavigationBarTitle: T2GColoredButton {
         let triangleWidth = CGFloat(9.0)
         let triangleMargin = CGFloat(3.0)
         
-        let labelSize = text.sizeWithAttributes([NSFontAttributeName : RobotoFont.boldWithSize(17.0)])
+        let labelSize = text.sizeWithAttributes([NSFontAttributeName : RobotoFont.mediumWithSize(20)])
         let maxWidth = frame.size.width - triangleWidth - triangleMargin
         let actualLabelWidth = labelSize.width < maxWidth ? labelSize.width : maxWidth
         
-        let title = "\(self.stringTruncatedToWidth(text, width: actualLabelWidth, font: RobotoFont.boldWithSize(17.0))) ▾"
+        let title = "\(self.stringTruncatedToWidth(text, width: actualLabelWidth, font: RobotoFont.mediumWithSize(20))) ▾"
         setTitle(title, forState: UIControlState.Normal)
         titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         normalTextColor = color
