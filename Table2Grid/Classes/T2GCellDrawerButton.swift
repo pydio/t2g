@@ -12,6 +12,7 @@ import UIKit
 Base class for drawer buttons (can be overriden). Implements resizing based on how much the scrollView in T2GCell is opened.
 */
 class T2GCellDrawerButton: T2GColoredButton {
+    var handler: (Void->Void)?
     var minOriginCoord: CGPoint?
     var maxOriginCoord: CGPoint? {
         get {
@@ -84,5 +85,5 @@ class T2GCellDrawerButton: T2GColoredButton {
                 self.frame = CGRectMake(self.minOriginCoord!.x, self.minOriginCoord!.y, self.minSize!, self.minSize!)
             }
         }
-    }
+    }    
 }
