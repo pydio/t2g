@@ -520,11 +520,14 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     /**
     Sets up buttons in drawer.
     
-    :param: images Array of images to be set as the buttons' backgrounds. Also used to inform how many buttons to set up.
+    :param: array of custom actions
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    public func setupButtons(buttonsInfo: [(normalImage: String, selectedImage: String, optionalText: String?)], mode: T2GLayoutMode) {
-        let count = buttonsInfo.count
+    public func setupActions(actions: [(title: String, image: UIImage, handler: Void->Void)], mode: T2GLayoutMode) {
+        let a: Void->Void
+        let b: ()->()
+        
+        let count = actions.count
         self.buttonCount = count
         
         let coordinateData = self.coordinatesForButtons(count, mode: mode)
@@ -535,28 +538,15 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             let view = T2GCellDrawerButton(frame: point)
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
             
-            if var img = UIImage(named: buttonsInfo[index].normalImage) {
-                img = img.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-                view.tintColor = T2GStyle.Node.nodeImageViewTintColor
-                view.backgroundColor = .clearColor()
-                view.setBackgroundImage(img, forState: UIControlState.Normal)
-                
-                if let img2 = UIImage(named: buttonsInfo[index].selectedImage) {
-                    view.setBackgroundImage(img2, forState: UIControlState.Selected)
-                    view.setBackgroundImage(img2, forState: UIControlState.Highlighted)
-                }
-            } else {
-                view.normalBackgroundColor = .blackColor()
-                view.highlightedBackgroundColor = .lightGrayColor()
-                
-                if let title = buttonsInfo[index].optionalText {
-                    view.setTitle(title, forState: UIControlState.Normal)
-                } else {
-                    view.setTitle("\(view.tag - T2GViewTags.cellDrawerButtonConstant + 1)", forState: UIControlState.Normal)
-                }
-            }
-            
-            view.addTarget(self, action: #selector(T2GCell.buttonSelected(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            var img = actions[index].image
+            img = img.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            view.tintColor = T2GStyle.Node.nodeImageViewTintColor
+            view.backgroundColor = .clearColor()
+            view.setBackgroundImage(img, forState: UIControlState.Normal)
+            view.setBackgroundImage(img, forState: UIControlState.Selected)
+            view.setBackgroundImage(img, forState: UIControlState.Highlighted)
+            view.handler = actions[index].handler
+            view.addTarget(self, action: #selector(cellBackgroundButtonPressed(_:)), forControlEvents: .TouchUpInside)
             self.addSubview(view)
             self.sendSubviewToBack(view)
         }
@@ -574,14 +564,18 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     }
     
     /**
-    Gets called when T2GCellDrawerButton has been pressed. Redirects the action to the delegate.
-    
-    :param: sender T2GCellDrawerButton that has been pressed.
-    */
-    func buttonSelected(sender: T2GCellDrawerButton) {
-        self.delegate?.didSelectButton(self.tag, index: sender.tag - T2GViewTags.cellDrawerButtonConstant)
+     Gets called when T2GCellDrawerButton has been pressed. Execute the handler and close the cell
+     
+     :param: sender T2GCellDrawerButton that has been pressed.
+     */
+    func cellBackgroundButtonPressed(sender: T2GCellDrawerButton) {
+        if let handler = sender.handler {
+            handler()
+            closeCell()
+        }
     }
     
+
     //MARK: - Multiple choice toggle
     
     /**
