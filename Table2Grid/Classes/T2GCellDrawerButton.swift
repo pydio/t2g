@@ -11,10 +11,10 @@ import UIKit
 /**
 Base class for drawer buttons (can be overriden). Implements resizing based on how much the scrollView in T2GCell is opened.
 */
-class T2GCellDrawerButton: T2GColoredButton {
-    var handler: (Void->Void)?
-    var minOriginCoord: CGPoint?
-    var maxOriginCoord: CGPoint? {
+public class T2GCellDrawerButton: T2GColoredButton {
+    public var handler: (Void->Void)?
+    public var minOriginCoord: CGPoint?
+    public var maxOriginCoord: CGPoint? {
         get {
             return CGPointMake(minOriginCoord!.x - (minSize! / 2), minOriginCoord!.y - (minSize! / 2))
         }
@@ -39,7 +39,7 @@ class T2GCellDrawerButton: T2GColoredButton {
         self.minOriginCoord = frame.origin
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
