@@ -202,7 +202,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     }
     
     public func renderCell() {
-        self.removeConstraints(self.constraints)
+        removeConstraints(constraints)
         scrollView.removeConstraints(scrollView.constraints)
         backgroundView.removeConstraints(backgroundView.constraints)
         imageView.removeConstraints(imageView.constraints)
@@ -221,7 +221,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
 
         
         if mode == .Table {
-            self.backgroundColor = T2GStyle.Node.Table.backgroundColor
+            backgroundColor = T2GStyle.Node.Table.backgroundColor
             detailLabel.hidden = false
             whiteFooter.hidden = true
             
@@ -230,7 +230,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             prepareMoreButton()
             prepareSelectionButton()
         } else if mode == .Collection {
-            self.backgroundColor = T2GStyle.Node.Collection.backgroundColor
+            backgroundColor = T2GStyle.Node.Collection.backgroundColor
             detailLabel.hidden = true
             whiteFooter.hidden = false
             
@@ -261,11 +261,11 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         scrollView.bounces = false
         scrollView.delegate = self
         scrollView.delaysContentTouches = false
-        self.addSubview(scrollView)
+        addSubview(scrollView)
         
         if mode == .Table {
             scrollView.scrollEnabled = selected == nil ? true : false
-            self.addConstraints([ // SCROLLVIEW
+            addConstraints([ // SCROLLVIEW
                 NSLayoutConstraint(item: scrollView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: scrollView, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: scrollView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0),
@@ -273,14 +273,13 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
                 ])
         } else {
             scrollView.scrollEnabled = false
-            self.addConstraints([ // SCROLLVIEW
+            addConstraints([ // SCROLLVIEW
                 NSLayoutConstraint(item: scrollView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: scrollView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: scrollView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: frame.height / 5 * 4),
                 NSLayoutConstraint(item: scrollView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0),
                 ])
         }
-        prepareBackgroundView()
     }
     
     func prepareWhiteFooter() {
@@ -289,8 +288,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         prepareMoreButton()
         prepareSelectionButton()
         prepareHeaderLabel()
-        self.addSubview(whiteFooter)
-        self.addConstraints([ // WHITE FOOTER
+        addSubview(whiteFooter)
+        addConstraints([ // WHITE FOOTER
             NSLayoutConstraint(item: whiteFooter, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: whiteFooter, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: whiteFooter, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: frame.height / 5),
@@ -447,7 +446,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         headerLabel.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         headerLabel.font = T2GStyle.Node.nodeTitleFont
         headerLabel.textColor = T2GStyle.Node.nodeTitleColor
-        headerLabel.text = self.header
+        headerLabel.text = header
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         if mode == .Table {
             backgroundView.addSubview(headerLabel)
@@ -471,7 +470,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         detailLabel.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
         detailLabel.font = T2GStyle.Node.nodeDescriptionFont
         detailLabel.textColor = T2GStyle.Node.nodeDescriptionColor
-        detailLabel.text = self.detail
+        detailLabel.text = detail
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(detailLabel)
         backgroundView.addConstraints([ // DETAIL LABEL
@@ -484,11 +483,11 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     public func cellSetSelected(selected: Bool) {
         self.selected = selected
         if self.selected! {
-            self.selectionButton.tintColor = MaterialColor.blue.base
-            self.delegate?.didCheckCell(self.tag)
+            selectionButton.tintColor = MaterialColor.blue.base
+            delegate?.didCheckCell(tag)
         } else {
-            self.selectionButton.tintColor = MaterialColor.grey.base
-            self.delegate?.didUncheckCell(self.tag)
+            selectionButton.tintColor = MaterialColor.grey.base
+            delegate?.didUncheckCell(tag)
         }
     }
     
@@ -499,7 +498,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     */
     func backgroundViewButtonPressed(sender: UIButton) {
         if selected == nil {
-            self.delegate?.didSelectCell(self.tag)
+            delegate?.didSelectCell(tag)
         } else {
             cellSetSelected(!selected!)
         }
@@ -514,7 +513,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
         self.frame = frame
         self.mode = mode
-        self.renderCell()
+        renderCell()
     }
     
     /**
@@ -528,7 +527,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         let b: ()->()
         
         let count = actions.count
-        self.buttonCount = count
+        buttonCount = count
         
         let coordinateData = self.coordinatesForButtons(count, mode: mode)
         let origins = coordinateData.frames
@@ -547,20 +546,20 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             view.setBackgroundImage(img, forState: UIControlState.Highlighted)
             view.handler = actions[index].handler
             view.addTarget(self, action: #selector(cellBackgroundButtonPressed(_:)), forControlEvents: .TouchUpInside)
-            self.addSubview(view)
-            self.sendSubviewToBack(view)
+            addSubview(view)
+            sendSubviewToBack(view)
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.frame.size.width * 2 - self.frame.size.height, self.frame.size.height)
+        self.scrollView.contentSize = CGSizeMake(frame.size.width * 2 - frame.size.height, frame.size.height)
     }
     
     /**
     Closes the drawer if it's opened.
     */
     func closeCell() {
-        self.moveButtonsInHierarchy(true)
-        self.swipeDirection = .Right
-        self.handleScrollEnd(self.scrollView)
+        moveButtonsInHierarchy(true)
+        swipeDirection = .Right
+        handleScrollEnd(scrollView)
     }
     
     /**
@@ -594,7 +593,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         let duration = animated ? 0.3 : 0.0
         
         if flag {
-            self.backgroundColor = .clearColor()
+            backgroundColor = .clearColor()
         }
         
         UIView.animateWithDuration(duration, animations: { () -> Void in
@@ -633,20 +632,20 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         var multiplier: CGFloat = 1.0
         
         if mode == .Table {
-            let m = (self.frame.size.width - self.frame.size.height) / 4
-            let margin = self.frame.height + m/2 - buttonSize / 2
-            let y = (self.frame.size.height - CGFloat(buttonSize)) / 2.0
+            let m = (frame.size.width - frame.size.height) / 4
+            let margin = frame.height + m/2 - buttonSize / 2
+            let y = (frame.size.height - CGFloat(buttonSize)) / 2.0
             
             for index in 0..<count {
                 let x = margin + (m * CGFloat(index))
                 coords.append(CGRectMake(x, y, buttonSize, buttonSize))
-                multiplier = 1 + (1 - self.frame.height/self.frame.width)
+                multiplier = 1 + (1 - frame.height/frame.width)
             }
         } else {
-            let padding = self.frame.height / 5 * 4 / 4
+            let padding = frame.height / 5 * 4 / 4
             let imgPadding = buttonSize / 2
             
-            switch self.buttonCount {
+            switch buttonCount {
             case 1...4:
                 coords.append(CGRectMake(padding + imgPadding, padding + imgPadding, buttonSize, buttonSize))
                 fallthrough
@@ -672,28 +671,28 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
     func rearrangeButtons(mode: T2GLayoutMode) {
-        let coordinateData = self.coordinatesForButtons(self.buttonCount, mode: mode)
+        let coordinateData = coordinatesForButtons(buttonCount, mode: mode)
         let origins = coordinateData.frames
         
-        for index in 0..<self.buttonCount {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
+        for index in 0..<buttonCount {
+            if let view = viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 let frame = origins[index]
                 view.minOriginCoord = frame.origin
                 view.frame = frame
             }
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.frame.size.width * coordinateData.offsetMultiplier, self.frame.size.height)
+        self.scrollView.contentSize = CGSizeMake(frame.size.width * coordinateData.offsetMultiplier, frame.size.height)
     }
     
     func moreButtonImagePressed(sender: IconButton) {
 //        self.delegate?.cellStartedSwiping(self.tag)
 //        self.moveButtonsInHierarchy(true)
         if self.swipeDirection == .Left {
-            self.closeCell()
+            closeCell()
         } else if swipeDirection == .Right {
-            self.swipeDirection = .Left
-            self.handleScrollEnd(self.scrollView)
+            swipeDirection = .Left
+            handleScrollEnd(scrollView)
         }
     }
     
@@ -710,10 +709,10 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     */
     func handleScrollEnd(scrollView: UIScrollView) {
         var x: CGFloat = 0
-        if self.mode == .Table {
-            x = self.swipeDirection == .Right ? 0 : self.frame.size.width - self.imageView.frame.size.width
+        if mode == .Table {
+            x = swipeDirection == .Right ? 0 : frame.size.width - imageView.frame.size.width
         } else {
-            x = self.swipeDirection == .Right ? 0 : self.frame.size.width
+            x = swipeDirection == .Right ? 0 : frame.size.width
         }
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: false)
@@ -734,11 +733,11 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     */
     func moveButtonsInHierarchy(shouldHide: Bool) {
         for index in 0...3 {
-            if let view = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
+            if let view = viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 if shouldHide {
-                    self.sendSubviewToBack(view)
+                    sendSubviewToBack(view)
                 } else {
-                    self.bringSubviewToFront(view)
+                    bringSubviewToFront(view)
                 }
             }
         }
@@ -752,8 +751,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object that is about to scroll the content view.
     */
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.delegate?.cellStartedSwiping(self.tag)
-        self.moveButtonsInHierarchy(true)
+        delegate?.cellStartedSwiping(tag)
+        moveButtonsInHierarchy(true)
     }
     
     /**
@@ -766,7 +765,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     */
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            self.handleScrollEnd(scrollView)
+            handleScrollEnd(scrollView)
         }
     }
     
@@ -778,7 +777,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object that is decelerating the scrolling of the content view.
     */
     public func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
-        self.handleScrollEnd(scrollView)
+        handleScrollEnd(scrollView)
     }
     
     /**
@@ -789,8 +788,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object that is performing the scrolling animation.
     */
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        if self.swipeDirection == .Left {
-            self.moveButtonsInHierarchy(false)
+        if swipeDirection == .Left {
+            moveButtonsInHierarchy(false)
         }
     }
     
@@ -802,27 +801,27 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object in which the scrolling occurred.
     */
     public func scrollViewDidScroll(scrollView: UIScrollView) {
-        let tailPosition = -scrollView.contentOffset.x + self.backgroundView.frame.size.width
-        let sizeDifference = scrollView.contentOffset.x - self.lastContentOffset
+        let tailPosition = -scrollView.contentOffset.x + backgroundView.frame.size.width
+        let sizeDifference = scrollView.contentOffset.x - lastContentOffset
         
-        for index in 0..<self.buttonCount {
-            if let button = self.viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
+        for index in 0..<buttonCount {
+            if let button = viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 button.resize(tailPosition, sizeDifference: sizeDifference)
             }
         }
         
-        if self.lastContentOffset < scrollView.contentOffset.x {
-            self.swipeDirection = .Left
+        if lastContentOffset < scrollView.contentOffset.x {
+            swipeDirection = .Left
         } else {
-            self.swipeDirection = .Right
+            swipeDirection = .Right
         }
         
-        self.lastContentOffset = scrollView.contentOffset.x
+        lastContentOffset = scrollView.contentOffset.x
     }
     
     
     func cellIsLongPressed() {
-        delegate?.didLongPressCell(self.tag)
+        delegate?.didLongPressCell(tag)
     }
     
     //MARK: - T2GDragAndDropOwner delegate methods
@@ -833,6 +832,6 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: recognizer Long press gesture created when draggable flag is set to true.
     */
     func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
-        self.scrollView.addGestureRecognizer(self.longPressGestureRecognizer!)
+        scrollView.addGestureRecognizer(longPressGestureRecognizer!)
     }
 }
