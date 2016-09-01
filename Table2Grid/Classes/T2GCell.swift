@@ -197,6 +197,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         }
         self.mode = mode
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(T2GCell.cellIsLongPressed))
+        longPressRecognizer.minimumPressDuration = 1.5
         self.addGestureRecognizer(longPressRecognizer)
         self.renderCell()
     }
@@ -810,7 +811,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             }
         }
         
-        if lastContentOffset < scrollView.contentOffset.x {
+        if lastContentOffset < scrollView.contentOffset.x && scrollView.contentOffset.x > scrollView.frame.width / 4 {
             swipeDirection = .Left
         } else {
             swipeDirection = .Right
