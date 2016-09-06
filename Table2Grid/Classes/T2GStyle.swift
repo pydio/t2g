@@ -37,12 +37,4 @@ public struct T2GStyle {
         }
         
     }
-    
-    struct CopyMoveView {
-        static var backgroundColor = UIColor(named: .PYDMarine)
-        static var titleFont = UIFont(name: "SFUIDisplay-Light", size: 26)
-        static var titleColor = UIColor.whiteColor()
-        static var itemFont = UIFont(name: "SFUIDisplay-Regular", size: 15)
-        static var itemColor = UIColor.whiteColor()
-    }
 }
