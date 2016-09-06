@@ -232,26 +232,26 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      Reloads the whole scrollView - does NOT delete everything, rather calls update on every visible cell.
      */
     public func reloadScrollView() {
-        for view in self.scrollView.subviews {
+        for view in scrollView.subviews {
             if let cell = view as? T2GCell {
-                self.delegate.updateCellForIndexPath(cell, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                delegate.updateCellForIndexPath(cell, indexPath: scrollView.indexPathForCell(cell.tag))
             }
         }
-        self.displayMissingCells()
-        self.scrollView.adjustContentSize()
+        displayMissingCells()
+        scrollView.adjustContentSize()
     }
     
     public func refreshScrollView() {
-        self.clearScrollView()
-        self.displayMissingCells()
-        self.scrollView.adjustContentSize()
+        clearScrollView()
+        displayMissingCells()
+        scrollView.adjustContentSize()
     }
     /**
      Clear the scrollview by removing each subview inside
      */
     
     public func clearScrollView() {
-        for view in self.scrollView.subviews {
+        for view in scrollView.subviews {
             if let cell: UIView = view {
                 if cell.tag != 222222 { //Check if subview is not the refreshControl
                     cell.removeFromSuperview()
@@ -268,19 +268,19 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      - DISCUSSION: How to make this more modular and settable? Maybe another delegate method.
      */
     public func toggleEdit() {
-        if self.openCellTag != -1 {
-            if let view = self.scrollView!.viewWithTag(self.openCellTag) as? T2GCell {
+        if openCellTag != -1 {
+            if let view = scrollView!.viewWithTag(openCellTag) as? T2GCell {
                 view.closeCell()
             }
         }
         
-        self.isEditingModeActive = !self.isEditingModeActive
+        self.isEditingModeActive = !isEditingModeActive
         
         for view in self.scrollView.subviews {
             if let cell = view as? T2GCell {
                 let isSelected = self.editingModeSelection[cell.tag - T2GViewTags.cellConstant] ?? false
                 cell.selected = nil
-                cell.toggleMultipleChoice(self.isEditingModeActive, mode: self.scrollView.layoutMode, selected: isSelected, animated: true)
+                cell.toggleMultipleChoice(isEditingModeActive, mode: scrollView.layoutMode, selected: isSelected, animated: true)
             }
         }
         if self.isEditingModeActive {
@@ -294,9 +294,9 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: indexPath NSIndexPath of the given cell.
      */
     public func closeCell(indexPath: NSIndexPath) {
-        let index = self.scrollView.indexForIndexPath(indexPath)
+        let index = scrollView.indexForIndexPath(indexPath)
         
-        if let cell = self.scrollView.viewWithTag(index + T2GViewTags.cellConstant) as? T2GCell {
+        if let cell = scrollView.viewWithTag(index + T2GViewTags.cellConstant) as? T2GCell {
             cell.closeCell()
         }
     }
@@ -308,14 +308,14 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     func deleteBarButtonPressed() {
         var indexPaths: [NSIndexPath] = []
         
-        for key in self.editingModeSelection.keys {
-            if self.editingModeSelection[key] == true {
-                indexPaths.append(self.scrollView.indexPathForCell(key + T2GViewTags.cellConstant))
+        for key in editingModeSelection.keys {
+            if editingModeSelection[key] == true {
+                indexPaths.append(scrollView.indexPathForCell(key + T2GViewTags.cellConstant))
             }
         }
         
-        self.removeRowsAtIndexPaths(indexPaths.sort({$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}), notifyDelegate: true)
-        self.editingModeSelection = [Int : Bool]()
+        removeRowsAtIndexPaths(indexPaths.sort({$0.section == $1.section ? $0.row < $1.row : $0.section < $1.section}), notifyDelegate: true)
+        editingModeSelection = [Int : Bool]()
     }
     
     func toggleSelectionPanel() {
@@ -331,13 +331,13 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     :param: section Integer value representing the section of the delimiter to ask for the title accordingly.
     */
     func insertDelimiterForSection(mode: T2GLayoutMode, section: Int) {
-        if self.scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
-            let name = self.delegate.titleForHeaderInSection(section) ?? ""
+        if scrollView.viewWithTag(section + 1) as? T2GDelimiterView == nil {
+            let name = delegate.titleForHeaderInSection(section) ?? ""
             
-            let delimiter = T2GDelimiterView(frame: self.scrollView.frameForDelimiter(mode, section: section), title: name)
+            let delimiter = T2GDelimiterView(frame: scrollView.frameForDelimiter(mode, section: section), title: name)
             delimiter.tag = section + 1
             
-            self.scrollView.addSubview(delimiter)
+            scrollView.addSubview(delimiter)
         }
     }
     
@@ -359,7 +359,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     :param: indexPath
     */
     private func insertRowAtIndexPath(indexPath: NSIndexPath) {
-        let totalIndex = self.scrollView.indexForIndexPath(indexPath)
+        let totalIndex = scrollView.indexForIndexPath(indexPath)
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             for cell in self.scrollView.subviews {
@@ -393,29 +393,29 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :returns: Integer value representing the tag of the newly added cell.
      */
     private func insertRowWithTag(tag: Int, animated: Bool = false) -> Int {
-        let indexPath = self.scrollView.indexPathForCell(tag)
+        let indexPath = scrollView.indexPathForCell(tag)
         
         if indexPath.row == 0 {
-            self.insertDelimiterForSection(self.scrollView.layoutMode, section: indexPath.section)
+            insertDelimiterForSection(scrollView.layoutMode, section: indexPath.section)
         }
         
-        if let cell = self.scrollView.viewWithTag(tag) {
+        if let cell = scrollView.viewWithTag(tag) {
             return cell.tag
         } else {
-            let frame = self.scrollView.frameForCell(indexPath: indexPath)
-            let cellView = self.delegate.cellForIndexPath(indexPath, frame: frame)
+            let frame = scrollView.frameForCell(indexPath: indexPath)
+            let cellView = delegate.cellForIndexPath(indexPath, frame: frame)
             cellView.tag = tag
             
-            if self.isEditingModeActive {
-                let isSelected = self.editingModeSelection[cellView.tag - T2GViewTags.cellConstant] ?? false
-                cellView.toggleMultipleChoice(true, mode: self.scrollView.layoutMode, selected: isSelected, animated: false)
+            if isEditingModeActive {
+                let isSelected = editingModeSelection[cellView.tag - T2GViewTags.cellConstant] ?? false
+                cellView.toggleMultipleChoice(true, mode: scrollView.layoutMode, selected: isSelected, animated: false)
             }
             
-            let isDragged = self.view.viewWithTag(tag) != nil
+            let isDragged = view.viewWithTag(tag) != nil
             
             cellView.delegate = self
             cellView.alpha = (animated || isDragged) ? 0 : 1
-            self.scrollView.addSubview(cellView)
+            scrollView.addSubview(cellView)
             
             if animated && !isDragged {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -436,13 +436,15 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     private func updateRowAtIndexPath(indexPath: NSIndexPath) {
-        for view in self.scrollView.subviews {
+        for view in scrollView.subviews {
             if let cell = view as? T2GCell {
-                if cell.tag == indexPath.row {
-                    self.delegate.updateCellForIndexPath(cell, indexPath: self.scrollView.indexPathForCell(cell.tag))
+                if scrollView.indexPathForCell(cell.tag) == indexPath {
+                    delegate.updateCellForIndexPath(cell, indexPath: scrollView.indexPathForCell(cell.tag))
                 }
             }
         }
+        scrollView.adjustContentSize()
+        displayMissingCells()
     }
     
     /**
@@ -457,12 +459,12 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
             return
         }
         for indexPath in indexPaths {
-            indices.append(self.scrollView.indexForIndexPath(indexPath))
+            indices.append(scrollView.indexForIndexPath(indexPath))
         }
         
         
         for idx in indices {
-            if let view = self.scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
+            if let view = scrollView!.viewWithTag(idx + T2GViewTags.cellConstant) as? T2GCell {
                 view.removeFromSuperview()
             }
         }
@@ -476,7 +478,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      Wrapper around transformViewWithCompletion for UIBarButton implementation.
      */
     public func transformView() {
-        self.transformViewWithCompletion() { ()->Void in }
+        transformViewWithCompletion() { ()->Void in }
     }
     
     /**
@@ -508,10 +510,10 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
             return .Collection
         }
         
-        let mode = self.scrollView.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
-        self.scrollView.adjustContentSize(mode)
-        self.displayMissingCells()
-        self.displayMissingCells(mode)
+        let mode = scrollView.layoutMode == .Collection ? T2GLayoutMode.Table : collectionClosure()
+        scrollView.adjustContentSize(mode)
+        displayMissingCells()
+        displayMissingCells(mode)
         
         UIView.animateWithDuration(0.8, animations: { () -> Void in
             
@@ -584,7 +586,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: fromInterfaceOrientation Default Cocoa API - The old orientation of the user interface.
      */
     override public func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.displayMissingCells()
+        displayMissingCells()
     }
     
     // MARK: -CopyMoveView delegate
@@ -604,7 +606,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      Helper method after the scrollView has snapped back (most likely after UIRefreshControl has been pulled). The thing is, that performSubviewCleanup is usually called and the last cells could be missing because they go off-screen during UIRefreshControl's loading. This method makes sure that all cells are properly displayed afterwards.
      */
     override func handleSnapBack() {
-        self.displayMissingCells()
+        displayMissingCells()
     }
     
     /**
@@ -646,8 +648,8 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
         let currentTime = NSDate.timeIntervalSinceReferenceDate()
         var currentSpeed = T2GScrollingSpeed.Slow
         
-        if(currentTime - self.lastSpeedOffsetCaptureTime > 0.1) {
-            let distance = currentOffset.y - self.lastSpeedOffset.y
+        if(currentTime - lastSpeedOffsetCaptureTime > 0.1) {
+            let distance = currentOffset.y - lastSpeedOffset.y
             let scrollSpeed = fabsf(Float((distance * 10) / 1000))
             
             if (scrollSpeed > 6) {
@@ -656,16 +658,16 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
                 currentSpeed = .Normal
             }
             
-            self.lastSpeedOffset = currentOffset
-            self.lastSpeedOffsetCaptureTime = currentTime
+            lastSpeedOffset = currentOffset
+            lastSpeedOffsetCaptureTime = currentTime
         }
         
         let extremes = self.scrollView.firstAndLastVisibleTags()
         
         if extremes.lowest != Int.max || extremes.highest != Int.min {
-            let startingPoint = self.scrollDirection == .Up ? extremes.lowest : extremes.highest
-            let endingPoint = self.scrollDirection == .Up ? extremes.highest : extremes.lowest
-            let edgeCondition = self.scrollDirection == .Up ? T2GViewTags.cellConstant : self.scrollView.totalCellCount() + T2GViewTags.cellConstant - 1
+            let startingPoint = scrollDirection == .Up ? extremes.lowest : extremes.highest
+            let endingPoint = scrollDirection == .Up ? extremes.highest : extremes.lowest
+            let edgeCondition = scrollDirection == .Up ? T2GViewTags.cellConstant : self.scrollView.totalCellCount() + T2GViewTags.cellConstant - 1
             
             let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
             let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
@@ -679,11 +681,11 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
             
             if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
                 if CGRectIntersectsRect(scrollView.bounds, edgeCell.frame) && startingPoint != edgeCondition {
-                    let firstAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: startingPoint)
+                    let firstAddedTag = addRowsWhileScrolling(scrollDirection, startTag: startingPoint)
                     if (currentSpeed == .Fast || currentSpeed == .Normal) && firstAddedTag != edgeCondition {
-                        let secondAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: firstAddedTag)
+                        let secondAddedTag = addRowsWhileScrolling(scrollDirection, startTag: firstAddedTag)
                         if (currentSpeed == .Fast) && secondAddedTag != edgeCondition {
-                            let thirdAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
+                            let thirdAddedTag = addRowsWhileScrolling(scrollDirection, startTag: secondAddedTag)
                             if (currentSpeed == .Fast || self.scrollView.layoutMode == .Collection) && thirdAddedTag != edgeCondition {
                                 //                                let fourthAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
                             }
@@ -704,11 +706,11 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: mode T2GLayoutMode for which the supposedly displayed cells should be calculated. Optional value - if nothing is passed, current layout is used.
      */
     func displayMissingCells(mode: T2GLayoutMode? = nil) {
-        let m = mode ?? self.scrollView.layoutMode
+        let m = mode ?? scrollView.layoutMode
         
-        let indices = self.scrollView.indicesForVisibleCells(m)
+        let indices = scrollView.indicesForVisibleCells(m)
         for index in indices {
-            self.insertRowWithTag(index + T2GViewTags.cellConstant, animated: true)
+            insertRowWithTag(index + T2GViewTags.cellConstant, animated: true)
         }
     }
     
@@ -725,17 +727,17 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
         let secondTag = startTag + (2 * multiplier)
         let thirdTag = startTag + (3 * multiplier)
         
-        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
-        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (self.scrollView.totalCellCount() - 1)
+        let firstAdditionalCondition = direction == .Up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
+        let secondAdditionalCondition = direction == .Up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
         
-        var lastTag = self.insertRowWithTag(firstTag)
+        var lastTag = insertRowWithTag(firstTag)
         
         if self.scrollView.layoutMode == .Collection {
             if firstAdditionalCondition {
-                lastTag = self.insertRowWithTag(secondTag)
+                lastTag = insertRowWithTag(secondTag)
                 
                 if secondAdditionalCondition {
-                    lastTag = self.insertRowWithTag(thirdTag)
+                    lastTag = insertRowWithTag(thirdTag)
                 }
             }
         }
@@ -753,8 +755,8 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: tag Integer value representing the tag of the currently swiped cell.
      */
     func cellStartedSwiping(tag: Int) {
-        if self.openCellTag != -1 && self.openCellTag != tag {
-            let cell = self.view.viewWithTag(self.openCellTag) as? T2GCell
+        if openCellTag != -1 && openCellTag != tag {
+            let cell = view.viewWithTag(openCellTag) as? T2GCell
             cell?.closeCell()
         }
     }
@@ -767,16 +769,16 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: tag Integer value representing the tag of the selected cell.
      */
     func didSelectCell(tag: Int) {
-        self.delegate.didSelectCellAtIndexPath(self.scrollView.indexPathForCell(tag))
+        delegate.didSelectCellAtIndexPath(scrollView.indexPathForCell(tag))
     }
     
     
     func didCheckCell(tag: Int) {
-        self.delegate.didCheckCellAtIndexPath(self.scrollView.indexPathForCell(tag))
+        delegate.didCheckCellAtIndexPath(scrollView.indexPathForCell(tag))
     }
     
     func didUncheckCell(tag: Int) {
-        self.delegate.didUncheckCellAtIndexPath(self.scrollView.indexPathForCell(tag))
+        delegate.didUncheckCellAtIndexPath(scrollView.indexPathForCell(tag))
     }
     
     /**
@@ -787,12 +789,12 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: tag Integer value representing the tag of the opened cell.
      */
     func didCellOpen(tag: Int) {
-        if self.openCellTag != -1 && self.openCellTag != tag {
-            let cell = self.view.viewWithTag(self.openCellTag) as? T2GCell
+        if openCellTag != -1 && openCellTag != tag {
+            let cell = view.viewWithTag(openCellTag) as? T2GCell
             cell?.closeCell()
         }
-        self.openCellTag = tag
-        self.delegate.backGestureStatus(false)
+        openCellTag = tag
+        delegate.backGestureStatus(false)
     }
     
     /**
@@ -803,7 +805,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: tag
      */
     func didCellClose(tag: Int) {
-        self.delegate.backGestureStatus(true)
+        delegate.backGestureStatus(true)
     }
     
     /**
@@ -815,11 +817,11 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
      :param: index Integer value representing the index of the button that has been selected.
      */
     func didSelectButton(tag: Int, index: Int) {
-        self.delegate.didSelectDrawerButtonAtIndex(self.scrollView.indexPathForCell(tag), buttonIndex: index)
+        delegate.didSelectDrawerButtonAtIndex(scrollView.indexPathForCell(tag), buttonIndex: index)
     }
     
     func didLongPressCell(tag: Int) {
-        if !self.isEditingModeActive {
+        if !isEditingModeActive {
             toggleEdit()
         }
     }
