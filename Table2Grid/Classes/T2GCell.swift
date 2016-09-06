@@ -136,8 +136,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     }
     public var mode: T2GLayoutMode = .Collection
 
-    var header: String = ""
-    var detail: String = ""
+    public var header: String = ""
+    public var detail: String = ""
     public var imageType: ImageType = .Icon
     public var isBookmarked: Bool = false
     public var isShared: Bool = false
@@ -152,8 +152,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     
     var imageView: UIImageView = UIImageView()
-    public var headerLabel: MaterialLabel = MaterialLabel()
-    public var detailLabel: MaterialLabel = MaterialLabel()
+    var headerLabel: MaterialLabel = MaterialLabel()
+    var detailLabel: MaterialLabel = MaterialLabel()
     
     var infoView: MaterialView = MaterialView()
     var bookmarkImageView: UIImageView = UIImageView()
