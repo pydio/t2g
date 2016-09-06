@@ -12,7 +12,7 @@ import Material
 /**
 Protocol for view controller delegate defining required methods to properly display all subviews and also to define action methods to be called when an event occurrs.
 */
-public protocol T2GViewControllerDelegate {
+public protocol T2GViewControllerDelegate: class {
     /// View methods
     /**
      Enable/Disable Swipe back action see in NodeViewController for more details.
@@ -114,7 +114,7 @@ public protocol T2GViewControllerDelegate {
 /**
  Protocol for delegate handling drop event.
  */
-protocol T2GDropDelegate {
+protocol T2GDropDelegate: class {
     /**
      Gets called when a T2GCell gets dropped on top of another cell. This method should handle the event of success/failure.
      
@@ -154,7 +154,11 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     var editingModeSelection = [Int : Bool]()
     
-    public var delegate: T2GViewControllerDelegate! {
+    deinit {
+        print("DEINIT CALLED")
+    }
+    
+    weak public var delegate: T2GViewControllerDelegate! {
         didSet {
             var count = self.scrollView.visibleCellCount()
             let totalCells = self.scrollView.totalCellCount()
@@ -166,7 +170,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
             self.scrollView.adjustContentSize()
         }
     }
-    var dropDelegate: T2GDropDelegate?
+    weak var dropDelegate: T2GDropDelegate?
     
     /**
     Sets slight delay for VC push in case T2GNaviViewController is present. Then adds scrollView to the view with constraints such that the scrollView is always the same size as the superview.

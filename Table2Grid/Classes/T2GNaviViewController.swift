@@ -45,7 +45,7 @@ public extension UIViewController {
 /**
 Protocol for path view controller setup - prependable content and icons for view controllers. Does not need to be implemented to fully function. Serves for esthetical reasons.
 */
-public protocol T2GNaviPathDelegate {
+public protocol T2GNaviPathDelegate: class {
     
     /**
     Gets called when path is being built to know how many items should be prepended.
@@ -95,7 +95,7 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     /// Default value is 0 - no delay.
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
-    public var pathDelegate: T2GNaviPathDelegate?
+    weak public var pathDelegate: T2GNaviPathDelegate?
 
     override public func viewDidLoad() {
         super.viewDidLoad()

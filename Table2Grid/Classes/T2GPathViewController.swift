@@ -12,7 +12,7 @@ import Material
 /**
 Protocol to inform that selection has been made and delegate should act accordingly (e.g. pop to selected ViewController).
 */
-protocol T2GPathViewControllerDelegate {
+protocol T2GPathViewControllerDelegate: class {
     
     /**
     Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
@@ -49,7 +49,7 @@ Custom UITableView controller for showing popover with path to current VC in the
 */
 class T2GPathViewController: UITableViewController {
     var path = [[String : String]]()
-    var pathDelegate: T2GPathViewControllerDelegate?
+    weak var pathDelegate: T2GPathViewControllerDelegate?
     var prependedItemCount = 0
     
     override func viewDidLoad() {

@@ -47,7 +47,7 @@ extension UIImage {
 /**
 Protocol for handling the events of cell - selection, swiping the cell to open drawer or button press.
 */
-protocol T2GCellDelegate {
+protocol T2GCellDelegate: class {
     /**
     Gets called when swiping gesture began.
     
@@ -125,8 +125,12 @@ public enum ImageType {
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
 public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
-    var delegate: T2GCellDelegate?
+    weak var delegate: T2GCellDelegate?
     
+    deinit {
+        print("[DEINIT]: \(NSString(string: #file).lastPathComponent)->\(#function)")
+    }
+
     var highlighted: Bool = false {
         didSet {
             if let backgroundButton = self.backgroundView.viewWithTag(T2GViewTags.cellBackgroundButton) as? UIButton {

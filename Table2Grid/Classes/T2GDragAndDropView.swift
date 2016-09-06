@@ -11,7 +11,7 @@ import UIKit
 /**
 Protocol to add the long press gesture recognizer to whoever owns this view. Could be even this object, depends on custom needs.
 */
-protocol T2GDragAndDropOwnerDelegate {
+protocol T2GDragAndDropOwnerDelegate: class {
     /**
     Gets called when draggable boolean variable is set to true. Passes long press gesture recognizer to be added to the drop owner delegate.
     
@@ -23,7 +23,7 @@ protocol T2GDragAndDropOwnerDelegate {
 /**
 Protocol for drag and drop delegate to inform that item has been moved or dropped.
 */
-protocol T2GDragAndDropDelegate {
+protocol T2GDragAndDropDelegate: class {
     /**
     Informs delegate that frame has been changed while being dragged.
     
@@ -44,8 +44,8 @@ protocol T2GDragAndDropDelegate {
 Custom UIView with drag and drop implementation. Activated on long press.
 */
 public class T2GDragAndDropView: UIView {
-    var ownerDelegate: T2GDragAndDropOwnerDelegate?
-    var draggableDelegate: T2GDragAndDropDelegate?
+    weak var ownerDelegate: T2GDragAndDropOwnerDelegate?
+    weak var draggableDelegate: T2GDragAndDropDelegate?
     
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
     var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
