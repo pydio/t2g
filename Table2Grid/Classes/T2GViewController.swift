@@ -468,6 +468,7 @@ public class T2GViewController: T2GScrollController, T2GCellDelegate {
                 view.removeFromSuperview()
             }
         }
+        reloadScrollView()
         scrollView.adjustContentSize()
         displayMissingCells()
     }
