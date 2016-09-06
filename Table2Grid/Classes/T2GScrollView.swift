@@ -23,7 +23,7 @@ public enum T2GLayoutMode {
 /**
 Protocol for scrollView delegate defining all key dimensional methods to be able to render all the cells precisely.
 */
-public protocol T2GScrollViewDataDelegate {
+public protocol T2GScrollViewDataDelegate: class {
     /**
     Returns the number of sections in the datasource.
     
@@ -61,7 +61,11 @@ public protocol T2GScrollViewDataDelegate {
 Custom UIScrollView class that takes care of all the T2GCell objects and displays them.
 */
 public class T2GScrollView: UIScrollView {
-    public var dataDelegate: T2GScrollViewDataDelegate?
+    deinit {
+        print("\(#file)\(#function)")
+    }
+    
+    weak public var dataDelegate: T2GScrollViewDataDelegate?
     public var refreshControl: UIControl? {
         didSet {
             self.addSubview(self.refreshControl!)
