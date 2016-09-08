@@ -166,15 +166,13 @@ public class T2GScrollView: UIScrollView {
             
         } else {
             let superviewFrame = self.frame
-            let viewX = (superviewFrame.size.width - dimensions.width) / 2
-            
-            var ypsilon = viewX + (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.dimensionsForSectionHeader().height
+            var ypsilon = (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + self.dataDelegate!.dimensionsForSectionHeader().height
             
             for section in 0..<indexPath.section {
                 ypsilon += (self.dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(self.dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
             }
             
-            return CGRectMake(viewX, ypsilon, dimensions.width, dimensions.height)
+            return CGRectMake(0, ypsilon, dimensions.width, dimensions.height)
         }
     }
     
