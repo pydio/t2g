@@ -198,6 +198,9 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         } else {
             self.imageType = .Icon
             self.image = UIImage(named: icon!)
+            if self.image == nil {
+                self.image = UIImage(named: "file")?.imageWithRenderingMode(.AlwaysTemplate)
+            }
         }
         self.mode = mode
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(T2GCell.cellIsLongPressed))
@@ -332,14 +335,16 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     func prepareImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        if imageType == .Icon {
-            imageView.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tintWithColor(MaterialColor.grey.base)
-            imageView.backgroundColor = T2GStyle.Node.nodeIconViewBackgroundColor
-            imageView.contentMode = .Center
-        } else {
-            imageView.image = image
-            imageView.contentMode = .ScaleAspectFill
-            imageView.clipsToBounds = true
+        if let img = image {
+            if imageType == .Icon {
+                imageView.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tintWithColor(MaterialColor.grey.base)
+                imageView.backgroundColor = T2GStyle.Node.nodeIconViewBackgroundColor
+                imageView.contentMode = .Center
+            } else {
+                imageView.image = image
+                imageView.contentMode = .ScaleAspectFill
+                imageView.clipsToBounds = true
+            }        
         }
         backgroundView.addSubview(imageView)
         backgroundView.addConstraints([ // ICON VIEW
