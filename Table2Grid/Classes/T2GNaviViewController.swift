@@ -19,7 +19,7 @@ extension UINavigationController {
     :param: vc View controller to be popped to.
     :param: handler Optional handler to be performed after popping has ended.
     */
-    func popToViewControllerWithHandler(vc: UIViewController, handler: (() -> Void)?) {
+    func popToViewControllerWithHandler(_ vc: UIViewController, handler: (() -> Void)?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(handler)
         self.popToViewController(vc, animated: true)
@@ -62,7 +62,7 @@ public protocol T2GNaviPathDelegate: class {
     :param: index Index of the prependable item.
     :returns: Tuple with the name and the image name to use.
     */
-    func pathPrependableItemAttributes(index: Int) -> (name: String, image: String)
+    func pathPrependableItemAttributes(_ index: Int) -> (name: String, image: String)
     
     /**
     Gets called when prepended item is selected. In some cases it could be desirable to pop all the way to the root and sometimes not - that's when this method comes in. Is called every time any prependable index is selected.
@@ -70,7 +70,7 @@ public protocol T2GNaviPathDelegate: class {
     :param: index Index of the prependable item.
     :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
     */
-    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
+    func shouldPopToRootWhenPrependedIndexIsSelected(_ index: Int) -> Bool
     
     /**
     Gets called when path is being built to know what icon to use for the given view controller.
@@ -78,30 +78,30 @@ public protocol T2GNaviPathDelegate: class {
     :param: viewController UIViewController on the stack of viewControllers in UINavigationController.
     :returns: Image asset name.
     */
-    func pathImageForViewController(viewController: UIViewController) -> String
+    func pathImageForViewController(_ viewController: UIViewController) -> String
     
     /**
     Gets called when prependable item on given index got selected.
     
     :param: index Index of the prepended item.
     */
-    func didSelectPrependableIndex(index: Int)
+    func didSelectPrependableIndex(_ index: Int)
 }
 
 /**
 Custom UINavigationController that enables slight delay between segues (for enter/exit animation) and that adds status bar background on top of the navigation bar (settable).
 */
-public class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
+open class T2GNaviViewController: UINavigationController, UIPopoverPresentationControllerDelegate, T2GPathViewControllerDelegate {
     /// Default value is 0 - no delay.
     var segueDelay: Double = 0.0
     var statusBarBackgroundView: UIView?
-    weak public var pathDelegate: T2GNaviPathDelegate?
+    weak open var pathDelegate: T2GNaviPathDelegate?
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
@@ -114,7 +114,7 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
         if let view = self.view.viewWithTag(T2GViewTags.statusBarBackgroundView) {
             return view
         } else {
-            let view = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20))
             view.tag = T2GViewTags.statusBarBackgroundView
             view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.07)
             self.view.addSubview(view)
@@ -128,12 +128,12 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     :param: animated Default Cocoa API behavior - Set this value to YES to animate the transition.
     :returns: The view controller that was popped from the stack.
     */
-    override public func popViewControllerAnimated(animated: Bool) -> UIViewController? {
+    override open func popViewController(animated: Bool) -> UIViewController? {
         
-        let poppedViewController = super.popViewControllerAnimated(animated)
+        let poppedViewController = super.popViewController(animated: animated)
         if let visibleViewController = self.visibleViewController as? T2GViewController {
             if visibleViewController.isHidingEnabled {
-                visibleViewController.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+                visibleViewController.showBar(UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
             }
             
             visibleViewController.scrollView.animateSubviewCells(false)
@@ -147,11 +147,11 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     :param: viewController The view controller to push onto the stack.
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
-    override public func pushViewController(viewController: UIViewController, animated: Bool) {
+    override open func pushViewController(_ viewController: UIViewController, animated: Bool) {
         
         if let vc = self.visibleViewController as? T2GViewController {
             if vc.isHidingEnabled {
-                vc.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+                vc.showBar(UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
             }
             
             vc.scrollView.animateSubviewCells(true)
@@ -168,7 +168,7 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     :param: viewController The view controller to push onto the stack.
     :param: animated Default Cocoa API behavior - Specify YES to animate the transition or NO if you do not want the transition to be animated.
     */
-    func performPush(viewController: UIViewController, animated: Bool) {
+    func performPush(_ viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: animated)
     }
     
@@ -178,8 +178,8 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     :param: delay Time to wait before closure is called.
     :param: closure Closure to be performed after the delay time passes.
     */
-    func delay(delay: Double, closure:() -> Void) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    func delay(_ delay: Double, closure:@escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
     
     //MARK: - UIPopover controller methods
@@ -189,21 +189,21 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     
     :param: sender UIButton from which the PathView controller will be shown.
     */
-    public func showPathPopover(sender: UIButton) {
+    open func showPathPopover(_ sender: UIButton) {
         let pathViewController = T2GPathViewController()
-        pathViewController.modalPresentationStyle = .Popover
-        pathViewController.preferredContentSize = CGSizeMake(self.view.frame.width * 0.8, 256)
+        pathViewController.modalPresentationStyle = .popover
+        pathViewController.preferredContentSize = CGSize(width: self.view.frame.width * 0.8, height: 256)
         pathViewController.path = self.buildPath()
         pathViewController.prependedItemCount = self.pathDelegate?.pathPrependableItemCount() ?? 0
         pathViewController.pathDelegate = self
         
         let popoverMenuViewController = pathViewController.popoverPresentationController
-        popoverMenuViewController?.permittedArrowDirections = .Any
+        popoverMenuViewController?.permittedArrowDirections = .any
         popoverMenuViewController?.delegate = self
         popoverMenuViewController?.sourceView = sender
         
         popoverMenuViewController?.sourceRect = CGRect(x: sender.frame.size.width / 2, y: sender.frame.size.height - 5, width: 1, height: 1)
-        self.presentViewController(pathViewController, animated: true, completion: nil)
+        self.present(pathViewController, animated: true, completion: nil)
     }
     
     /**
@@ -212,8 +212,8 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     :param: controller Default Cocoa API - The presentation controller that is managing the size change.
     :returns: Default Cocoa API - The new presentation style, which must be either UIModalPresentationFullScreen or UIModalPresentationOverFullScreen.
     */
-    public func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+    open func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     
     /**
@@ -247,7 +247,7 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     
     :returns: Boolean flag indicating whether to pop or not - if pathDelegate is nil, returns false.
     */
-    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool {
+    func shouldPopToRootWhenPrependedIndexIsSelected(_ index: Int) -> Bool {
         return self.pathDelegate?.shouldPopToRootWhenPrependedIndexIsSelected(index) ?? false
     }
     
@@ -256,7 +256,7 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     
     :param: index Index of the prepended item.
     */
-    func didSelectPrependedIndex(index: Int) {
+    func didSelectPrependedIndex(_ index: Int) {
         self.pathDelegate?.didSelectPrependableIndex(index)
     }
     
@@ -265,12 +265,12 @@ public class T2GNaviViewController: UINavigationController, UIPopoverPresentatio
     
     :param: index Index of the selected ViewController.
     */
-    func didSelectViewController(index: Int, completion: (() -> Void)?) {
+    func didSelectViewController(_ index: Int, completion: (() -> Void)?) {
         let vc = self.viewControllers[index]
         
         if let t2gVC = vc as? T2GViewController {
             if t2gVC.isHidingEnabled {
-                t2gVC.showBar(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+                t2gVC.showBar(UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
             }
             
             t2gVC.scrollView.animateSubviewCells(false)

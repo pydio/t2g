@@ -17,11 +17,11 @@ public extension UIColor {
     Enum values of additional colors.
     */
     public enum Name: UInt32 {
-        case PYDOrange = 0xfc7057ff
-        case PYDBlue = 0x79b9e0ff
-        case PYDMarine = 0x4aceb0ff
-        case PYDLightGray = 0xeaeaeaff
-        case PYDTransparentBlack = 0x00000088
+        case pydOrange = 0xfc7057ff
+        case pydBlue = 0x79b9e0ff
+        case pydMarine = 0x4aceb0ff
+        case pydLightGray = 0xeaeaeaff
+        case pydTransparentBlack = 0x00000088
     }
     
     /**

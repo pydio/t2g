@@ -17,7 +17,7 @@ protocol T2GDragAndDropOwnerDelegate: class {
     
     :param: recognizer Long press gesture created when draggable flag is set to true. Should be added to the owner of this view.
     */
-    func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer)
+    func addGestureRecognizerToView(_ recognizer: UILongPressGestureRecognizer)
 }
 
 /**
@@ -30,29 +30,29 @@ protocol T2GDragAndDropDelegate: class {
     :param: tag Tag of the dragged view.
     :param: frame Frame of the dragged view (for potential overlapping detection).
     */
-    func didMove(tag: Int, frame: CGRect)
+    func didMove(_ tag: Int, frame: CGRect)
     
     /**
     Informs delegate that the view has been dropped - the long press gesture (followed by swiping movement has come to an end).
     
     :param: cell The whole view in case the delegte wants to modify or remove it.
     */
-    func didDrop(view: T2GDragAndDropView)
+    func didDrop(_ view: T2GDragAndDropView)
 }
 
 /**
 Custom UIView with drag and drop implementation. Activated on long press.
 */
-public class T2GDragAndDropView: UIView {
+open class T2GDragAndDropView: UIView {
     weak var ownerDelegate: T2GDragAndDropOwnerDelegate?
     weak var draggableDelegate: T2GDragAndDropDelegate?
     
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
-    var lastDraggedLocation:CGPoint = CGPointMake(0, 0)
-    var origin:CGPoint = CGPointMake(0, 0)
+    var lastDraggedLocation:CGPoint = CGPoint(x: 0, y: 0)
+    var origin:CGPoint = CGPoint(x: 0, y: 0)
     
     /// Activating flag for drag and drop
-    public var draggable: Bool = false {
+    open var draggable: Bool = false {
         didSet {
             if draggable {
                 self.lastDraggedLocation = self.frame.origin
@@ -64,7 +64,7 @@ public class T2GDragAndDropView: UIView {
                 }
             } else {
                 if let longPress = self.longPressGestureRecognizer {
-                    self.lastDraggedLocation = CGPointMake(0, 0)
+                    self.lastDraggedLocation = CGPoint(x: 0, y: 0)
                     
                     self.removeGestureRecognizer(longPress)
                     self.longPressGestureRecognizer = nil
@@ -78,19 +78,19 @@ public class T2GDragAndDropView: UIView {
     
     :param: sender The long press gesture that is created when draggable flag is set to true.
     */
-    func handleLongPress(sender: UILongPressGestureRecognizer) {
+    func handleLongPress(_ sender: UILongPressGestureRecognizer) {
         if self.viewWithTag(T2GViewTags.checkboxButton) == nil {
-            if sender.state == UIGestureRecognizerState.Began {
-                self.superview?.bringSubviewToFront(self)
+            if sender.state == UIGestureRecognizerState.began {
+                self.superview?.bringSubview(toFront: self)
                 self.origin = self.frame.origin
-                self.lastDraggedLocation = sender.locationInView(self.superview)
+                self.lastDraggedLocation = sender.location(in: self.superview)
                 
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    let transform = CGAffineTransformMakeScale(1.1, 1.1)
+                UIView.animate(withDuration: 0.2, animations: { () -> Void in
+                    let transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                     self.transform = transform
                 }, completion: { (_) -> Void in
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
-                        let transform = CGAffineTransformMakeScale(1.0, 1.0)
+                    UIView.animate(withDuration: 0.2, animations: { () -> Void in
+                        let transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                         self.transform = transform
                     }, completion: { (_) -> Void in
                         // Long press activated
@@ -98,8 +98,8 @@ public class T2GDragAndDropView: UIView {
                 })
             }
             
-            if sender.state == UIGestureRecognizerState.Changed {
-                let point = sender.locationInView(self.superview)
+            if sender.state == UIGestureRecognizerState.changed {
+                let point = sender.location(in: self.superview)
                 var center = self.center
                 center.x = (center.x + (point.x - self.lastDraggedLocation.x))
                 center.y = (center.y + (point.y - self.lastDraggedLocation.y))
@@ -108,7 +108,7 @@ public class T2GDragAndDropView: UIView {
                 self.draggableDelegate?.didMove(self.tag, frame: self.frame)
             }
             
-            if sender.state == .Ended {
+            if sender.state == .ended {
                 self.draggableDelegate?.didDrop(self)
             }
         }

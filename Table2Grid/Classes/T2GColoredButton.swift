@@ -11,7 +11,7 @@ import UIKit
 /**
 Custom implementation of button that changes its background color on tap rather than just the title color.
 */
-public class T2GColoredButton: UIButton {
+open class T2GColoredButton: UIButton {
     var normalBackgroundColor: UIColor? {
         didSet {
             self.backgroundColor = normalBackgroundColor!
@@ -20,7 +20,7 @@ public class T2GColoredButton: UIButton {
     
     var highlightedBackgroundColor: UIColor? {
         didSet {
-            self.setBackgroundImage(self.imageWithColor(self.highlightedBackgroundColor!), forState: UIControlState.Highlighted)
+            self.setBackgroundImage(self.imageWithColor(self.highlightedBackgroundColor!), for: UIControlState.highlighted)
         }
     }
     
@@ -32,18 +32,18 @@ public class T2GColoredButton: UIButton {
     :param: color Color to be used to fill the image with.
     :returns: UIImage with the same dimensions as this view filled with given color.
     */
-    private func imageWithColor(color: UIColor) -> UIImage {
-        let rect: CGRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+    fileprivate func imageWithColor(_ color: UIColor) -> UIImage {
+        let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()!
+        let context: CGContext = UIGraphicsGetCurrentContext()!
     
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
+        context.setFillColor(color.cgColor)
+        context.fill(rect)
     
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image
+        return image!
     }
     
     /**
@@ -54,14 +54,14 @@ public class T2GColoredButton: UIButton {
     :param: view View that will be transformed into a UIImage.
     :returns: UIImage of the same size as the view given in the parameter.
     */
-    func imageWithView(view: UIView) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0)
+    func imageWithView(_ view: UIView) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
         
-        view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: false)
+        view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
         
        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image
+        return image!
     }
 }

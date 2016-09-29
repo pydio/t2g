@@ -15,14 +15,14 @@ extension UIImage {
      - parameter size: The size to use when scaling the new image.
      - returns: A new image object.
      */
-    public func af_imageScaledToSize(size: CGSize) -> UIImage {
+    public func af_imageScaledToSize(_ size: CGSize) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, af_isOpaque, 0.0)
-        drawInRect(CGRect(origin: CGPointZero, size: size))
+        draw(in: CGRect(origin: CGPoint.zero, size: size))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return scaledImage
+        return scaledImage!
     }
 }
 
@@ -30,13 +30,13 @@ extension UIImage {
 extension UIImage {
     /// Returns whether the image contains an alpha component.
     public var af_containsAlphaComponent: Bool {
-        let alphaInfo = CGImageGetAlphaInfo(CGImage)
+        let alphaInfo = cgImage?.alphaInfo
         
         return (
-            alphaInfo == .First ||
-                alphaInfo == .Last ||
-                alphaInfo == .PremultipliedFirst ||
-                alphaInfo == .PremultipliedLast
+            alphaInfo == .first ||
+                alphaInfo == .last ||
+                alphaInfo == .premultipliedFirst ||
+                alphaInfo == .premultipliedLast
         )
     }
     
@@ -53,14 +53,14 @@ protocol T2GCellDelegate: class {
     
     :param: tag The tag of the swiped cell.
     */
-    func cellStartedSwiping(tag: Int)
+    func cellStartedSwiping(_ tag: Int)
     
     /**
     Gets called when cell was selected.
     
     :param: tag The tag of the swiped cell.
     */
-    func didSelectCell(tag: Int)
+    func didSelectCell(_ tag: Int)
     
     
     /**
@@ -68,28 +68,28 @@ protocol T2GCellDelegate: class {
      
      :param: tag The tag of the swiped cell.
      */
-    func didCheckCell(tag: Int)
+    func didCheckCell(_ tag: Int)
     
     /**
      Gets called when cell was unchecked from multiselection.
      
      :param: tag The tag of the swiped cell.
      */
-    func didUncheckCell(tag: Int)
+    func didUncheckCell(_ tag: Int)
     
     /**
     Gets called when cell was opened.
     
     :param: tag The tag of the swiped cell.
     */
-    func didCellOpen(tag: Int)
+    func didCellOpen(_ tag: Int)
     
     /**
     Gets called when cell was closed.
     
     :param: tag The tag of the swiped cell.
     */
-    func didCellClose(tag: Int)
+    func didCellClose(_ tag: Int)
     
     /**
     Gets called when drawer button has been pressed.
@@ -97,7 +97,7 @@ protocol T2GCellDelegate: class {
     :param: tag The tag of the swiped cell.
     :param: index Index of the button - indexed from right to left starting with 0.
     */
-    func didSelectButton(tag: Int, index: Int)
+    func didSelectButton(_ tag: Int, index: Int)
     
     
     /**
@@ -105,26 +105,26 @@ protocol T2GCellDelegate: class {
      
      :param: tag The tag of the long pressed cell.
      */
-    func didLongPressCell(tag: Int)
+    func didLongPressCell(_ tag: Int)
 }
 
 /**
 Enum defining scrolling direction. Used for recognizing whether the cell should be closed or opened after the swiping gesture has ended half way through.
 */
 private enum T2GCellSwipeDirection {
-    case Right
-    case Left
+    case right
+    case left
 }
 
 public enum ImageType {
-    case Icon
-    case Picture
+    case icon
+    case picture
 }
 
 /**
 Base class for cells in T2GScrollView (can be overriden). Has all drag and drop functionality thanks to inheritance. Implements drawer feature - swipe to reveal buttons for more interaction.
 */
-public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
+open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     weak var delegate: T2GCellDelegate?
     
     deinit {
@@ -134,36 +134,36 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     var highlighted: Bool = false {
         didSet {
             if let backgroundButton = self.backgroundView.viewWithTag(T2GViewTags.cellBackgroundButton) as? UIButton {
-                backgroundButton.highlighted = self.highlighted
+                backgroundButton.isHighlighted = self.highlighted
             }
         }
     }
-    public var mode: T2GLayoutMode = .Collection
+    open var mode: T2GLayoutMode = .collection
 
-    public var header: String = ""
-    public var detail: String = ""
-    public var imageType: ImageType = .Icon
-    public var isBookmarked: Bool = false
-    public var isShared: Bool = false
-    public var isSynced: Bool = false
-    public var image: UIImage!
+    open var header: String = ""
+    open var detail: String = ""
+    open var imageType: ImageType = .icon
+    open var isBookmarked: Bool = false
+    open var isShared: Bool = false
+    open var isSynced: Bool = false
+    open var image: UIImage!
     var selected: Bool?
     
     // Common attribute
-    public var scrollView: T2GCellDrawerScrollView = T2GCellDrawerScrollView()
-    var backgroundView: MaterialPulseView = MaterialPulseView()
+    open var scrollView: T2GCellDrawerScrollView = T2GCellDrawerScrollView()
+    var backgroundView: PulseView = PulseView()
     var backgroundButton: FlatButton = FlatButton()
     
     
     var imageView: UIImageView = UIImageView()
-    var headerLabel: MaterialLabel = MaterialLabel()
-    var detailLabel: MaterialLabel = MaterialLabel()
+    var headerLabel: Label = Label()
+    var detailLabel: Label = Label()
     
-    var infoView: MaterialView = MaterialView()
+    var infoView: View = View()
     var bookmarkImageView: UIImageView = UIImageView()
     var shareImageView: UIImageView = UIImageView()
     var syncImageView: UIImageView = UIImageView()
-    public var moreButton: IconButton = IconButton()
+    open var moreButton: IconButton = IconButton()
     var selectionButton: IconButton = IconButton()
 
     // Collection attribute
@@ -171,8 +171,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     var buttonCount: Int = 0
     
-    private var swipeDirection: T2GCellSwipeDirection = .Right
-    private var lastContentOffset: CGFloat = 0
+    fileprivate var swipeDirection: T2GCellSwipeDirection = .right
+    fileprivate var lastContentOffset: CGFloat = 0
     
     /**
     Convenience initializer to initialize the cell with given parameters.
@@ -184,7 +184,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: frame Frame for the cell.
     :param: mode Which mode the cell is in (T2GLayoutMode).
     */
-    public convenience init(header: String, detail: String,  icon: String?, image: NSData? = nil, isBookmarked: Bool = false, isShared: Bool = false, isSynced: Bool = false, frame: CGRect, mode: T2GLayoutMode) {
+    public convenience init(header: String, detail: String,  icon: String?, image: Data? = nil, isBookmarked: Bool = false, isShared: Bool = false, isSynced: Bool = false, frame: CGRect, mode: T2GLayoutMode) {
         self.init(frame: frame)
         
         self.header = header
@@ -192,14 +192,14 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         self.isBookmarked = isBookmarked
         self.isShared = isShared
         self.isSynced = isSynced
-        if image?.length != 0 {
-            self.imageType = .Picture
+        if image?.count != 0 {
+            self.imageType = .picture
             self.image = UIImage(data: image!)
         } else {
-            self.imageType = .Icon
+            self.imageType = .icon
             self.image = UIImage(named: icon!)
             if self.image == nil {
-                self.image = UIImage(named: "file")?.imageWithRenderingMode(.AlwaysTemplate)
+                self.image = UIImage(named: "file")?.withRenderingMode(.alwaysTemplate)
             }
         }
         self.mode = mode
@@ -209,7 +209,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         self.renderCell()
     }
     
-    public func renderCell() {
+    open func renderCell() {
         removeConstraints(constraints)
         scrollView.removeConstraints(scrollView.constraints)
         backgroundView.removeConstraints(backgroundView.constraints)
@@ -217,9 +217,9 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         infoView.removeConstraints(infoView.constraints)
         whiteFooter.removeConstraints(whiteFooter.constraints)
         
-        bookmarkImageView.hidden = !isBookmarked
-        shareImageView.hidden = !isShared
-        syncImageView.hidden = !isSynced
+        bookmarkImageView.isHidden = !isBookmarked
+        shareImageView.isHidden = !isShared
+        syncImageView.isHidden = !isSynced
 
         prepareScrollView()
         prepareBackgroundView()
@@ -228,19 +228,19 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         prepareBackgroundButton()
 
         
-        if mode == .Table {
+        if mode == .table {
             backgroundColor = T2GStyle.Node.Table.backgroundColor
-            detailLabel.hidden = false
-            whiteFooter.hidden = true
+            detailLabel.isHidden = false
+            whiteFooter.isHidden = true
             
             prepareHeaderLabel()
             prepareDetailLabel()
             prepareMoreButton()
             prepareSelectionButton()
-        } else if mode == .Collection {
+        } else if mode == .collection {
             backgroundColor = T2GStyle.Node.Collection.backgroundColor
-            detailLabel.hidden = true
-            whiteFooter.hidden = false
+            detailLabel.isHidden = true
+            whiteFooter.isHidden = false
             
             prepareWhiteFooter()
             prepareHeaderLabel()
@@ -253,10 +253,10 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             scrollView.contentOffset.x = 0
         }
         
-        backgroundView.bringSubviewToFront(backgroundButton)
-        if mode == .Table {
-            backgroundView.bringSubviewToFront(moreButton)
-            bringSubviewToFront(backgroundView)
+        backgroundView.bringSubview(toFront: backgroundButton)
+        if mode == .table {
+            backgroundView.bringSubview(toFront: moreButton)
+            bringSubview(toFront: backgroundView)
         }
         rearrangeButtons(mode)
     }
@@ -271,21 +271,21 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         scrollView.delaysContentTouches = false
         addSubview(scrollView)
         
-        if mode == .Table {
-            scrollView.scrollEnabled = selected == nil ? true : false
+        if mode == .table {
+            scrollView.isScrollEnabled = selected == nil ? true : false
             addConstraints([ // SCROLLVIEW
-                NSLayoutConstraint(item: scrollView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: scrollView, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: scrollView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: scrollView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0),
                 ])
         } else {
-            scrollView.scrollEnabled = false
+            scrollView.isScrollEnabled = false
             addConstraints([ // SCROLLVIEW
-                NSLayoutConstraint(item: scrollView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: scrollView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: scrollView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: frame.height / 5 * 4),
-                NSLayoutConstraint(item: scrollView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: scrollView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: frame.height / 5 * 4),
+                NSLayoutConstraint(item: scrollView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
                 ])
         }
     }
@@ -298,23 +298,23 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         prepareHeaderLabel()
         addSubview(whiteFooter)
         addConstraints([ // WHITE FOOTER
-            NSLayoutConstraint(item: whiteFooter, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: whiteFooter, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: whiteFooter, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: frame.height / 5),
-            NSLayoutConstraint(item: whiteFooter, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: whiteFooter, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: whiteFooter, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: whiteFooter, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: frame.height / 5),
+            NSLayoutConstraint(item: whiteFooter, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0),
             ])
     }
     
     func prepareBackgroundView() {
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.backgroundColor = MaterialColor.white
-        backgroundView.depth = MaterialDepth.Depth5
+        backgroundView.backgroundColor = Color.white
+        backgroundView.depth = .init(preset: .depth5)
         scrollView.addSubview(backgroundView)
         scrollView.addConstraints([ // BACKGROUND VIEW
-            NSLayoutConstraint(item: backgroundView, attribute: .Width, relatedBy: .Equal, toItem: scrollView, attribute: .Width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundView, attribute: .Height, relatedBy: .Equal, toItem: scrollView, attribute: .Height, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundView, attribute: .CenterX, relatedBy: .Equal, toItem: scrollView, attribute: .CenterX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundView, attribute: .CenterY, relatedBy: .Equal, toItem: scrollView, attribute: .CenterY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundView, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundView, attribute: .height, relatedBy: .equal, toItem: scrollView, attribute: .height, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundView, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundView, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 1, constant: 0),
             ])
     }
     
@@ -322,181 +322,181 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     func prepareBackgroundButton() {
         backgroundButton.translatesAutoresizingMaskIntoConstraints = false
         backgroundButton.tag = T2GViewTags.cellBackgroundButton
-        backgroundButton.backgroundColor = MaterialColor.clear
-        backgroundButton.addTarget(self, action: #selector(T2GCell.backgroundViewButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        backgroundButton.backgroundColor = Color.clear
+        backgroundButton.addTarget(self, action: #selector(T2GCell.backgroundViewButtonPressed(_:)), for: UIControlEvents.touchUpInside)
         backgroundView.addSubview(backgroundButton)
         backgroundView.addConstraints([ // CELL BUTTON
-            NSLayoutConstraint(item: backgroundButton, attribute: .Width, relatedBy: .Equal, toItem: backgroundView, attribute: .Width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundButton, attribute: .Height, relatedBy: .Equal, toItem: backgroundView, attribute: .Height, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundButton, attribute: .CenterX, relatedBy: .Equal, toItem: backgroundView, attribute: .CenterX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: backgroundButton, attribute: .CenterY, relatedBy: .Equal, toItem: backgroundView, attribute: .CenterY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundButton, attribute: .width, relatedBy: .equal, toItem: backgroundView, attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundButton, attribute: .height, relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundButton, attribute: .centerX, relatedBy: .equal, toItem: backgroundView, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: backgroundButton, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
             ])
     }
     
     func prepareImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         if let img = image {
-            if imageType == .Icon {
-                imageView.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tintWithColor(MaterialColor.grey.base)
+            if imageType == .icon {
+                imageView.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tintWithColor(color: Color.grey.base)
                 imageView.backgroundColor = T2GStyle.Node.nodeIconViewBackgroundColor
-                imageView.contentMode = .Center
+                imageView.contentMode = .center
             } else {
                 imageView.image = image
-                imageView.contentMode = .ScaleAspectFill
+                imageView.contentMode = .scaleAspectFill
                 imageView.clipsToBounds = true
             }        
         }
         backgroundView.addSubview(imageView)
         backgroundView.addConstraints([ // ICON VIEW
-            NSLayoutConstraint(item: imageView, attribute: .CenterY, relatedBy: .Equal, toItem: backgroundView, attribute: .CenterY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: imageView, attribute: .Leading, relatedBy: .Equal, toItem: backgroundView, attribute: .Leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: imageView, attribute: .Width , relatedBy: .Equal, toItem: backgroundView, attribute: .Height, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: imageView, attribute: .Height , relatedBy: .Equal, toItem: backgroundView, attribute: .Height, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView, attribute: .leading, relatedBy: .equal, toItem: backgroundView, attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView, attribute: .width , relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: imageView, attribute: .height , relatedBy: .equal, toItem: backgroundView, attribute: .height, multiplier: 1, constant: 0),
             ])
     }
     
     
     func prepareInfoView() {
         infoView.translatesAutoresizingMaskIntoConstraints = false
-        infoView.backgroundColor = MaterialColor.clear
-        prepareAnnotation(bookmarkImageView, imageName: "bookmark", color: UIColor(named: .PYDBlue))
-        prepareAnnotation(shareImageView, imageName: "share-variant", color: UIColor(named: .PYDMarine))
-        prepareAnnotation(syncImageView, imageName: "sync", color: UIColor(named: .PYDOrange))
+        infoView.backgroundColor = Color.clear
+        prepareAnnotation(bookmarkImageView, imageName: "bookmark", color: UIColor(named: .pydBlue))
+        prepareAnnotation(shareImageView, imageName: "share-variant", color: UIColor(named: .pydMarine))
+        prepareAnnotation(syncImageView, imageName: "sync", color: UIColor(named: .pydOrange))
         imageView.addSubview(infoView)
         imageView.addConstraints([ // INFOVIEW
-            NSLayoutConstraint(item: infoView, attribute: .Width, relatedBy: .Equal, toItem: imageView, attribute: .Width, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: infoView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: infoView, attribute: .Bottom, relatedBy: .Equal, toItem: imageView, attribute: .Bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: infoView, attribute: .CenterX, relatedBy: .Equal, toItem: imageView, attribute: .CenterX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: infoView, attribute: .width, relatedBy: .equal, toItem: imageView, attribute: .width, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: infoView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: infoView, attribute: .bottom, relatedBy: .equal, toItem: imageView, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: infoView, attribute: .centerX, relatedBy: .equal, toItem: imageView, attribute: .centerX, multiplier: 1, constant: 0),
             ])
         infoView.addConstraints([ // BOOKMARK IMAGE VIEW
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .CenterY, relatedBy: .Equal, toItem: infoView, attribute: .CenterY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .Trailing, relatedBy: .Equal, toItem: infoView, attribute: .Trailing, multiplier: 1, constant: -5),
+            NSLayoutConstraint(item: bookmarkImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: bookmarkImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: bookmarkImageView, attribute: .centerY, relatedBy: .equal, toItem: infoView, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: bookmarkImageView, attribute: .trailing, relatedBy: .equal, toItem: infoView, attribute: .trailing, multiplier: 1, constant: -5),
             ])
         infoView.addConstraints([ // SHARE IMAGE VIEW
-            NSLayoutConstraint(item: shareImageView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: shareImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: shareImageView, attribute: .CenterY, relatedBy: .Equal, toItem: bookmarkImageView, attribute: .CenterY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: shareImageView, attribute: .Trailing, relatedBy: .Equal, toItem: bookmarkImageView, attribute: .Leading, multiplier: 1, constant: -5),
+            NSLayoutConstraint(item: shareImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: shareImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: shareImageView, attribute: .centerY, relatedBy: .equal, toItem: bookmarkImageView, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: shareImageView, attribute: .trailing, relatedBy: .equal, toItem: bookmarkImageView, attribute: .leading, multiplier: 1, constant: -5),
             ])
         infoView.addConstraints([ // SYNC IMAGE VIEW
-            NSLayoutConstraint(item: syncImageView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: syncImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: syncImageView, attribute: .CenterY, relatedBy: .Equal, toItem: shareImageView, attribute: .CenterY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: syncImageView, attribute: .Trailing, relatedBy: .Equal, toItem: shareImageView, attribute: .Leading, multiplier: 1, constant: -5),
+            NSLayoutConstraint(item: syncImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: syncImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: syncImageView, attribute: .centerY, relatedBy: .equal, toItem: shareImageView, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: syncImageView, attribute: .trailing, relatedBy: .equal, toItem: shareImageView, attribute: .leading, multiplier: 1, constant: -5),
             ])
     }
     
-    func prepareAnnotation(annotation: UIImageView, imageName: String, color: UIColor) {
+    func prepareAnnotation(_ annotation: UIImageView, imageName: String, color: UIColor) {
         annotation.translatesAutoresizingMaskIntoConstraints = false
-        annotation.image = UIImage(named: imageName)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).af_imageScaledToSize(CGSize(width: 10, height: 10)).tintWithColor(MaterialColor.white)
+        annotation.image = UIImage(named: imageName)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 10, height: 10)).tintWithColor(color: Color.white)
         annotation.backgroundColor = color
-        annotation.contentMode = .Center
+        annotation.contentMode = .center
         annotation.layer.cornerRadius = 7.5
         infoView.addSubview(annotation)
     }
     
     func prepareMoreButton() {
         moreButton.translatesAutoresizingMaskIntoConstraints = false
-        moreButton.pulseColor = MaterialColor.grey.base
-        moreButton.tintColor = MaterialColor.grey.lighten1
-        moreButton.setImage(MaterialIcon.cm.moreVertical, forState: .Normal)
-        moreButton.setImage(MaterialIcon.cm.moreVertical, forState: .Highlighted)
-        moreButton.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), forControlEvents: .TouchUpInside)
-        if mode == .Table {
+        moreButton.pulseColor = Color.grey.base
+        moreButton.tintColor = Color.grey.lighten1
+        moreButton.setImage(Icon.cm.moreVertical, for: UIControlState())
+        moreButton.setImage(Icon.cm.moreVertical, for: .highlighted)
+        moreButton.addTarget(self, action: #selector(T2GCell.moreButtonImagePressed(_:)), for: .touchUpInside)
+        if mode == .table {
             backgroundView.addSubview(moreButton)
             backgroundView.addConstraints([ // MORE BUTTON
-                NSLayoutConstraint(item: moreButton, attribute: .CenterY, relatedBy: .Equal, toItem: backgroundView, attribute: .CenterY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: moreButton, attribute: .Trailing, relatedBy: .Equal, toItem: backgroundView, attribute: .Trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: moreButton, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: 0)
                 ])
         } else {
             whiteFooter.addSubview(moreButton)
             whiteFooter.addConstraints([ // MORE BUTTON
-                NSLayoutConstraint(item: moreButton, attribute: .CenterY, relatedBy: .Equal, toItem: whiteFooter, attribute: .CenterY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: moreButton, attribute: .Trailing, relatedBy: .Equal, toItem: whiteFooter, attribute: .Trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: moreButton, attribute: .centerY, relatedBy: .equal, toItem: whiteFooter, attribute: .centerY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: 0)
                 ])
         }
     }
     
     func prepareSelectionButton() {
-        let image = UIImage(named: "checkbox-marked-circle")?.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage(named: "checkbox-marked-circle")?.withRenderingMode(.alwaysTemplate)
         if selected == nil {
             selectionButton.alpha = 0
-            selectionButton.hidden = true
-            selectionButton.tintColor = MaterialColor.grey.base
+            selectionButton.isHidden = true
+            selectionButton.tintColor = Color.grey.base
         } else if selected == true {
-            selectionButton.tintColor = MaterialColor.blue.base
+            selectionButton.tintColor = Color.blue.base
         } else if selected == false {
-            selectionButton.tintColor = MaterialColor.grey.base
+            selectionButton.tintColor = Color.grey.base
         }
-        selectionButton.pulseColor = MaterialColor.grey.base
-        selectionButton.setImage(image, forState: .Normal)
-        selectionButton.setImage(image, forState: .Highlighted)
-        selectionButton.addTarget(self, action: #selector(T2GCell.selectionButtonPressed(_:)), forControlEvents: .TouchUpInside)
+        selectionButton.pulseColor = Color.grey.base
+        selectionButton.setImage(image, for: UIControlState())
+        selectionButton.setImage(image, for: .highlighted)
+        selectionButton.addTarget(self, action: #selector(T2GCell.selectionButtonPressed(_:)), for: .touchUpInside)
         selectionButton.translatesAutoresizingMaskIntoConstraints = false
-        if mode == .Table {
+        if mode == .table {
             backgroundView.addSubview(selectionButton)
             backgroundView.addConstraints([ // SELECTION BUTTON
-                NSLayoutConstraint(item: selectionButton, attribute: .CenterY, relatedBy: .Equal, toItem: backgroundView, attribute: .CenterY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: selectionButton, attribute: .Trailing, relatedBy: .Equal, toItem: backgroundView, attribute: .Trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: selectionButton, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: 0)
                 ])
         } else {
             whiteFooter.addSubview(selectionButton)
             whiteFooter.addConstraints([ // SELECTION BUTTON
-                NSLayoutConstraint(item: selectionButton, attribute: .CenterY, relatedBy: .Equal, toItem: whiteFooter, attribute: .CenterY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: selectionButton, attribute: .Trailing, relatedBy: .Equal, toItem: whiteFooter, attribute: .Trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: selectionButton, attribute: .centerY, relatedBy: .equal, toItem: whiteFooter, attribute: .centerY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: 0)
                 ])
         }
     }
     
     func prepareHeaderLabel() {
-        headerLabel.backgroundColor = .clearColor()
-        headerLabel.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
+        headerLabel.backgroundColor = .clear
+        headerLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
         headerLabel.font = T2GStyle.Node.nodeTitleFont
         headerLabel.textColor = T2GStyle.Node.nodeTitleColor
         headerLabel.text = header
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        if mode == .Table {
+        if mode == .table {
             backgroundView.addSubview(headerLabel)
             backgroundView.addConstraints([ // HEADER LABEL
-                NSLayoutConstraint(item: headerLabel, attribute: .Leading, relatedBy: .Equal, toItem: imageView, attribute: .Trailing, multiplier: 1, constant: 20),
-                NSLayoutConstraint(item: headerLabel, attribute: .Trailing, relatedBy: .Equal, toItem: backgroundView, attribute: .Trailing, multiplier: 1, constant: -42),
-                NSLayoutConstraint(item: headerLabel, attribute: .Top, relatedBy: .Equal, toItem: backgroundView, attribute: .Top, multiplier: 1, constant: 20),
+                NSLayoutConstraint(item: headerLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 20),
+                NSLayoutConstraint(item: headerLabel, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -42),
+                NSLayoutConstraint(item: headerLabel, attribute: .top, relatedBy: .equal, toItem: backgroundView, attribute: .top, multiplier: 1, constant: 20),
                 ])
         } else {
             whiteFooter.addSubview(headerLabel)
             whiteFooter.addConstraints([ // HEADER LABEL
-                NSLayoutConstraint(item: headerLabel, attribute: .Leading, relatedBy: .Equal, toItem: whiteFooter, attribute: .Leading, multiplier: 1, constant: 10),
-                NSLayoutConstraint(item: headerLabel, attribute: .Trailing, relatedBy: .Equal, toItem: whiteFooter, attribute: .Trailing, multiplier: 1, constant: -42),
-                NSLayoutConstraint(item: headerLabel, attribute: .CenterY, relatedBy: .Equal, toItem: whiteFooter, attribute: .CenterY, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: headerLabel, attribute: .leading, relatedBy: .equal, toItem: whiteFooter, attribute: .leading, multiplier: 1, constant: 10),
+                NSLayoutConstraint(item: headerLabel, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: -42),
+                NSLayoutConstraint(item: headerLabel, attribute: .centerY, relatedBy: .equal, toItem: whiteFooter, attribute: .centerY, multiplier: 1, constant: 0),
                 ])
         }
     }
     
     func prepareDetailLabel() {
-        detailLabel.backgroundColor = .clearColor()
-        detailLabel.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
+        detailLabel.backgroundColor = .clear
+        detailLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
         detailLabel.font = T2GStyle.Node.nodeDescriptionFont
         detailLabel.textColor = T2GStyle.Node.nodeDescriptionColor
         detailLabel.text = detail
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(detailLabel)
         backgroundView.addConstraints([ // DETAIL LABEL
-            NSLayoutConstraint(item: detailLabel, attribute: .Leading, relatedBy: .Equal, toItem: imageView, attribute: .Trailing, multiplier: 1, constant: 20),
-            NSLayoutConstraint(item: detailLabel, attribute: .Trailing, relatedBy: .Equal, toItem: backgroundView, attribute: .Trailing, multiplier: 1, constant: -42),
-            NSLayoutConstraint(item: detailLabel, attribute: .Top, relatedBy: .Equal, toItem: headerLabel, attribute: .Bottom, multiplier: 1, constant: 5),
+            NSLayoutConstraint(item: detailLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: detailLabel, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -42),
+            NSLayoutConstraint(item: detailLabel, attribute: .top, relatedBy: .equal, toItem: headerLabel, attribute: .bottom, multiplier: 1, constant: 5),
             ])
     }
     
-    public func cellSetSelected(selected: Bool) {
+    open func cellSetSelected(_ selected: Bool) {
         self.selected = selected
         if self.selected! {
-            selectionButton.tintColor = MaterialColor.blue.base
+            selectionButton.tintColor = Color.blue.base
             delegate?.didCheckCell(tag)
         } else {
-            selectionButton.tintColor = MaterialColor.grey.base
+            selectionButton.tintColor = Color.grey.base
             delegate?.didUncheckCell(tag)
         }
     }
@@ -506,7 +506,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: sender The button that initiated the action (that is a subview of backgroundView property).
     */
-    func backgroundViewButtonPressed(sender: UIButton) {
+    func backgroundViewButtonPressed(_ sender: UIButton) {
         if selected == nil {
             delegate?.didSelectCell(tag)
         } else {
@@ -520,7 +520,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     :param: frame Frame to which the cell should resize.
     */
-    func changeFrameParadigm(mode: T2GLayoutMode, frame: CGRect) {
+    func changeFrameParadigm(_ mode: T2GLayoutMode, frame: CGRect) {
         self.frame = frame
         self.mode = mode
         renderCell()
@@ -532,8 +532,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: array of custom actions
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    public func setupActions(actions: [(title: String, image: UIImage, handler: Void->Void)], mode: T2GLayoutMode) {
-        let a: Void->Void
+    open func setupActions(_ actions: [(title: String, image: UIImage, handler: (Void)->Void)], mode: T2GLayoutMode) {
+        let a: (Void)->Void
         let b: ()->()
         
         let count = actions.count
@@ -548,19 +548,19 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             view.tag = T2GViewTags.cellDrawerButtonConstant + index
             
             var img = actions[index].image
-            img = img.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            img = img.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             view.tintColor = T2GStyle.Node.nodeImageViewTintColor
-            view.backgroundColor = .clearColor()
-            view.setBackgroundImage(img, forState: UIControlState.Normal)
-            view.setBackgroundImage(img, forState: UIControlState.Selected)
-            view.setBackgroundImage(img, forState: UIControlState.Highlighted)
+            view.backgroundColor = .clear
+            view.setBackgroundImage(img, for: UIControlState())
+            view.setBackgroundImage(img, for: UIControlState.selected)
+            view.setBackgroundImage(img, for: UIControlState.highlighted)
             view.handler = actions[index].handler
-            view.addTarget(self, action: #selector(cellBackgroundButtonPressed(_:)), forControlEvents: .TouchUpInside)
+            view.addTarget(self, action: #selector(cellBackgroundButtonPressed(_:)), for: .touchUpInside)
             addSubview(view)
-            sendSubviewToBack(view)
+            sendSubview(toBack: view)
         }
         
-        self.scrollView.contentSize = CGSizeMake(frame.size.width * 2 - frame.size.height, frame.size.height)
+        self.scrollView.contentSize = CGSize(width: frame.size.width * 2 - frame.size.height, height: frame.size.height)
     }
     
     /**
@@ -568,7 +568,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     */
     func closeCell() {
         moveButtonsInHierarchy(true)
-        swipeDirection = .Right
+        swipeDirection = .right
         handleScrollEnd(scrollView)
     }
     
@@ -577,7 +577,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
      
      :param: sender T2GCellDrawerButton that has been pressed.
      */
-    func cellBackgroundButtonPressed(sender: T2GCellDrawerButton) {
+    func cellBackgroundButtonPressed(_ sender: T2GCellDrawerButton) {
         if let handler = sender.handler {
             handler()
             closeCell()
@@ -595,23 +595,23 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: selected Flag indicating if created checkbox should be selected.
     :param: animated Flag indicating if the whole transformation process should be animated (desired for initial transformation, but maybe not so much while scrolling).
     */
-    func toggleMultipleChoice(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
+    func toggleMultipleChoice(_ flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
         updateLayoutForEdit(flag, mode: mode, selected: selected, animated: animated)
     }
     
-    func updateLayoutForEdit(flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
+    func updateLayoutForEdit(_ flag: Bool, mode: T2GLayoutMode, selected: Bool, animated: Bool) {
         let duration = animated ? 0.3 : 0.0
         
         if flag {
-            backgroundColor = .clearColor()
+            backgroundColor = .clear
         }
         
-        UIView.animateWithDuration(duration, animations: { () -> Void in
+        UIView.animate(withDuration: duration, animations: { () -> Void in
             self.moreButton.alpha = flag ? 0 : 1
             }, completion:  {(_) -> Void in
-                self.moreButton.hidden = flag
-                self.selectionButton.hidden = !flag
-                UIView.animateWithDuration(duration, animations: { () -> Void in
+                self.moreButton.isHidden = flag
+                self.selectionButton.isHidden = !flag
+                UIView.animate(withDuration: duration, animations: { () -> Void in
                     self.selectionButton.alpha = !flag ? 0 : 1
                     }, completion:  {(_) -> Void in
                 })
@@ -636,19 +636,19 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     :returns: Tuple (frames: [CGRect], offsetMultiplier: CGFloat) - array of frames for the buttons and multipler for how wide the content view of the scrollView needs to be to open as far as it is necessary.
     */
-    func coordinatesForButtons(count: Int, mode: T2GLayoutMode) -> (frames: [CGRect], offsetMultiplier: CGFloat) {
+    func coordinatesForButtons(_ count: Int, mode: T2GLayoutMode) -> (frames: [CGRect], offsetMultiplier: CGFloat) {
         let buttonSize: CGFloat = 12.0
         var coords: [CGRect] = []
         var multiplier: CGFloat = 1.0
         
-        if mode == .Table {
+        if mode == .table {
             let m = (frame.size.width - frame.size.height) / 4
             let margin = frame.height + m/2 - buttonSize / 2
             let y = (frame.size.height - CGFloat(buttonSize)) / 2.0
             
             for index in 0..<count {
                 let x = margin + (m * CGFloat(index))
-                coords.append(CGRectMake(x, y, buttonSize, buttonSize))
+                coords.append(CGRect(x: x, y: y, width: buttonSize, height: buttonSize))
                 multiplier = 1 + (1 - frame.height/frame.width)
             }
         } else {
@@ -657,16 +657,16 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             
             switch buttonCount {
             case 1...4:
-                coords.append(CGRectMake(padding + imgPadding, padding + imgPadding, buttonSize, buttonSize))
+                coords.append(CGRect(x: padding + imgPadding, y: padding + imgPadding, width: buttonSize, height: buttonSize))
                 fallthrough
             case 2...4:
-                coords.append(CGRectMake(padding * 3 - imgPadding, padding + imgPadding, buttonSize, buttonSize))
+                coords.append(CGRect(x: padding * 3 - imgPadding, y: padding + imgPadding, width: buttonSize, height: buttonSize))
                 fallthrough
             case 3,4:
-                coords.append(CGRectMake(padding + imgPadding, padding * 3 - imgPadding, buttonSize, buttonSize))
+                coords.append(CGRect(x: padding + imgPadding, y: padding * 3 - imgPadding, width: buttonSize, height: buttonSize))
                 fallthrough
             case 4:
-                coords.append(CGRectMake(padding * 3 - imgPadding, padding * 3 - imgPadding, buttonSize, buttonSize))
+                coords.append(CGRect(x: padding * 3 - imgPadding, y: padding * 3 - imgPadding, width: buttonSize, height: buttonSize))
                 fallthrough
             default: break
             }
@@ -680,7 +680,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: mode T2GLayoutMode in which the T2GScrollView is.
     */
-    func rearrangeButtons(mode: T2GLayoutMode) {
+    func rearrangeButtons(_ mode: T2GLayoutMode) {
         let coordinateData = coordinatesForButtons(buttonCount, mode: mode)
         let origins = coordinateData.frames
         
@@ -692,21 +692,21 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             }
         }
         
-        self.scrollView.contentSize = CGSizeMake(frame.size.width * coordinateData.offsetMultiplier, frame.size.height)
+        self.scrollView.contentSize = CGSize(width: frame.size.width * coordinateData.offsetMultiplier, height: frame.size.height)
     }
     
-    func moreButtonImagePressed(sender: IconButton) {
+    func moreButtonImagePressed(_ sender: IconButton) {
 //        self.delegate?.cellStartedSwiping(self.tag)
 //        self.moveButtonsInHierarchy(true)
-        if self.swipeDirection == .Left {
+        if self.swipeDirection == .left {
             closeCell()
-        } else if swipeDirection == .Right {
-            swipeDirection = .Left
+        } else if swipeDirection == .right {
+            swipeDirection = .left
             handleScrollEnd(scrollView)
         }
     }
     
-    func selectionButtonPressed(sender: IconButton) {
+    func selectionButtonPressed(_ sender: IconButton) {
     
     }
     
@@ -717,17 +717,17 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The UIScrollView where scrolling motion happened.
     */
-    func handleScrollEnd(scrollView: UIScrollView) {
+    func handleScrollEnd(_ scrollView: UIScrollView) {
         var x: CGFloat = 0
-        if mode == .Table {
-            x = swipeDirection == .Right ? 0 : frame.size.width - imageView.frame.size.width
+        if mode == .table {
+            x = swipeDirection == .right ? 0 : frame.size.width - imageView.frame.size.width
         } else {
-            x = swipeDirection == .Right ? 0 : frame.size.width
+            x = swipeDirection == .right ? 0 : frame.size.width
         }
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, animations: { () -> Void in
             self.scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: false)
         }, completion: { (_) -> Void in
-            if self.swipeDirection == .Right {
+            if self.swipeDirection == .right {
                 self.delegate?.didCellClose(self.tag)
             } else {
                 self.delegate?.didCellOpen(self.tag)
@@ -741,13 +741,13 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: shouldHide Flag determining whether the scrollView is getting closed or opened.
     */
-    func moveButtonsInHierarchy(shouldHide: Bool) {
+    func moveButtonsInHierarchy(_ shouldHide: Bool) {
         for index in 0...3 {
             if let view = viewWithTag(T2GViewTags.cellDrawerButtonConstant + index) as? T2GCellDrawerButton {
                 if shouldHide {
-                    sendSubviewToBack(view)
+                    sendSubview(toBack: view)
                 } else {
-                    bringSubviewToFront(view)
+                    bringSubview(toFront: view)
                 }
             }
         }
@@ -760,7 +760,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is about to scroll the content view.
     */
-    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.cellStartedSwiping(tag)
         moveButtonsInHierarchy(true)
     }
@@ -773,7 +773,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     :param: scrollView The scroll-view object that finished scrolling the content view.
     :param: decelerate True if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
-    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             handleScrollEnd(scrollView)
         }
@@ -786,7 +786,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is decelerating the scrolling of the content view.
     */
-    public func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+    open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         handleScrollEnd(scrollView)
     }
     
@@ -797,8 +797,8 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object that is performing the scrolling animation.
     */
-    public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        if swipeDirection == .Left {
+    open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if swipeDirection == .left {
             moveButtonsInHierarchy(false)
         }
     }
@@ -810,7 +810,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: scrollView The scroll-view object in which the scrolling occurred.
     */
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let tailPosition = -scrollView.contentOffset.x + backgroundView.frame.size.width
         let sizeDifference = scrollView.contentOffset.x - lastContentOffset
         
@@ -821,9 +821,9 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         }
         
         if lastContentOffset < scrollView.contentOffset.x && scrollView.contentOffset.x > scrollView.frame.width / 4 {
-            swipeDirection = .Left
+            swipeDirection = .left
         } else {
-            swipeDirection = .Right
+            swipeDirection = .right
         }
         
         lastContentOffset = scrollView.contentOffset.x
@@ -841,7 +841,7 @@ public class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     :param: recognizer Long press gesture created when draggable flag is set to true.
     */
-    func addGestureRecognizerToView(recognizer: UILongPressGestureRecognizer) {
+    func addGestureRecognizerToView(_ recognizer: UILongPressGestureRecognizer) {
         scrollView.addGestureRecognizer(longPressGestureRecognizer!)
     }
 }

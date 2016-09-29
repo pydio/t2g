@@ -12,22 +12,22 @@ import Material
 /**
 Custom class for title view in navigation bar. Extends T2GColoredButton so it gives the possibility to either highlight text on click or background.
 */
-public class T2GNavigationBarTitle: T2GColoredButton {
-    public var normalTextColor: UIColor? {
+open class T2GNavigationBarTitle: T2GColoredButton {
+    open var normalTextColor: UIColor? {
         didSet {
-            self.setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
+            self.setTitleColor(self.normalTextColor, for: UIControlState())
         }
     }
     
     var highlightedTextColor: UIColor? {
         didSet {
-            self.setTitleColor(self.highlightedTextColor, forState: UIControlState.Selected)
-            self.setTitleColor(self.highlightedTextColor, forState: UIControlState.Highlighted)
+            self.setTitleColor(self.highlightedTextColor, for: UIControlState.selected)
+            self.setTitleColor(self.highlightedTextColor, for: UIControlState.highlighted)
         }
     }
     
     /// set-only via initializer
-    private var shouldHighlightText = true
+    fileprivate var shouldHighlightText = true
     
     /**
     Convenience initializer that creates the whole view. Truncates the text in the middle if it exceeds given width and appends ▾ symbol at the end to inform user that this, in fact, is clickable.
@@ -42,19 +42,19 @@ public class T2GNavigationBarTitle: T2GColoredButton {
         let triangleWidth = CGFloat(9.0)
         let triangleMargin = CGFloat(3.0)
         
-        let labelSize = text.sizeWithAttributes([NSFontAttributeName : RobotoFont.mediumWithSize(20)])
+        let labelSize = text.size(attributes: [NSFontAttributeName : RobotoFont.medium(with: 20)])
         let maxWidth = frame.size.width - triangleWidth - triangleMargin
         let actualLabelWidth = labelSize.width < maxWidth ? labelSize.width : maxWidth
         
-        let title = "\(self.stringTruncatedToWidth(text, width: actualLabelWidth, font: RobotoFont.mediumWithSize(20))) ▾"
-        setTitle(title, forState: UIControlState.Normal)
-        titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
+        let title = "\(self.stringTruncatedToWidth(text as NSString, width: actualLabelWidth, font: RobotoFont.medium(with: 20))) ▾"
+        setTitle(title, for: UIControlState())
+        titleLabel!.font = UIFont.boldSystemFont(ofSize: 17.0)
         normalTextColor = color
-        setTitleColor(self.normalTextColor, forState: UIControlState.Normal)
+        setTitleColor(self.normalTextColor, for: UIControlState())
         
-        highlightedTextColor = color.colorWithAlphaComponent(0.3)
-        setTitleColor(highlightedTextColor, forState: UIControlState.Selected)
-        setTitleColor(highlightedTextColor, forState: UIControlState.Highlighted)
+        highlightedTextColor = color.withAlphaComponent(0.3)
+        setTitleColor(highlightedTextColor, for: UIControlState.selected)
+        setTitleColor(highlightedTextColor, for: UIControlState.highlighted)
     }
     
     
@@ -66,19 +66,19 @@ public class T2GNavigationBarTitle: T2GColoredButton {
     :param: font Font for which the size is supposed to be calculated.
     :returns: Truncated string with '...' in the middle.
     */
-    func stringTruncatedToWidth(string: NSString, width: CGFloat, font: UIFont) -> String {
+    func stringTruncatedToWidth(_ string: NSString, width: CGFloat, font: UIFont) -> String {
         var truncatedString = NSMutableString(string: string)
         var newWidth = width
         
-        if (string.sizeWithAttributes([NSFontAttributeName : font]).width > newWidth) {
-            newWidth -= "...".sizeWithAttributes([NSFontAttributeName:font]).width
+        if (string.size(attributes: [NSFontAttributeName : font]).width > newWidth) {
+            newWidth -= "...".size(attributes: [NSFontAttributeName:font]).width
             
             let range = NSMakeRange(0, 1)
-            while (truncatedString.sizeWithAttributes([NSFontAttributeName:font]).width > newWidth) {
-                truncatedString.deleteCharactersInRange(range)
+            while (truncatedString.size(attributes: [NSFontAttributeName:font]).width > newWidth) {
+                truncatedString.deleteCharacters(in: range)
             }
             
-            truncatedString = NSMutableString(string: "\(string.substringToIndex(truncatedString.length/2))...\(string.substringFromIndex(string.length - truncatedString.length/2))")
+            truncatedString = NSMutableString(string: "\(string.substring(to: truncatedString.length/2))...\(string.substring(from: string.length - truncatedString.length/2))")
         }
         
         return truncatedString as String

@@ -12,12 +12,12 @@ import UIKit
 Enum for defining the state in which the scrollView is when UIRefreshControl has been pulled down and will "snap" back in the near future.
 */
 public enum T2GAutomaticScrollViewSnapStatus {
-    case None
-    case WillSnap
-    case DidSnap
+    case none
+    case willSnap
+    case didSnap
     
     init(){
-        self = .None
+        self = .none
     }
 }
 
@@ -25,31 +25,31 @@ public enum T2GAutomaticScrollViewSnapStatus {
 Enum defining scrolling direction. Used for recognizing whether the bar should be hidden or revealed.
 */
 enum T2GScrollDirection {
-    case Up
-    case Down
+    case up
+    case down
     
     init(){
-        self = .Up
+        self = .up
     }
 }
 
 /**
 Custom UIViewController that implements hiding feature of UINavigationBar when both scrollView and navigationBar are present. Thanks to neat Swift optionals it will not crash when neither is present.
 */
-public class T2GScrollController: UIViewController, UIScrollViewDelegate {
+open class T2GScrollController: UIViewController, UIScrollViewDelegate {
     /// functionality is enabled by default
-    public var isHidingEnabled = true
+    open var isHidingEnabled = true
     var statusBarBackgroundView: UIView?
     
     var lastScrollViewContentOffset: CGFloat = 0
     var scrollDirection: T2GScrollDirection = T2GScrollDirection()
-    public var automaticSnapStatus: T2GAutomaticScrollViewSnapStatus = T2GAutomaticScrollViewSnapStatus()
+    open var automaticSnapStatus: T2GAutomaticScrollViewSnapStatus = T2GAutomaticScrollViewSnapStatus()
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
@@ -59,7 +59,7 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: toInterfaceOrientation Default Cocoa API - The new orientation for the user interface.
     :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
-    override public func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    override open func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         if self.isHidingEnabled {
             self.showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
         }
@@ -73,12 +73,12 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
     :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
     */
-    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
-                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
                     
-                    if (self.scrollDirection == .Down) {
+                    if (self.scrollDirection == .down) {
                         // hide
 
                         var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
@@ -88,8 +88,8 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         statusBarBackgroundViewFrame?.origin.y = -44
                         barFrame.origin.y = -24
                         
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            blackstripe.hidden = false
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                            blackstripe.isHidden = false
                             self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
                             navigationCtr.navigationBar.frame = barFrame
                         })
@@ -107,7 +107,7 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         statusBarBackgroundViewFrame?.origin.y = 0
                         barFrame.origin.y = 20
                         
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
                             self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
                             navigationCtr.navigationBar.frame = barFrame
                         })
@@ -122,17 +122,17 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     
     :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
     */
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if self.isHidingEnabled {
             if let navigationCtr = self.navigationController {
-                if (self.isViewLoaded() && self.view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+                if (self.isViewLoaded && self.view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
                     // check when refresher is refreshing
-                    if (self.automaticSnapStatus == .None) {
+                    if (self.automaticSnapStatus == .none) {
                         if (self.lastScrollViewContentOffset > scrollView.contentOffset.y) {
-                            self.scrollDirection = .Up
+                            self.scrollDirection = .up
                             
                             if scrollView.contentSize.height - 1 < scrollView.contentOffset.y + scrollView.frame.size.height {
-                                self.automaticSnapStatus == .WillSnap
+                                self.automaticSnapStatus == .willSnap
                             } else {
                                 // show
                                 // legacy code : && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
@@ -167,7 +167,7 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                         } else if (self.lastScrollViewContentOffset < scrollView.contentOffset.y) {
-                            self.scrollDirection = .Down
+                            self.scrollDirection = .down
                             // hide
                             // legacy code: && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
                             
@@ -191,7 +191,7 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
                             }
                             
                             if let ref = scrollView.viewWithTag(T2GViewTags.refreshControl) {
-                                if !CGRectContainsRect(scrollView.bounds, ref.bounds) {
+                                if !scrollView.bounds.contains(ref.bounds) {
                                     scrollHandler()
                                 }
                             } else {
@@ -201,21 +201,21 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
                         self.lastScrollViewContentOffset = scrollView.contentOffset.y
                     } else {
                         if(scrollView.contentOffset.y == -64) {
-                            if (self.automaticSnapStatus == .WillSnap) {
-                                self.automaticSnapStatus = .DidSnap
+                            if (self.automaticSnapStatus == .willSnap) {
+                                self.automaticSnapStatus = .didSnap
                             } else {
-                                self.automaticSnapStatus = .None
+                                self.automaticSnapStatus = .none
                                 self.handleSnapBack()
                             }
                         }
                     }
                 } else {
-                    self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .Up : .Down
+                    self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
                     self.lastScrollViewContentOffset = scrollView.contentOffset.y
                 }
             }
         } else {
-            self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .Up : .Down
+            self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
             self.lastScrollViewContentOffset = scrollView.contentOffset.y
         }
     }
@@ -233,14 +233,14 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: navigationCtr The UINavigationController in which the minified stripe view should be initialized.
     :returns: The UIView that has been added to the UINavigationController passed in the parameters.
     */
-    func createMinifiedStripeBar(navigationCtr: UINavigationController) -> UIView {
+    func createMinifiedStripeBar(_ navigationCtr: UINavigationController) -> UIView {
         if let blackstripe = navigationCtr.view.viewWithTag(5555) {
             return blackstripe
         } else {
-            let blackstripe2 = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, 20))
+            let blackstripe2 = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20))
             blackstripe2.tag = 5555
-            blackstripe2.backgroundColor = UIColor(named: .PYDOrange)
-            blackstripe2.hidden = true
+            blackstripe2.backgroundColor = UIColor(named: .pydOrange)
+            blackstripe2.isHidden = true
             navigationCtr.view.addSubview(blackstripe2)
             return blackstripe2
         }
@@ -251,7 +251,7 @@ public class T2GScrollController: UIViewController, UIScrollViewDelegate {
     
     :param: isLandscape Flag determining which kind of navigation bar we'll be dealing with (minified version since iOS 8).
     */
-    func showBar(isLandscape: Bool) {
+    func showBar(_ isLandscape: Bool) {
         if let navigationCtr = self.navigationController {
             if let blackstripe = navigationCtr.view.viewWithTag(5555) {
                 blackstripe.removeFromSuperview()

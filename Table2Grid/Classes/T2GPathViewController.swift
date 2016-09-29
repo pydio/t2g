@@ -20,21 +20,21 @@ protocol T2GPathViewControllerDelegate: class {
     :param: index Index of the prependable item.
     :returns: Boolean flag stating whether or not should the view hierarchy should be popped to its root.
     */
-    func shouldPopToRootWhenPrependedIndexIsSelected(index: Int) -> Bool
+    func shouldPopToRootWhenPrependedIndexIsSelected(_ index: Int) -> Bool
     
     /**
     Gets called when prepended item gets selected.
     
     :index: Index of the prepended item.
     */
-    func didSelectPrependedIndex(index: Int)
+    func didSelectPrependedIndex(_ index: Int)
     
     /**
     Gets called when a row has been selected.
     
     :param: index Selected row in the table view.
     */
-    func didSelectViewController(index: Int, completion: (() -> Void)?)
+    func didSelectViewController(_ index: Int, completion: (() -> Void)?)
     
     /**
     Gets called when prepended index is selected and delegate does approve popping to root view controller. Returns optional closure to be performed when popping has ended.
@@ -54,11 +54,11 @@ class T2GPathViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerClass(MaterialTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.path.count - 1, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.scrollToRow(at: IndexPath(row: self.path.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,35 +67,35 @@ class T2GPathViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.path.count
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50.0
     }
 
     /**
     Sets up the cell. Last cell (currently active ViewController) is grayed out and prepended with '>' symbol to show that this is where the user currently is in the structure.
     */
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        var text = self.path[indexPath.row]["name"]!
-        if indexPath.row == self.path.count - 1 {
+        var text = self.path[(indexPath as NSIndexPath).row]["name"]!
+        if (indexPath as NSIndexPath).row == self.path.count - 1 {
             text = "▸ \(text)" // ▶ ▸
-            cell.textLabel?.textColor = .lightGrayColor()
+            cell.textLabel?.textColor = .lightGray
         } else {
-            cell.textLabel?.textColor = .blackColor()
+            cell.textLabel?.textColor = .black
         }
         
         cell.textLabel?.text = text
         
-        let image = UIImage(named: self.path[indexPath.row]["image"]!)?.tintWithColor(MaterialColor.grey.darken1) //?? self.imageWithColor(.blackColor(), rect: CGRectMake(0, 0, 32, 32))
+        let image = UIImage(named: self.path[(indexPath as NSIndexPath).row]["image"]!)?.tintWithColor(color: Color.grey.darken1) //?? self.imageWithColor(.blackColor(), rect: CGRectMake(0, 0, 32, 32))
         cell.imageView?.image = image
         return cell
     }
@@ -108,23 +108,23 @@ class T2GPathViewController: UITableViewController {
     :param: tableView Default Cocoa API - A table-view object informing the delegate about the new row selection.
     :param: indexPath Default Cocoa API - An index path locating the new selected row in tableView.
     */
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if let delegate = self.pathDelegate {
-            if indexPath.row > self.prependedItemCount - 1 {
-                let vcIndex = indexPath.row - self.prependedItemCount
+            if (indexPath as NSIndexPath).row > self.prependedItemCount - 1 {
+                let vcIndex = (indexPath as NSIndexPath).row - self.prependedItemCount
                 delegate.didSelectViewController(vcIndex, completion: nil)
             } else {
-                delegate.didSelectPrependedIndex(indexPath.row)
+                delegate.didSelectPrependedIndex((indexPath as NSIndexPath).row)
                 
-                if delegate.shouldPopToRootWhenPrependedIndexIsSelected(indexPath.row) {
+                if delegate.shouldPopToRootWhenPrependedIndexIsSelected((indexPath as NSIndexPath).row) {
                     delegate.didSelectViewController(0, completion: delegate.completionHandlerAfterRootViewControllerAppears())
                 }
             }
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     /**
@@ -134,8 +134,8 @@ class T2GPathViewController: UITableViewController {
     :param: indexPath Default Cocoa API - The index path of the row being highlighted.
     :returns: Boolean value indicating whether or not highlight selected row.
     */
-    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.row != self.path.count - 1
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return (indexPath as NSIndexPath).row != self.path.count - 1
     }
     
     /**
@@ -147,16 +147,16 @@ class T2GPathViewController: UITableViewController {
     :param: rect CGRect object giving exact size of the UIImage.
     :returns: UIImage with given color and size.
     */
-    func imageWithColor(color: UIColor, rect: CGRect) -> UIImage {
+    func imageWithColor(_ color: UIColor, rect: CGRect) -> UIImage {
         UIGraphicsBeginImageContext(rect.size)
-        let context: CGContextRef = UIGraphicsGetCurrentContext()!
+        let context: CGContext = UIGraphicsGetCurrentContext()!
         
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
+        context.setFillColor(color.cgColor)
+        context.fill(rect)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image
+        return image!
     }
 }
