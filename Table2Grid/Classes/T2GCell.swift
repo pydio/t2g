@@ -156,8 +156,8 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     
     var imageView: UIImageView = UIImageView()
-    var headerLabel: Label = Label()
-    var detailLabel: Label = Label()
+    var headerLabel: UILabel = UILabel()
+    var detailLabel: UILabel = UILabel()
     
     var infoView: View = View()
     var bookmarkImageView: UIImageView = UIImageView()
