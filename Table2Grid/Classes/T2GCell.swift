@@ -308,7 +308,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     func prepareBackgroundView() {
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.backgroundColor = Color.white
-        backgroundView.depth = .init(preset: .depth5)
+        backgroundView.depthPreset = .depth5
         scrollView.addSubview(backgroundView)
         scrollView.addConstraints([ // BACKGROUND VIEW
             NSLayoutConstraint(item: backgroundView, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1, constant: 0),
@@ -409,13 +409,13 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             backgroundView.addSubview(moreButton)
             backgroundView.addConstraints([ // MORE BUTTON
                 NSLayoutConstraint(item: moreButton, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -16)
                 ])
         } else {
             whiteFooter.addSubview(moreButton)
             whiteFooter.addConstraints([ // MORE BUTTON
                 NSLayoutConstraint(item: moreButton, attribute: .centerY, relatedBy: .equal, toItem: whiteFooter, attribute: .centerY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: moreButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: -8)
                 ])
         }
     }
