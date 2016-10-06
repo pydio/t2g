@@ -440,13 +440,13 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             backgroundView.addSubview(selectionButton)
             backgroundView.addConstraints([ // SELECTION BUTTON
                 NSLayoutConstraint(item: selectionButton, attribute: .centerY, relatedBy: .equal, toItem: backgroundView, attribute: .centerY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -16)
                 ])
         } else {
             whiteFooter.addSubview(selectionButton)
             whiteFooter.addConstraints([ // SELECTION BUTTON
                 NSLayoutConstraint(item: selectionButton, attribute: .centerY, relatedBy: .equal, toItem: whiteFooter, attribute: .centerY, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: selectionButton, attribute: .trailing, relatedBy: .equal, toItem: whiteFooter, attribute: .trailing, multiplier: 1, constant: -8)
                 ])
         }
     }
