@@ -396,8 +396,8 @@ open class T2GViewController: T2GScrollController {
     fileprivate func insertRowWithTag(_ tag: Int, animated: Bool = false) -> Int {
         let indexPath = scrollView.indexPathForCell(tag)
         
-        if (indexPath as NSIndexPath).row == 0 {
-            insertDelimiterForSection(scrollView.layoutMode, section: (indexPath as NSIndexPath).section)
+        if indexPath.row == 0 {
+            insertDelimiterForSection(scrollView.layoutMode, section: indexPath.section)
         }
         
         if let cell = scrollView.viewWithTag(tag) {

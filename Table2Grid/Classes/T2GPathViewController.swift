@@ -85,8 +85,8 @@ class T2GPathViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        var text = self.path[(indexPath as NSIndexPath).row]["name"]!
-        if (indexPath as NSIndexPath).row == self.path.count - 1 {
+        var text = self.path[indexPath.row]["name"]!
+        if indexPath.row == self.path.count - 1 {
             text = "▸ \(text)" // ▶ ▸
             cell.textLabel?.textColor = .lightGray
         } else {
@@ -95,7 +95,7 @@ class T2GPathViewController: UITableViewController {
         
         cell.textLabel?.text = text
         
-        let image = UIImage(named: self.path[(indexPath as NSIndexPath).row]["image"]!)?.tintWithColor(color: Color.grey.darken1) //?? self.imageWithColor(.blackColor(), rect: CGRectMake(0, 0, 32, 32))
+        let image = UIImage(named: self.path[indexPath.row]["image"]!)?.tintWithColor(color: Color.grey.darken1) //?? self.imageWithColor(.blackColor(), rect: CGRectMake(0, 0, 32, 32))
         cell.imageView?.image = image
         return cell
     }
@@ -112,13 +112,13 @@ class T2GPathViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let delegate = self.pathDelegate {
-            if (indexPath as NSIndexPath).row > self.prependedItemCount - 1 {
-                let vcIndex = (indexPath as NSIndexPath).row - self.prependedItemCount
+            if indexPath.row > self.prependedItemCount - 1 {
+                let vcIndex = indexPath.row - self.prependedItemCount
                 delegate.didSelectViewController(vcIndex, completion: nil)
             } else {
-                delegate.didSelectPrependedIndex((indexPath as NSIndexPath).row)
+                delegate.didSelectPrependedIndex(indexPath.row)
                 
-                if delegate.shouldPopToRootWhenPrependedIndexIsSelected((indexPath as NSIndexPath).row) {
+                if delegate.shouldPopToRootWhenPrependedIndexIsSelected(indexPath.row) {
                     delegate.didSelectViewController(0, completion: delegate.completionHandlerAfterRootViewControllerAppears())
                 }
             }
@@ -135,7 +135,7 @@ class T2GPathViewController: UITableViewController {
     :returns: Boolean value indicating whether or not highlight selected row.
     */
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return (indexPath as NSIndexPath).row != self.path.count - 1
+        return indexPath.row != self.path.count - 1
     }
     
     /**

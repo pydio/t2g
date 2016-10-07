@@ -155,20 +155,20 @@ open class T2GScrollView: UIScrollView {
                 xCoords.append(x)
             }
             
-            var yCoord = dimensions.padding + (CGFloat((indexPath as NSIndexPath).row / xCoords.count) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
-            for section in 0..<(indexPath as NSIndexPath).section {
+            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
+            for section in 0..<indexPath.section {
                 yCoord += (dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
             }
             
-            let frame = CGRect(x: CGFloat(xCoords[(indexPath as NSIndexPath).row % xCoords.count]), y: yCoord, width: dimensions.width, height: dimensions.height)
+            let frame = CGRect(x: CGFloat(xCoords[indexPath.row % xCoords.count]), y: yCoord, width: dimensions.width, height: dimensions.height)
             
             return frame
             
         } else {
             let superviewFrame = frame
-            var ypsilon = (CGFloat((indexPath as NSIndexPath).row) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
+            var ypsilon = (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
             
-            for section in 0..<(indexPath as NSIndexPath).section {
+            for section in 0..<indexPath.section {
                 ypsilon += (dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
             }
             
@@ -303,8 +303,8 @@ open class T2GScrollView: UIScrollView {
     :returns: Integer value representing the total index.
     */
     func indexForIndexPath(_ indexPath: IndexPath) -> Int {
-        var totalIndex = (indexPath as NSIndexPath).row
-        for section in 0..<(indexPath as NSIndexPath).section {
+        var totalIndex = indexPath.row
+        for section in 0..<indexPath.section {
             totalIndex += self.dataDelegate!.numberOfCellsInSection(section)
         }
         
