@@ -138,7 +138,7 @@ private enum T2GScrollingSpeed {
 /**
  Custom view controller class handling the whole T2G environment (meant to be overriden for customizations).
  */
-open class T2GViewController: T2GScrollController, T2GCellDelegate {
+open class T2GViewController: T2GScrollController {
     open var scrollView: T2GScrollView!
     var openCellTag: Int = -1
     
@@ -178,9 +178,6 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        if let navigationCtr = navigationController as? T2GNaviViewController {
-            navigationCtr.segueDelay = 0.16
-        }
         prepareScrollView()
     }
     
@@ -221,7 +218,7 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
     }
     
     /**
-     Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible. Also checks if T2GNavigationBarTitle is present to form appearance for Normal and Highlighted state.
+     Sets the scrollView delegate to be self. Makes sure that all cells that should be visible are visible.
      
      :param: animated Default Cocoa API - If YES, the view was added to the window using an animation.
      */
@@ -278,17 +275,17 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
             }
         }
         
-        self.isEditingModeActive = !isEditingModeActive
+        isEditingModeActive = !isEditingModeActive
         
-        for view in self.scrollView.subviews {
+        for view in scrollView.subviews {
             if let cell = view as? T2GCell {
-                let isSelected = self.editingModeSelection[cell.tag - T2GViewTags.cellConstant] ?? false
+                let isSelected = editingModeSelection[cell.tag - T2GViewTags.cellConstant] ?? false
                 cell.selected = nil
                 cell.toggleMultipleChoice(isEditingModeActive, mode: scrollView.layoutMode, selected: isSelected, animated: true)
             }
         }
-        if self.isEditingModeActive {
-            self.toggleSelectionPanel()
+        if isEditingModeActive {
+            toggleSelectionPanel()
         }
     }
     
@@ -548,7 +545,7 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
             completionClosure()
         }) 
         
-        self.scrollView.layoutMode = mode
+        scrollView.layoutMode = mode
     }
     
     //MARK: - Rotation handler
@@ -562,14 +559,14 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
     override open func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         super.willAnimateRotation(to: toInterfaceOrientation, duration: duration)
         
-        let indicesExtremes = self.scrollView.firstAndLastVisibleTags()
+        let indicesExtremes = scrollView.firstAndLastVisibleTags()
         
         if indicesExtremes.lowest != Int.max || indicesExtremes.highest != Int.min {
             let from = (indicesExtremes.highest) + 1
             let to = (indicesExtremes.highest) + 10
-            if (to - T2GViewTags.cellConstant) < self.scrollView.totalCellCount() {
+            if (to - T2GViewTags.cellConstant) < scrollView.totalCellCount() {
                 for index in from...to {
-                    self.insertRowWithTag(index)
+                    insertRowWithTag(index)
                 }
             }
         }
@@ -677,8 +674,8 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
             let startingPointIndexPath = self.scrollView.indexPathForCell(extremes.lowest)
             let endingPointIndexPath = self.scrollView.indexPathForCell(extremes.highest)
             
-            self.insertDelimiterForSection(self.scrollView.layoutMode, section: (startingPointIndexPath as NSIndexPath).section)
-            self.insertDelimiterForSection(self.scrollView.layoutMode, section: (endingPointIndexPath as NSIndexPath).section)
+            insertDelimiterForSection(self.scrollView.layoutMode, section: (startingPointIndexPath as NSIndexPath).section)
+            insertDelimiterForSection(self.scrollView.layoutMode, section: (endingPointIndexPath as NSIndexPath).section)
             
             if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell , !scrollView.bounds.intersects(cell.frame) {
                 cell.removeFromSuperview()
@@ -750,8 +747,11 @@ open class T2GViewController: T2GScrollController, T2GCellDelegate {
         return lastTag
     }
     
-    //MARK: - T2GCell delegate
     
+}
+
+//MARK: - T2GCell delegate
+extension T2GViewController: T2GCellDelegate {
     /**
      Closes other cell in case it was open before this cell started being swiped.
      
