@@ -359,33 +359,42 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     func prepareInfoView() {
         infoView.translatesAutoresizingMaskIntoConstraints = false
         infoView.backgroundColor = Color.clear
-        prepareAnnotation(bookmarkImageView, imageName: "bookmark", color: UIColor(named: .pydBlue))
-        prepareAnnotation(shareImageView, imageName: "share-variant", color: UIColor(named: .pydMarine))
-        prepareAnnotation(syncImageView, imageName: "sync", color: UIColor(named: .pydOrange))
+        if isSynced {
+            prepareAnnotation(syncImageView, imageName: "sync", color: UIColor(named: .pydOrange))
+        }
+        if isShared {
+            prepareAnnotation(shareImageView, imageName: "share-variant", color: UIColor(named: .pydMarine))
+        }
+        if isBookmarked {
+            prepareAnnotation(bookmarkImageView, imageName: "bookmark", color: UIColor(named: .pydBlue))
+        }
+        
+        var oldView: UIView = UIView()
+        for (i, v) in infoView.subviews.enumerated() {
+
+            if i == 0 {
+                infoView.addConstraints([ // First subview
+                    NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+                    NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+                    NSLayoutConstraint(item: v, attribute: .centerY, relatedBy: .equal, toItem: infoView, attribute: .centerY, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: infoView, attribute: .trailing, multiplier: 1, constant: -5),
+                    ])
+            } else {
+                infoView.addConstraints([ // other subviews
+                    NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+                    NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
+                    NSLayoutConstraint(item: v, attribute: .centerY, relatedBy: .equal, toItem: oldView, attribute: .centerY, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: oldView, attribute: .leading, multiplier: 1, constant: -5),
+                    ])
+            }
+            oldView = v
+        }
         imageView.addSubview(infoView)
         imageView.addConstraints([ // INFOVIEW
             NSLayoutConstraint(item: infoView, attribute: .width, relatedBy: .equal, toItem: imageView, attribute: .width, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: infoView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: infoView, attribute: .bottom, relatedBy: .equal, toItem: imageView, attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: infoView, attribute: .centerX, relatedBy: .equal, toItem: imageView, attribute: .centerX, multiplier: 1, constant: 0),
-            ])
-        infoView.addConstraints([ // BOOKMARK IMAGE VIEW
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .centerY, relatedBy: .equal, toItem: infoView, attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: bookmarkImageView, attribute: .trailing, relatedBy: .equal, toItem: infoView, attribute: .trailing, multiplier: 1, constant: -5),
-            ])
-        infoView.addConstraints([ // SHARE IMAGE VIEW
-            NSLayoutConstraint(item: shareImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: shareImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: shareImageView, attribute: .centerY, relatedBy: .equal, toItem: bookmarkImageView, attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: shareImageView, attribute: .trailing, relatedBy: .equal, toItem: bookmarkImageView, attribute: .leading, multiplier: 1, constant: -5),
-            ])
-        infoView.addConstraints([ // SYNC IMAGE VIEW
-            NSLayoutConstraint(item: syncImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: syncImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 15),
-            NSLayoutConstraint(item: syncImageView, attribute: .centerY, relatedBy: .equal, toItem: shareImageView, attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: syncImageView, attribute: .trailing, relatedBy: .equal, toItem: shareImageView, attribute: .leading, multiplier: 1, constant: -5),
             ])
     }
     
