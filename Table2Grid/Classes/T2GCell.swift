@@ -127,10 +127,6 @@ Base class for cells in T2GScrollView (can be overriden). Has all drag and drop 
 open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     weak var delegate: T2GCellDelegate?
     
-    deinit {
-        print("[DEINIT]: \(NSString(string: #file).lastPathComponent)->\(#function)")
-    }
-
     var highlighted: Bool = false {
         didSet {
             if let backgroundButton = self.backgroundView.viewWithTag(T2GViewTags.cellBackgroundButton) as? UIButton {
