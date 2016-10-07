@@ -36,7 +36,7 @@ enum T2GScrollDirection {
 /**
 Custom UIViewController that implements hiding feature of UINavigationBar when both scrollView and navigationBar are present. Thanks to neat Swift optionals it will not crash when neither is present.
 */
-open class T2GScrollController: UIViewController, UIScrollViewDelegate {
+open class T2GScrollController: UIViewController {
     /// functionality is enabled by default
     open var isHidingEnabled = true
     var statusBarBackgroundView: UIView?
@@ -60,165 +60,14 @@ open class T2GScrollController: UIViewController, UIScrollViewDelegate {
     :param: duration Default Cocoa API - The duration of the pending rotation, measured in seconds.
     */
     override open func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        if self.isHidingEnabled {
-            self.showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+        if isHidingEnabled {
+            showBar(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
         }
     }
 
-    //MARK: - Scroll view delegate
     
-    /**
-    Handles the end of scrolling event, to make sure the navigation bar doesn't end up in inconsistent state (hides/shows).
     
-    :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
-    :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
-    */
-    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.isHidingEnabled {
-            if let navigationCtr = self.navigationController {
-                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
-                    
-                    if (self.scrollDirection == .down) {
-                        // hide
 
-                        var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
-                        var barFrame = navigationCtr.navigationBar.frame;
-                        let blackstripe = self.createMinifiedStripeBar(navigationCtr)
-                        
-                        statusBarBackgroundViewFrame?.origin.y = -44
-                        barFrame.origin.y = -24
-                        
-                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                            blackstripe.isHidden = false
-                            self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                            navigationCtr.navigationBar.frame = barFrame
-                        })
-                        
-                    } else {
-                        // show
-                        
-                        var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
-                        var barFrame = navigationCtr.navigationBar.frame
-                        
-                        if let blackstripe = navigationCtr.view.viewWithTag(5555) {
-                            blackstripe.removeFromSuperview()
-                        }
-                        
-                        statusBarBackgroundViewFrame?.origin.y = 0
-                        barFrame.origin.y = 20
-                        
-                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                            self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                            navigationCtr.navigationBar.frame = barFrame
-                        })
-                    }
-                }
-            }
-        }
-    }
-    
-    /**
-    Gets called every time the scrollView moves - even when UIRefreshControl is the one making the movement. This method handles all those events and acts accordingly - moves the navigation bar up/down and in case of snapping back it calls handleSnapBack method.
-    
-    :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
-    */
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if self.isHidingEnabled {
-            if let navigationCtr = self.navigationController {
-                if (self.isViewLoaded && self.view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
-                    // check when refresher is refreshing
-                    if (self.automaticSnapStatus == .none) {
-                        if (self.lastScrollViewContentOffset > scrollView.contentOffset.y) {
-                            self.scrollDirection = .up
-                            
-                            if scrollView.contentSize.height - 1 < scrollView.contentOffset.y + scrollView.frame.size.height {
-                                self.automaticSnapStatus == .willSnap
-                            } else {
-                                // show
-                                // legacy code : && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
-                                
-                                if (!(scrollView.contentOffset.y < -64.0)) {
-                                    var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
-                                    var barFrame = navigationCtr.navigationBar.frame
-                                    
-                                    if (barFrame.origin.y <= 19) {
-                                        if let blackstripe = navigationCtr.view.viewWithTag(5555) {
-                                            blackstripe.removeFromSuperview()
-                                        }
-                                        
-                                        let toMove = self.lastScrollViewContentOffset - scrollView.contentOffset.y
-                                        if (barFrame.origin.y + toMove < 20) {
-                                            statusBarBackgroundViewFrame?.origin.y += toMove
-                                            barFrame.origin.y += toMove
-                                        } else {
-                                            statusBarBackgroundViewFrame?.origin.y = 0;
-                                            barFrame.origin.y = 20;
-                                        }
-                                        
-                                        self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                                        navigationCtr.navigationBar.frame = barFrame
-                                    } else {
-                                        statusBarBackgroundViewFrame?.origin.y = 0;
-                                        self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                                        
-                                        barFrame.origin.y = 20;
-                                        navigationCtr.navigationBar.frame = barFrame
-                                    }
-                                }
-                            }
-                        } else if (self.lastScrollViewContentOffset < scrollView.contentOffset.y) {
-                            self.scrollDirection = .down
-                            // hide
-                            // legacy code: && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
-                            
-                            let scrollHandler = { () -> Void in
-                                if (!(scrollView.contentOffset.y < -64.0)) {
-                                    var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
-                                    
-                                    var barFrame = navigationCtr.navigationBar.frame
-                                    if (barFrame.origin.y > -23) {
-                                        let toMove = self.lastScrollViewContentOffset - scrollView.contentOffset.y
-                                        statusBarBackgroundViewFrame?.origin.y += toMove
-                                        barFrame.origin.y += toMove
-                                    } else {
-//                                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
-                                        statusBarBackgroundViewFrame?.origin.y = -44;
-                                        barFrame.origin.y = -24;
-                                    }
-                                    self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
-                                    navigationCtr.navigationBar.frame = barFrame
-                                }
-                            }
-                            
-                            if let ref = scrollView.viewWithTag(T2GViewTags.refreshControl) {
-                                if !scrollView.bounds.contains(ref.bounds) {
-                                    scrollHandler()
-                                }
-                            } else {
-                                scrollHandler()
-                            }
-                        }
-                        self.lastScrollViewContentOffset = scrollView.contentOffset.y
-                    } else {
-                        if(scrollView.contentOffset.y == -64) {
-                            if (self.automaticSnapStatus == .willSnap) {
-                                self.automaticSnapStatus = .didSnap
-                            } else {
-                                self.automaticSnapStatus = .none
-                                self.handleSnapBack()
-                            }
-                        }
-                    }
-                } else {
-                    self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
-                    self.lastScrollViewContentOffset = scrollView.contentOffset.y
-                }
-            }
-        } else {
-            self.scrollDirection = self.lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
-            self.lastScrollViewContentOffset = scrollView.contentOffset.y
-        }
-    }
     
     /**
     Helper method for subclasses to override if there is some extra work to be done after the view has snapped back.
@@ -264,6 +113,162 @@ open class T2GScrollController: UIViewController, UIScrollViewDelegate {
             
             barFrame.origin.y = isLandscape ? 0 : 20
             navigationCtr.navigationBar.frame = barFrame
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension T2GScrollController: UIScrollViewDelegate {
+    /**
+     Handles the end of scrolling event, to make sure the navigation bar doesn't end up in inconsistent state (hides/shows).
+     
+     :param: scrollView Default Cocoa API - The scroll-view object that finished scrolling the content view.
+     :param: willDecelerate Default Cocoa API - true if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
+     */
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.isHidingEnabled {
+            if let navigationCtr = self.navigationController {
+                if ((navigationCtr.navigationBar.frame.origin.y != 20 || navigationCtr.navigationBar.frame.origin.y != -24) && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
+                    
+                    if (self.scrollDirection == .down) {
+                        // hide
+                        
+                        var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
+                        var barFrame = navigationCtr.navigationBar.frame;
+                        let blackstripe = self.createMinifiedStripeBar(navigationCtr)
+                        
+                        statusBarBackgroundViewFrame?.origin.y = -44
+                        barFrame.origin.y = -24
+                        
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                            blackstripe.isHidden = false
+                            self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                            navigationCtr.navigationBar.frame = barFrame
+                        })
+                        
+                    } else {
+                        // show
+                        
+                        var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
+                        var barFrame = navigationCtr.navigationBar.frame
+                        
+                        if let blackstripe = navigationCtr.view.viewWithTag(5555) {
+                            blackstripe.removeFromSuperview()
+                        }
+                        
+                        statusBarBackgroundViewFrame?.origin.y = 0
+                        barFrame.origin.y = 20
+                        
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                            self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                            navigationCtr.navigationBar.frame = barFrame
+                        })
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     Gets called every time the scrollView moves - even when UIRefreshControl is the one making the movement. This method handles all those events and acts accordingly - moves the navigation bar up/down and in case of snapping back it calls handleSnapBack method.
+     
+     :param: scrollView Default Cocoa API - The scroll-view object in which the scrolling occurred.
+     */
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isHidingEnabled {
+            if let navigationCtr = navigationController {
+                if (isViewLoaded && view.window != nil && UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
+                    // check when refresher is refreshing
+                    if (automaticSnapStatus == .none) {
+                        if (lastScrollViewContentOffset > scrollView.contentOffset.y) {
+                            scrollDirection = .up
+                            
+                            if scrollView.contentSize.height - 1 < scrollView.contentOffset.y + scrollView.frame.size.height {
+                                automaticSnapStatus == .willSnap
+                            } else {
+                                // show
+                                // legacy code : && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
+                                
+                                if (!(scrollView.contentOffset.y < -64.0)) {
+                                    var statusBarBackgroundViewFrame = statusBarBackgroundView?.frame
+                                    var barFrame = navigationCtr.navigationBar.frame
+                                    
+                                    if (barFrame.origin.y <= 19) {
+                                        if let blackstripe = navigationCtr.view.viewWithTag(5555) {
+                                            blackstripe.removeFromSuperview()
+                                        }
+                                        
+                                        let toMove = lastScrollViewContentOffset - scrollView.contentOffset.y
+                                        if (barFrame.origin.y + toMove < 20) {
+                                            statusBarBackgroundViewFrame?.origin.y += toMove
+                                            barFrame.origin.y += toMove
+                                        } else {
+                                            statusBarBackgroundViewFrame?.origin.y = 0;
+                                            barFrame.origin.y = 20;
+                                        }
+                                        
+                                        statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                                        navigationCtr.navigationBar.frame = barFrame
+                                    } else {
+                                        statusBarBackgroundViewFrame?.origin.y = 0;
+                                        statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                                        
+                                        barFrame.origin.y = 20;
+                                        navigationCtr.navigationBar.frame = barFrame
+                                    }
+                                }
+                            }
+                        } else if (lastScrollViewContentOffset < scrollView.contentOffset.y) {
+                            scrollDirection = .down
+                            // hide
+                            // legacy code: && !(568 >= scrollView.contentSize.height - scrollView.contentOffset.y)
+                            
+                            let scrollHandler = { () -> Void in
+                                if (!(scrollView.contentOffset.y < -64.0)) {
+                                    var statusBarBackgroundViewFrame = self.statusBarBackgroundView?.frame
+                                    
+                                    var barFrame = navigationCtr.navigationBar.frame
+                                    if (barFrame.origin.y > -23) {
+                                        let toMove = self.lastScrollViewContentOffset - scrollView.contentOffset.y
+                                        statusBarBackgroundViewFrame?.origin.y += toMove
+                                        barFrame.origin.y += toMove
+                                    } else {
+                                        //                                        var blackstripe = self.createMinifiedStripeBar(navigationCtr)
+                                        statusBarBackgroundViewFrame?.origin.y = -44;
+                                        barFrame.origin.y = -24;
+                                    }
+                                    self.statusBarBackgroundView?.frame = statusBarBackgroundViewFrame!
+                                    navigationCtr.navigationBar.frame = barFrame
+                                }
+                            }
+                            
+                            if let ref = scrollView.viewWithTag(T2GViewTags.refreshControl) {
+                                if !scrollView.bounds.contains(ref.bounds) {
+                                    scrollHandler()
+                                }
+                            } else {
+                                scrollHandler()
+                            }
+                        }
+                        self.lastScrollViewContentOffset = scrollView.contentOffset.y
+                    } else {
+                        if(scrollView.contentOffset.y == -64) {
+                            if (automaticSnapStatus == .willSnap) {
+                                automaticSnapStatus = .didSnap
+                            } else {
+                                automaticSnapStatus = .none
+                                handleSnapBack()
+                            }
+                        }
+                    }
+                } else {
+                    scrollDirection = lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
+                    lastScrollViewContentOffset = scrollView.contentOffset.y
+                }
+            }
+        } else {
+            scrollDirection = lastScrollViewContentOffset > scrollView.contentOffset.y ? .up : .down
+            lastScrollViewContentOffset = scrollView.contentOffset.y
         }
     }
 
