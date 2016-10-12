@@ -680,25 +680,26 @@ open class T2GViewController: T2GScrollController {
             if let cell = scrollView.viewWithTag(endingPoint) as? T2GCell , !scrollView.bounds.intersects(cell.frame) {
                 cell.removeFromSuperview()
             }
-            
-            if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
-                if scrollView.bounds.intersects(edgeCell.frame) && startingPoint != edgeCondition {
-                    let firstAddedTag = addRowsWhileScrolling(scrollDirection, startTag: startingPoint)
-                    if (currentSpeed == .fast || currentSpeed == .normal) && firstAddedTag != edgeCondition {
-                        let secondAddedTag = addRowsWhileScrolling(scrollDirection, startTag: firstAddedTag)
-                        if (currentSpeed == .fast) && secondAddedTag != edgeCondition {
-                            let thirdAddedTag = addRowsWhileScrolling(scrollDirection, startTag: secondAddedTag)
-                            if (currentSpeed == .fast || self.scrollView.layoutMode == .collection) && thirdAddedTag != edgeCondition {
-                                //                                let fourthAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
-                            }
-                        }
-                    }
-                }
-            } else {
-                self.displayMissingCells()
-            }
+
+            displayMissingCells()
+//            if let edgeCell = scrollView.viewWithTag(startingPoint) as? T2GCell {
+//                if scrollView.bounds.intersects(edgeCell.frame) && startingPoint != edgeCondition {
+//                    let firstAddedTag = addRowsWhileScrolling(scrollDirection, startTag: startingPoint)
+//                    if (currentSpeed == .fast || currentSpeed == .normal) && firstAddedTag != edgeCondition {
+//                        let secondAddedTag = addRowsWhileScrolling(scrollDirection, startTag: firstAddedTag)
+//                        if (currentSpeed == .fast) && secondAddedTag != edgeCondition {
+//                            let thirdAddedTag = addRowsWhileScrolling(scrollDirection, startTag: secondAddedTag)
+//                            if (currentSpeed == .fast || self.scrollView.layoutMode == .collection) && thirdAddedTag != edgeCondition {
+//                                //                                let fourthAddedTag = self.addRowsWhileScrolling(self.scrollDirection, startTag: secondAddedTag)
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                displayMissingCells()
+//            }
         } else {
-            self.displayMissingCells()
+            displayMissingCells()
         }
     }
     
@@ -724,27 +725,28 @@ open class T2GViewController: T2GScrollController {
      :returns: Integer value of the last added tag to the scrollView.
      */
     func addRowsWhileScrolling(_ direction: T2GScrollDirection, startTag: Int) -> Int {
-        let multiplier = direction == .up ? -1 : 1
-        let firstTag = startTag + (1 * multiplier)
-        let secondTag = startTag + (2 * multiplier)
-        let thirdTag = startTag + (3 * multiplier)
-        
-        let firstAdditionalCondition = direction == .up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
-        let secondAdditionalCondition = direction == .up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
-        
-        var lastTag = insertRowWithTag(firstTag)
-        
-        if self.scrollView.layoutMode == .collection {
-            if firstAdditionalCondition {
-                lastTag = insertRowWithTag(secondTag)
-                
-                if secondAdditionalCondition {
-                    lastTag = insertRowWithTag(thirdTag)
-                }
-            }
-        }
-        
-        return lastTag
+//        let multiplier = direction == .up ? -1 : 1
+//        let firstTag = startTag + (1 * multiplier)
+//        let secondTag = startTag + (2 * multiplier)
+//        let thirdTag = startTag + (3 * multiplier)
+//        
+//        let firstAdditionalCondition = direction == .up ? secondTag - T2GViewTags.cellConstant > 0 : secondTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
+//        let secondAdditionalCondition = direction == .up ? thirdTag - T2GViewTags.cellConstant > 0 : thirdTag - T2GViewTags.cellConstant < (scrollView.totalCellCount() - 1)
+//        
+//        var lastTag = insertRowWithTag(firstTag)
+//        
+//        if self.scrollView.layoutMode == .collection {
+//            if firstAdditionalCondition {
+//                lastTag = insertRowWithTag(secondTag)
+//                
+//                if secondAdditionalCondition {
+//                    lastTag = insertRowWithTag(thirdTag)
+//                }
+//            }
+//        }
+//        
+//        return lastTag
+        return 0
     }
     
     
