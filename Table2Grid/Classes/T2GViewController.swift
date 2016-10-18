@@ -254,7 +254,7 @@ open class T2GViewController: T2GScrollController {
     open func clearScrollView() {
         for view in scrollView.subviews {
             if let cell: UIView = view {
-                if cell.tag != 222222 { //Check if subview is not the refreshControl
+                if !(cell is UIRefreshControl) {
                     cell.removeFromSuperview()
                 }
             }
@@ -589,17 +589,6 @@ open class T2GViewController: T2GScrollController {
      */
     override open func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         displayMissingCells()
-    }
-    
-    // MARK: -CopyMoveView delegate
-    
-    func copyButtonSelected() {
-    }
-    
-    func moveButtonSelected() {
-    }
-    
-    func cancelButtonSelected() {
     }
 
     //MARK: - ScrollView delegate
