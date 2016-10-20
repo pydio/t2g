@@ -95,7 +95,7 @@ class T2GPathViewController: UITableViewController {
         
         cell.textLabel?.text = text
         
-        let image = UIImage(named: self.path[indexPath.row]["image"]!)?.tintWithColor(color: Color.grey.darken1) //?? self.imageWithColor(.blackColor(), rect: CGRectMake(0, 0, 32, 32))
+        let image = UIImage(named: self.path[indexPath.row]["image"]!)?.withRenderingMode(.alwaysTemplate).tint(with: Color.grey.darken1)
         cell.imageView?.image = image
         return cell
     }

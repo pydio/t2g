@@ -333,7 +333,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         if let img = image {
             if imageType == .icon {
-                imageView.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tintWithColor(color: Color.grey.base)
+                imageView.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 30, height: 30)).tint(with: Color.grey.base)
                 imageView.backgroundColor = T2GStyle.Node.nodeIconViewBackgroundColor
                 imageView.contentMode = .center
             } else {
@@ -396,7 +396,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     
     func prepareAnnotation(_ annotation: UIImageView, imageName: String, color: UIColor) {
         annotation.translatesAutoresizingMaskIntoConstraints = false
-        annotation.image = UIImage(named: imageName)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 10, height: 10)).tintWithColor(color: Color.white)
+        annotation.image = UIImage(named: imageName)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate).af_imageScaledToSize(CGSize(width: 10, height: 10)).tint(with: Color.white)
         annotation.backgroundColor = color
         annotation.contentMode = .center
         annotation.layer.cornerRadius = 7.5
