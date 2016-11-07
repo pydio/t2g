@@ -186,7 +186,7 @@ open class T2GViewController: T2GScrollController {
     
     fileprivate func prepareScrollView() {
         scrollView = T2GScrollView()
-        scrollView.backgroundColor = UIColor(red: 238.0/255.0, green: 233.0/255.0, blue: 233/255.0, alpha: 1.0)
+        scrollView.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245/255.0, alpha: 1.0)
         scrollView.adjustContentSize()
         scrollView.delegate = self
         scrollView.translatesAutoresizingMaskIntoConstraints = false
