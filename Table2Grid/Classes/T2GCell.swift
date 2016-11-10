@@ -151,9 +151,11 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     var backgroundButton: FlatButton = FlatButton()
     
     
-    var imageView: UIImageView = UIImageView()
-    var headerLabel: UILabel = UILabel()
-    var detailLabel: UILabel = UILabel()
+    open var imageView: UIImageView = UIImageView()
+    open var headerLabel: UILabel = UILabel()
+    open var detailLabel: UILabel = UILabel()
+    open var progressBar: UIProgressView = UIProgressView()
+    
     
     var infoView: View = View()
     var bookmarkImageView: UIImageView = UIImageView()
@@ -231,6 +233,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             
             prepareHeaderLabel()
             prepareDetailLabel()
+            prepareProgressView()
             prepareMoreButton()
             prepareSelectionButton()
         } else if mode == .collection {
@@ -457,12 +460,12 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     }
     
     func prepareHeaderLabel() {
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.backgroundColor = .clear
         headerLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
         headerLabel.font = T2GStyle.Node.nodeTitleFont
         headerLabel.textColor = T2GStyle.Node.nodeTitleColor
         headerLabel.text = header
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
         if mode == .table {
             backgroundView.addSubview(headerLabel)
             backgroundView.addConstraints([ // HEADER LABEL
@@ -481,17 +484,31 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     }
     
     func prepareDetailLabel() {
+        detailLabel.translatesAutoresizingMaskIntoConstraints = false
         detailLabel.backgroundColor = .clear
         detailLabel.lineBreakMode = NSLineBreakMode.byTruncatingMiddle
         detailLabel.font = T2GStyle.Node.nodeDescriptionFont
         detailLabel.textColor = T2GStyle.Node.nodeDescriptionColor
         detailLabel.text = detail
-        detailLabel.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(detailLabel)
         backgroundView.addConstraints([ // DETAIL LABEL
             NSLayoutConstraint(item: detailLabel, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: detailLabel, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -42),
             NSLayoutConstraint(item: detailLabel, attribute: .top, relatedBy: .equal, toItem: headerLabel, attribute: .bottom, multiplier: 1, constant: 5),
+            ])
+    }
+    
+    func prepareProgressView() {
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        progressBar.backgroundColor = Color.clear
+        progressBar.tintColor = Color.teal.accent4
+        progressBar.isHidden = true
+        progressBar.progress = 1
+        backgroundView.addSubview(progressBar)
+        backgroundView.addConstraints([
+            NSLayoutConstraint(item: progressBar, attribute: .centerY, relatedBy: .equal, toItem: detailLabel, attribute: .centerY, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: progressBar, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: progressBar, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -20),
             ])
     }
     
