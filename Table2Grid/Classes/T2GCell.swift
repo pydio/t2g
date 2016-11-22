@@ -155,6 +155,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
     open var headerLabel: UILabel = UILabel()
     open var detailLabel: UILabel = UILabel()
     open var progressBar: UIProgressView = UIProgressView()
+    open var progressLabel: UILabel = UILabel()
     
     
     var infoView: View = View()
@@ -234,6 +235,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             prepareHeaderLabel()
             prepareDetailLabel()
             prepareProgressView()
+            prepareProgressLabel()
             prepareMoreButton()
             prepareSelectionButton()
         } else if mode == .collection {
@@ -509,6 +511,20 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
             NSLayoutConstraint(item: progressBar, attribute: .centerY, relatedBy: .equal, toItem: detailLabel, attribute: .centerY, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: progressBar, attribute: .leading, relatedBy: .equal, toItem: imageView, attribute: .trailing, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: progressBar, attribute: .trailing, relatedBy: .equal, toItem: backgroundView, attribute: .trailing, multiplier: 1, constant: -20),
+            ])
+    }
+    
+    func prepareProgressLabel() {
+        progressLabel.translatesAutoresizingMaskIntoConstraints = false
+        progressLabel.isHidden = true
+        progressLabel.font = RobotoFont.regular(with: 10)
+        progressLabel.textColor = Color.grey.lighten1
+        progressLabel.textAlignment = .right
+        backgroundView.addSubview(progressLabel)
+        backgroundView.addConstraints([
+            NSLayoutConstraint(item: progressLabel, attribute: .leading, relatedBy: .equal, toItem: progressBar, attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: progressLabel, attribute: .trailing, relatedBy: .equal, toItem: progressBar, attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: progressLabel, attribute: .top, relatedBy: .equal, toItem: progressBar, attribute: .bottom, multiplier: 1, constant: 0),
             ])
     }
     
