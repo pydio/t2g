@@ -48,13 +48,12 @@ public protocol T2GScrollViewDataDelegate: class {
     func dimensionsForCell(_ mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
     
     /**
-    Returns the dimensions for the section header.
-    
-    - DISCUSSION: Will be most likely renamed to heightForSectionHeader, because the width is left out and is stretched to the full width.
-    
-    :returns: CGSize object defining width and height.
+    Returns the height for the section header.
+
+    :returns: Int value for height.
     */
-    func dimensionsForSectionHeader() -> CGSize
+    
+    func heightForHeaderInSection() -> Int
 }
 
 /**
@@ -155,9 +154,9 @@ open class T2GScrollView: UIScrollView {
                 xCoords.append(x)
             }
             
-            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
+            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
             for section in 0..<indexPath.section {
-                yCoord += (dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
+                yCoord += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
             }
             
             let frame = CGRect(x: CGFloat(xCoords[indexPath.row % xCoords.count]), y: yCoord, width: dimensions.width, height: dimensions.height)
@@ -166,10 +165,10 @@ open class T2GScrollView: UIScrollView {
             
         } else {
             let superviewFrame = frame
-            var ypsilon = (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + dataDelegate!.dimensionsForSectionHeader().height
+            var ypsilon = (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
             
             for section in 0..<indexPath.section {
-                ypsilon += (dataDelegate!.dimensionsForSectionHeader().height + (CGFloat(dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
+                ypsilon += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
             }
             
             return CGRect(x: 0, y: ypsilon, width: dimensions.width, height: dimensions.height)
@@ -189,8 +188,7 @@ open class T2GScrollView: UIScrollView {
         let x: CGFloat = 0.0
         var y: CGFloat = 0.0
         
-        let dimensions = dataDelegate!.dimensionsForSectionHeader()
-        let height: CGFloat = dimensions.height
+        let height: CGFloat = CGFloat(dataDelegate!.heightForHeaderInSection())
         let width: CGFloat = frame.size.width
         
         let cellDimensions = dataDelegate!.dimensionsForCell(m)
@@ -373,7 +371,7 @@ open class T2GScrollView: UIScrollView {
             lineCount -= 1
             
             let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-            height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(dataDelegate!.numberOfSections()) * dataDelegate!.dimensionsForSectionHeader().height)
+            height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))
             height = height < bounds.height ? (bounds.height - 31.0) : height
         }
         return CGSize(width: frame.size.width, height: height + 90)
@@ -421,7 +419,7 @@ open class T2GScrollView: UIScrollView {
         
         if let dimensions = dataDelegate?.dimensionsForCell(mode) {
             if mode == .collection {
-                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)
+                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.height + dimensions.padding)
                 var firstIndex = Int(floor(v)) * itemCountPerLine(.collection)
                 if firstIndex < 0 {
                     firstIndex = 0
@@ -437,7 +435,7 @@ open class T2GScrollView: UIScrollView {
                     }                
                 }
             } else {
-                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * dataDelegate!.dimensionsForSectionHeader().height)) / (dimensions.height + dimensions.padding)
+                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.height + dimensions.padding)
                 var firstIndex = Int(floor(v))
                 if firstIndex < 0 {
                     firstIndex = 0

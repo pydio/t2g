@@ -33,10 +33,19 @@ public protocol T2GViewControllerDelegate: class {
     /**
     Returns the header text for section delimiter.
     
-    :param: section Integer value defining number of cells in given section.
+    :param: section Integer value defining the targetted section.
     :returns: Optional String to be set in the UILabel of T2GDelimiterView
     */
     func titleForHeaderInSection(_ section: Int) -> String?
+    
+    /**
+     Return a view to fill the section delimiter
+    
+     :param: section Integer value defining the targetted section.
+     :returns: Optional UIView to be set in the section delimiter
+     */
+    func viewForHeaderInSection(_ section: Int) -> UIView?
+    
     
     /**
     Gets called when cell needs an update.
@@ -338,6 +347,15 @@ open class T2GViewController: T2GScrollController {
             let delimiter = T2GDelimiterView(frame: scrollView.frameForDelimiter(mode, section: section), title: name)
             delimiter.tag = section + 1
             
+            if let v = delegate.viewForHeaderInSection(section) {
+                delimiter.addSubview(v)
+                delimiter.addConstraints([
+                    NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: delimiter, attribute: .top, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: delimiter, attribute: .bottom, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: delimiter, attribute: .leading, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: delimiter, attribute: .trailing, multiplier: 1, constant: 0),
+                    ])
+            }
             scrollView.addSubview(delimiter)
         }
     }
