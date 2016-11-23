@@ -351,7 +351,7 @@ open class T2GViewController: T2GScrollController {
                 delimiter.addSubview(v)
                 delimiter.addConstraints([
                     NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: delimiter, attribute: .top, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: delimiter, attribute: .bottom, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: delimiter, attribute: .bottom, multiplier: 1, constant: -1),
                     NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: delimiter, attribute: .leading, multiplier: 1, constant: 0),
                     NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: delimiter, attribute: .trailing, multiplier: 1, constant: 0),
                     ])
