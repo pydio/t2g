@@ -191,7 +191,7 @@ open class T2GCell: T2GDragAndDropView, UIScrollViewDelegate {
         self.isBookmarked = isBookmarked
         self.isShared = isShared
         self.isSynced = isSynced
-        if image?.count != 0 {
+        if image != nil && image?.count != 0 {
             self.imageType = .picture
             self.image = UIImage(data: image!)
         } else {
