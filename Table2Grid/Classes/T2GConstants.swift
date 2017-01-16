@@ -16,7 +16,6 @@ Enum used throughout the whole framework for constants. Bizarre numbers are pick
 public struct T2GViewTags {
     public static let cellConstant = 333
     public static let navigationBarMenu = 888888
-    public static let navigationBarTriangle = 888887
     public static let editingModeToolbar = 777777
     public static let checkboxButton = 666666
     public static let cellDrawerButtonConstant = 555555
