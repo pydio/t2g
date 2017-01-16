@@ -474,7 +474,7 @@ open class T2GViewController: T2GScrollController {
     */
     open func removeRowsAtIndexPaths(_ indexPaths: [IndexPath], notifyDelegate: Bool = false) {
         var indices: [Int] = []
-        if indexPaths.count == 0 {
+        guard !indexPaths.isEmpty else {
             return
         }
         for indexPath in indexPaths {
