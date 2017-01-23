@@ -21,7 +21,7 @@ s.author           = { 'Leo Marcotte' => 'leo@pydio.com' }
 s.source           = { :git => 'https://github.com/pydio/t2g.git', :tag => s.version.to_s }
 s.social_media_url = 'https://twitter.com/pydio'
 
-s.ios.deployment_target = '8.0'
+s.ios.deployment_target = '9.3'
 
 s.source_files = 'Table2Grid/Classes/**/*'
 s.resources = [
@@ -35,5 +35,5 @@ s.resources = [
 
 # s.public_header_files = 'Pod/Classes/**/*.h'
 # s.frameworks = 'UIKit', 'MapKit'
-s.dependency 'Material', '~> 1.0'
+s.dependency 'Material'
 end

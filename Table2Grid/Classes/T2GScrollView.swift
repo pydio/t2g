@@ -45,7 +45,7 @@ public protocol T2GScrollViewDataDelegate: class {
     :param: mode T2GLayoutMode for which dimensions should be calculated.
     :returns: Tuple of width, height and padding for the cell.
     */
-    func dimensionsForCell(_ mode: T2GLayoutMode) -> (width: CGFloat, height: CGFloat, padding: CGFloat)
+    func dimensionsForCell(_ mode: T2GLayoutMode) -> (size: CGSize, padding: CGFloat)
     
     /**
     Returns the height for the section header.
@@ -95,7 +95,7 @@ open class T2GScrollView: UIScrollView {
     func itemCountPerLine(_ mode: T2GLayoutMode) -> Int {
         if mode == .collection {
             let dimensions = dataDelegate!.dimensionsForCell(.collection)
-            return Int(floor(frame.size.width / dimensions.width))
+            return Int(floor(frame.size.width / dimensions.size.width))
         } else {
             return 1
         }
@@ -114,14 +114,14 @@ open class T2GScrollView: UIScrollView {
         var count = 0
         
         if m == .table {
-            count = Int(ceil(frame.size.height / (dimensions.height + dimensions.padding)))
+            count = Int(ceil(frame.size.height / (dimensions.size.height + dimensions.padding)))
             if count == 0 {
-                    count = Int(ceil(frame.size.height / (dimensions.height + dimensions.padding)))
+                    count = Int(ceil(frame.size.height / (dimensions.size.height + dimensions.padding)))
                 
                 count = count == 0 ? 10 : count
             }
         } else {
-            count = Int(ceil(frame.size.height / (dimensions.height + dimensions.padding))) * itemCountPerLine(.collection)
+            count = Int(ceil(frame.size.height / (dimensions.size.height + dimensions.padding))) * itemCountPerLine(.collection)
             count = count == 0 ? 20 : count
         }
         
@@ -150,28 +150,28 @@ open class T2GScrollView: UIScrollView {
             
             var xCoords: [CGFloat] = []
             for index in 0..<count {
-                let x = CGFloat(index) * (gap + dimensions.width) + gap
+                let x = CGFloat(index) * (gap + dimensions.size.width) + gap
                 xCoords.append(x)
             }
             
-            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
+            var yCoord = dimensions.padding + (CGFloat(indexPath.row / xCoords.count) * (dimensions.size.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
             for section in 0..<indexPath.section {
-                yCoord += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.height + dimensions.padding)))
+                yCoord += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(section)) / CGFloat(xCoords.count))) * (dimensions.size.height + dimensions.padding)))
             }
             
-            let frame = CGRect(x: CGFloat(xCoords[indexPath.row % xCoords.count]), y: yCoord, width: dimensions.width, height: dimensions.height)
+            let frame = CGRect(x: CGFloat(xCoords[indexPath.row % xCoords.count]), y: yCoord, width: dimensions.size.width, height: dimensions.size.height)
             
             return frame
             
         } else {
             let superviewFrame = frame
-            var ypsilon = (CGFloat(indexPath.row) * (dimensions.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
+            var ypsilon = (CGFloat(indexPath.row) * (dimensions.size.height + dimensions.padding)) + CGFloat(dataDelegate!.heightForHeaderInSection())
             
             for section in 0..<indexPath.section {
-                ypsilon += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(dataDelegate!.numberOfCellsInSection(section)) * (dimensions.height + dimensions.padding)))
+                ypsilon += (CGFloat(dataDelegate!.heightForHeaderInSection()) + (CGFloat(dataDelegate!.numberOfCellsInSection(section)) * (dimensions.size.height + dimensions.padding)))
             }
             
-            return CGRect(x: 0, y: ypsilon, width: dimensions.width, height: dimensions.height)
+            return CGRect(x: 0, y: ypsilon, width: dimensions.size.width, height: dimensions.size.height)
         }
     }
     
@@ -199,12 +199,12 @@ open class T2GScrollView: UIScrollView {
             if m == .collection {
                 y = cellDimensions.padding
             } else {
-                y = (superview!.frame.size.width - cellDimensions.width) / 2
+                y = (superview!.frame.size.width - cellDimensions.size.width) / 2
             }
             
             for idx in 0..<section {
                 let lineCount = CGFloat(ceil(CGFloat(dataDelegate!.numberOfCellsInSection(idx)) / CGFloat(count)))
-                y += (height + (lineCount * (cellDimensions.height + cellDimensions.padding)))
+                y += (height + (lineCount * (cellDimensions.size.height + cellDimensions.padding)))
             }
             
             y -= (CGFloat(cellDimensions.padding / 2.0))
@@ -361,7 +361,7 @@ open class T2GScrollView: UIScrollView {
         var height: CGFloat = 0.0
         
         if let dimensions = dataDelegate?.dimensionsForCell(mode) {
-            let viewX = mode == .collection ? dimensions.padding : (frame.size.width - dimensions.width) / 2
+            let viewX = mode == .collection ? dimensions.padding : (frame.size.width - dimensions.size.width) / 2
             let divisor = itemCountPerLine(mode)
             
             var lineCount = 0
@@ -370,8 +370,8 @@ open class T2GScrollView: UIScrollView {
             }
             lineCount -= 1
             
-            let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.height + dimensions.padding))
-            height = ypsilon + dimensions.height + dimensions.padding + (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))
+            let ypsilon = viewX + (CGFloat(lineCount) * (dimensions.size.height + dimensions.padding))
+            height = ypsilon + dimensions.size.height + dimensions.padding + (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))
             height = height < bounds.height ? (bounds.height - 31.0) : height
         }
         return CGSize(width: frame.size.width, height: height + 90)
@@ -419,7 +419,7 @@ open class T2GScrollView: UIScrollView {
         
         if let dimensions = dataDelegate?.dimensionsForCell(mode) {
             if mode == .collection {
-                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.height + dimensions.padding)
+                let v = ((frame.origin.y - dimensions.size.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.size.height + dimensions.padding)
                 var firstIndex = Int(floor(v)) * itemCountPerLine(.collection)
                 if firstIndex < 0 {
                     firstIndex = 0
@@ -435,7 +435,7 @@ open class T2GScrollView: UIScrollView {
                     }                
                 }
             } else {
-                let v = ((frame.origin.y - dimensions.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.height + dimensions.padding)
+                let v = ((frame.origin.y - dimensions.size.height) - (CGFloat(dataDelegate!.numberOfSections()) * CGFloat(dataDelegate!.heightForHeaderInSection()))) / (dimensions.size.height + dimensions.padding)
                 var firstIndex = Int(floor(v))
                 if firstIndex < 0 {
                     firstIndex = 0
@@ -453,7 +453,6 @@ open class T2GScrollView: UIScrollView {
                 }
             }
         }
-        
         return res
     }
     
